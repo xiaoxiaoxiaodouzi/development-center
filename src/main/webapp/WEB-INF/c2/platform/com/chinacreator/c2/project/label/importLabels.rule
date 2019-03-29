@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="importLabels" log="false" className="com.chinacreator.c2.project.label.LabelService" method="importLabel">
+  <name>导入标签</name>
+  <inputs>
+    <input collection="false" desc="" id="labels" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="int"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.labels" name="labels" signature="QList&lt;QLabel;>;" type="java.util.List"/>
+  </params>
+  <return signature="I" type="int"/>
+</CustomRule>

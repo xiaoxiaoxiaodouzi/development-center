@@ -1,0 +1,417 @@
+<style>
+	.scrum-panel-body {
+		position: absolute;
+		top: 65px;
+		width: 300px;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 1;
+		overflow-y: auto;
+	}
+
+	.scrum-filter-wrap .filter-input-wrap {
+		padding: 0 20px;
+	}
+
+	.filter-input-wrap,
+	.scrum-filter-executor {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		margin-top: 10px;
+	}
+
+	.scrum-filter-wrap .filter-input-wrap .filter-title {
+		padding: 10px 0;
+		color: #333;
+	}
+
+	/* .scrum-filter-wrap .filter-input-wrap:after {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: -18px;
+    content: '';
+    border-bottom: 1px solid #EEEEEE;
+    z-index: 2;
+} */
+
+	.scrum-filter-wrap .filter-input-wrap .filter-title .icon {
+		margin-right: 10px;
+		color: #808080;
+	}
+
+	.filter-clear-handler {
+		display: none;
+		color: #3da8f5;
+		font-size: 14px;
+		position: absolute;
+		top: 10px;
+		right: 20px;
+		z-index: 2;
+	}
+
+	.filter-input-wrap input {
+		height: 38px;
+		border: 1px solid #d9d9d9;
+		border-radius: 3px;
+		padding-left: 10px;
+	}
+
+	.scrum-filter-tag .filter-title {
+		margin: 15px 20px 8px;
+	}
+
+	.list {
+		padding: 0;
+		list-style: none;
+	}
+
+	.list>li {
+		position: relative;
+		line-height: 30px;
+	}
+
+	.scrum-panel .list li.selected:after {
+		position: absolute;
+		top: 8px;
+		right: 20px;
+		font-size: 14px;
+		line-height: 24px;
+		color: #A6A6A6;
+		content: "\f26b";
+	}
+
+	.task-detail-header {
+		padding: 0 15px;
+		border-bottom: 1px solid rgba(0, 0, 0, .1);
+	}
+
+	.task-tasklist-stage-wrap {
+		position: relative;
+		margin: 0px 5px 16px;
+	}
+
+	.bug-block-search {
+		display: inline-block;
+		padding: 1px 2px;
+		line-height: 20px;
+		font-size: smaller;
+		text-align: center;
+		border-radius: 3px;
+		margin-right: 5px;
+		word-wrap: normal;
+	}
+
+	.radio-row {
+		background: #f5f5f5;
+		padding: 10px 20px;
+	}
+
+	.checkbox-inline,
+	.radio-inline {
+		margin-top: 0;
+		padding-left: 25px;
+		color: #333;
+	}
+
+	.scrum-panel-title {
+		margin: 0 20px;
+		font-size: 15px;
+		font-weight: 600;
+		color: #333;
+		border-bottom: 1px solid #e5e5e5;
+		line-height: 47px;
+	}
+
+	.scrum-panel-title .md-close {
+		width: 30px;
+		right: 0;
+		cursor: pointer;
+	}
+
+	.md-close.close-handler:before {
+		position: relative;
+		right: -6px;
+		font-size: 18px;
+		color: #a6a6a6;
+	}
+
+	.default-filters-wrap {
+		padding: 20px 0;
+	}
+
+	.screen-title {
+		color: #333;
+		padding: 10px 20px;
+	}
+
+	.ico-drop {
+		position: relative;
+		top: 3px;
+	}
+</style>
+
+<div data-ng-controller="bugSearchController">
+	<div class="scrum-panel-body f-14">
+		<div class="scrum-filter-wrap">
+			<div class="scrum-panel-title">视图
+				<div class="pull-right">
+					<a class="md md-close close-handler" ng-click="close()"></a>
+				</div>
+			</div>
+
+			<!-- <!-- 模块树过滤 
+			<div style="max-height: 200px;overflow-y: auto;">
+				<ul id="moduleTree" class="ztree tree-transparent" style="top: 10px;position: relative;padding: 0 5px 10px 15px;"></ul>
+			</div> -->
+
+			<div class="filter-input-wrap m-t-0">
+				<input ng-model="debounce.title" placeholder="根据BUG名称过滤">
+			</div>
+			<div class="default-filters-wrap">
+				<div class="scrum-filter-executor m-t-15">
+					<div class="filter-category radio-row">
+						<label class="radio radio-inline" ng-init="debounce.type=2">
+							<input type="radio" ng-model="debounce.type" ng-value="1" />
+							<i class="input-helper"></i>我的
+						</label>
+
+						<label class="radio radio-inline">
+							<input type="radio" ng-model="debounce.type" ng-value="2" />
+							<i class="input-helper"></i>全部
+						</label>
+					</div>
+				</div>
+				<div class="scrum-filter-executor p-l-20 p-r-20 m-t-0">
+					<c2-dropdown bind-data="debounce.statusList" items="allStatusList" item-name="name" multiple=true max-height="200"
+					 filter="false" clean-button="true">
+						<div class="screen-title p-l-0 p-r-0 text-overflow">
+							<i class="md md-bug-report m-r-5"></i>
+							<span ng-if="debounce.statusList.length==0">状态 </span>
+							<span class="bug-block-search bug-{{s.name | lowercase}}-color" ng-repeat="s in debounce.statusList">{{s.name}}</span>
+							<span class="ico-drop pull-right">
+								<i class="md md-expand-more f-18"></i>
+							</span>
+						</div>
+						<dropdown-item-template>
+							<div>
+								<span class="text bug-block bug-{{item.name}}">{{item.name}}</span>
+								<span class="md md-check check-mark"></span>
+							</div>
+						</dropdown-item-template>
+					</c2-dropdown>
+				</div>
+				<div class="scrum-filter-executor p-l-20 p-r-20 m-t-0">
+					<c2-dropdown bind-data="debounce.assignedToList" class="animate" items="projectUsers" item-name="userRealname"
+					 multiple=true max-height="200" filter="true" filter-pinyin="true" clean-button="true">
+						<div class="screen-title p-l-0 p-r-0 text-overflow">
+							<i class="md md-account-child m-r-5"></i>
+							<span ng-if="debounce.assignedToList.length==0">处理人</span>
+							<span ng-repeat="user in debounce.assignedToList">{{user.userRealname}} </span>
+							<span class="ico-drop pull-right">
+								<i class="md md-expand-more f-18"></i>
+							</span>
+						</div>
+					</c2-dropdown>
+				</div>
+				<!-- <div class="scrum-filter-executor p-l-20 p-r-20 m-t-0">
+					<c2-dropdown tree-options="treeOptions" id="listModTree"
+						tree-nodes="zTreeNodes">
+					<div class="screen-title p-l-0 p-r-0">
+						<i class="md md-extension m-r-5"></i> {{module.name}} &nbsp;
+						<span class="ico-drop pull-right">
+							<i class="md md-expand-more f-18"></i>
+						</span>
+					</div>
+					</c2-dropdown>
+				</div> -->
+				<div class="scrum-filter-executor p-l-20 p-r-20 m-t-0">
+					<c2-dropdown class="animate" bind-data="debounce.labels" items="projectLabels" item-name="name" multiple=true
+					 max-height="200" filter="true" clean-button="true">
+						<div class="screen-title p-l-0 p-r-0 text-overflow">
+							<i class="md md-bookmark-outline m-r-5"></i>
+							<span ng-if="debounce.labels.length==0">选择标签</span>
+							<span class="p-l-5 p-r-5 m-l-5 label-show" ng-style="label.backgroundStyle" ng-repeat="label in debounce.labels">{{label.name}}</span>
+							<span class="ico-drop pull-right">
+								<i class="md md-expand-more f-18"></i>
+							</span>
+						</div>
+						<dropdown-item-template>
+							<div>
+								<span class="label-color" style="background-color: {{item.color}};">&nbsp;</span>
+								<span class="text">{{item.name}}</span>
+								<span class="md md-check check-mark"></span>
+							</div>
+						</dropdown-item-template>
+					</c2-dropdown>
+				</div>
+
+				<div class="scrum-filter-executor p-l-20 p-r-20 m-t-0">
+					<c2-dropdown class="animate" bind-data="debounce.milestone" items="projectMilestones" item-name="title" max-height="200"
+					 filter="true" clean-button="true">
+						<div class="screen-title p-l-0 p-r-0 text-overflow">
+							<i class="md md-extension"></i>
+							<span ng-if="!debounce.milestone.title">未分配里程碑</span>
+							<span class="p-r-5">{{debounce.milestone.title}} </span>
+							<span class="ico-drop pull-right">
+								<i class="md md-expand-more f-18"></i>
+							</span>
+						</div>
+					</c2-dropdown>
+				</div>
+
+				<div class="scrum-filter-executor p-l-20 p-r-20 m-t-0">
+					<c2-dropdown id="bugSearchProjectPlan" tree-options="treePlanOptions" tree-nodes="projectPlans" max-height="300"
+					 clean-button="true" after-clean-event="cleanPlan()">
+						<div class="screen-title p-l-0 p-r-0 text-overflow">
+							<i class="md md-description"></i>
+							<span ng-if="!debounce.projectPlan.name">所属计划</span>
+							<span class="p-r-5">{{debounce.projectPlan.name}} </span>
+							<span class="ico-drop pull-right">
+								<i class="md md-expand-more f-18"></i>
+							</span>
+						</div>
+					</c2-dropdown>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	developmentCenter.registerCtrl('bugSearchController', function ($stateParams, debounce,$timeout, $scope, Modal, $http, Messenger, $ocLazyLoad) {
+		$scope.allStatusList = [
+			{ value: 1, name: "New" },
+			{ value: 2, name: "Open" },
+			{ value: 6, name: "Fixed" },
+			{ value: 3, name: "Reopen" },
+			{ value: 4, name: "FixLater" },
+			{ value: 5, name: "Rejected" },
+			{ value: 0, name: "Closed" }
+		];
+		$scope.projectUsers = [];
+
+		$http.post("ws/getProjectInfo",{projectId: $stateParams.project}).success(function(project){
+			if ($stateParams.project) {
+				$http.get("ProjectPlan/all/project", {
+					params: {
+						projectId: $stateParams.project
+					}
+				}).success(function (data) {
+					var rootNode = {
+						id: 0,
+						name: project.result.name,
+					}
+					data.push(rootNode)
+					$scope.projectPlans = data;
+					$timeout(function(){
+						var ztree = $("#bugSearchProjectPlan").controller("c2-dropdown").getTree();
+						ztree.expandNode(ztree.getNodes()[0], true, false, true);
+					},400);
+				})
+			}
+		})
+
+
+		//项目成员
+		$http.post("ws/getMembers", { projectId: $stateParams.project }).success(function (data) {
+			angular.forEach(data.result, function (v, n) {
+				$scope.projectUsers.push({ userId: v.userDTO.user_id, userRealname: v.userDTO.user_realname, icon: v.userDTO.remark1, userName: v.userDTO.user_name });
+			});
+		});
+		//标签
+		$http.post("e/label/op/selectLabel", { project: $stateParams.project }).success(function (data) {
+			angular.forEach(data.result, function (v, n) {
+				v.backgroundStyle = { "background-color": v.color, "color": getTextColorByBackColor(v.color) };
+			});
+			$scope.projectLabels = angular.copy(data.result);
+		});
+
+		$scope.treeOptions = {
+			data: {
+				simpleData: {
+					idKey: "id",
+					pIdKey: "parent",
+					rootPId: 0,
+					enable: true
+				}
+			},
+			callback: {
+				onClick: function (event, treeId, treeNode, clickFlag) {
+					$scope.debounce.module = { id: treeNode.id };
+					debounceSearchFn($scope.debounce);
+				}
+			}
+		};
+
+		//plan	
+		$scope.treePlanOptions = {
+			view: {
+				selectedMulti: false
+			},
+			data: {
+				simpleData: {
+					enable: true,
+					pIdKey: "parent"
+				}
+			},
+			callback: {
+				onClick: function (event, treeId, treeNode, clickFlag) {
+					$scope.$apply(function () {
+						$scope.projectPlan = treeNode;
+						$scope.debounce.projectPlan = treeNode;
+					});
+					// $("#newModuleDropdown").controller("c2-dropdown").toggle();
+				}
+			}
+		};
+		
+		$scope.cleanPlan = function(){
+			$scope.projectPlan = undefined;
+			$scope.debounce.projectPlan = undefined;
+		}
+
+		$http.post("ws/getModuleListByProject", {
+			projectId: $stateParams.project
+		}).success(function (data) {
+			var modList = [{ id: 0, parent: undefined, name: "所有模块" }];
+			$scope.moduleNodes = modList.concat(data.result);
+		});
+		$scope.$watch("search", function (v, ov) {
+			if (v != ov) {
+				$scope.$emit("bugSearchBo", { search: $scope.search });
+			}
+		}, 700);
+
+		var debounceSearchFn = debounce(function (ds) {
+			//如果清空里程碑，则默认加一个里程碑
+			// if (ds.milestone == null) {
+			// 	ds.milestone = { id: '0', projectId: $stateParams.project }
+			// }
+			angular.extend($scope.search, angular.copy(ds));
+		}, 600);
+
+		$scope.$watch("debounce", function (v) {
+			debounceSearchFn(v);
+		}, true);
+
+		//关闭视图
+		$scope.close = function () {
+			$scope.$parent.$parent.$parent.showView = false;
+			$('aside.chat').removeClass('toggled');
+		}
+
+		//加载ztree
+		$ocLazyLoad.load(['assets/ztree/jquery.ztree.all.min.js', 'assets/ztree/zTreeStyle.css'])
+			.then(function () {
+				$scope.$watch("moduleNodes", function (v) {
+					if (angular.isUndefined(v))
+						return;
+					$.fn.zTree.init($("#moduleTree"), $scope.treeOptions, $scope.moduleNodes);
+				});
+			})
+	});
+</script>

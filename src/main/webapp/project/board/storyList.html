@@ -1,0 +1,523 @@
+<link href="css/task/list.css" rel="stylesheet">
+<link href="css/task/board.css" rel="stylesheet">
+<style>
+	.board-view {
+		background-color: #fff;
+	}
+
+	.board-group {
+		background-color: #fff;
+		overflow-y: hidden;
+	}
+
+	#chat {
+		position: fixed;
+		background: #fff;
+		padding: 20px 0;
+		width: 500px;
+		box-shadow: 0 0 10px rgba(51, 51, 51, 0.38);
+		height: calc(100% - 65px);
+		right: -600px;
+		top: 65px;
+		-webkit-transition: all;
+		-o-transition: all;
+		transition: all;
+		-webkit-transition-duration: 300ms;
+		transition-duration: 300ms;
+		z-index: 5;
+		opacity: 0;
+		filter: alpha(opacity=0);
+	}
+
+	#chat.toggled {
+		opacity: 1;
+		right: 0px;
+	}
+
+	.pull-aside {
+		margin-right: 300px;
+		transition: 300ms;
+	}
+</style>
+<div class="panel-tab-location">
+	<div class="panel-tab">
+		<ul class="panel-tab-list p-0 m-0">
+			<li class="select-vertical-nav"><a href="">需求</a></li>
+			<li data-ng-click="toBoardtask()"><a href="">任务</a></li>
+			<li data-ng-click="toBoardLog()"><a href="">日志</a></li>
+			<li data-ng-click="toBoardbug()"><a href="">缺陷</a></li>
+			<!-- <li data-ui-sref="project.board.plan"><a href="">测试计划</a></li> -->
+		</ul>
+	</div>
+</div>
+
+<div class="board-scrum-stages" ng-model="treeNodes" ng-if="treeNodes.length>0" style="margin: 6px 3px 0px -20px;
+		padding: 0px 0px 0 19px!important;">
+	<div class="scrum-group scrum-height">
+		<div class="scrum-stages-header f-700 dropdown">
+			<div class="stage-name">模块树
+				<span class="task-count" ng-show="treeNodes.length>0"> · {{treeNodes.length}}</span>
+			</div>
+			<a class="function-menu" data-toggle="dropdown" aria-expanded="true">
+				<i class="md md-keyboard-arrow-down f-20"></i>
+			</a>
+			<ul class="dropdown-menu dm-icon pull-right">
+				<li>
+					<a href="" data-ng-click="expandAll(true)">
+						<i class="md md-assignment-returned"></i>展开全部</a>
+				</li>
+				<li>
+					<a href="" data-ng-click="expandAll(false)">
+						<i class="md md-assignment-returned"></i>收缩全部</a>
+				</li>
+				<li>
+					<a href="" data-ui-sref="project.modules">
+						<i class="md md-assignment-returned"></i>模块管理</a>
+				</li>
+			</ul>
+		</div>
+		<ul id="moduleTree" class="ztree tree-transparent group-task-list p-0" style="position: relative;margin: 5px 5px 0 15px;"></ul>
+	</div>
+</div>
+
+<div class="board-scrum-stages" ng-model="stageList" id="board-scrum-special">
+	<div class="scrum-group scrum-height" ng-class="{'disabled':s.stage.name=='模块树','require-panel':s.stage.name=='模块树'}"
+	 ng-repeat="s in stageList" when-scrolled load-more="loadStoryMore(name)">
+		<div class="scrum-stages-header f-700 dropdown">
+			<div class="stage-name">{{s.stage.name}}
+				<span class="task-count" ng-show="s.totalSize>0"> · {{s.totalSize}}</span>
+			</div>
+		</div>
+		<ul class="group-task-list p-0 connectedSortable" style="height: 100%" ui-sortable="sortableStoryOptions" ng-model="s.taskList"
+		 ng-if="s.stage.name!='模块树'">
+			<li class="group-task-card" ng-repeat="task in s.taskList" data-ng-click="storyDetail($event,task)">
+				<div id="task{{task.id}}"></div>
+				<div style="width:100%;">
+					<div class="group-task-content">
+						<div class="task-content-wrapper">
+							<div class="flex-content m-l-5" ng-class="{'c-gray':task.status=='0','text-del':task.status=='0'}">
+								<span>
+									<i ng-if="task.status=='3'" class="md md-brightness-1 task-ensure"></i>{{task.title}}</span>
+							</div>
+							<span class="flex-img-head group-user-head m-l-5">
+								<img class="lv-img-sm" title="负责人:{{task.assignedTo.userRealname}}" ng-src="{{task.assignedTo.userIcon}}">
+							</span>
+						</div>
+					</div>
+					<div>
+						<ul class="lv-attrs" style="margin-left: 0px;">
+							<li ng-if="task.status!='1'" ng-class="{'task-timeout':task.status=='2'}">
+								<span ng-if="!task.endDate" title="计划完成时间">
+									<i class="md md-today"></i>未分配</span>
+								<span ng-if="task.endDate" title="计划完成时间">
+									<i class="md md-today"></i>{{task.endDate | date:"yyyy-MM-dd"}}</span>
+							</li>
+							<li ng-if="task.status=='1'">
+								<span title="创建时间">
+									<i class="md md-today"></i>{{task.openeddate | date:"yyyy-MM-dd"}} </span>
+							</li>
+							<li>
+								<span title="提出人">
+									<i class="md md-person"></i>{{task.proposer.userRealname}}</span>
+							</li>
+							<li>
+								<span title="优先级">
+									<i class="md md-sort"></i>
+									<span ng-if="task.pri==1">高</span>
+									<span ng-if="task.pri==2">中</span>
+									<span ng-if="task.pri==3">低</span>
+								</span>
+							</li>
+							<!-- <li>
+									<i class="md md-format-list-bulleted" title="任务"></i>
+									<span style="font-weight: normal;color: green;">{{task.doneNum}}</span>
+									<span style="margin:0 2px;">/</span>{{task.totalNum}}</li> -->
+							<li>
+								<i class="md md-track-changes" title="完成度"></i>
+								<span ng-if="task.completes==0">0%</span>
+								<span ng-if="task.completes==1">25%</span>
+								<span ng-if="task.completes==2">50%</span>
+								<span ng-if="task.completes==3">75%</span>
+								<span ng-if="task.completes==4">100%</span>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+			</li>
+
+		</ul>
+		<div ng-show="{{arcStatus==1&&s.stage.name=='已打开'}}" class="group-task-add"> <a href="" ng-click="openNewStory()"><i
+				 class="md md-add m-r-5 f-20"></i> 新建需求</a></div>
+	</div>
+</div>
+
+<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;top:113px;width:725px">
+	<ui-view onload="stateOnload()"></ui-view>
+</aside>
+
+<aside id="chat" class="chat" data-ng-include="" src="'project/board/storySearch.html'" data-ng-class="{ 'toggled': showView === true }"
+ style="background-color: #fafafa;width: 300px">
+</aside>
+
+<script>
+	angular.module("project").registerCtrl('boardStoryListController',
+		function ($scope, Modal, $http, $stateParams, $timeout, debounce, $state, $rootScope, $ocLazyLoad, socketio, Messenger, $templateCache, $compile, $q) {
+			$scope.$parent.showView = false;
+			$scope.$parent.$parent.showView = false;
+			//项目归档状态
+			$http.post("ws/getProjectInfo", { projectId: $stateParams.project }).success(function (data) {
+				$scope.arcStatus = data.result.arcStatus;
+			});
+
+			//需求详情
+			$scope.storyDetail = function (e, task) {
+				$state.go("project.boardstory.storyComment", { storyid: task.id });
+			}
+
+			$scope.toBoardtask = function () {
+				$state.go("project.boardtask", { moduleId: $stateParams.moduleId });
+			}
+
+			$scope.toBoardbug = function () {
+				$state.go("project.boardbug", { moduleId: $stateParams.moduleId });
+			}
+
+			$scope.toBoardLog = function () {
+				$state.go("project.boardTeamLog", { moduleId: $stateParams.moduleId });
+			}
+
+			//ztree setting
+			$scope.treeOptions = {
+				data: {
+					simpleData: {
+						enable: true,
+						idKey: "id",
+						pIdKey: "parent",
+						rootPId: 0
+					}
+				},
+				callback: {
+					onClick: function zTreeOnClick(event, treeId, treeNode) {//点击模块过滤需求
+						$scope.search.module = { id: treeNode.id };
+						$scope.pageIndex = $scope.dkPage = $scope.qrPage = $scope.yqPage = $scope.gbPage = 1;//分页起始页重置为1
+						getStageList($scope.search);
+					}
+				}
+
+			};
+
+			$scope.pageIndex = $scope.dkPage = $scope.qrPage = $scope.yqPage = $scope.gbPage = 1;
+
+			$scope.search = { week: {}, project: { id: $stateParams.project }, milestone: { id: 0 }, module: { id: angular.copy($stateParams.moduleId) }, assignedToList: [], labels: [], page: $scope.pageIndex, rows: 10 };
+			// getStageList($scope.search);
+			// getModuleByProjectId();
+			//加载ztree
+			$ocLazyLoad.load(['assets/ztree/jquery.ztree.all.min.js', 'assets/ztree/zTreeStyle.css'])
+				.then(function () {
+					$scope.$watch("treeNodes", function (v) {
+						if (angular.isUndefined(v))
+							return;
+						$scope.moduleTree = $.fn.zTree.init($("#moduleTree"), $scope.treeOptions, $scope.treeNodes);
+						$scope.moduleTree.expandNode($scope.moduleTree.getNodeByParam("id", '0', null), true, false, true);
+						$scope.moduleTree.selectNode($scope.moduleTree.getNodeByParam("id", $scope.search.module.id));
+					});
+				})
+			$q.all([$http.post("ws/getStoryStageList", { projectId: $stateParams.project, search: $scope.search }), $http.post("ws/getModuleByprojectId", { projectId: $stateParams.project })]).then(function (data) {
+				setTreeNodes(data[1].data);
+				$scope.stageList = data[0].data.result;
+				$scope.originalOrderList = angular.copy($scope.stageList);
+			})
+
+			function getModuleByProjectId() {
+				$http.post("ws/getModuleByprojectId", { projectId: $stateParams.project }).success(function (data) {
+					var tempModuleList = data;
+					var modList = [{ id: 0, name: "所有模块", parent: undefined, projectId: {} }];
+					if (tempModuleList.length > 0) {
+						for (var i = 0; i < tempModuleList.length; i++) {
+							/* if(tempModuleList[i].id==$stateParams.moduleId){
+								$('#mileName')[0].innerHTML=tempModuleList[i].name;
+							} */
+							modList.push(tempModuleList[i]);
+						}
+					}
+					$scope.treeNodes = modList
+				})
+			}
+
+			//全部展开
+			$scope.expandAll = function (flag) {
+				$scope.moduleTree.expandAll(flag);
+			}
+
+			var setTreeNodes = function (data) {
+				var tempModuleList = data;
+				var modList = [{ id: 0, name: "所有模块", parent: undefined, projectId: {} }];
+				if (tempModuleList.length > 0) {
+					for (var i = 0; i < tempModuleList.length; i++) {
+						/* if(tempModuleList[i].id==$stateParams.moduleId){
+							$('#mileName')[0].innerHTML=tempModuleList[i].name;
+						} */
+						modList.push(tempModuleList[i]);
+					}
+				}
+				$scope.treeNodes = modList
+			}
+			//查询需求所有阶段信息
+			function getStageList(search) {
+				$http.post("ws/getStoryStageList", { projectId: $stateParams.project, search: search }).success(function (data) {
+					$scope.stageList = data.result;
+					$scope.originalOrderList = angular.copy($scope.stageList);
+				});
+			}
+
+			//加载更多
+			$scope.loadStoryMore = debounce(function (name) {
+				if (name.contains("模块树")) return;//忽略模块树看板
+				var totalSize = 0, status, index, page;//获取需加载的需求状态和总数
+				if (name.contains("已打开")) {
+					status = 1;
+					index = 0;
+					page = ++$scope.dkPage;
+				} else if (name.contains("已确认")) {
+					status = 3;
+					index = 1;
+					page = ++$scope.qrPage;
+				} else if (name.contains("已逾期")) {
+					status = 2;
+					index = 2;
+					page = ++$scope.yqPage;
+				} else {
+					status = 0;
+					index = 3;
+					page = ++$scope.gbPage;
+				}
+				totalSize = $scope.stageList[index].totalSize;
+
+				var search = angular.copy($scope.search);
+				search.page = page;
+				if (page >= (totalSize / 10 + 1)) return;//超出总数不请求数据
+
+				$http.post("ws/getMoreStoryStageList", { projectId: $stateParams.project, status: status, search: search }).success(function (data) {
+					$scope.stageList[index].taskList = $scope.stageList[index].taskList.concat(data.result);
+				});
+			}, 300)
+
+			$scope.$on("storySearchBo", function (event, msg) {
+				$scope.search = msg.search;
+				$scope.pageIndex = $scope.dkPage = $scope.qrPage = $scope.yqPage = $scope.gbPage = 1;
+				getStageList($scope.search);
+			});
+
+			$scope.$watch('showView', function (v) {
+				if (v) {
+					$("#board-scrum-special").addClass("pull-aside")
+				} else {
+					$("#board-scrum-special").removeClass("pull-aside")
+				}
+			})
+
+			/* $("#chart").bind('DOMNodeInserted', function (e) {
+				
+				alert('element now contains: ' + $(e.target).html());
+			});
+
+			$("#chart").bind('DOMAttrModified', function (e) {
+				
+				alert('element now contains: ' + $(e.target).html());
+			}); */
+			//新建需求
+			$scope.openNewStory = function () {
+				var taskModule;
+				$scope.search.module.name = $scope.treeNodes.find(t => t.id == $scope.search.module.id).name;
+				if ($scope.search.module.name != '所有模块') {
+					taskModule = $scope.search.module;
+				} else {
+					taskModule = null;
+				}
+				Modal.open("project/addStory.html", { module: taskModule }, { title: '', animation: true, size: "middle" })
+			};
+
+			$scope.$on("createNewStory", function (event, data) {
+				if (data.project && data.project.id == $stateParams.project) {
+					//if ((data.module && data.module.id == $scope.search.module.id) ||
+					//	(!data.module && $scope.search.module.id == 0)) {
+						data.proposer.userIcon = data.proposer.remark1;
+						data.proposer.userId = data.proposer.user_id;
+						data.proposer.userName = data.proposer.user_name;
+						data.proposer.userRealname = data.proposer.user_realname;
+						data.assignedTo.userIcon = data.assignedTo.remark1;
+						data.assignedTo.userId = data.assignedTo.user_id;
+						data.assignedTo.userName = data.assignedTo.user_name;
+						data.assignedTo.userRealname = data.assignedTo.user_realname;
+						$scope.stageList[0].taskList.unshift(data);
+						$scope.stageList[0].totalSize++;
+						$scope.originalOrderList = angular.copy($scope.stageList);
+						$http.post("ws/orderStageStory", { stage: $scope.stageList[0] });
+					//}
+				}
+			});
+
+			$scope.storyUpdate = function (data) {
+				for (var i = 0; i < $scope.stageList.length; i++) {
+					for (var j = 0; j < $scope.stageList[i].taskList.length; j++) {
+						if ($scope.stageList[i].taskList[j].id == data.story.id) {
+							if (data.type == 'del') {
+								$scope.stageList[i].taskList.splice(j, 1);
+								$scope.stageList[i].totalSize--;
+							}
+							if (data.type == 'close') {
+								$scope.stageList[i].taskList.splice(j, 1);
+								$scope.stageList[i].totalSize--;
+								$scope.stageList[3].taskList.unshift(data.story);
+								$scope.stageList[3].totalSize++;
+								$http.post("ws/orderStageStory", { stage: $scope.stageList[3] });
+							}
+							if (data.type == 'confirm') {
+								data.story.assignedTo = data.story.assigTo;
+								data.story.assignedTo.userIcon = data.story.assignedTo.icon;
+								$scope.stageList[i].taskList.splice(j, 1);
+								$scope.stageList[i].totalSize--;
+								$scope.stageList[1].taskList.unshift(data.story);
+								$scope.stageList[1].totalSize++;
+								$http.post("ws/orderStageStory", { stage: $scope.stageList[1] });
+							}
+							if (data.type == 'update') {
+								data.story.assignedTo = data.story.assigTo;
+								data.story.assignedTo.userIcon = data.story.assigTo.icon;
+								delete data.story.assigTo;
+								$scope.stageList[i].taskList[j] = data.story;
+							}
+							break;
+						}
+					}
+					$scope.originalOrderList = angular.copy($scope.stageList);
+				}
+			}
+
+			$scope.$on("storyUpdateBo", function (event, data) {
+				$scope.storyUpdate(data);
+			})
+
+			//确认需求窗口
+			$scope.openStoryComment = function (story) {
+				Modal.open("project/story/detail.html", { params: { projectId: $stateParams.project, storyId: story.id } }, {
+					size: 'big', onClose: function (data) {
+						$scope.storyUpdate(data);
+					}
+				});
+			}
+
+			//需求排序
+			$scope.sortableStoryOptions = {
+				revert: 200,
+				items: ".group-task-card",
+				cursor: "-webkit-grabbing",
+				cancel: "a,input,[ng-click]",
+				connectWith: ".connectedSortable",
+				placeholder: "task-ph",
+				update: function (event, ui) {
+					$timeout(function () {
+						for (var i = 0; i < $scope.stageList.length; i++) {
+							var taskList = $scope.stageList[i].taskList;
+							if (taskList.length == $scope.originalOrderList[i].taskList.length) {
+								for (var j = 0; j < taskList.length; j++) {
+									if (taskList[j].id != $scope.originalOrderList[i].taskList[j].id) {
+										$scope.originalOrderList = angular.copy($scope.stageList);
+										$http.post("ws/orderStageStory", { stage: $scope.stageList[i] }).success(function () {
+											Messenger.success("操作成功！");
+										});
+									}
+								}
+							}
+						}
+					})
+
+				},
+				helper: 'clone',
+				beforeStop: function (e, ui) {
+					var ss = $('.task-ph').parent().prev().find(".stage-name")[0].innerText;
+					if (ss.contains("已打开")) {
+						if (ui.item.sortable.model.status != 1) {
+							Messenger.error("无效操作！");
+							ui.item.sortable.cancel();//取消排序
+						}
+					}
+					if (ss.contains("已确认")) {
+						if (ui.item.sortable.model.status == 1) {//创建者和负责人可确认需求
+							ui.item.sortable.cancel();//取消排序
+							if (ui.item.sortable.model.assignedTo.userName == $rootScope.subject.userName) {
+								$scope.openStoryComment(ui.item.sortable.model);
+							} else {
+								Messenger.error("您无确认需求权限，请联系需求负责人！");
+							}
+						} else if (ui.item.sortable.model.status != 3) {
+							Messenger.error("无效操作！");
+							ui.item.sortable.cancel();//取消排序
+						}
+					}
+					if (ss.contains("已逾期")) {
+						if (ui.item.sortable.model.status == 3) {//确认需求修改为逾期状态
+							if (ui.item.sortable.model.openedby == $rootScope.subject.userName || ui.item.sortable.model.assignedTo.userName == $rootScope.subject.userName) {
+								$scope.updateStoryStatus(ui.item.sortable.model, '2');
+							}
+						} else if (ui.item.sortable.model.status != 2) {
+							Messenger.error("无效操作！");
+							ui.item.sortable.cancel();//取消排序
+						}
+					}
+					if (ss.contains("已关闭")) {
+						if (ui.item.sortable.model.status == 2 || ui.item.sortable.model.status == 3) {//提出者或创建者关闭需求
+							if (ui.item.sortable.model.openedby == $rootScope.subject.userName || ui.item.sortable.model.proposer.userName == $rootScope.subject.userName) {
+								$scope.updateStoryStatus(ui.item.sortable.model, '0');
+							} else {
+								Messenger.error("您无关闭需求权限，请联系需求提出人或创建者！");
+								ui.item.sortable.cancel();//取消排序
+							}
+						} else if (ui.item.sortable.model.status != 0) {
+							Messenger.error("无效操作！");
+							ui.item.sortable.cancel();//取消排序
+						}
+					}
+				}
+			};
+
+			//修改需求状态
+			$scope.updateStoryStatus = function (story, status) {
+				var stage;
+				if (status == '0') {//关闭状态
+					story.status = 0;
+					stage = $scope.stageList[3];
+				}
+				if (status == '2') {//逾期状态
+					story.status = 2;
+					stage = $scope.stageList[2];
+				}
+				$http.post("ws/updateStoryStatus", {
+					"storyId": story.id,
+					"status": status,
+					"story": story
+				}).success(function () {
+					$http.post("ws/orderStageStory", { stage: stage }).success(function () {
+						Messenger.success("操作成功！");
+					});
+				});
+			}
+
+			$(document).bind("click", function (e) {
+				if ($(e.target).closest("#chat").length == 0) {
+					if ($('aside.chat').hasClass('toggled')) {
+						$('#board-scrum-special').removeClass('pull-aside')
+						// $scope.$apply(function () {
+						// 	$scope.$parent.showView = false;
+						// 	$scope.$parent.$parent.showView = false;
+						// });
+						$('aside.chat').removeClass('toggled');
+					}
+				} else {
+					$('#board-scrum-special').addClass('pull-aside')
+					return;
+				}
+			});
+		});
+</script>

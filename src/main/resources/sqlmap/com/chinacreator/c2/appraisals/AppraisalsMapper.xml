@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.appraisals.AppraisalsMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_appraisals.id_ ,
+		  c2_appraisals.user_id ,
+		  c2_appraisals.user_realname ,
+		  c2_appraisals.year ,
+		  c2_appraisals.month ,
+		  c2_appraisals.score ,
+		  c2_appraisals.level ,
+		  c2_appraisals.assessor_id ,
+		  c2_appraisals.assessor_realname ,
+		  c2_appraisals.reviewer_id ,
+		  c2_appraisals.reviewer_realname ,
+		  c2_appraisals.version ,
+		  c2_appraisals.status ,
+		  c2_appraisals.detail ,
+		  c2_appraisals.user_name ,
+		  c2_appraisals.assessor_name ,
+		  c2_appraisals.reviewer_name ,
+		  c2_appraisals.date 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_appraisals.id_ = #{id}</if>
+	    <if test="userId != null">and c2_appraisals.user_id = #{userId}</if>
+	    <if test="userRealname != null">and c2_appraisals.user_realname = #{userRealname}</if>
+	    <if test="year != null">and c2_appraisals.year = #{year}</if>
+	    <if test="month != null">and c2_appraisals.month = #{month}</if>
+	    <if test="score != null">and c2_appraisals.score = #{score}</if>
+	    <if test="level != null">and c2_appraisals.level = #{level}</if>
+	    <if test="assessorId != null">and c2_appraisals.assessor_id = #{assessorId}</if>
+	    <if test="assessorRealname != null">and c2_appraisals.assessor_realname = #{assessorRealname}</if>
+	    <if test="reviewerId != null">and c2_appraisals.reviewer_id = #{reviewerId}</if>
+	    <if test="reviewerRealname != null">and c2_appraisals.reviewer_realname = #{reviewerRealname}</if>
+	    <if test="version != null">and c2_appraisals.version = #{version}</if>
+	    <if test="status != null">and c2_appraisals.status = #{status}</if>
+	    <if test="detail != null">and c2_appraisals.detail = #{detail}</if>
+	    <if test="userName != null">and c2_appraisals.user_name = #{userName}</if>
+	    <if test="assessorName != null">and c2_appraisals.assessor_name = #{assessorName}</if>
+	    <if test="reviewerName != null">and c2_appraisals.reviewer_name = #{reviewerName}</if>
+	    <if test="date != null">and c2_appraisals.date = #{date}</if>
+</sql>
+
+
+<!-- ElementID:AppraisalsResult,Generated=true -->
+<resultMap id="AppraisalsResult" type="com.chinacreator.c2.appraisals.Appraisals">
+	<id property="id" column="id_"/>
+	<result property="userId" column="user_id"/>
+	<result property="userRealname" column="user_realname"/>
+	<result property="year" column="year"/>
+	<result property="month" column="month"/>
+	<result property="score" column="score"/>
+	<result property="level" column="level"/>
+	<result property="assessorId" column="assessor_id"/>
+	<result property="assessorRealname" column="assessor_realname"/>
+	<result property="reviewerId" column="reviewer_id"/>
+	<result property="reviewerRealname" column="reviewer_realname"/>
+	<result property="version" column="version"/>
+	<result property="status" column="status"/>
+	<result property="detail" column="detail"/>
+	<result property="userName" column="user_name"/>
+	<result property="assessorName" column="assessor_name"/>
+	<result property="reviewerName" column="reviewer_name"/>
+	<result property="date" column="date"/>
+</resultMap>
+
+
+
+<!-- ElementName:cache,Generated=true -->
+<cache type="C2_Default_Dao_Cache"/>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.appraisals.Appraisals">
+	insert into c2_appraisals(
+	         <if test="id != null">id_</if>
+	         <if test="userId != null">,user_id</if>
+	         <if test="userRealname != null">,user_realname</if>
+	         <if test="year != null">,year</if>
+	         <if test="month != null">,month</if>
+	         <if test="score != null">,score</if>
+	         <if test="level != null">,level</if>
+	         <if test="assessorId != null">,assessor_id</if>
+	         <if test="assessorRealname != null">,assessor_realname</if>
+	         <if test="reviewerId != null">,reviewer_id</if>
+	         <if test="reviewerRealname != null">,reviewer_realname</if>
+	         <if test="version != null">,version</if>
+	         <if test="status != null">,status</if>
+	         <if test="detail != null">,detail</if>
+	         <if test="userName != null">,user_name</if>
+	         <if test="assessorName != null">,assessor_name</if>
+	         <if test="reviewerName != null">,reviewer_name</if>
+	         <if test="date != null">,date</if>
+	 	 	 )
+	 values (
+	         <if test="id != null">#{id,jdbcType=VARCHAR}</if>
+	         <if test="userId != null">,#{userId,jdbcType=VARCHAR}</if>
+	         <if test="userRealname != null">,#{userRealname,jdbcType=VARCHAR}</if>
+	         <if test="year != null">,#{year,jdbcType=NUMERIC}</if>
+	         <if test="month != null">,#{month,jdbcType=NUMERIC}</if>
+	         <if test="score != null">,#{score,jdbcType=NUMERIC}</if>
+	         <if test="level != null">,#{level,jdbcType=VARCHAR}</if>
+	         <if test="assessorId != null">,#{assessorId,jdbcType=VARCHAR}</if>
+	         <if test="assessorRealname != null">,#{assessorRealname,jdbcType=VARCHAR}</if>
+	         <if test="reviewerId != null">,#{reviewerId,jdbcType=VARCHAR}</if>
+	         <if test="reviewerRealname != null">,#{reviewerRealname,jdbcType=VARCHAR}</if>
+	         <if test="version != null">,#{version,jdbcType=VARCHAR}</if>
+	         <if test="status != null">,#{status,jdbcType=VARCHAR}</if>
+	         <if test="detail != null">,#{detail,jdbcType=VARCHAR}</if>
+	         <if test="userName != null">,#{userName,jdbcType=VARCHAR}</if>
+	         <if test="assessorName != null">,#{assessorName,jdbcType=VARCHAR}</if>
+	         <if test="reviewerName != null">,#{reviewerName,jdbcType=VARCHAR}</if>
+	         <if test="date != null">,#{date,jdbcType=DATE}</if>
+	 	 	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.appraisals.Appraisals" resultType="int">
+	select count(*) from c2_appraisals 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.appraisals.Appraisals">
+	update c2_appraisals
+<set>
+	<if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
+	<if test="userRealname != null">user_realname=#{userRealname,jdbcType=VARCHAR},</if>
+	<if test="year != null">year=#{year,jdbcType=NUMERIC},</if>
+	<if test="month != null">month=#{month,jdbcType=NUMERIC},</if>
+	<if test="score != null">score=#{score,jdbcType=NUMERIC},</if>
+	<if test="level != null">level=#{level,jdbcType=VARCHAR},</if>
+	<if test="assessorId != null">assessor_id=#{assessorId,jdbcType=VARCHAR},</if>
+	<if test="assessorRealname != null">assessor_realname=#{assessorRealname,jdbcType=VARCHAR},</if>
+	<if test="reviewerId != null">reviewer_id=#{reviewerId,jdbcType=VARCHAR},</if>
+	<if test="reviewerRealname != null">reviewer_realname=#{reviewerRealname,jdbcType=VARCHAR},</if>
+	<if test="version != null">version=#{version,jdbcType=VARCHAR},</if>
+	<if test="status != null">status=#{status,jdbcType=VARCHAR},</if>
+	<if test="detail != null">detail=#{detail,jdbcType=VARCHAR},</if>
+	<if test="userName != null">user_name=#{userName,jdbcType=VARCHAR},</if>
+	<if test="assessorName != null">assessor_name=#{assessorName,jdbcType=VARCHAR},</if>
+	<if test="reviewerName != null">reviewer_name=#{reviewerName,jdbcType=VARCHAR},</if>
+	<if test="date != null">date=#{date,jdbcType=DATE}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id_ = #{id}</when>
+        <otherwise>and id_ = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_appraisals
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="userId==null">user_id = null,</if>
+		    <if test="userRealname==null">user_realname = null,</if>
+		    <if test="year==null">year = null,</if>
+		    <if test="month==null">month = null,</if>
+		    <if test="score==null">score = null,</if>
+		    <if test="level==null">level = null,</if>
+		    <if test="assessorId==null">assessor_id = null,</if>
+		    <if test="assessorRealname==null">assessor_realname = null,</if>
+		    <if test="reviewerId==null">reviewer_id = null,</if>
+		    <if test="reviewerRealname==null">reviewer_realname = null,</if>
+		    <if test="version==null">version = null,</if>
+		    <if test="status==null">status = null,</if>
+		    <if test="detail==null">detail = null,</if>
+		    <if test="userName==null">user_name = null,</if>
+		    <if test="assessorName==null">assessor_name = null,</if>
+		    <if test="reviewerName==null">reviewer_name = null,</if>
+		    <if test="date==null">date = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id_ = #{id}</when>
+			<otherwise>and id_ = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.appraisals.Appraisals">
+    delete from c2_appraisals where 1=1 and id_ = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.appraisals.Appraisals" resultMap="AppraisalsResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_appraisals 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list">
+	insert into c2_appraisals (id_,user_id,user_realname,year,month,score,level,assessor_id,assessor_realname,reviewer_id,reviewer_realname,version,status,detail,user_name,assessor_name,reviewer_name,date) 
+<foreach collection="list" item="entity" index="index" separator="union all">
+		select 
+		#{entity.id,jdbcType = VARCHAR},
+				#{entity.userId,jdbcType = VARCHAR},
+				#{entity.userRealname,jdbcType = VARCHAR},
+				#{entity.year,jdbcType = NUMERIC},
+				#{entity.month,jdbcType = NUMERIC},
+				#{entity.score,jdbcType = NUMERIC},
+				#{entity.level,jdbcType = VARCHAR},
+				#{entity.assessorId,jdbcType = VARCHAR},
+				#{entity.assessorRealname,jdbcType = VARCHAR},
+				#{entity.reviewerId,jdbcType = VARCHAR},
+				#{entity.reviewerRealname,jdbcType = VARCHAR},
+				#{entity.version,jdbcType = VARCHAR},
+				#{entity.status,jdbcType = VARCHAR},
+				#{entity.detail,jdbcType = VARCHAR},
+				#{entity.userName,jdbcType = VARCHAR},
+				#{entity.assessorName,jdbcType = VARCHAR},
+				#{entity.reviewerName,jdbcType = VARCHAR},
+				#{entity.date,jdbcType = DATE}
+		from dual
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_appraisals where id_ in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	<choose>
+		<when test="@com.chinacreator.c2.dao.util.EntityBeanUtil@isEntityObj(entity)">#{entity.id}</when>
+		<otherwise>#{entity}</otherwise>
+	</choose>
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="AppraisalsResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_appraisals 
+</select>
+
+<!-- ElementID:selectUnion,Generated=true -->
+<select id="selectUnion" parameterType="list" resultMap="AppraisalsResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_appraisals 
+	 INNER JOIN
+<foreach collection="list" item="entity" separator="UNION" open="(" close=")">
+		SELECT 
+			 id_
+		FROM c2_appraisals 
+			<where>
+	        <if test="entity.id != null">and c2_appraisals.id_ = #{entity.id}</if>
+	        <if test="entity.userId != null">and c2_appraisals.user_id = #{entity.userId}</if>
+	        <if test="entity.userRealname != null">and c2_appraisals.user_realname = #{entity.userRealname}</if>
+	        <if test="entity.year != null">and c2_appraisals.year = #{entity.year}</if>
+	        <if test="entity.month != null">and c2_appraisals.month = #{entity.month}</if>
+	        <if test="entity.score != null">and c2_appraisals.score = #{entity.score}</if>
+	        <if test="entity.level != null">and c2_appraisals.level = #{entity.level}</if>
+	        <if test="entity.assessorId != null">and c2_appraisals.assessor_id = #{entity.assessorId}</if>
+	        <if test="entity.assessorRealname != null">and c2_appraisals.assessor_realname = #{entity.assessorRealname}</if>
+	        <if test="entity.reviewerId != null">and c2_appraisals.reviewer_id = #{entity.reviewerId}</if>
+	        <if test="entity.reviewerRealname != null">and c2_appraisals.reviewer_realname = #{entity.reviewerRealname}</if>
+	        <if test="entity.version != null">and c2_appraisals.version = #{entity.version}</if>
+	        <if test="entity.status != null">and c2_appraisals.status = #{entity.status}</if>
+	        <if test="entity.detail != null">and c2_appraisals.detail = #{entity.detail}</if>
+	        <if test="entity.userName != null">and c2_appraisals.user_name = #{entity.userName}</if>
+	        <if test="entity.assessorName != null">and c2_appraisals.assessor_name = #{entity.assessorName}</if>
+	        <if test="entity.reviewerName != null">and c2_appraisals.reviewer_name = #{entity.reviewerName}</if>
+	        <if test="entity.date != null">and c2_appraisals.date = #{entity.date}</if>
+			</where>
+</foreach>
+	c2_temp_table ON c2_appraisals.id_ = c2_temp_table.id_
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.String" resultMap="AppraisalsResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_appraisals 
+		 where c2_appraisals.id_ = #{id,jdbcType=VARCHAR}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.appraisals.Appraisals" resultMap="AppraisalsResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_appraisals 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="AppraisalsResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_appraisals 
+	where c2_appraisals.id_ in (
+		select distinct id_ from c2_appraisals inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id_
+			from c2_appraisals 
+			<where>
+	        <if test="entity.id != null">and c2_appraisals.id_ = #{entity.id}</if>
+	        <if test="entity.userId != null">and c2_appraisals.user_id = #{entity.userId}</if>
+	        <if test="entity.userRealname != null">and c2_appraisals.user_realname = #{entity.userRealname}</if>
+	        <if test="entity.year != null">and c2_appraisals.year = #{entity.year}</if>
+	        <if test="entity.month != null">and c2_appraisals.month = #{entity.month}</if>
+	        <if test="entity.score != null">and c2_appraisals.score = #{entity.score}</if>
+	        <if test="entity.level != null">and c2_appraisals.level = #{entity.level}</if>
+	        <if test="entity.assessorId != null">and c2_appraisals.assessor_id = #{entity.assessorId}</if>
+	        <if test="entity.assessorRealname != null">and c2_appraisals.assessor_realname = #{entity.assessorRealname}</if>
+	        <if test="entity.reviewerId != null">and c2_appraisals.reviewer_id = #{entity.reviewerId}</if>
+	        <if test="entity.reviewerRealname != null">and c2_appraisals.reviewer_realname = #{entity.reviewerRealname}</if>
+	        <if test="entity.version != null">and c2_appraisals.version = #{entity.version}</if>
+	        <if test="entity.status != null">and c2_appraisals.status = #{entity.status}</if>
+	        <if test="entity.detail != null">and c2_appraisals.detail = #{entity.detail}</if>
+	        <if test="entity.userName != null">and c2_appraisals.user_name = #{entity.userName}</if>
+	        <if test="entity.assessorName != null">and c2_appraisals.assessor_name = #{entity.assessorName}</if>
+	        <if test="entity.reviewerName != null">and c2_appraisals.reviewer_name = #{entity.reviewerName}</if>
+	        <if test="entity.date != null">and c2_appraisals.date = #{entity.date}</if>
+			</where>
+		) ${entity.tableAlias} using (id_)
+</foreach>
+)
+</select>
+</mapper>

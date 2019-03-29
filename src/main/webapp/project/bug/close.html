@@ -1,0 +1,112 @@
+						<div class="t-view" ng-controller="closeBugCtrl" style="margin-bottom: 5px;">
+							<div class="tv-header media">请填写关闭信息</div>
+							<div class="tv-body" style="padding-top: 15px; padding-bottom: 0px; padding-left: 18px; background-color: #fff">
+
+								<div class="fg-line" ng-class="{'has-error':!newVersion&&formCheck}" style="margin-bottom: 20px;">
+									<div id="newVersion_chosen-container"
+										class="c2-chosen-container c2-chosen-container-multi "
+										style="width: 100%;" title="">
+										<ul class="c2-chosen-choices form-control">
+											<li class="c2-search-field" style="width: 100%;"><input
+												type="text" id="newVersion" placeholder="修复版本"
+												data-ng-model="newVersion" class="c2-default form-control"
+												autocomplete="off" style="width: 100%;color: #000;"></li>
+										</ul>
+										<div class="c2-chosen-drop">
+											<ul class="c2-chosen-results">
+												<li ng-repeat="v in projectVersion" class="c2-active-result"
+													data-ng-click="chosenItemClick(v)" style="padding-left: 10px;">{{v.bug_version}}</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+	
+								<textarea ng-model="closeDesc" c2-markdown-editor markdown-auto-focus
+									class="form-control" rows="5" rows="5" height="200"
+									placeholder="关闭描述"></textarea>
+	
+								<button style="margin-top: -40px;"
+									class="btn btn-primary btn-sm" type="button"
+									data-ng-click="closeBug();">关闭</button>
+						
+							</div>
+
+						</div>
+<script type="text/javascript">
+	angular.module("project").registerCtrl(
+			'closeBugCtrl',
+			function($scope,$rootScope,$http, $state, $stateParams, $timeout, Messenger,
+					Modal) {
+				
+				var initCloseBug = function() {
+					
+					$("#newVersion").focusin(function() {
+						$("#newVersion_chosen-container").addClass("c2-chosen-with-drop c2-chosen-container-active");
+					});
+					
+					$("#newVersion").focusout(function() {
+						$timeout(function(){
+							$("#newVersion_chosen-container").removeClass("c2-chosen-with-drop c2-chosen-container-active");
+						},100);
+					});
+					
+					loadProjectVersion();
+					
+			    	$scope.$watch("newVersion",function(v){
+			    		if(undefined==v) return;
+			    		$scope.projectVersion=[];
+						for(var i=0;i<$scope.chosenList.length;i++){
+							if($scope.chosenList[i].bug_version.indexOf(v)!=-1){
+								$scope.projectVersion.push($scope.chosenList[i]);
+							}
+						}
+			    	},true);
+				}
+				
+				//获取项目下历史版本
+				var loadProjectVersion=function(){
+			    	$http.post("ws/bug/getProjectHistoryVersion",{projectId:$stateParams.project}).success(function(data){
+			    		$scope.chosenList=[];
+			    		if(data){
+			    			$scope.chosenList=data.result;
+			    			$scope.projectVersion=angular.copy($scope.chosenList);
+			    		}
+			    	});
+				}
+				
+				$scope.closeBug=function(){
+					$scope.formCheck=true;
+					if (!$scope.newVersion){
+						
+						return;
+					}
+
+					$http.post("ws/bug/changeBugStatus", {
+						bugId : $scope.bug.id,
+						status:0,
+						comment : $scope.closeDesc,
+						bugVersion:$scope.newVersion
+					}).success(function(data) {
+						$scope.loadBugAndComments();
+						$scope.formCheck=false;
+						$scope.bug.status=0;
+						$scope.bugTabActive(-1);
+						
+						$scope.$emit("flushBugList");
+						
+						//bug关闭，bug关联的所有任务也要关闭
+						$http.post("ws/bugTaskClosed",{bugId:bug.id});
+						
+					});
+				}
+				
+				
+				$scope.chosenItemClick=function(item){
+					$scope.newVersion=item.bug_version;
+				}
+				
+				initCloseBug();
+				
+				
+			});
+</script>

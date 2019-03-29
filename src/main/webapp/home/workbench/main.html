@@ -1,0 +1,168 @@
+<link href="assets/fonts/iconfont.css" rel="stylesheet">
+<style>
+.container-layout {
+    margin-right: auto;
+    margin-left: auto;
+}
+.board-view {
+    position: fixed;
+    top: 65px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    overflow: hidden;
+    transition: all 218ms ease;
+    box-shadow: none !important;
+    margin-bottom: 0;
+}
+@media (max-width: 1200px){
+.board-view{ left:0;}
+}
+.group-nav {
+    width: 100%;
+    position: fixed;
+    display: flex;
+    background: #eee;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 26px;
+    border: 1px solid #d7d7d7;
+    z-index: 10;
+}
+.group-nav-body{
+	display:flex;
+	flex: 1 1 auto;
+	justify-content: center;
+}
+.group-nav-body ul li{
+	float:left;
+	list-style:none;
+	display:flex;
+	margin-right:40px;
+	font-size:15px;
+}
+.group-nav-body ul li:last-child {
+    margin-right: 0;
+}
+.group-nav-body ul li a{
+	color:#000;
+	height: 49px;
+	padding: 0 5px;
+}
+.group-nav-body ul li a:hover{
+	border-bottom:3px solid #03a9f4;
+}
+.select-item a{
+	border-bottom:3px solid #03a9f4;
+}
+.right-team-content {
+    position: relative;
+    /* background: #ffffff; */
+    padding: 0 20px;
+    /* min-height: 880px;
+    height: auto; */
+}
+@media only screen and (min-width: 1200px){
+.right-team-content {
+    width: 1170px;
+}
+}
+.container-layout {
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    justify-content: center;
+}
+@media (min-width: 1200px){
+body.sw-toggled #content {
+    padding: 0 0 30px 0;
+}
+}
+.display-center {
+    display: flex;
+    justify-content: center;
+}
+.team-content-location {
+    position: relative;
+    padding: 0;
+    top: 50px;
+    margin-top: 20px;
+}
+.board-group{
+	display: flex;
+    position: relative;
+    height: calc(100% - 60px);
+    /* margin-left: 3px; */
+    background-color: #eee;
+    border-style: solid;
+    border-width: 0;
+    border-color: #E5E5E5;
+    top:50px;
+    margin-top:5px;
+    /* overflow-y: hidden; */
+}
+.group-menu-right{
+	display: flex;
+	flex: 0 0 auto;
+	/* width: 315px; */
+	justify-content: flex-end;
+}
+.group-menu-handle > li{
+	list-style: none;
+    font-size: 14px;
+    float: right;
+    margin-left: 30px;
+    display: inline-table;
+	
+}
+.group-menu-handle > li a{
+	color: #666;
+}
+.group-menu-handle > li a.on-active{
+	color: #03a9f4;
+}
+
+.group-menu-handle > li a:hover{
+	color: #03a9f4;
+}
+.group-menu-handle > li:not(:first-child):after {
+    position: relative;
+    content: '';
+    border-right: 1px solid #9E9E9E;
+    right: -15px;
+}
+</style>
+
+<div class="container-layout board-view">
+	<div class="board-view display-center c-overflow">
+		<div class="group-nav m-b-5" >
+			<div class="group-nav-body hidden-xs">
+				<ul class="p-0">
+					<li data-ui-sref-active="select-item">
+				    	<a data-ui-sref="home.workbench.myTasks" >我的任务</a>
+					</li>
+					<li data-ui-sref-active="select-item">
+				    	<a data-ui-sref="home.workbench.teamTask" >团队任务</a>
+					</li>
+					<li data-ui-sref-active="select-item">
+				    	<a data-ui-sref="home.workbench.teamLog" >团队日志</a>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="group-menu-right" ng-show="eyeShow">
+				<ul class="p-0 group-menu-handle">
+					<li data-ng-model="showView" data-ng-init="showView=false">
+						<a href="" data-target="chat" data-toggle-sidebar="" data-model-right="showView">
+							<i class="ace-icon fa-shaixuan" title="视图"></i></a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="board-group clearfix" data-ui-view style="padding:0;width:100%"></div>
+	</div>
+</div>
+
+

@@ -1,0 +1,226 @@
+<style>
+<!--
+.chat-status-unselected {
+	box-shadow: 0 0 0 1px #1ec01e;
+}
+
+.chat-status-selected {
+	box-shadow: 0 0 0 1px #1ec01e;
+	background: #1ec01e;
+}
+
+[class*="chat-status"] {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	right: 12px;
+	border: 2px solid #FFF;
+}
+-->
+</style>
+<div class="container m-t-20">
+	<div class="card" id="profile-main">
+		<div class="pm-body clearfix" style="padding-left: 20px;"
+			data-ng-controller="personalCtrl">
+
+			<div class="pmb-block">
+				<div class="pmbb-header">
+					<h2>
+						<i class="md md-portrait m-r-5"></i> 头像设置
+					</h2>
+				</div>
+
+				<div class="pmob-body p-l-30">
+					<div class="row">
+						<div>
+							<a href="" class="col-xs-1"
+								ng-click="isShowSelected=!isShowSelected"> <img width="60px" height="60px"
+								class="img-circle" ng-src="{{selectedHi.url}}" alt="">
+							</a>
+						</div>
+						<div  ng-if="isShowSelected">						
+						<div ng-repeat="hi in headIcons">
+							<a href="" class="col-xs-1" >
+								<img class="img-circle" ng-src="{{hi.url}}" alt="" ng-mouseover="hi_mouseenter(hi)"
+								ng-mouseout="hi_mouseleave(hi)" ng-mousedown="hi_mousedown(hi)"> <i
+								ng-class="{'chat-status-selected':hi.selected,'chat-status-unselected':!hi.selected}"></i>
+							</a>
+						</div>
+						<div class="col-xs-1">
+							<a class="circle-img-uploader" href="" ngf-select="true" ngf-max-size="1048576" ngf-accept="'image/*'" 
+							ngf-change="fileSelected($files, $file, $event, $rejectedFiles)">
+								<i class="md md-file-upload" ></i>
+							</a>
+						</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="pmb-block">
+
+				<div class="pmbb-header">
+					<h2>
+						<i class="md md-person m-r-5"></i> 基本信息
+					</h2>
+					<!-- <ul class="actions" data-ng-if="!isEditInfo">
+						<li class="dropdown"><a href="" data-toggle="dropdown"> <i
+								class="md md-more-vert"></i>
+						</a>
+
+							<ul class="dropdown-menu dropdown-menu-right">
+								<li><a ng-click="editInfo(true)" href="">编辑</a></li>
+								<li><a ng-click="editPwd()" href="">密码修改</a></li> 
+							</ul></li>
+					</ul> -->
+				</div>
+				<div class="pmbb-body p-l-30">
+					<div class="pmbb-view" data-ng-if="!isEditInfo">
+						<dl class="dl-horizontal">
+							<dt>帐号</dt>
+							<dd>{{ currUserDTO.userName }}</dd>
+						</dl>
+						<dl class="dl-horizontal">
+							<dt>姓名</dt>
+							<dd>{{ currUserDTO.userRealname }}</dd>
+						</dl>
+						<dl class="dl-horizontal">
+							<dt>生日</dt>
+							<dd>{{ currUserDTO.userBirthday | date:'yyyy-MM-dd'}}</dd>
+						</dl>
+						<dl class="dl-horizontal">
+							<dt>性别</dt>
+							<dd>{{ currUserDTO.userSex | sex}}</dd>
+						</dl>
+						<button class="btn btn-info waves-effect btn-icon-text" ng-click="editPwd()">
+					            <i class="md md-vpn-key"></i>修改密码
+					    </button> 
+					</div>
+
+					<form data-ng-submit="saveInfo()" class="pmbb-edit"
+						data-ng-if="isEditInfo">
+						<div class="pmbb-view">
+							<dl class="dl-horizontal">
+								<dt>帐号</dt>
+								<dd>{{ currUserDTO.userName }}</dd>
+							</dl>
+							<dl class="dl-horizontal">
+								<dt class="p-t-10">姓名</dt>
+								<dd >
+								<div class="fg-line">
+									<input type="text"
+										class="form-control ng-pristine ng-valid ng-touched"
+										ng-model="currUserDTO.userRealname" required="required"
+										>
+								</div>
+								</dd>
+							</dl>
+							<dl class="dl-horizontal">
+								<dt class="p-t-10">生日</dt>
+								<dd >
+								<div class="fg-line">
+									<input type="text"  date-time-picker
+										class="form-control ng-pristine ng-valid ng-touched"
+										ng-model="currUserDTO.userBirthday"  format="YYYY-MM-DD">
+								</div>
+								</dd>
+							</dl>
+							<dl class="dl-horizontal">
+								<dt class="p-t-10">性别</dt>
+								<dd>
+								<div class="fg-line">
+									<select class="form-control" ng-model="currUserDTO.userSex">
+										<option value="-1" selected="selected">未知</option>
+										<option value="M">男</option>
+										<option value="F">女</option>
+									</select>
+								</div>
+								</dd>
+							</dl>
+							<div class="m-t-30">
+								<button class="btn btn-primary btn-sm" type="submit">保存</button>
+								<button class="btn btn-link btn-sm" ng-click="cancelInfo()">取消</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+
+			<div class="pmb-block">
+				<div class="pmbb-header">
+					<h2>
+						<i class="md md-phone m-r-5"></i> 联系方式
+					</h2>
+					
+					<!-- <div class="actions" data-ng-if="!isEditContact">
+				        <a href="" data-ng-click="editContact(true)" >
+				            <i class="md md-edit"></i>
+				        </a>
+				    </div> -->
+					
+				</div>
+
+
+				<div class="pmbb-body p-l-30">
+					<div class="pmbb-view" data-ng-if="!isEditContact">
+						<dl class="dl-horizontal">
+							<dt>手机</dt>
+							<dd>{{ currUserDTO.userMobiletel1 }}</dd>
+						</dl>
+						<dl class="dl-horizontal">
+							<dt>邮箱</dt>
+							<dd>{{ currUserDTO.userEmail }}</dd>
+						</dl>
+						<dl class="dl-horizontal">
+							<dt>QQ</dt>
+							<dd>{{ currUserDTO.userOicq }}</dd>
+						</dl>
+					</div>
+
+					<form data-ng-submit="saveContact()" class="pmbb-edit"
+						data-ng-if="isEditContact">
+						<div class="pmbb-view">
+							<dl class="dl-horizontal">
+								<dt class="p-t-10">手机</dt>
+								<dd >
+								<div class="fg-line">
+									<input type="text"
+										class="form-control ng-pristine ng-valid ng-touched"
+										ng-model="currUserDTO.userMobiletel1">
+								</div>
+								</dd>
+							</dl>
+							<dl class="dl-horizontal">
+								<dt class="p-t-10">邮箱</dt>
+								<dd >
+								<div class="fg-line">
+									<input type="text"
+										class="form-control ng-pristine ng-valid ng-touched"
+										ng-model="currUserDTO.userEmail" >
+								</div>
+								</dd>
+							</dl>
+							<dl class="dl-horizontal">
+								<dt class="p-t-10">QQ</dt>
+								<dd >
+								<div class="fg-line">
+									<input type="text"
+										class="form-control ng-pristine ng-valid ng-touched"
+										ng-model="currUserDTO.userOicq" >
+								</div>
+								</dd>
+							</dl>
+							<div class="m-t-30">
+								<button class="btn btn-primary btn-sm" type="submit">保存</button>
+								<button class="btn btn-link btn-sm" ng-click="canceContact()">取消</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>

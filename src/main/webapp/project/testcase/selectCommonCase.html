@@ -1,0 +1,161 @@
+<link href="css/task/addTask.css" rel="stylesheet">
+<style>
+.form-search {
+    height: 30px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 175px;
+    margin-left:10px;
+    padding-left:10px;
+}
+
+#commonCaseTree li span{
+    overflow: initial;
+    text-overflow: inherit;
+}
+</style>
+<div data-ng-controller="selectCommonCaseCtrl" class="base-body">
+	 <div class="task-new-header">
+	  <div class="task-tasklist-stage-wrap">
+        	<button type="button" class="close btn-close-new" ng-click="modalOptions.X()"><span aria-hidden="true">&times;</span></button>
+           	<h4 class="title-top-module">
+           	用例树选择
+            </h4>
+        </div>
+	 </div>
+	 
+	 <div class="row" style="padding-top: 10px;background-color: #eee;width: 100%;height: 50px;padding-left: 10px;margin-left: 0px;">
+	 	<div class="col-sm-5">
+	 	<input type="text" ng-model="name" class="form-search" placeholder="用例名">
+	 	</div>
+	 	<div class="col-sm-3">
+	 	<c2-dropdown class="animate" bind-data="level" items="levels" item-name="title" max-height="200" filter="true" clean-button="true">
+					<div class="picker picker-white text-overflow" style="max-width:160px;">
+						<span ng-if="!level">用例等级</span>{{level.title}}&nbsp;<span class="caret"></span>
+					</div>
+				</c2-dropdown>
+	 	
+	 	</div>
+	 	<div class="col-sm-4">
+	 	<label class="checkbox checkbox-inline m-l-10 m-t-5" title="是否过滤公共用例">
+		 <input type="checkbox" ng-init="isCommon=true" ng-model="isCommon" class="ng-pristine ng-untouched ng-valid ng-empty">
+		<i class="input-helper"></i> 是否过滤公共用例
+		</label>
+	 	
+	 	</div>
+	</div>
+    <div class="task-new-infos-wrap" style="max-height:400px;overflow-x: hidden;overflow-y: auto">
+			<!-- 用例树  多选-->
+			<ul id="commonCaseTree" class="ztree tree-transparent"></ul>
+	</div>
+   
+    <div class="task-new-footer">
+    	<hr />
+        <form id="new-task-save">
+            <div style="margin:0 20px 10px 0; float:right;">
+                <button class="btn btn-link btn-sm" data-ng-click="cancelAdd()">取消</button>
+                <button class="btn btn-primary btn-sm" data-ng-click="saveInstance()">确定</button>
+            </div>
+ 		 <div style="clear:both; float:none; height:0; overflow:hidden"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+angular.module("project").registerCtrl('selectCommonCaseCtrl', 
+	function($scope, $rootScope, $http,$state, $stateParams,Messenger, debounce,$timeout,$ocLazyLoad,Modal) {
+	
+	$scope.levels = [{title:'L0'},{title:'L1'},{title:'L2'},{title:'L3'},{title:'L4'}];
+	
+	//ztree setting
+	$scope.treeOptions = {
+		data: {
+			simpleData: {
+				enable: true,
+				idKey:"tid",
+				pIdKey: "tpid",
+				rootPId: 0
+            }
+        },
+        check:{
+        	enable: true
+        },
+        view:{
+        	showLine: true
+        }
+	}
+	
+	//加载ztree
+	$ocLazyLoad.load([ 'assets/ztree/jquery.ztree.all.min.js', 'assets/ztree/zTreeStyle.css' ])
+	.then(function(){
+		$scope.$watch("treeNodes", function(v) {
+			if (angular.isUndefined(v))
+				return;
+			$scope.ztree = $.fn.zTree.init($("#commonCaseTree"), $scope.treeOptions, $scope.treeNodes);
+			var nodes = $scope.ztree.getNodesByParam("type","type",null);
+			for(var i=0;i<nodes.length;i++){
+				nodes[i].isParent = true;
+				$scope.ztree.updateNode(nodes[i]);
+			}
+			$scope.ztree.expandAll(true);
+		});
+	})
+	
+	//取消 关闭用例树弹出框
+	$scope.cancelAdd = function() {
+		Modal.dismiss();
+	}
+	
+	//保存公共用例
+	$scope.saveInstance = function(){
+		var ids = [];
+		var nodes = $scope.ztree.getCheckedNodes(true);
+		if(nodes.length<=0){
+			Messenger.post("请选择所需用例");
+			return;
+		}else{
+			for(var i=0;i<nodes.length;i++){
+				if(nodes[i].type=="case"){
+					ids.push(nodes[i].id);
+				}
+			}
+			$http.post("ws/addCommonCase",{ids:ids.join(','),projectId:$scope.projectId,typeId:$scope.typeId}).success(function(data){
+				Messenger.post("用例导入成功");
+				Modal.close();
+				var ztree = $.fn.zTree.getZTreeObj("caseTree");
+				var parentNode = ztree.getNodeByParam("tid", 't_'+$scope.typeId, null);
+				for(var i=0;i<data.result.length;i++){
+					var newNode = {id:data.result[i].id,tid:'c_'+data.result[i].id, tpid:parentNode.tid, name:data.result[i].name,type:'case'};
+					ztree.addNodes(parentNode, newNode);
+				}
+				$state.reload('project.case.caseList');//重新刷新当前页面
+			})
+		}
+	}
+	
+	var searchCase = debounce(function(){
+		$http.post("ws/getCaseTypeById",{condition : {projectId:$scope.projectId,name:$scope.name?$scope.name:"",level:$scope.level?$scope.level.title:"",isCommon:$scope.isCommon}}).success(function(data){
+			$scope.treeNodes = data.result;
+		})
+	},1000);
+	
+	//树搜索字段
+	//树搜索字段
+	$scope.$watch("name", function(v) {
+		if(angular.isUndefined(v)) return;
+		searchCase();
+	});
+	
+	$scope.$watch("level", function(v) {
+		if(angular.isUndefined(v)) return;
+		searchCase();
+	});
+	
+	$scope.$watch("isCommon", function(v) {
+		if(angular.isUndefined(v)) return;
+		searchCase();
+	});
+	
+});
+</script>
+

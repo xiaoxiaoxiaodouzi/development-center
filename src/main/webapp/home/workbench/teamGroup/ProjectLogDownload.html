@@ -1,0 +1,102 @@
+<div class="card-body p-b-40" ng-controller="ProjectLogDownloadCtrl">
+  <div class="wr-view">
+    <div class="wkr-tasklist clearfix" >
+      <c2-dropdown id="deptDropdown" tree-options="deptTreeOptions" tree-nodes="deptTree" max-height="200">
+        <div class="picker picker-white text-overflow" style="max-width:500px;">
+          <i class="md md-apps" title="部门/组选择"></i> {{selectedDeptNode?"":"指定部门  "}}{{selectedDeptNode.name}}<span class="caret"></span>
+        </div>
+      </c2-dropdown>
+      <c2-date-range-dropdown date-range="dateRange" date-buttons="dateButtons" default-button="thisWeek" buttom-message="未完成的任务按计划结束时间过滤，已完成的按完成时间过滤；入职时间在结束时间之后或者离职时间在开始时间之前的人会自动过滤。">
+               <div class="picker picker-white">
+          <i class="md md-today" title="日期选择"></i> {{dateRange.show}}<span class="caret"></span>
+        </div>
+      </c2-date-range-dropdown>
+
+     
+      <button class="btn btn-primary waves-effect" style="float: right;" ng-click="downLoadWorkLog()">导出工作日志</button>
+    </div>
+  </div>
+</div>
+
+<script>
+angular.module("developmentCenter").registerCtrl('ProjectLogDownloadCtrl',
+function(Messenger,$scope,$http,$stateParams,$state,debounce){
+$scope.dateButtons = ['thisWeek','preWeek','thisMonth','preMonth','thisYear'];
+$scope.defaultButton = "thisWeek";
+$scope.dateRange = {start:moment().startOf('week').toDate().getTime()};
+$scope.search = {week:{name:"choose"}};
+
+$scope.deptTreeOptions = {
+    check:{
+      enable : false ,
+      chkStyle : "radio" ,
+      chkboxType :  { "Y" : "s", "N" : "s" }
+    },
+    data: {
+      simpleData: {
+        enable: true,
+        idKey: "id",
+        pIdKey: "pId",
+        rootPId: 0
+      }
+    },
+    callback: {
+      onClick: zTreeOnClick
+    }
+} ;
+
+
+initCurrentUserTree();
+
+function initCurrentUserTree() {
+  $http.post("ws/dept/getCurrentUserDeptTree",{deepth:-1}).success(function(currentDept){
+    var currentGroupDept = currentDept.result[0];
+    $scope.selectedDeptNode = currentGroupDept;
+    $http.post("ws/hasLogAdminJob",{}).success(function(adminJob){
+      $scope.logAdmin = adminJob.result;
+      if(adminJob.result){
+        $http.post("ws/dept/getDeptTree",{deepth:-1}).success(function(allDept){
+          $scope.deptTree = allDept.result ;
+        });
+      }else{
+        $scope.deptTree = currentDept.result ;
+      }
+    });
+    
+    $scope.$watch("dateRange",function(v){
+      if(angular.isUndefined(v)) return ;
+      teamGroupUsers($scope.selectedDeptNode.id,v.start,v.end);
+      $scope.search.week.st = v.start;
+      $scope.search.week.et = v.end;
+    },true);
+  }) ;		
+}
+  //部门用户，过滤白名单，过滤离职日期在选择日期之前的用户
+  function teamGroupUsers(orgId,startDate,endDate){
+      $http.post("ws/dept/getTeamGroupUsers",{orgId:orgId,startDate:startDate,endDate:endDate}).success(function(data){
+        $scope.deptUsers = data.result;
+        if(!$scope.isTouchUser){
+          $scope.search.users = data.result;
+        }
+        $http.post("ws/workbench/teamGroupProjects",{search:{users:data.result}}).success(function(data){
+          $scope.projectOptions = data.result;
+        });
+      });
+    }
+
+$scope.downLoadWorkLog = debounce(function(){
+		    if(angular.isDefined($scope.search) && angular.isDefined($scope.search.week)){
+		      if(angular.isDefined($scope.dept) && $scope.dept != null)deptId = $scope.dept.id;
+		      window.location.href= 'report/projectWorkLog/' + $scope.search.week.st+"/"+$scope.search.week.et+"/"+$scope.selectedDeptNode.id;
+		    }else{
+		      Messenger.error("请选择补全查询条件");
+		    }
+		  },500) ;
+
+function zTreeOnClick(event, treeId, treeNode){
+  $scope.selectedDeptNode = treeNode;
+}
+
+}) ;
+
+</script>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="task/history" log="false" className="com.chinacreator.c2.project.task.TaskService" method="getTaskActionHistory">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取任务操作历史记录</name>
+  <desc>获取任务操作历史记录</desc>
+  <inputs>
+    <input collection="false" desc="" id="taskId" required="true" type="int"/>
+    <input collection="false" desc="@return" id="isAll" required="true" type="boolean"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.lang.Object"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.taskId" name="taskId" signature="I" type="int"/>
+    <param autoValue="Input.isAll" name="isAll" signature="Z" type="boolean"/>
+  </params>
+  <return signature="QObject;" type="java.lang.Object"/>
+</CustomRule>

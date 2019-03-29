@@ -1,0 +1,280 @@
+<style>
+.supportNoteState{
+width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;margin-right: 5px;
+}
+#support-info-card .al-control-label {
+    float: left;
+    padding-top: 7px;
+    text-align: right;
+    width:120px;
+/* 	font-weight: 600; */
+    color: #969696;
+}
+#support-info-card .form-input-ml {
+	margin-left: 125px;
+}
+#support-info-card .form-group {
+    margin-bottom: 7px;
+}
+#support-info-card .editor-toolbar{
+	margin-top: 3px;
+}
+#support-info-card .title{
+    padding: 10px 15px;
+    font-size: 16px;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 20px;
+}
+.form-group .form-input-ml .radio-inline{
+	margin-top:7px;
+}
+.form-input-ml input[disabled]{
+	border: 0px;
+}
+.form-input-ml button[disabled]{
+	border: 0px;
+}
+.form-input-ml button[disabled] .caret{
+	display:none;
+}
+.form-input-ml > input.form-control{
+	margin-left: 12px;
+}
+.form-input-ml > .content{
+	margin-left: 12px;
+	padding-top: 7px;
+}
+.form-input-ml > .form-control[disabled]{
+	background-color: white;
+}
+
+#supportErrorMessage{opacity: 1;}
+#supportErrorMessage.ng-hide {
+  opacity: 0;
+}
+#supportErrorMessage.ng-hide-add, #supportErrorMessage.ng-hide-remove{
+  transition: all linear 0.5s;
+}
+</style>
+
+<div class="container">
+<div class="card m-t-20">
+   	<div class="card-header">
+		<h2>
+			支持单信息 
+			<small style="line-height: 28px;">
+				<div ng-if="support.state==0"><div class="supportNoteState bgm-green">New</div> 这是一个全新的支持单,请执行方进行确认。</div>
+				<div ng-if="support.state==1"><div class="supportNoteState bgm-orange">Accept</div> 支持单已被接受,请等待执行方完成。</div>
+				<div ng-if="support.state==2"><div class="supportNoteState bgm-blue">Done</div> 支持单已经完成,请申请方验收人进行确认。</div>
+				<div ng-if="support.state==3"><div class="supportNoteState bgm-gray">Close</div> 支持单已经关闭。</div>
+				支持单所填信息视为申请方和执行方充分沟通后的结果。
+			</small>
+		</h2> 
+		<ul class="actions" ng-if="support.state==0&&checkRole('user')">
+			<li class="dropdown action-show">
+				<a href="" data-toggle="dropdown" aria-expanded="false"> <i class="md md-more-vert"></i></a>
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a ng-click="deleteSupport(support.id)">删除</i></a></li>
+				</ul>
+			</li>
+		</ul>
+	
+	<div id="support-info-card" class="card-body clearfix" style="padding: 10px 26px;">
+<!-- 		<div class="form-group fg-float" ng-class="{'has-error':!support.title&&!check.title}"> -->
+<!--             <div class="fg-line fg-toggled"> -->
+<!--                 <input type="text" class="input-lg form-control fg-input" ng-model="support.title"> -->
+<!--             </div> -->
+<!--             <label class="fg-label">标题</label> -->
+<!--         </div> -->
+        <div class="title">{{support.title}}</div>
+		<div class="row">
+			<div class="form-group col-sm-6">
+			    <label class="control-label al-control-label">项目名称：</label>
+		        <div class="form-input-ml">
+		        <c2-dropdown bind-data-id="support.projectId" bind-data="project" items="supportProjects" item-name="name" item-id="id" item-click="selectProject(item)" filter="true" max-height="200">
+					<button class="btn btn-default btn-icon-text picker-shadow" ng-disabled="disabled.projectId" ng-class="{'btn-danger':!support.projectId&&!check.projectId}" ng-disabled="true">
+						<span ng-if="!project">选择项目</span>{{project.name}} &nbsp;<span class="caret"></span>
+					</button>
+				</c2-dropdown>
+		    	</div>
+			</div>
+			<div class="form-group col-sm-3">
+			    <label class="control-label al-control-label">项目编号：</label>
+		        <div class="form-input-ml">
+		        	<button class="btn btn-default btn-icon-text picker-shadow" disabled="disabled">{{support.projectCode}}</button>
+		    	</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-sm-3">
+			    <label class="control-label al-control-label">申请部门：</label>
+		        <div class="form-input-ml">
+		        <c2-dropdown bind-data-id="support.orgId" bind-data="org" items="supportOrgs" item-name="name" item-id="id" max-height="200">
+					<button class="btn btn-default btn-icon-text picker-shadow" ng-disabled="disabled.orgId" ng-class="{'btn-danger':!support.orgId&&!check.orgId}">
+						<span ng-if="!org">选择申请部门</span>{{org.name}} &nbsp;<span class="caret"></span>
+					</button>
+				</c2-dropdown>
+		    	</div>
+			</div>
+			<div class="form-group col-sm-3">
+			    <label class="control-label al-control-label">申请人：</label>
+		        <div class="form-input-ml">
+		        	<button class="btn btn-default btn-icon-text picker-shadow" disabled="disabled">{{support.userName}}</button>
+		        <!-- <c2-dropdown bind-data-id="support.user" bind-data="auser" items="applyUsers" item-name="userRealname" item-id="username" item-click="focusInput()" max-height="300" filter="true" filter-pinyin="false" filter-property="userRealname,jp,qp,jobNumber" filter-placeholder="姓名/拼音">
+		            <button class="btn btn-default btn-icon-text picker-shadow" ng-disabled="disabled.user" ng-class="{'btn-danger':!support.manageUser&&!check.manageUser}">
+						<span ng-if="!auser">选择申请人</span>{{auser.userRealname}} &nbsp;<span class="caret"></span>
+					</button>
+		        </c2-dropdown> -->
+		    	</div>
+			</div>
+			<!-- <div class="form-group col-sm-3">
+			    <label class="control-label al-control-label">验收人：</label>
+		        <div class="form-input-ml">
+		        <c2-dropdown class="animate" bind-data-id="support.checkUser" bind-data="cuser" items="checkUsers" item-name="userRealname" item-id="username" max-height="300" filter="true" filter-pinyin="false" filter-property="userRealname,jp,qp,jobNumber" filter-placeholder="姓名/拼音">
+		            <button class="btn btn-default btn-icon-text picker-shadow" ng-disabled="disabled.checkUser" ng-class="{'btn-danger':!support.checkUser&&!check.checkUser}">
+						<span ng-if="!cuser">选择验收人</span>{{cuser.userRealname}} &nbsp;<span class="caret"></span>
+					</button>
+		        </c2-dropdown>
+		    	</div>
+			</div> -->
+		</div>
+		<div class="row">
+			<div class="form-group col-sm-3" ng-class="{'has-error':!support.askStartTime&&!check.askStartTime}">
+			    <label class="control-label al-control-label">要求开始时间：</label>
+		        <div class="form-input-ml">
+		        <input date-time-picker format="YYYY年M月D日" picker-disabled="disabled.askStartTime" ng-model="support.askStartTime" class="form-control" type="text"/>
+		    	</div>
+			</div>
+			<div class="form-group col-sm-3" ng-class="{'has-error':!support.askEndTime&&!check.askEndTime}">
+			    <label class="control-label al-control-label">要求结束时间：</label>
+		        <div class="form-input-ml">
+		        <input date-time-picker format="YYYY年M月D日" picker-disabled="disabled.askEndTime" ng-model="support.askEndTime" class="form-control" type="text"/>
+		    	</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-sm-12">
+			    <label class="control-label al-control-label">任务描述：</label>
+		        <div class="form-input-ml">
+		        <textarea ng-if="!disabled.description" class="hidden" c2-markdown-editor height="180" ng-model="support.description"></textarea>
+				<div ng-if="disabled.description" class="content" ng-bind-html="support.description | markdown"></div>
+		    	</div>
+			</div>
+		</div>
+		
+		<hr>
+		<div class="row">
+			<div class="form-group col-sm-3">
+			    <label class="control-label al-control-label">执行部门：</label>
+		        <div class="form-input-ml">
+		        	<button class="btn btn-default btn-icon-text picker-shadow" disabled="disabled">{{worgName}}</button>
+		        <!-- <c2-dropdown bind-data-id="support.doOrgId" bind-data="worg" items="workOrgs" item-name="name" item-id="id" max-height="200">
+					<button class="btn btn-default btn-icon-text picker-shadow" ng-disabled="true" ng-class="{'btn-danger':!support.doOrgId&&!check.doOrgId}">
+						<span ng-if="!worg">选择执行部门</span>{{worg.name}} &nbsp;<span class="caret"></span>
+					</button>
+				</c2-dropdown> -->
+		    	</div>
+			</div>
+			<div class="form-group col-sm-3">
+			    <label class="control-label al-control-label">对接人：</label>
+		        <div class="form-input-ml">
+		        <c2-dropdown class="animate" bind-data-id="support.manageUser" bind-data="muser" items="manageUsers" item-name="userRealname" item-id="username" item-click="focusInput()" max-height="300" filter="true" filter-pinyin="false" filter-property="userRealname,jp,qp,jobNumber" filter-placeholder="姓名/工号/拼音">
+		            <button class="btn btn-default btn-icon-text picker-shadow" ng-disabled="disabled.manageUser" ng-class="{'btn-danger':!support.manageUser&&!check.manageUser}">
+						<span ng-if="!muser">选择对接人</span>{{muser.userRealname}} &nbsp;<span class="caret"></span>
+					</button>
+		        </c2-dropdown>
+		    	</div>
+			</div>
+			<div class="form-group col-sm-3">
+			    <label class="control-label al-control-label">分配给：</label>
+		        <div class="form-input-ml">
+		        <c2-dropdown class="animate" bind-data-id="support.doUser" bind-data="duser" items="doUsers" item-name="userRealname" item-id="username" item-click="focusInput()" max-height="300" filter="true" filter-pinyin="false" filter-property="userRealname,jp,qp,jobNumber" filter-placeholder="姓名/工号/拼音">
+		            <button class="btn btn-default btn-icon-text picker-shadow" ng-disabled="disabled.doUser" ng-class="{'btn-danger':!support.doUser&&!check.doUser}">
+						<span ng-if="!duser">选择执行人</span>{{duser.userRealname}} &nbsp;<span class="caret"></span>
+					</button>
+		        </c2-dropdown>
+		    	</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-sm-3" ng-class="{'has-error':!support.planStartTime&&!check.planStartTime}">
+			    <label class="control-label al-control-label">预计执行开始时间：</label>
+		        <div class="form-input-ml">
+		        <input date-time-picker format="YYYY年M月D日" picker-disabled="disabled.planStartTime"  ng-model="support.planStartTime" class="form-control" type="text"/>
+		    	</div>
+			</div>
+			<div class="form-group col-sm-3" ng-class="{'has-error':!support.planEndTime&&!check.planEndTime}">
+			    <label class="control-label al-control-label">预计执行结束时间：</label>
+		        <div class="form-input-ml">
+		        <input date-time-picker format="YYYY年M月D日" picker-disabled="disabled.planEndTime" ng-model="support.planEndTime" class="form-control" type="text"/>
+		    	</div>
+			</div>
+		</div>
+		
+		<div id="moreInfo" ng-if="support.state!=0">
+		<hr>
+		<div class="row">
+			<div class="form-group col-sm-6" ng-class="{'has-error':!support.success&&!check.success}">
+			    <label class="control-label al-control-label">实际结果：</label>
+		        <div class="form-input-ml">
+		        <label class="radio radio-inline m-r-20">
+	                <input type="radio" value="1" ng-model="support.success" ng-disabled="disabled.success">
+	                <i class="input-helper"></i>  任务执行成功
+	            </label>
+		        <label class="radio radio-inline m-r-20">
+	                <input type="radio" value="0" ng-model="support.success" ng-disabled="disabled.success">
+	                <i class="input-helper"></i>  任务执行失败
+	            </label>
+		    	</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-sm-3" ng-class="{'has-error':!support.actualStartTime&&!check.actualStartTime}">
+			    <label class="control-label al-control-label">实际开始时间：</label>
+		        <div class="form-input-ml">
+		        <input date-time-picker format="YYYY年M月D日" picker-disabled="disabled.actualStartTime" ng-model="support.actualStartTime" class="form-control" type="text"/>
+		    	</div>
+			</div>
+			<div class="form-group col-sm-3" ng-class="{'has-error':!support.actualEndTime&&!check.actualEndTime}">
+			    <label class="control-label al-control-label">实际结束时间：</label>
+		        <div class="form-input-ml">
+		        <input date-time-picker format="YYYY年M月D日" picker-disabled="disabled.actualEndTime" ng-model="support.actualEndTime" class="form-control" type="text"/>
+		    	</div>
+			</div>
+			<div class="form-group col-sm-3" ng-class="{'has-error':!support.actualWorkload&&!check.actualWorkload}">
+			    <label class="control-label al-control-label">实际工作量(h)：</label>
+		        <div class="form-input-ml">
+		        <input ng-model="support.actualWorkload" class="form-control" type="number" ng-disabled="disabled.actualWorkload"/>
+		    	</div>
+			</div>
+			<div class="form-group col-sm-3" ng-class="{'has-error':!support.accountWorkload&&!check.accountWorkload}">
+			    <label class="control-label al-control-label">结算工作量(h)：</label>
+		        <div class="form-input-ml">
+		        <input ng-model="support.accountWorkload" class="form-control" type="number" ng-disabled="disabled.accountWorkload"/>
+		    	</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-sm-12">
+			    <label class="control-label al-control-label">执行情况：</label>
+		        <div class="form-input-ml">
+		        <textarea ng-if="!disabled.info" class="hidden" c2-markdown-editor height="180" ng-model="support.info"></textarea>
+				<div ng-if="disabled.info" class="content" ng-bind-html="support.info | markdown"></div>
+		    	</div>
+			</div>
+		</div>
+		</div>
+		
+		<div class="text-right p-20">
+			<span id="supportErrorMessage" ng-show="passMessageShow" class="c-red m-r-10">请完善必填信息</span>
+			<button class="btn btn-default btn-icon-text m-r-10" ng-click="goBack()"><i class="md md-arrow-back"></i> 返回</button>
+			<button ng-if="support.state==0&&checkRole('user')" class="btn btn-primary btn-icon-text" ng-click="ok(0)"><i class="md md-save"></i> 保存</button>
+			<button ng-if="support.state==0&&checkRole('manager')" class="btn btn-primary btn-icon-text" ng-click="ok(1,true)"><i class="md md-check"></i> 接受申请</button>
+			<button ng-if="support.state==1&&checkRole('manager')" class="btn btn-success btn-icon-text" ng-click="ok(1)"><i class="md md-save"></i> 保存</button>
+			<button ng-if="support.state==1&&checkRole('manager')" class="btn btn-primary btn-icon-text" ng-click="ok(2,true)"><i class="md md-check"></i> 完成</button>
+			<button ng-if="support.state==2&&checkRole('manager')" class="btn btn-success btn-icon-text" ng-click="ok(2)"><i class="md md-save"></i> 保存</button>
+			<button ng-if="support.state==2&&checkRole('checker')" class="btn btn-primary btn-icon-text" ng-click="ok(3,true)"><i class="md md-check"></i> 结束</button>
+		</div>
+	</div>
+</div>
+</div>

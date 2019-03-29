@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "configure.dtd">
+
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+    <Set name="baseResource">
+	    <New class="org.eclipse.jetty.util.resource.ResourceCollection">
+	      <Arg>
+	        <Array type="java.lang.String">
+	          <Item>src/main/webapp</Item>
+	        </Array>
+	      </Arg>
+    	</New>
+  	</Set>
+</Configure>

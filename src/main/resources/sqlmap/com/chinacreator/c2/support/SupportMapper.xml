@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.support.SupportMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_community_support.id ,
+		  c2_community_support.title ,
+		  c2_community_support.user ,
+		  c2_community_support.org_id ,
+		  c2_community_support.check_user ,
+		  c2_community_support.ask_start_time ,
+		  c2_community_support.ask_end_time ,
+		  c2_community_support.creat_time ,
+		  c2_community_support.project_id ,
+		  c2_community_support.do_org_id ,
+		  c2_community_support.manage_user ,
+		  c2_community_support.do_user ,
+		  c2_community_support.accept_time ,
+		  c2_community_support.plan_start_time ,
+		  c2_community_support.plan_end_time ,
+		  c2_community_support.description ,
+		  c2_community_support.info ,
+		  c2_community_support.plan_workload ,
+		  c2_community_support.risk_workload ,
+		  c2_community_support.actual_workload ,
+		  c2_community_support.account_workload ,
+		  c2_community_support.actual_start_time ,
+		  c2_community_support.actual_end_time ,
+		  c2_community_support.success ,
+		  c2_community_support.state 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_community_support.id = #{id}</if>
+	    <if test="title != null">and c2_community_support.title = #{title}</if>
+	    <if test="user != null">and c2_community_support.user = #{user}</if>
+	    <if test="orgId != null">and c2_community_support.org_id = #{orgId}</if>
+	    <if test="checkUser != null">and c2_community_support.check_user = #{checkUser}</if>
+	    <if test="askStartTime != null">and c2_community_support.ask_start_time = #{askStartTime}</if>
+	    <if test="askEndTime != null">and c2_community_support.ask_end_time = #{askEndTime}</if>
+	    <if test="creatTime != null">and c2_community_support.creat_time = #{creatTime}</if>
+	    <if test="projectId != null">and c2_community_support.project_id = #{projectId}</if>
+	    <if test="doOrgId != null">and c2_community_support.do_org_id = #{doOrgId}</if>
+	    <if test="manageUser != null">and c2_community_support.manage_user = #{manageUser}</if>
+	    <if test="doUser != null">and c2_community_support.do_user = #{doUser}</if>
+	    <if test="acceptTime != null">and c2_community_support.accept_time = #{acceptTime}</if>
+	    <if test="planStartTime != null">and c2_community_support.plan_start_time = #{planStartTime}</if>
+	    <if test="planEndTime != null">and c2_community_support.plan_end_time = #{planEndTime}</if>
+	    <if test="planWorkload != null">and c2_community_support.plan_workload = #{planWorkload}</if>
+	    <if test="riskWorkload != null">and c2_community_support.risk_workload = #{riskWorkload}</if>
+	    <if test="actualWorkload != null">and c2_community_support.actual_workload = #{actualWorkload}</if>
+	    <if test="accountWorkload != null">and c2_community_support.account_workload = #{accountWorkload}</if>
+	    <if test="actualStartTime != null">and c2_community_support.actual_start_time = #{actualStartTime}</if>
+	    <if test="actualEndTime != null">and c2_community_support.actual_end_time = #{actualEndTime}</if>
+	    <if test="success != null">and c2_community_support.success = #{success}</if>
+	    <if test="state != null">and c2_community_support.state = #{state}</if>
+</sql>
+
+
+<!-- ElementID:SupportResult,Generated=true -->
+<resultMap id="SupportResult" type="com.chinacreator.c2.support.Support">
+	<id property="id" column="id"/>
+	<result property="title" column="title"/>
+	<result property="user" column="user"/>
+	<result property="orgId" column="org_id"/>
+	<result property="checkUser" column="check_user"/>
+	<result property="askStartTime" column="ask_start_time"/>
+	<result property="askEndTime" column="ask_end_time"/>
+	<result property="creatTime" column="creat_time"/>
+	<result property="projectId" column="project_id"/>
+	<result property="doOrgId" column="do_org_id"/>
+	<result property="manageUser" column="manage_user"/>
+	<result property="doUser" column="do_user"/>
+	<result property="acceptTime" column="accept_time"/>
+	<result property="planStartTime" column="plan_start_time"/>
+	<result property="planEndTime" column="plan_end_time"/>
+	<result property="description" column="description"/>
+	<result property="info" column="info"/>
+	<result property="planWorkload" column="plan_workload"/>
+	<result property="riskWorkload" column="risk_workload"/>
+	<result property="actualWorkload" column="actual_workload"/>
+	<result property="accountWorkload" column="account_workload"/>
+	<result property="actualStartTime" column="actual_start_time"/>
+	<result property="actualEndTime" column="actual_end_time"/>
+	<result property="success" column="success"/>
+	<result property="state" column="state"/>
+</resultMap>
+
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.support.Support" resultType="int">
+	select count(*) from c2_community_support 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.support.Support">
+	update c2_community_support
+<set>
+	<if test="title != null">title=#{title,jdbcType=VARCHAR},</if>
+	<if test="user != null">user=#{user,jdbcType=VARCHAR},</if>
+	<if test="orgId != null">org_id=#{orgId,jdbcType=VARCHAR},</if>
+	<if test="checkUser != null">check_user=#{checkUser,jdbcType=VARCHAR},</if>
+	<if test="askStartTime != null">ask_start_time=#{askStartTime,jdbcType=TIMESTAMP},</if>
+	<if test="askEndTime != null">ask_end_time=#{askEndTime,jdbcType=TIMESTAMP},</if>
+	<if test="creatTime != null">creat_time=#{creatTime,jdbcType=TIMESTAMP},</if>
+	<if test="projectId != null">project_id=#{projectId,jdbcType=NUMERIC},</if>
+	<if test="doOrgId != null">do_org_id=#{doOrgId,jdbcType=VARCHAR},</if>
+	<if test="manageUser != null">manage_user=#{manageUser,jdbcType=VARCHAR},</if>
+	<if test="doUser != null">do_user=#{doUser,jdbcType=VARCHAR},</if>
+	<if test="acceptTime != null">accept_time=#{acceptTime,jdbcType=TIMESTAMP},</if>
+	<if test="planStartTime != null">plan_start_time=#{planStartTime,jdbcType=TIMESTAMP},</if>
+	<if test="planEndTime != null">plan_end_time=#{planEndTime,jdbcType=TIMESTAMP},</if>
+	<if test="description != null">description=#{description,jdbcType=CLOB},</if>
+	<if test="info != null">info=#{info,jdbcType=CLOB},</if>
+	<if test="planWorkload != null">plan_workload=#{planWorkload,jdbcType=NUMERIC},</if>
+	<if test="riskWorkload != null">risk_workload=#{riskWorkload,jdbcType=NUMERIC},</if>
+	<if test="actualWorkload != null">actual_workload=#{actualWorkload,jdbcType=NUMERIC},</if>
+	<if test="accountWorkload != null">account_workload=#{accountWorkload,jdbcType=NUMERIC},</if>
+	<if test="actualStartTime != null">actual_start_time=#{actualStartTime,jdbcType=TIMESTAMP},</if>
+	<if test="actualEndTime != null">actual_end_time=#{actualEndTime,jdbcType=TIMESTAMP},</if>
+	<if test="success != null">success=#{success,jdbcType=NUMERIC},</if>
+	<if test="state != null">state=#{state,jdbcType=NUMERIC}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_community_support
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="title==null">title = null,</if>
+		    <if test="user==null">user = null,</if>
+		    <if test="orgId==null">org_id = null,</if>
+		    <if test="checkUser==null">check_user = null,</if>
+		    <if test="askStartTime==null">ask_start_time = null,</if>
+		    <if test="askEndTime==null">ask_end_time = null,</if>
+		    <if test="creatTime==null">creat_time = null,</if>
+		    <if test="projectId==null">project_id = null,</if>
+		    <if test="doOrgId==null">do_org_id = null,</if>
+		    <if test="manageUser==null">manage_user = null,</if>
+		    <if test="doUser==null">do_user = null,</if>
+		    <if test="acceptTime==null">accept_time = null,</if>
+		    <if test="planStartTime==null">plan_start_time = null,</if>
+		    <if test="planEndTime==null">plan_end_time = null,</if>
+		    <if test="description==null">description = null,</if>
+		    <if test="info==null">info = null,</if>
+		    <if test="planWorkload==null">plan_workload = null,</if>
+		    <if test="riskWorkload==null">risk_workload = null,</if>
+		    <if test="actualWorkload==null">actual_workload = null,</if>
+		    <if test="accountWorkload==null">account_workload = null,</if>
+		    <if test="actualStartTime==null">actual_start_time = null,</if>
+		    <if test="actualEndTime==null">actual_end_time = null,</if>
+		    <if test="success==null">success = null,</if>
+		    <if test="state==null">state = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.support.Support">
+    delete from c2_community_support where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.support.Support" resultMap="SupportResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_support 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_community_support where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="SupportResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_support 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="SupportResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_support 
+		 where c2_community_support.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.support.Support" resultMap="SupportResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_support 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="SupportResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_community_support 
+	where c2_community_support.id in (
+		select distinct id from c2_community_support inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_community_support 
+			<where>
+	        <if test="entity.id != null">and c2_community_support.id = #{entity.id}</if>
+	        <if test="entity.title != null">and c2_community_support.title = #{entity.title}</if>
+	        <if test="entity.user != null">and c2_community_support.user = #{entity.user}</if>
+	        <if test="entity.orgId != null">and c2_community_support.org_id = #{entity.orgId}</if>
+	        <if test="entity.checkUser != null">and c2_community_support.check_user = #{entity.checkUser}</if>
+	        <if test="entity.askStartTime != null">and c2_community_support.ask_start_time = #{entity.askStartTime}</if>
+	        <if test="entity.askEndTime != null">and c2_community_support.ask_end_time = #{entity.askEndTime}</if>
+	        <if test="entity.creatTime != null">and c2_community_support.creat_time = #{entity.creatTime}</if>
+	        <if test="entity.projectId != null">and c2_community_support.project_id = #{entity.projectId}</if>
+	        <if test="entity.doOrgId != null">and c2_community_support.do_org_id = #{entity.doOrgId}</if>
+	        <if test="entity.manageUser != null">and c2_community_support.manage_user = #{entity.manageUser}</if>
+	        <if test="entity.doUser != null">and c2_community_support.do_user = #{entity.doUser}</if>
+	        <if test="entity.acceptTime != null">and c2_community_support.accept_time = #{entity.acceptTime}</if>
+	        <if test="entity.planStartTime != null">and c2_community_support.plan_start_time = #{entity.planStartTime}</if>
+	        <if test="entity.planEndTime != null">and c2_community_support.plan_end_time = #{entity.planEndTime}</if>
+	        <if test="entity.planWorkload != null">and c2_community_support.plan_workload = #{entity.planWorkload}</if>
+	        <if test="entity.riskWorkload != null">and c2_community_support.risk_workload = #{entity.riskWorkload}</if>
+	        <if test="entity.actualWorkload != null">and c2_community_support.actual_workload = #{entity.actualWorkload}</if>
+	        <if test="entity.accountWorkload != null">and c2_community_support.account_workload = #{entity.accountWorkload}</if>
+	        <if test="entity.actualStartTime != null">and c2_community_support.actual_start_time = #{entity.actualStartTime}</if>
+	        <if test="entity.actualEndTime != null">and c2_community_support.actual_end_time = #{entity.actualEndTime}</if>
+	        <if test="entity.success != null">and c2_community_support.success = #{entity.success}</if>
+	        <if test="entity.state != null">and c2_community_support.state = #{entity.state}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.support.Support" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_community_support(
+		<trim prefixOverrides=",">
+		    <if test="title != null">title</if>
+		    <if test="user != null">,user</if>
+		    <if test="orgId != null">,org_id</if>
+		    <if test="checkUser != null">,check_user</if>
+		    <if test="askStartTime != null">,ask_start_time</if>
+		    <if test="askEndTime != null">,ask_end_time</if>
+		    <if test="creatTime != null">,creat_time</if>
+		    <if test="projectId != null">,project_id</if>
+		    <if test="doOrgId != null">,do_org_id</if>
+		    <if test="manageUser != null">,manage_user</if>
+		    <if test="doUser != null">,do_user</if>
+		    <if test="acceptTime != null">,accept_time</if>
+		    <if test="planStartTime != null">,plan_start_time</if>
+		    <if test="planEndTime != null">,plan_end_time</if>
+		    <if test="description != null">,description</if>
+		    <if test="info != null">,info</if>
+		    <if test="planWorkload != null">,plan_workload</if>
+		    <if test="riskWorkload != null">,risk_workload</if>
+		    <if test="actualWorkload != null">,actual_workload</if>
+		    <if test="accountWorkload != null">,account_workload</if>
+		    <if test="actualStartTime != null">,actual_start_time</if>
+		    <if test="actualEndTime != null">,actual_end_time</if>
+		    <if test="success != null">,success</if>
+		    <if test="state != null">,state</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="title != null">#{title,jdbcType=VARCHAR}</if>
+		    <if test="user != null">,#{user,jdbcType=VARCHAR}</if>
+		    <if test="orgId != null">,#{orgId,jdbcType=VARCHAR}</if>
+		    <if test="checkUser != null">,#{checkUser,jdbcType=VARCHAR}</if>
+		    <if test="askStartTime != null">,#{askStartTime,jdbcType=TIMESTAMP}</if>
+		    <if test="askEndTime != null">,#{askEndTime,jdbcType=TIMESTAMP}</if>
+		    <if test="creatTime != null">,#{creatTime,jdbcType=TIMESTAMP}</if>
+		    <if test="projectId != null">,#{projectId,jdbcType=NUMERIC}</if>
+		    <if test="doOrgId != null">,#{doOrgId,jdbcType=VARCHAR}</if>
+		    <if test="manageUser != null">,#{manageUser,jdbcType=VARCHAR}</if>
+		    <if test="doUser != null">,#{doUser,jdbcType=VARCHAR}</if>
+		    <if test="acceptTime != null">,#{acceptTime,jdbcType=TIMESTAMP}</if>
+		    <if test="planStartTime != null">,#{planStartTime,jdbcType=TIMESTAMP}</if>
+		    <if test="planEndTime != null">,#{planEndTime,jdbcType=TIMESTAMP}</if>
+		    <if test="description != null">,#{description,jdbcType=CLOB}</if>
+		    <if test="info != null">,#{info,jdbcType=CLOB}</if>
+		    <if test="planWorkload != null">,#{planWorkload,jdbcType=NUMERIC}</if>
+		    <if test="riskWorkload != null">,#{riskWorkload,jdbcType=NUMERIC}</if>
+		    <if test="actualWorkload != null">,#{actualWorkload,jdbcType=NUMERIC}</if>
+		    <if test="accountWorkload != null">,#{accountWorkload,jdbcType=NUMERIC}</if>
+		    <if test="actualStartTime != null">,#{actualStartTime,jdbcType=TIMESTAMP}</if>
+		    <if test="actualEndTime != null">,#{actualEndTime,jdbcType=TIMESTAMP}</if>
+		    <if test="success != null">,#{success,jdbcType=NUMERIC}</if>
+		    <if test="state != null">,#{state,jdbcType=NUMERIC}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_community_support (title,user,org_id,check_user,ask_start_time,ask_end_time,creat_time,project_id,do_org_id,manage_user,do_user,accept_time,plan_start_time,plan_end_time,description,info,plan_workload,risk_workload,actual_workload,account_workload,actual_start_time,actual_end_time,success,state)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.title,jdbcType = VARCHAR},
+		         #{entity.user,jdbcType = VARCHAR},
+		         #{entity.orgId,jdbcType = VARCHAR},
+		         #{entity.checkUser,jdbcType = VARCHAR},
+		         #{entity.askStartTime,jdbcType = TIMESTAMP},
+		         #{entity.askEndTime,jdbcType = TIMESTAMP},
+		         #{entity.creatTime,jdbcType = TIMESTAMP},
+		         #{entity.projectId,jdbcType = NUMERIC},
+		         #{entity.doOrgId,jdbcType = VARCHAR},
+		         #{entity.manageUser,jdbcType = VARCHAR},
+		         #{entity.doUser,jdbcType = VARCHAR},
+		         #{entity.acceptTime,jdbcType = TIMESTAMP},
+		         #{entity.planStartTime,jdbcType = TIMESTAMP},
+		         #{entity.planEndTime,jdbcType = TIMESTAMP},
+		         #{entity.description,jdbcType = CLOB},
+		         #{entity.info,jdbcType = CLOB},
+		         #{entity.planWorkload,jdbcType = NUMERIC},
+		         #{entity.riskWorkload,jdbcType = NUMERIC},
+		         #{entity.actualWorkload,jdbcType = NUMERIC},
+		         #{entity.accountWorkload,jdbcType = NUMERIC},
+		         #{entity.actualStartTime,jdbcType = TIMESTAMP},
+		         #{entity.actualEndTime,jdbcType = TIMESTAMP},
+		         #{entity.success,jdbcType = NUMERIC},
+		         #{entity.state,jdbcType = NUMERIC}
+				)
+</foreach>
+</insert>
+
+
+<resultMap id="SupportInfoResult" type="map">
+	<id property="id" column="id"/>
+	<result property="orgId" column="org_id"/>
+	<result property="checkUser" column="check_user"/>
+	<result property="askStartTime" column="ask_start_time"/>
+	<result property="askEndTime" column="ask_end_time"/>
+	<result property="creatTime" column="creat_time"/>
+	<result property="projectId" column="project_id"/>
+	<result property="doOrgId" column="do_org_id"/>
+	<result property="manageUser" column="manage_user"/>
+	<result property="doUser" column="do_user"/>
+	<result property="acceptTime" column="accept_time"/>
+	<result property="planStartTime" column="plan_start_time"/>
+	<result property="planEndTime" column="plan_end_time"/>
+	<result property="planWorkload" column="plan_workload"/>
+	<result property="riskWorkload" column="risk_workload"/>
+	<result property="actualWorkload" column="actual_workload"/>
+	<result property="accountWorkload" column="account_workload"/>
+	<result property="actualStartTime" column="actual_start_time"/>
+	<result property="actualEndTime" column="actual_end_time"/>
+	<result property="success" column="success" jdbcType="NUMERIC" javaType="java.lang.Integer"/>
+</resultMap>
+<select id="supportList" parameterType="map" resultMap="SupportInfoResult">
+select s.*,o.org_showname fromOrg,o2.org_showname toOrg,p.name_ projectName,u.user_realname manageUsername 
+from c2_community_support s
+left join td_sm_organization o on s.org_id = o.org_id
+left join zt_project p on s.project_id = p.id
+left join td_sm_organization o2 on s.do_org_id = o2.org_id
+left join td_sm_user u on s.manage_user = u.user_name
+where (s.user=#{username} or s.manage_user=#{username} or s.check_user=#{username} or s.do_user=#{username}) and 
+(<trim prefixOverrides="or">
+	<if test="New">s.state = 0</if>
+	<if test="Accept">or s.state = 1</if>
+	<if test="Done">or s.state = 2</if>
+	<if test="Closed">or s.state = 3</if>
+</trim>)
+<if test="orgId"> and s.org_id = #{orgId}</if>
+<if test="doOrgId"> and s.do_org_id = #{doOrgId}</if>
+</select>
+<select id="supportInfo" resultMap="SupportInfoResult" parameterType="int">
+select s.*,o.org_showname fromOrg,o2.org_showname toOrg,p.name_ projectName,p.code projectCode, u.user_realname userName 
+from c2_community_support s
+left join td_sm_organization o on s.org_id = o.org_id
+left join zt_project p on s.project_id = p.id
+left join td_sm_organization o2 on s.do_org_id = o2.org_id
+left join td_sm_user u on s.user = u.user_name
+where s.id=#{id}
+</select>
+
+<select id="departmentsByIds" parameterType="arraylist" resultType="map">
+select org_id as id,org_showname as name from td_sm_organization where org_id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="array" item="item" separator=",">
+	#{item}
+</foreach>
+</trim>
+</select>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="searchLabel" log="false" className="com.chinacreator.c2.project.issue.LabelService" method="searchLabelList">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>标签查询服务</name>
+  <desc>标签查询服务</desc>
+  <inputs>
+    <input collection="false" desc="" id="condition" required="false" type="java.util.Map"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.condition" name="condition" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+  </params>
+  <return signature="QList&lt;QObject;>;" type="java.util.List"/>
+</CustomRule>

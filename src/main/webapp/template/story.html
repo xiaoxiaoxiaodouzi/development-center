@@ -1,0 +1,50 @@
+<div class="dd" id="treeList">
+	<ol class="dd-list" ng-if="items.length > 0">
+		<li class="dd-item" data-id="{{s.id}}" ng-repeat="s in items" style="border-bottom: 1px solid #f0f0f0;padding: 10px;">
+			<div class="media-body">
+				<div class="lv-title">
+					<a data-ui-sref="project.modules.storyComment({storyid:s.id})">{{s.title}}</a>
+					<span class="p-l-10 p-r-10 m-r-5 label-show" ng-repeat="label in s.labels" ng-click="search.labels=[label]" style="cursor:pointer;background-color: {{label.color}};color:{{getTextColor(label.color)}};border-radius:2px;">{{label.name}}</span>
+				</div>
+
+				<ul class="lv-attrs">
+					<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #6cc644;margin-right: 5px;"
+					 ng-if="s.status=='1'">已打开</span>
+					<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #999;margin-right: 5px;"
+					 ng-if="s.status=='0'">已关闭</span>
+					<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #FF4F3E;margin-right: 5px;"
+					 ng-if="s.status=='2'">已逾期</span>
+					<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #6cc644;margin-right: 5px;"
+					 ng-if="s.status=='3'">已确认</span>
+					<li style=" border: 0;">
+						<i class="md md-today" title="创建时间"></i> {{s.openeddate|date:'yyyy/MM/dd'}}</li>
+					<li style=" border: 0;">
+						<i class="md md-person" title="提出人"></i> {{s.proposer.userRealname}}</li>
+					<li style=" border: 0;">
+						<i class="md md-person-outline" title="负责人"></i> {{s.assignedTo.userRealname}}</li>
+					<li style=" border: 0;">
+						<i class="md md-sort" title="优先级"></i>
+						<span ng-if="s.pri==1">高</span>
+						<span ng-if="s.pri==2">中</span>
+						<span ng-if="s.pri==3">低</span>
+					</li>
+					<li style=" border: 0;" ng-if="s.taskInfo">
+						<i class="md md-format-list-bulleted" title="任务"></i>
+						<span style="font-weight: normal;color: green;">{{s.taskInfo.doneNum}}</span>
+						<span style="margin:0 2px;">/</span>{{s.taskInfo.doneNum+s.taskInfo.undoneNum}}</li>
+					<li style=" border: 0;" ng-if="s.milestone">
+						<i class="md md-av-timer" title="里程碑"></i> {{s.milestone.title}}</li>
+						<li style=" border: 0;">
+								<i class="md md-sort" title="完成度"></i>
+								<span ng-if="s.completes==0">0%</span>
+								<span ng-if="s.completes==1">25%</span>
+								<span ng-if="s.completes==2">50%</span>
+								<span ng-if="s.completes==3">75%</span>
+								<span ng-if="s.completes==4">100%</span>
+							</li>
+				</ul>
+			</div>
+		</li>
+	</ol>
+
+</div>

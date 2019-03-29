@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getCalenderEstimateEventsForApp" log="false" className="com.chinacreator.c2.project.task.TaskService" method="getCalenderEstimateEventsForApp">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>app获取任务工时日历事件</name>
+  <desc>获取任务工时日历时间记录,包含当前任务工时记录的本月工时记录</desc>
+  <inputs>
+    <input collection="false" desc="" id="conditions" required="true" type="java.util.Map"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="@throws ParseException" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.conditions" name="conditions" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

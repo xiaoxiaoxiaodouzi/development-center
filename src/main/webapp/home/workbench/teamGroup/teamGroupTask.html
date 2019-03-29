@@ -1,0 +1,105 @@
+<link href="home/workbench/teamGroup/teamGroup.css" rel="stylesheet">
+<style>
+#detail-panel {
+    height: calc(100% - 113px);
+}
+</style>
+<div class="container m-t-10">
+    <div class="card wr-open">
+    	<div class="card-header">
+			<h2>团队任务统计</h2>
+		</div>
+		<div class="card-body p-b-40">
+			<div class="wr-view">
+			<div class="wkr-tasklist clearfix" >
+				<c2-dropdown id="deptDropdown" tree-options="deptTreeOptions" tree-nodes="deptTree" max-height="200" >
+					<div class="picker">
+						<i class="md md-account-balance" title="部门/组选择"></i> {{selectedDeptNode?"":"指定部门  "}}{{selectedDeptNode.name}}<span class="caret"></span>
+					</div>
+				</c2-dropdown>
+				<c2-date-range-dropdown date-range="dateRange" date-buttons="dateButtons" default-button="thisWeek" buttom-message="未完成的任务按计划结束时间过滤，已完成的按完成时间过滤；入职时间在结束时间之后或者离职时间在开始时间之前的人会自动过滤。">
+	           		<div class="picker picker-white">
+						<i class="md md-today" title="日期选择"></i> {{dateRange.show}}<span class="caret"></span>
+					</div>
+	           	</c2-date-range-dropdown>
+	           	<c2-dropdown class="animate" bind-data="search.users" items="deptUsers" item-name="userRealname" item-id="userName" multiple="true" max-height="200" item-click="selectUser(item)" clean-button="true" after-clean-event="cleanUsers()" filter="true">
+					<div class="picker"><i class="md md-account-child" title="成员选择"></i> {{search.users.length>0?'人员数:'+search.users.length:'选择人员'}}<span class="caret"></span></div>
+				</c2-dropdown>
+				<c2-dropdown class="animate" bind-data="search.projects" items="projectOptions" item-name="name" multiple="true" max-height="200" clean-button="true" filter="true">
+					<div class="picker"><i class="md md-apps" title="项目选择"></i> {{search.projects.length>0?'项目数:'+search.projects.length:'选择项目'}}<span class="caret"></span></div>
+				</c2-dropdown>
+            
+				<label class="checkbox checkbox-inline m-l-20" title="显示未完成的任务">
+	                <input type="checkbox" ng-model="search.NotDone"/>
+	                <i class="input-helper"></i> 未完成
+	            </label>
+	            <label class="checkbox checkbox-inline m-l-10" title="显示已完成未关闭的任务">
+	                <input type="checkbox" ng-model="search.Done"/>
+	                <i class="input-helper"></i> 已完成
+	            </label>
+	            <label class="checkbox checkbox-inline m-l-10 m-r-10" title="显示已完成关闭了的任务">
+	                <input type="checkbox" ng-model="search.Closed"/>
+	                <i class="input-helper"></i> 已关闭
+	            </label>
+	            	             
+				<table class="table table-hover m-b-0" class="teamGroupTable">
+					<thead>
+						<tr style="border-bottom: 2px solid #f0f0f0;border-top: 1px solid #eee;">
+							<th class="p-l-20">任务</th>
+							<th style="width: 120px; text-align: center;">是否补录</th>
+							<th style="width: 120px; text-align: center;">所属项目</th>
+							<th style="width: 100px; text-align: center;" title="未完成任务显示截止日期，已完成任务显示完成日期">截止/完成日期</th>
+							<th style="width: 60px; text-align: center;">工时</th>
+						</tr>
+					</thead>
+					<tbody ng-repeat="userGroup in teamTaskList">
+						<tr ng-if="userGroup.estimate!=0" ng-click="userGroup.show=!userGroup.show">
+							<td colspan="5" class="w-title p-l-10 cursor-pointer">
+								<strong class="f-14 pull-left w-width">{{userGroup.userRealname}}<span ng-if="userGroup.userIsvalid!=1" title="离职日期：{{userGroup.leaveDate | date:'yyyy-MM-dd'}}">(离职)</span></strong>
+								 工时总计：{{userGroup.consumed}}/{{userGroup.estimate}}
+								<span class="pull-right" ng-if="userGroup.show">
+									<i class="md-expand-more c-blue f-20"></i>
+								</span> 
+								<span class="pull-right" ng-if="!userGroup.show">
+									<i class="md-expand-less c-blue f-20"></i>
+								</span>
+							</td>
+						</tr>
+						<tr ng-if="userGroup.estimate==0">
+							<td colspan="5" class="w-title p-l-10">
+								<strong class="f-14 pull-left w-width">{{userGroup.userRealname}}<span ng-if="userGroup.userIsvalid!=1" title="离职日期：{{userGroup.leaveDate | date:'yyyy-MM-dd'}}">(离职)</span></strong>
+								 工时总计：{{userGroup.consumed}}/{{userGroup.estimate}}
+							</td>
+						</tr>
+						<tr ng-repeat="task in userGroup.tasks" ng-hide="userGroup.show">
+							<td class="column p-l-20 text-left">
+								<a class="text-line-hidden" data-ui-sref="home.workbench.teamTask.detail({taskId:'{{task.id}}'})" title="{{task.name}}" >
+									<span ng-if="!task.isDone" class="bug-block bug-FixLater">未完成</span>
+									<span ng-if="task.isDone&&!task.closed" class="bug-block bug-New">已完成</span>
+									<span ng-if="task.isDone&&task.closed" class="bug-block bug-Closed">已关闭</span>
+									{{task.name}}
+								</a>
+							</td>
+							<td class="column">
+								<div class="text-line-hidden">
+									<span ng-if="task.isCollection" class="bug-block bug-Fixed">补录</span>
+									<span ng-if="!task.isCollection" class="bug-block bug-Normal">正常</span>
+								</div>
+							</td>
+							<td class="column"><div title="{{task.projectName}}" class="text-line-hidden">{{task.projectName}}</div></td>
+							<td class="column"><span ng-if="task.isDone">{{task.finishedDate | date:"yyyy-MM-dd"}}</span><span ng-if="!task.isDone">{{task.deadline | date:"yyyy-MM-dd"}}</span></td>
+							<td class="column"><span>{{task.consumed}}/{{task.estimate}}</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+    
+	</div>
+</div>
+
+<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;top:113px">
+    <ui-view onload="stateOnload()"></ui-view>
+</aside>
+

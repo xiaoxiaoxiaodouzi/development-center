@@ -1,0 +1,199 @@
+<style>
+.left-menu{
+	position: fixed;
+	width: 268px;
+	height: 100%;
+	background: #F5F5F5 !important;
+}
+.right-team-content{
+	position: relative;
+	width: calc(100% - 268px);
+	/*background: #ffffff;
+	left: 268px; */
+	padding: 0 20px;
+	/* min-height: 880px;
+	height: auto; */
+}
+.board-group::-webkit-scrollbar{
+	width: 6px;
+  	background-color: #e5e5e5;
+}
+.board-group::-webkit-scrollbar-thumb{
+	background-color: #a6a6a6;
+}
+.instanceSearch{
+ 	height: 34px;
+    background: #E8E8E8;
+    border: none;
+    margin: 0 20px;
+    border-radius: 3px;
+    width: 228px;
+    padding-left: 33px;
+    font-size: 14px;
+}
+.md-search-ico{
+	position: relative;
+    top: 30px;
+    left: 30px;
+    font-size: 18px;
+    color: #A9A9A9;
+}
+@media (min-width: 1200px){
+	body.sw-toggled #content {
+	    padding: 0px 0 30px 268px;
+	}
+}
+.board-group {
+    overflow-y: auto;
+}
+</style>
+<div ng-if="testMenu" class="container">
+	<div class="left-menu" id="sidebar" style="top:130px;height: calc(100% - 133px);">
+	   	 <div class="sidebar-inner c-overflow">
+	   	 	<div style="position: fixed;z-index: 5;background: #F5F5F5 !important;width: 268px;">
+	   	 	<i class="md md-search md-search-ico"></i>
+		   	 <input type="text" ng-model="base.treeSearch" class="instanceSearch" placeholder="搜索">
+		   	 </div>
+	  		<!-- 实例树 -->
+			<ul id="instanceTree" class="ztree tree-transparent" style="top: 95px;position: relative;padding: 0 5px 0 15px;"></ul>
+    	  </div>
+	   </div>
+	   <div class="right-team-content m-t-10" data-ui-view style="padding:0;background: #ffffff;left: 268px;"></div>
+</div>
+
+<div class="container m-t-10" ng-if="!testMenu">
+    <div class="unauthorized">
+            <h2>对不起!</h2>
+            <small>您没有权限访问测试执行!</small>
+            
+            <footer>
+                <a href="javascript:void(0)" onClick="history.go(-1);return true;" title="返回"><i class="md md-arrow-back"></i></a>
+                <a data-ui-sref="project.home" title="项目首页"><i class="md md-home"></i></a>
+            </footer>
+     </div>
+</div>
+
+<script>
+angular.module("project").registerCtrl('instanceTreeController',
+	function($scope, $http, $state, $stateParams, $timeout,Messenger,debounce, $rootScope,$ocLazyLoad){
+	$scope.testMenu = true;
+	
+	$http.post("ws/isPermitedMap",{permExprs:[$stateParams.project+"##test_menu"]})
+	.success(function(data){
+		$scope.testMenu = data.result[$stateParams.project+"##test_menu"];
+	});
+	
+	//ztree setting
+	$scope.treeOptions = {
+		data: {
+			simpleData: {
+				enable: true,
+				idKey:"tid",
+				pIdKey: "tpid",
+				rootPId: 0
+	        }
+	    },
+	    callback:{
+	    	onClick:function caseClick(event, treeId, treeNode,clickFlag) {
+	    		if(treeNode.type!="type"){
+    				$('#'+treeNode.tId).attr("data-ui-sref-active","active");
+    		    	$('#'+treeNode.tId+'_a').removeAttr("onclick").attr("data-ui-sref","project.instanceTree.instance({instanceId:"+treeNode.id+",planId:"+$stateParams.planId+"})");
+    		    	$('#'+treeNode.tId+'_a').removeAttr("target").attr("href","#/project/"+$stateParams.project+"/plan/"+$stateParams.planId+"/instance/"+treeNode.id);
+    		    }else{
+    		    	$('#'+treeNode.tId).attr("data-ui-sref-active","active");
+    		    	$('#'+treeNode.tId+'_a').removeAttr("onclick").attr("data-ui-sref","project.instanceTree.list({planId:"+$stateParams.planId+",typeId:"+treeNode.id+"})");
+    		    	$('#'+treeNode.tId+'_a').removeAttr("target").attr("href","#/project/"+$stateParams.project+"/plan/"+$stateParams.planId+"/type/"+treeNode.id);
+    		    }
+	    	}
+	    }
+	}
+		
+	//treeNode
+	$http.post("ws/getInstanceTreeById",{planId:$stateParams.planId}).success(function(data){
+		for(var i=0;i<data.result.length;i++){
+			if(data.result[i].result && data.result[i].result=='成功'){
+				data.result[i].iconSkin = "success";
+			}
+			if(data.result[i].result && data.result[i].result=='失败'){
+				data.result[i].iconSkin = "fail";
+			}
+			if(data.result[i].result && data.result[i].result=='待核查'){
+				data.result[i].iconSkin = "examine";
+			}
+			if(data.result[i].result && data.result[i].result=='阻塞'){
+				data.result[i].iconSkin = "test";
+			}
+			if(data.result[i].result && data.result[i].result=='不可用'){
+				data.result[i].iconSkin = "disable";
+			}
+		}
+		$scope.treeNodes = data.result;
+	})
+	//加载ztree
+	$ocLazyLoad.load([ 'assets/ztree/jquery.ztree.all.min.js', 'assets/ztree/zTreeStyle.css' ])
+	.then(function(){
+		$scope.$watch("treeNodes", function(v) {
+			if (angular.isUndefined(v))
+				return;
+			$scope.instanceTree = $.fn.zTree.init($("#instanceTree"), $scope.treeOptions, $scope.treeNodes);
+			$scope.base = {treeSearch:""};
+		});
+	})
+	
+	//搜索用例信息
+	var treeSearch = debounce(function(nv,ov){
+		if(angular.isUndefined(nv)) return;
+		var allNodes = $scope.instanceTree.transformToArray($scope.instanceTree.getNodes());
+		$scope.instanceTree.hideNodes(allNodes);
+		var nodes = [];
+		if(nv==''||nv==null){
+			nodes = $scope.instanceTree.getNodesByParam("type", "case", null);
+		}else{
+			/* var cases = $scope.instanceTree.getNodesByParamFuzzy("name", nv, null);
+			for(var i=0;i<cases.length;i++){
+				if(cases[i].type=='case'){
+					nodes.push(cases[i]);
+				}
+			} */
+			nodes = $scope.instanceTree.getNodesByParamFuzzy("name", nv, null);
+		}
+		if(nodes.length==0){
+			Messenger.post("未找到符合条件的用例");
+			return
+		}else{
+			var shouldShowNodes = [];
+    		angular.forEach(nodes,function(node,n){
+    			//expandNodeCascade(node);
+    			nodeParents(shouldShowNodes,node);
+    		});
+    		$scope.instanceTree.showNodes(shouldShowNodes.concat(nodes));
+    		$scope.instanceTree.expandAll(true);
+		}
+	},500);
+	
+	//树搜索字段
+	$scope.$watch("base.treeSearch", function(v) {
+		treeSearch(v);
+	});
+	
+	//展开节点
+    function expandNodeCascade(node){
+    	var pn = node.getParentNode();
+        if(pn){
+        	if(!pn.open){
+        		$scope.instanceTree.expandNode(pn,true,true,false);
+        	}else{
+        		expandNodeCascade(pn);
+        	}
+        }
+    }
+    //节点的所有父节点
+    function nodeParents(nodeArray,node){
+    	var parentNode = node.getParentNode();
+    	if(parentNode!=null){
+    		nodeArray.push(parentNode);
+    		nodeParents(nodeArray,parentNode);
+    	}
+    }
+})
+</script>

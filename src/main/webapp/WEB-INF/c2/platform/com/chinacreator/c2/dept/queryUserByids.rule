@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="queryUserByids" log="false" className="com.chinacreator.c2.uop.OrgUserService" method="queryUserByids">
+  <name>查询用户详情</name>
+  <inputs>
+    <input collection="false" desc="" id="ids" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.ids" name="ids" signature="QList&lt;QString;>;" type="java.util.List"/>
+  </params>
+  <return signature="QList&lt;QUser;>;" type="java.util.List"/>
+</CustomRule>

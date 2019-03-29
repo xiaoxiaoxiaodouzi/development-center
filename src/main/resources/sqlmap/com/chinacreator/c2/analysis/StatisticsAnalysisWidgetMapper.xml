@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.analysis.StatisticsAnalysisWidgetMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  C2_STATISTIC_ANALYSIS_WIDGET.id ,
+		  C2_STATISTIC_ANALYSIS_WIDGET.category ,
+		  C2_STATISTIC_ANALYSIS_WIDGET.type ,
+		  C2_STATISTIC_ANALYSIS_WIDGET.display_name ,
+		  C2_STATISTIC_ANALYSIS_WIDGET.description ,
+		  C2_STATISTIC_ANALYSIS_WIDGET.enabled ,
+		  C2_STATISTIC_ANALYSIS_WIDGET.icon 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and C2_STATISTIC_ANALYSIS_WIDGET.id = #{id}</if>
+	    <if test="category != null">and C2_STATISTIC_ANALYSIS_WIDGET.category = #{category}</if>
+	    <if test="type != null">and C2_STATISTIC_ANALYSIS_WIDGET.type = #{type}</if>
+	    <if test="displayName != null">and C2_STATISTIC_ANALYSIS_WIDGET.display_name = #{displayName}</if>
+	    <if test="description != null">and C2_STATISTIC_ANALYSIS_WIDGET.description = #{description}</if>
+	    <if test="enabled != null">and C2_STATISTIC_ANALYSIS_WIDGET.enabled = #{enabled}</if>
+	    <if test="icon != null">and C2_STATISTIC_ANALYSIS_WIDGET.icon = #{icon}</if>
+</sql>
+
+
+<!-- ElementID:StatisticsAnalysisWidgetResult,Generated=true -->
+<resultMap id="StatisticsAnalysisWidgetResult" type="com.chinacreator.c2.analysis.StatisticsAnalysisWidget">
+	<id property="id" column="id"/>
+	<result property="category" column="category"/>
+	<result property="type" column="type"/>
+	<result property="displayName" column="display_name"/>
+	<result property="description" column="description"/>
+	<result property="enabled" column="enabled"/>
+	<result property="icon" column="icon"/>
+</resultMap>
+
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.analysis.StatisticsAnalysisWidget" resultType="int">
+	select count(*) from C2_STATISTIC_ANALYSIS_WIDGET 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.analysis.StatisticsAnalysisWidget">
+	update C2_STATISTIC_ANALYSIS_WIDGET
+<set>
+	<if test="category != null">category=#{category,jdbcType=NUMERIC},</if>
+	<if test="type != null">type=#{type,jdbcType=VARCHAR},</if>
+	<if test="displayName != null">display_name=#{displayName,jdbcType=VARCHAR},</if>
+	<if test="description != null">description=#{description,jdbcType=VARCHAR},</if>
+	<if test="enabled != null">enabled=#{enabled,jdbcType=CHAR},</if>
+	<if test="icon != null">icon=#{icon,jdbcType=VARCHAR}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update C2_STATISTIC_ANALYSIS_WIDGET
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="category==null">category = null,</if>
+		    <if test="type==null">type = null,</if>
+		    <if test="displayName==null">display_name = null,</if>
+		    <if test="description==null">description = null,</if>
+		    <if test="enabled==null">enabled = null,</if>
+		    <if test="icon==null">icon = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.analysis.StatisticsAnalysisWidget">
+    delete from C2_STATISTIC_ANALYSIS_WIDGET where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.analysis.StatisticsAnalysisWidget" resultMap="StatisticsAnalysisWidgetResult">
+	select 
+		<include refid="column_sql"/>
+	    from C2_STATISTIC_ANALYSIS_WIDGET 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from C2_STATISTIC_ANALYSIS_WIDGET where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	<choose>
+		<when test="@com.chinacreator.c2.dao.util.EntityBeanUtil@isEntityObj(entity)">#{entity.id}</when>
+		<otherwise>#{entity}</otherwise>
+	</choose>
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="StatisticsAnalysisWidgetResult">
+	select 
+		<include refid="column_sql"/>
+	    from C2_STATISTIC_ANALYSIS_WIDGET 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="StatisticsAnalysisWidgetResult">
+	select 
+		<include refid="column_sql"/>
+	    from C2_STATISTIC_ANALYSIS_WIDGET 
+		 where C2_STATISTIC_ANALYSIS_WIDGET.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.analysis.StatisticsAnalysisWidget" resultMap="StatisticsAnalysisWidgetResult">
+	select 
+		<include refid="column_sql"/>
+	    from C2_STATISTIC_ANALYSIS_WIDGET 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="StatisticsAnalysisWidgetResult">
+select 
+	<include refid="column_sql"/> 
+	from C2_STATISTIC_ANALYSIS_WIDGET 
+	where C2_STATISTIC_ANALYSIS_WIDGET.id in (
+		select distinct id from C2_STATISTIC_ANALYSIS_WIDGET inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from C2_STATISTIC_ANALYSIS_WIDGET 
+			<where>
+	        <if test="entity.id != null">and C2_STATISTIC_ANALYSIS_WIDGET.id = #{entity.id}</if>
+	        <if test="entity.category != null">and C2_STATISTIC_ANALYSIS_WIDGET.category = #{entity.category}</if>
+	        <if test="entity.type != null">and C2_STATISTIC_ANALYSIS_WIDGET.type = #{entity.type}</if>
+	        <if test="entity.displayName != null">and C2_STATISTIC_ANALYSIS_WIDGET.display_name = #{entity.displayName}</if>
+	        <if test="entity.description != null">and C2_STATISTIC_ANALYSIS_WIDGET.description = #{entity.description}</if>
+	        <if test="entity.enabled != null">and C2_STATISTIC_ANALYSIS_WIDGET.enabled = #{entity.enabled}</if>
+	        <if test="entity.icon != null">and C2_STATISTIC_ANALYSIS_WIDGET.icon = #{entity.icon}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.analysis.StatisticsAnalysisWidget" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into C2_STATISTIC_ANALYSIS_WIDGET(
+		<trim prefixOverrides=",">
+		    <if test="category != null">category</if>
+		    <if test="type != null">,type</if>
+		    <if test="displayName != null">,display_name</if>
+		    <if test="description != null">,description</if>
+		    <if test="enabled != null">,enabled</if>
+		    <if test="icon != null">,icon</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="category != null">#{category,jdbcType=NUMERIC}</if>
+		    <if test="type != null">,#{type,jdbcType=VARCHAR}</if>
+		    <if test="displayName != null">,#{displayName,jdbcType=VARCHAR}</if>
+		    <if test="description != null">,#{description,jdbcType=VARCHAR}</if>
+		    <if test="enabled != null">,#{enabled,jdbcType=CHAR}</if>
+		    <if test="icon != null">,#{icon,jdbcType=VARCHAR}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into C2_STATISTIC_ANALYSIS_WIDGET (category,type,display_name,description,enabled,icon)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.category,jdbcType = NUMERIC},
+		         #{entity.type,jdbcType = VARCHAR},
+		         #{entity.displayName,jdbcType = VARCHAR},
+		         #{entity.description,jdbcType = VARCHAR},
+		         #{entity.enabled,jdbcType = CHAR},
+		         #{entity.icon,jdbcType = VARCHAR}
+				)
+</foreach>
+</insert>
+
+<!-- ElementID:selectUnion,Generated=true -->
+<select id="selectUnion" parameterType="list" resultMap="StatisticsAnalysisWidgetResult">
+select 
+	<include refid="column_sql"/> 
+	from C2_STATISTIC_ANALYSIS_WIDGET 
+	 INNER JOIN
+<foreach collection="list" item="entity" separator="UNION" open="(" close=")">
+		SELECT 
+			 id
+		FROM C2_STATISTIC_ANALYSIS_WIDGET 
+			<where>
+	        <if test="entity.id != null">and C2_STATISTIC_ANALYSIS_WIDGET.id = #{entity.id}</if>
+	        <if test="entity.category != null">and C2_STATISTIC_ANALYSIS_WIDGET.category = #{entity.category}</if>
+	        <if test="entity.type != null">and C2_STATISTIC_ANALYSIS_WIDGET.type = #{entity.type}</if>
+	        <if test="entity.displayName != null">and C2_STATISTIC_ANALYSIS_WIDGET.display_name = #{entity.displayName}</if>
+	        <if test="entity.description != null">and C2_STATISTIC_ANALYSIS_WIDGET.description = #{entity.description}</if>
+	        <if test="entity.enabled != null">and C2_STATISTIC_ANALYSIS_WIDGET.enabled = #{entity.enabled}</if>
+	        <if test="entity.icon != null">and C2_STATISTIC_ANALYSIS_WIDGET.icon = #{entity.icon}</if>
+			</where>
+</foreach>
+	c2_temp_table ON C2_STATISTIC_ANALYSIS_WIDGET.id = c2_temp_table.id
+</select>
+</mapper>

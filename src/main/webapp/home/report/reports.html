@@ -1,0 +1,88 @@
+<style>
+.lv-project-search .search-input{
+	height: 21px;
+    border: none;
+    background-color: #f8f8f8;
+}
+.lv-project-search>i{
+	font-size: 20px;
+    line-height: 100%;
+    color: grey;
+}
+.lv-project-search{
+    border: 1px solid #d9d9d9;
+    height: 30px;
+    line-height: 18px;
+    display: inline-block;
+    padding: 4px 12px 4px 8px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter,
+.animate-repeat.ng-leave {
+  transition:all linear 0.5s;
+}
+
+.animate-repeat.ng-leave.ng-leave-active,
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter {
+  opacity:0;
+}
+
+.animate-repeat.ng-leave,
+.animate-repeat.ng-move.ng-move-active,
+.animate-repeat.ng-enter.ng-enter-active {
+  opacity:1;
+}
+</style>
+
+<div class="container">
+<div class="card m-t-20">
+    	<div class="card-header">
+			<h2>
+				报表中心
+				<small>总计<span class="num">{{$params.page.total}}</span>个项目 &nbsp; </small>
+			</h2> 
+		</div>
+		
+		<div class="card-body clearfix">
+        	<div class="listview lv-bordered lv-lg">
+        
+	        	<!-- 搜索 -->
+	            <div class="lv-header-alt">
+						<div class="lv-project-search pull-right" >
+					           <i class="md md-search"></i>
+					           <input class="search-input" type="text" ng-model="$params.projectSearch" placeholder="搜索...">
+					      </div>
+	             </div>
+
+					<div ng-if="$params.projectList.length==0" class="lv-item list-show-animate text-center p-20">没有查到任何项目。</div>
+					<!-- 项目列表 -->
+	           		<div class="lv-item media animate-repeat" ng-repeat="project in $params.projectList | filter:{projectName:$params.projectSearch}">
+	                    <div class="pull-left p-r-10" >
+	                   		<img ng-src="{{project.pic}}" style="width:175px;height:75px" />
+	                   	</div>
+	                    <div class="media-body">
+	                        <a class="lv-title pull-left m-t-5" data-ui-sref="home.report.summary({project:'{{project.projectId}}'})">
+								{{project.projectName}}
+	                        </a>
+	                        <div class="clearfix"></div>
+	                        <ul class="lv-attrs m-t-15"> 
+	                            <li title="成员数量">成员数量：{{project.memberNum?project.memberNum:'-'}}</li>
+	                            <li title="任务已完成/总数">任务数量：{{project.finishedTaskNum?project.finishedTaskNum:'-'}}/{{project.taskNum?project.taskNum:'-'}}</li>
+	                            <li title="工时已消耗/总数">任务工时：{{project.consumedCount?project.consumedCount:'-'}}/{{project.consumedCount?project.consumedCount:'-'}}</li>
+	                            <li title="需求已完成/总数">需求数量：{{project.finishedStoryNum?project.finishedStoryNum:'-'}}/{{project.storyNum?project.storyNum:'-'}}</li>
+	                            <li title="里程碑已完成/总数">里程碑数量：{{project.finishedMilestoneNum?project.finishedMilestoneNum:'-'}}/{{project.milestoneNum?project.milestoneNum:'-'}}</li>
+	                        </ul>
+	                    </div>
+	                    
+	                 </div>
+				</div>
+        	</div>
+        </div>
+
+    </div>
+</div>
+

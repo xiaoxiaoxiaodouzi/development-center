@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="updateTaskLabels" log="false" className="com.chinacreator.c2.project.task.TaskService" method="updateTaskLabels">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>更新任务标签</name>
+  <inputs>
+    <input collection="false" desc="" id="taskId" required="true" type="int"/>
+    <input collection="false" desc="" id="labels" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.taskId" name="taskId" signature="I" type="int"/>
+    <param autoValue="Input.labels" name="labels" signature="QList&lt;QLabelTask;>;" type="java.util.List"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

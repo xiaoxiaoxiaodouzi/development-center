@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="bug/changeBugStatus" log="false" className="com.chinacreator.c2.project.bug.BugService" method="changeBugStatus">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>修改bug状态</name>
+  <inputs>
+    <input collection="false" desc="" id="bugId" required="true" type="java.lang.Integer"/>
+    <input collection="false" desc="" id="status" required="true" type="java.lang.Integer"/>
+    <input collection="false" desc="" id="comment" required="false"/>
+    <input collection="false" desc="" id="bugVersion" required="false"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.bugId" name="bugId" signature="QInteger;" type="java.lang.Integer"/>
+    <param autoValue="Input.status" name="status" signature="QInteger;" type="java.lang.Integer"/>
+    <param autoValue="Input.comment" name="comment" signature="QString;" type="java.lang.String"/>
+    <param autoValue="Input.bugVersion" name="bugVersion" signature="QString;" type="java.lang.String"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

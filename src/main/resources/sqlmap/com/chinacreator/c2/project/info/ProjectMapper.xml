@@ -1,0 +1,962 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.info.ProjectMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  zt_project.id ,
+		  zt_project.name_ ,
+		  zt_project.code ,
+		  zt_project.status_ ,
+		  zt_project.description ,
+		  zt_project.create_date ,
+		  zt_project.arc_status ,
+		  zt_project.brief ,
+		  zt_project.pic ,
+		  zt_project.icon ,
+		  zt_project.link ,
+		  zt_project.cloud_link ,
+		  zt_project.publish ,
+		  zt_project.cloud_publish ,
+		  zt_project.owner ,
+		  zt_project.contract_no 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and zt_project.id = #{id}</if>
+	    <if test="name != null">and zt_project.name_ = #{name}</if>
+	    <if test="code != null">and zt_project.code = #{code}</if>
+	    <if test="status != null">and zt_project.status_ = #{status}</if>
+	    <if test="description != null">and zt_project.description = #{description}</if>
+	    <if test="createDate != null">and zt_project.create_date = #{createDate}</if>
+	    <if test="arcStatus != null">and zt_project.arc_status = #{arcStatus}</if>
+	    <if test="brief != null">and zt_project.brief = #{brief}</if>
+	    <if test="pic != null">and zt_project.pic = #{pic}</if>
+	    <if test="icon != null">and zt_project.icon = #{icon}</if>
+	    <if test="link != null">and zt_project.link = #{link}</if>
+	    <if test="cloudLink != null">and zt_project.cloud_link = #{cloudLink}</if>
+	    <if test="publish != null">and zt_project.publish = #{publish}</if>
+	    <if test="cloudPublish != null">and zt_project.cloud_publish = #{cloudPublish}</if>
+	    <if test="owner != null">and zt_project.owner = #{owner}</if>
+	    <if test="contractNo != null">and zt_project.contract_no = #{contractNo}</if>
+</sql>
+
+
+<!-- ElementID:ProjectResult,Generated=true -->
+<resultMap id="ProjectResult" type="com.chinacreator.c2.project.info.Project">
+	<id property="id" column="id"/>
+	<result property="name" column="name_"/>
+	<result property="code" column="code"/>
+	<result property="status" column="status_"/>
+	<result property="description" column="description"/>
+	<result property="createDate" column="create_date"/>
+	<result property="arcStatus" column="arc_status"/>
+	<result property="brief" column="brief"/>
+	<result property="pic" column="pic"/>
+	<result property="icon" column="icon"/>
+	<result property="link" column="link"/>
+	<result property="cloudLink" column="cloud_link"/>
+	<result property="publish" column="publish"/>
+	<result property="cloudPublish" column="cloud_publish"/>
+	<result property="owner" column="owner"/>
+	<result property="contractNo" column="contract_no"/>
+</resultMap>
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.info.Project" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into zt_project(
+		<trim prefixOverrides=",">
+		    <if test="name != null">name_</if>
+		    <if test="code != null">,code</if>
+		    <if test="status != null">,status_</if>
+		    <if test="description != null">,description</if>
+		    <if test="createDate != null">,create_date</if>
+		    <if test="arcStatus != null">,arc_status</if>
+		    <if test="brief != null">,brief</if>
+		    <if test="pic != null">,pic</if>
+		    <if test="icon != null">,icon</if>
+		    <if test="link != null">,link</if>
+		    <if test="cloudLink != null">,cloud_link</if>
+		    <if test="publish != null">,publish</if>
+		    <if test="cloudPublish != null">,cloud_publish</if>
+		    <if test="owner != null">,owner</if>
+		    <if test="contractNo != null">,contract_no</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="name != null">#{name,jdbcType=VARCHAR}</if>
+		    <if test="code != null">,#{code,jdbcType=VARCHAR}</if>
+		    <if test="status != null">,#{status,jdbcType=VARCHAR}</if>
+		    <if test="description != null">,#{description,jdbcType=VARCHAR}</if>
+		    <if test="createDate != null">,#{createDate,jdbcType=TIMESTAMP}</if>
+		    <if test="arcStatus != null">,#{arcStatus,jdbcType=CHAR}</if>
+		    <if test="brief != null">,#{brief,jdbcType=VARCHAR}</if>
+		    <if test="pic != null">,#{pic,jdbcType=VARCHAR}</if>
+		    <if test="icon != null">,#{icon,jdbcType=VARCHAR}</if>
+		    <if test="link != null">,#{link,jdbcType=VARCHAR}</if>
+		    <if test="cloudLink != null">,#{cloudLink,jdbcType=VARCHAR}</if>
+		    <if test="publish != null">,#{publish,jdbcType=CHAR}</if>
+		    <if test="cloudPublish != null">,#{cloudPublish,jdbcType=CHAR}</if>
+		    <if test="owner != null">,#{owner,jdbcType=VARCHAR}</if>
+		    <if test="contractNo != null">,#{contractNo,jdbcType=VARCHAR}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.info.Project" resultType="int">
+	select count(*) from zt_project 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.info.Project">
+	update zt_project
+<set>
+	<if test="name != null">name_=#{name,jdbcType=VARCHAR},</if>
+	<if test="code != null">code=#{code,jdbcType=VARCHAR},</if>
+	<if test="status != null">status_=#{status,jdbcType=VARCHAR},</if>
+	<if test="description != null">description=#{description,jdbcType=VARCHAR},</if>
+	<if test="createDate != null">create_date=#{createDate,jdbcType=TIMESTAMP},</if>
+	<if test="arcStatus != null">arc_status=#{arcStatus,jdbcType=CHAR},</if>
+	<if test="brief != null">brief=#{brief,jdbcType=VARCHAR},</if>
+	<if test="pic != null">pic=#{pic,jdbcType=VARCHAR},</if>
+	<if test="icon != null">icon=#{icon,jdbcType=VARCHAR},</if>
+	<if test="link != null">link=#{link,jdbcType=VARCHAR},</if>
+	<if test="cloudLink != null">cloud_link=#{cloudLink,jdbcType=VARCHAR},</if>
+	<if test="publish != null">publish=#{publish,jdbcType=CHAR},</if>
+	<if test="cloudPublish != null">cloud_publish=#{cloudPublish,jdbcType=CHAR},</if>
+	<if test="owner != null">owner=#{owner,jdbcType=VARCHAR},</if>
+	<if test="contractNo != null">contract_no=#{contractNo,jdbcType=VARCHAR}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:update,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update zt_project
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="name==null">name_ = null,</if>
+		    <if test="code==null">code = null,</if>
+		    <if test="status==null">status_ = null,</if>
+		    <if test="description==null">description = null,</if>
+		    <if test="createDate==null">create_date = null,</if>
+		    <if test="arcStatus==null">arc_status = null,</if>
+		    <if test="brief==null">brief = null,</if>
+		    <if test="pic==null">pic = null,</if>
+		    <if test="icon==null">icon = null,</if>
+		    <if test="link==null">link = null,</if>
+		    <if test="cloudLink==null">cloud_link = null,</if>
+		    <if test="publish==null">publish = null,</if>
+		    <if test="cloudPublish==null">cloud_publish = null,</if>
+		    <if test="owner==null">owner = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.info.Project">
+    delete from zt_project where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.info.Project" resultMap="ProjectResult">
+	select 
+		<include refid="column_sql"/>
+	    from zt_project 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into zt_project (name_,code,status_,description,create_date,arc_status,brief,pic,icon,link,cloud_link,publish,cloud_publish,owner,contract_no)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.name,jdbcType = VARCHAR},
+		         #{entity.code,jdbcType = VARCHAR},
+		         #{entity.status,jdbcType = VARCHAR},
+		         #{entity.description,jdbcType = VARCHAR},
+		         #{entity.createDate,jdbcType = TIMESTAMP},
+		         #{entity.arcStatus,jdbcType = CHAR},
+		         #{entity.brief,jdbcType = VARCHAR},
+		         #{entity.pic,jdbcType = VARCHAR},
+		         #{entity.icon,jdbcType = VARCHAR},
+		         #{entity.link,jdbcType = VARCHAR},
+		         #{entity.cloudLink,jdbcType = VARCHAR},
+		         #{entity.publish,jdbcType = CHAR},
+		         #{entity.cloudPublish,jdbcType = CHAR},
+		         #{entity.owner,jdbcType = VARCHAR},
+		         #{entity.contractNo,jdbcType = VARCHAR}
+				)
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from zt_project where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	<choose>
+		<when test="@com.chinacreator.c2.dao.util.EntityBeanUtil@isEntityObj(entity)">#{entity.id}</when>
+		<otherwise>#{entity}</otherwise>
+	</choose>
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="ProjectResult">
+	select 
+		<include refid="column_sql"/>
+	    from zt_project 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="ProjectResult">
+	select 
+		<include refid="column_sql"/>
+	    from zt_project 
+		 where zt_project.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.info.Project" resultMap="ProjectResult">
+	select 
+		<include refid="column_sql"/>
+	    from zt_project 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="ProjectResult">
+select 
+	<include refid="column_sql"/> 
+	from zt_project 
+	where zt_project.id in (
+		select distinct id from zt_project inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from zt_project 
+			<where>
+	        <if test="entity.id != null">and zt_project.id = #{entity.id}</if>
+	        <if test="entity.name != null">and zt_project.name_ = #{entity.name}</if>
+	        <if test="entity.code != null">and zt_project.code = #{entity.code}</if>
+	        <if test="entity.status != null">and zt_project.status_ = #{entity.status}</if>
+	        <if test="entity.description != null">and zt_project.description = #{entity.description}</if>
+	        <if test="entity.createDate != null">and zt_project.create_date = #{entity.createDate}</if>
+	        <if test="entity.arcStatus != null">and zt_project.arc_status = #{entity.arcStatus}</if>
+	        <if test="entity.brief != null">and zt_project.brief = #{entity.brief}</if>
+	        <if test="entity.pic != null">and zt_project.pic = #{entity.pic}</if>
+	        <if test="entity.icon != null">and zt_project.icon = #{entity.icon}</if>
+	        <if test="entity.link != null">and zt_project.link = #{entity.link}</if>
+	        <if test="entity.cloudLink != null">and zt_project.cloud_link = #{entity.cloudLink}</if>
+	        <if test="entity.publish != null">and zt_project.publish = #{entity.publish}</if>
+	        <if test="entity.cloudPublish != null">and zt_project.cloud_publish = #{entity.cloudPublish}</if>
+	        <if test="entity.owner != null">and zt_project.owner = #{entity.owner}</if>
+	        <if test="entity.contractNo != null">and zt_project.contract_no = #{entity.contractNo}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<select id="selectProjects" parameterType="list" resultMap="ProjectResult">
+	select 
+		<include refid="column_sql"/> 
+		from zt_project 
+		where zt_project.id in 
+	<foreach collection="list" item="entity" separator="," open="(" close=")">
+			#{entity}
+	</foreach>
+</select>
+
+
+<delete id="deleteMemberByProject">
+    delete from c2_projectuser where project_id = #{projectId}
+</delete>
+<delete id="deleteDocFileByProject">
+    delete from c2_comunity_doc_file where doc_id in (
+    	select id from c2_comunity_doc where project = #{projectId}
+    )
+</delete>
+<delete id="deleteDocByProject">
+    delete from c2_comunity_doc where project = #{projectId}
+</delete>
+<delete id="deleteModuleByProject">
+    delete from zt_module where project_id = #{projectId}
+</delete>
+<delete id="deleteStoryByProject">
+    delete from zt_story where project = #{projectId}
+</delete>
+<delete id="deleteTaskHistoryByProject">
+    delete from c2_comunity_history where action_id in (
+    	select id from c2_comunity_action where project_id = #{projectId}
+    )
+</delete>
+<delete id="deleteTaskActionByProject">
+    delete from c2_comunity_action where project_id = #{projectId}
+</delete>
+<delete id="deleteTaskEstimateByProject">
+    delete from c2_comunity_task_estimate where task_id in (
+    	select id from c2_comunity_task where project_id = #{projectId}
+    )
+</delete>
+<delete id="deleteTaskByProject">
+    delete from c2_comunity_task where project_id = #{projectId}
+</delete>
+<delete id="deleteLabelTaskByProject">
+    delete from c2_comunity_label_task where label_id in (
+    	select id from c2_comunity_label where project = #{projectId}
+    )
+</delete>
+<delete id="deleteLabelByProject">
+    delete from c2_comunity_label where project = #{projectId}
+</delete>
+<delete id="deleteMilestoneTaskByProject">
+    delete from c2_comunity_milestone_task where mile_stone_id in(
+    	select id from c2_comunity_label where project = #{projectId}
+    )
+</delete>
+<delete id="deleteMilestoneByProject">
+    delete from c2_comunity_label where project = #{projectId}
+</delete>
+
+<delete id="deleteTaskSnapshotByProject">
+    delete from c2_comunity_task_snapshot where report_id in (
+    	select id from c2_comunity_wr where project_id = #{projectId}
+    )
+</delete>
+<delete id="deleteWrSubmit2ByProject">
+    delete from c2_comunity_wr_submit2 where project_id = #{projectId}    
+</delete>
+<delete id="deleteWrStatisticsByProject">
+    delete from c2_comunity_wr_statistics where id in (
+    	select statistics from c2_comunity_wr where project_id = #{projectId}
+    )
+</delete>
+<delete id="deleteWrByProject">
+    delete from c2_comunity_wr where project_id = #{projectId}
+</delete>
+<delete id="deletePreferenceByProject">
+    delete from c2_comunity_project_preference where project_id = #{projectId}
+</delete>
+
+
+<select id="getCurrentUsersProjectIds" resultType="int" parameterType="string">
+		select c2_projectuser.project_id id
+		from c2_projectuser 
+		where c2_projectuser.user_id = #{_parameter,jdbcType=VARCHAR}
+		UNION 
+		select zt_project.id from zt_project 
+		LEFT JOIN c2_comunity_wr_submit2 sub on sub.project_id = zt_project.id 
+		where  zt_project.owner = #{_parameter,jdbcType=VARCHAR}
+</select>
+
+<select id="getProjectStatistics" resultMap="projectStatisticsResult" parameterType="map" useCache="false">
+	select 
+			pro.id,
+			pro.name_,
+			pro.pic,
+			t1.finished_milestone_num,
+			t2.member_num,
+			t3.finished_story_num,
+			t4.finished_task_num,
+			t5.closed_bug_num,
+			t6.bug_num,
+			t7.milestone_num,
+			t8.story_num,
+			t9.task_num,
+			t9.estimate,
+			t9.consumed
+	from zt_project pro
+	LEFT JOIN 
+		(SELECT count(*) finished_milestone_num,c2_comunity_milestone.project_id FROM `c2_comunity_milestone`  where STATUS = 2 GROUP BY project_id) AS t1 ON pro.id = t1.project_id
+	LEFT JOIN 
+		(select 
+			count(*) member_num,PROJECT_ID 
+		from 
+			 (
+				SELECT cp.PROJECT_ID,cp.USER_ID FROM c2_projectuser cp where cp.JOB_ID <![CDATA[>=]]> 10 AND cp.JOB_ID <![CDATA[<=]]> 14
+				UNION 
+				SELECT zp.id PROJECT_ID,zp.`owner` FROM zt_project zp 
+			) tt
+		GROUP BY PROJECT_ID) AS t2 on pro.id = t2.PROJECT_ID
+	LEFT JOIN 
+		(select count(*) finished_story_num,project from zt_story WHERE zt_story.status_ = 0 GROUP BY project) AS t3 on pro.id = t3.project
+	LEFT JOIN 
+		(select count(*) finished_task_num,project_id from c2_comunity_task where is_done = 1 GROUP BY project_id ) AS t4 on pro.id = t4.project_id
+	LEFT JOIN 
+		(select count(*) closed_bug_num,project from c2_community_bug where status_ = 0  GROUP BY project ) AS t5 on pro.id = t5.project
+	LEFT JOIN 
+		(SELECT count(*) bug_num,project FROM c2_community_bug  GROUP BY project) AS t6 ON pro.id = t6.project
+	LEFT JOIN 
+		(SELECT count(*) milestone_num,c2_comunity_milestone.project_id FROM `c2_comunity_milestone`  GROUP BY project_id) AS t7 ON pro.id = t7.project_id
+	LEFT JOIN 
+		(select count(*) story_num,project from zt_story  GROUP BY project) AS t8 on pro.id = t8.project
+	LEFT JOIN 
+		(select count(*) task_num,sum(round(estimate,1)) estimate,sum(round(consumed,1)) consumed,project_id from c2_comunity_task  GROUP BY project_id ) AS t9 on pro.id = t9.project_id
+	<where>
+		<if test="projectIds != null">
+			pro.id in 
+			<foreach collection="projectIds" item="projectId" open="(" close=")" separator=",">
+				 #{projectId,jdbcType=NUMERIC}
+			</foreach>
+		</if>
+	</where>
+</select>
+
+<resultMap type="com.chinacreator.c2.project.service.ProjectSimpleStatistics" id="projectStatisticsResult">
+	<id column="id" property="projectId"/>
+	<result column="name_" property="projectName"/>
+	<result column="finished_milestone_num" property="finishedMilestoneNum"/>
+	<result column="finished_story_num" property="finishedStoryNum"/>
+	<result column="finished_task_num" property="finishedTaskNum"/>
+	<result column="milestone_num" property="milestoneNum"/>
+	<result column="story_num" property="storyNum"/>
+	<result column="task_num" property="taskNum"/>
+	<result column="estimate" property="estimateCount"/>
+	<result column="consumed" property="consumedCount"/>
+	<result column="member_num" property="memberNum"/>
+	<result column="pic" property="pic"/>
+</resultMap>
+
+<resultMap type="map" id="projectKPI4EchartsResult">
+	<id column="week" property="week"/>
+	<result column="year" property="year"/>
+	<result column="create_task_num" property="createTaskNum"/>
+	<result column="create_bug_num" property="createBugNum"/>
+	<result column="finished_task_num" property="finishedTaskNum"/>
+	<result column="closed_bug_num" property="closedBugNum"/>
+	<result column="all_consumed" property="allConsumed"/>
+	<result column="bugfix_comsumed" property="bugFixConsumed"/>
+	<collection property="consumedList" javaType="ArrayList" ofType="map" column="account">
+		<id column="account" property="account"/>
+		<result column="consumed" property="consumed"/>
+		<result column="user_realname" property="userRealname"/>
+	</collection>
+</resultMap>
+
+<select id="getAllProjectEcharts" parameterType="com.chinacreator.c2.report.bean.EchartQueryParams" resultMap="projectKPI4EchartsResult" useCache="false">
+	SELECT 
+		t.`week`,t.`year`,t1.create_task_num,
+		t2.create_bug_num,t3.finished_task_num,
+		t4.closed_bug_num,t5.all_consumed,t6.bugfix_comsumed,
+		t7.account,t7.consumed,t8.user_realname
+	from 
+		(
+		select 
+			wy.`week`,wy.`year` 
+		from 
+			(
+				select 
+						weekofyear(e.work_date) `week`,
+						YEAR (e.work_date) `year` 
+					from 
+						c2_comunity_task_estimate e 
+					where 
+						e.task_id in (select t.id from c2_comunity_task t where t.project_id = #{projectId,jdbcType=NUMERIC}) 
+					GROUP BY
+						weekofyear(e.work_date),
+						YEAR (e.work_date)
+					ORDER BY 
+					    e.work_date desc
+			) wy 
+	<!-- <where>
+		<foreach collection="ranges" item="range" separator="OR" open="(" close=")">
+			<trim prefixOverrides="and">
+				<if test="range.weekStart !=null"> and wy.`week` <![CDATA[>=]]> #{range.weekStart,jdbcType=NUMERIC} </if>
+				<if test="range.weekEnd !=null"> and wy.`week` <![CDATA[<=]]> #{range.weekEnd,jdbcType=NUMERIC} </if>
+				<if test="range.year !=null"> and wy.`year` <![CDATA[<=]]> #{range.year,jdbcType=NUMERIC} </if>
+			</trim>
+		</foreach>
+	</where> -->
+		GROUP BY `year`,`week`
+		) t
+		LEFT JOIN 
+		(SELECT
+			YEAR (t.create_date) `year`,
+			WEEKOFYEAR (t.create_date) `week`,
+			count(*) create_task_num
+		FROM
+			c2_comunity_task t
+		WHERE
+			t.project_id = #{projectId,jdbcType=NUMERIC}
+		GROUP BY
+			WEEKOFYEAR (t.create_date),
+			YEAR (t.create_date)
+		) t1 on t.`week` = t1.`week` and t.`year` = t1.`year` 
+		LEFT JOIN 
+		(
+		SELECT
+			count(*) create_bug_num,
+			weekofyear(b.create_time) `week`,
+			YEAR (b.create_time) `year`
+		FROM
+			c2_community_bug b
+		WHERE
+			b.project = #{projectId,jdbcType=NUMERIC}
+		GROUP BY
+			weekofyear(b.create_time),
+			YEAR (b.create_time)
+		) t2 on t.`year` = t2.`year` and t.`week` = t2.`week`
+		LEFT JOIN 
+		(
+		SELECT
+			count(*) finished_task_num,
+			WEEKOFYEAR (t.deadline) `week`,
+			YEAR (t.deadline) `year`
+		FROM
+			c2_comunity_task t
+		WHERE
+			t.project_id = #{projectId,jdbcType=NUMERIC}
+			and t.is_done = 1
+		GROUP BY
+			WEEKOFYEAR (t.deadline),
+			YEAR (t.deadline)) t3
+		on t.`week` = t3.`week` and t.`year` = t3.`year`
+		LEFT JOIN 
+		(
+		SELECT
+			count(*) closed_bug_num,
+			weekofyear(b.create_time) `week`,
+			YEAR (b.create_time) `year`
+		FROM
+			c2_community_bug b
+		WHERE
+			b.project = #{projectId,jdbcType=NUMERIC}
+			and b.status_ = 0
+		GROUP BY
+			weekofyear(b.create_time),
+			YEAR (b.create_time)
+		) t4 on t.`year` = t4.`year` and t.`week` = t4.`week`
+		LEFT JOIN
+		(select 
+			SUM(ROUND(e.consumed,1)) all_consumed,
+			weekofyear(e.work_date) `week`,
+			YEAR (e.work_date) `year` 
+		from 
+			c2_comunity_task_estimate e 
+		where e.task_id in (select t.id from c2_comunity_task t where t.project_id = #{projectId,jdbcType=NUMERIC})
+		GROUP BY
+			weekofyear(e.work_date),
+			YEAR (e.work_date)
+		)t5 on t.`year` = t5.`year` and t.`week` = t5.`week`
+		LEFT JOIN
+		(select 
+			SUM(ROUND(e.consumed,1)) bugfix_comsumed,
+			weekofyear(e.work_date) `week`,
+			YEAR (e.work_date) `year` 
+		from 
+			c2_comunity_task_estimate e 
+		where 
+			e.task_id in (select t.id from c2_comunity_task t where t.project_id = #{projectId,jdbcType=NUMERIC} and t.bug_id is not null)
+		GROUP BY
+			weekofyear(e.work_date),
+			YEAR (e.work_date)
+		)t6 on t.`year` = t6.`year` and t.`week` = t6.`week`
+		LEFT JOIN
+		(
+			select 
+				`year`,`week`,consumed,account 
+			from 
+				(
+					SELECT DISTINCT
+						(e.account) user_name
+					FROM
+						c2_comunity_task_estimate e
+					WHERE
+						e.task_id IN (
+							SELECT
+								t.id
+							FROM
+								c2_comunity_task t
+							WHERE
+								t.project_id = #{projectId,jdbcType=NUMERIC}
+						)
+				) tt
+				LEFT JOIN 
+				(
+					select 
+						SUM(ROUND(e.consumed,1)) consumed,
+						e.account,
+						weekofyear(e.work_date) `week`,
+						YEAR (e.work_date) `year` 
+					from 
+						c2_comunity_task_estimate e 
+					where 
+						e.task_id in (select t.id from c2_comunity_task t where t.project_id = #{projectId,jdbcType=NUMERIC})
+					GROUP BY
+						weekofyear(e.work_date),
+						YEAR (e.work_date),
+						e.account
+				) t on tt.user_name = t.account
+
+		) t7 on t.`year` = t7.`year` and t.`week` = t7.`week`
+		LEFT JOIN 
+		(
+			select 
+				u.user_name,u.user_realname 
+			from 
+				td_sm_user u 
+		) t8 on t7.account = t8.user_name 
+
+</select>
+
+<resultMap type="map" id="alreadyConsumedResouceResult">
+	<result column="task_consumed" property="taskConsumedNum" javaType="java.lang.Integer"/>
+	<result column="bug_consumed" property="bugConsumedNum" javaType="java.lang.Integer"/>
+</resultMap>
+
+<select id="getAlreadyConsumedResouceNum" parameterType="com.chinacreator.c2.report.bean.EchartQueryParams" resultMap="alreadyConsumedResouceResult" useCache="false">
+	SELECT 
+		SUM(t1.create_task_num)-SUM(t2.finished_task_num) task_consumed,
+		SUM(t3.create_bug_num)-SUM(t4.closed_bug_num) bug_consumed 
+	from
+		(select wy.`week`,wy.`year` from 
+			(
+				select 
+						weekofyear(e.work_date) `week`,
+						YEAR (e.work_date) `year` 
+					from 
+						c2_comunity_task_estimate e 
+					where 
+						e.task_id in (select t.id from c2_comunity_task t where t.project_id = #{projectId,jdbcType=NUMERIC}) 
+					GROUP BY
+						weekofyear(e.work_date),
+						YEAR (e.work_date)
+			) wy 
+				<!-- <where> 
+					(wy.`week` <![CDATA[<]]> #{begin.weekStart,jdbcType=NUMERIC} and wy.`year` <![CDATA[=]]> #{begin.year,jdbcType=NUMERIC})
+					or wy.`year` <![CDATA[<]]> #{begin.year,jdbcType=NUMERIC}
+				</where> -->
+		) t
+		LEFT JOIN
+		(
+		SELECT
+			YEAR (t.create_date) `year`,
+			WEEKOFYEAR (t.create_date) `week`,
+			count(*) create_task_num
+		FROM
+			c2_comunity_task t
+		WHERE
+			t.project_id = #{projectId,jdbcType=NUMERIC}
+		GROUP BY
+			WEEKOFYEAR (t.create_date),
+			YEAR (t.create_date)
+		) t1 on t.`week` = t1.`week` and t.`year` = t1.`year` 
+		LEFT JOIN 
+		(
+		SELECT
+			count(*) finished_task_num,
+			WEEKOFYEAR (t.finished_date) `week`,
+			YEAR (t.deadline) `year`
+		FROM
+			c2_comunity_task t
+		WHERE
+			t.project_id = #{projectId,jdbcType=NUMERIC}
+			and t.is_done = 1
+			and t.finished_date is not null
+		GROUP BY
+			WEEKOFYEAR (t.finished_date),
+			YEAR (t.finished_date)) t2
+		on t.`week` = t2.`week` and t.`year` = t2.`year`
+		LEFT JOIN 
+		(
+		SELECT
+			count(*) create_bug_num,
+			weekofyear(b.create_time) `week`,
+			YEAR (b.create_time) `year`
+		FROM
+			c2_community_bug b
+		WHERE
+			b.project = #{projectId,jdbcType=NUMERIC}
+		GROUP BY
+			weekofyear(b.create_time),
+			YEAR (b.create_time)
+		) t3 on t.`year` = t3.`year` and t.`week` = t3.`week`
+		LEFT JOIN 
+		(
+		SELECT
+			count(*) closed_bug_num,
+			weekofyear(b.last_update_time) `week`,
+			YEAR (b.last_update_time) `year`
+		FROM
+			c2_community_bug b
+		WHERE
+			b.project = #{projectId,jdbcType=NUMERIC}
+			and b.status_ = 0
+		GROUP BY
+			weekofyear(b.last_update_time),
+			YEAR (b.last_update_time)
+		) t4 on t.`year` = t4.`year` and t.`week` = t4.`week`
+
+	
+</select>
+
+<select id="getMemberOfContainEstimated" parameterType="com.chinacreator.c2.report.bean.EchartQueryParams" resultType="string" useCache="false">
+	SELECT DISTINCT t7.account 
+		from 
+		(
+		select 
+			wy.`week`,wy.`year` 
+		from 
+			(
+				select 
+						weekofyear(e.work_date) `week`,
+						YEAR (e.work_date) `year` 
+					from 
+						c2_comunity_task_estimate e 
+					where 
+						e.task_id in (select t.id from c2_comunity_task t where t.project_id = #{projectId,jdbcType=NUMERIC}) 
+					GROUP BY
+						weekofyear(e.work_date),
+						YEAR (e.work_date)
+			) wy 
+		<!-- <where>
+			<foreach collection="ranges" item="range" separator="OR" open="(" close=")">
+				<trim prefixOverrides="and">
+					<if test="range.weekStart !=null"> and wy.`week` <![CDATA[>=]]> #{range.weekStart,jdbcType=NUMERIC} </if>
+					<if test="range.weekEnd !=null"> and wy.`week` <![CDATA[<=]]> #{range.weekEnd,jdbcType=NUMERIC} </if>
+					<if test="range.year !=null"> and wy.`year` <![CDATA[<=]]> #{range.year,jdbcType=NUMERIC} </if>
+				</trim>
+			</foreach>
+		</where> -->
+		GROUP BY `year`,`week`
+		) t
+		LEFT JOIN
+		(
+			select `year`,`week`,consumed,account from 
+			(
+				SELECT DISTINCT
+					(e.account) user_name
+				FROM
+					c2_comunity_task_estimate e
+				WHERE
+					e.task_id IN (
+						SELECT
+							t.id
+						FROM
+							c2_comunity_task t
+						WHERE
+							t.project_id = #{projectId,jdbcType=NUMERIC}
+					)	
+			) tt
+			
+		LEFT JOIN 
+			(
+				select 
+					SUM(ROUND(e.consumed,1)) consumed,
+					e.account,
+					weekofyear(e.work_date) `week`,
+					YEAR (e.work_date) `year` 
+				from 
+					c2_comunity_task_estimate e 
+				where 
+					e.task_id in (select t.id from c2_comunity_task t where t.project_id = #{projectId,jdbcType=NUMERIC})
+				GROUP BY
+					weekofyear(e.work_date),
+					YEAR (e.work_date),
+					e.account
+			) t on tt.user_name = t.account
+		
+		) t7 on t.`year` = t7.`year` and t.`week` = t7.`week`
+</select>
+
+<resultMap type="map" id="memberAlreadyConsumedResult">
+	<result column="member_consumed_hours" property="memberConsumedHours" javaType="java.lang.Double"/>
+	<result column="member_bug_consumed_hours" property="memberBugConsumedHours" javaType="java.lang.Double"/>
+	<result column="user_name" property="userName" />
+</resultMap>
+
+<select id="getMemberAlreadyConsumed" parameterType="com.chinacreator.c2.report.bean.EchartQueryParams" resultMap="memberAlreadyConsumedResult" useCache="false">
+	select 
+		sum(tt.consumed) member_consumed_hours , 
+		sum(tt.bugfix_comsumed) member_bug_consumed_hours,
+		tt.user_name,
+		tt.user_realname 
+	FROM
+	(
+	SELECT 
+		t.`year`,t.`week`,t7.consumed,t8.user_name,t8.user_realname,t7.bugfix_comsumed
+	from
+		(select wy.`week`,wy.`year` from 
+			(
+				select 
+						weekofyear(e.work_date) `week`,
+						YEAR (e.work_date) `year` 
+					from 
+						c2_comunity_task_estimate e 
+					where 
+						e.task_id in (select t.id from c2_comunity_task t where t.project_id = #{projectId,jdbcType=NUMERIC}) 
+					GROUP BY
+						weekofyear(e.work_date),
+						YEAR (e.work_date)
+			) wy 
+				<!-- <where> 
+					(wy.`week` <![CDATA[<]]> #{begin.weekStart,jdbcType=NUMERIC} and wy.`year` <![CDATA[=]]> #{begin.year,jdbcType=NUMERIC})
+					or wy.`year` <![CDATA[<]]> #{begin.year,jdbcType=NUMERIC}
+				</where> -->
+		) t
+	LEFT JOIN
+	(
+		select t.`year`,t.`week`,consumed,t.account,t1.bugfix_comsumed from 
+			(
+				SELECT DISTINCT
+					(e.account) user_name
+				FROM
+					c2_comunity_task_estimate e
+				WHERE
+					e.task_id IN (
+						SELECT
+							t.id
+						FROM
+							c2_comunity_task t
+						WHERE
+							t.project_id = #{projectId,jdbcType=NUMERIC}
+					)	
+			) tt
+			LEFT JOIN 
+			(
+				select 
+					SUM(ROUND(e.consumed,1)) consumed,
+					e.account,
+					weekofyear(e.work_date) `week`,
+					YEAR (e.work_date) `year` 
+				from 
+					c2_comunity_task_estimate e 
+				where 
+					e.task_id in (select t.id from c2_comunity_task t where t.project_id = #{projectId,jdbcType=NUMERIC})
+				GROUP BY
+					weekofyear(e.work_date),
+					YEAR (e.work_date),
+					e.account
+			) t on tt.user_name = t.account
+			LEFT JOIN 
+			(
+				select 
+					SUM(ROUND(ee.consumed,1)) bugfix_comsumed,
+					ee.account,
+					weekofyear(ee.work_date) `week`,
+					YEAR (ee.work_date) `year` 
+				from 
+					c2_comunity_task_estimate ee 
+				where 
+					ee.task_id in (select t.id from c2_comunity_task t where t.bug_id is not null and t.project_id = #{projectId,jdbcType=NUMERIC})
+				GROUP BY
+					weekofyear(ee.work_date),
+					YEAR (ee.work_date),
+					ee.account
+			) t1 on tt.user_name = t1.account
+	
+	) t7 on t.`year` = t7.`year` and t.`week` = t7.`week`
+		LEFT JOIN 
+		(
+			select 
+				u.user_name,u.user_realname 
+			from 
+				td_sm_user u 
+	) t8 on t7.account = t8.user_name 
+	) tt GROUP BY tt.user_name 
+	
+</select>
+
+<select id="getMyDoingProjects" parameterType="list" resultMap="ProjectResult">
+	select 
+		<include refid="column_sql"/> 
+		FROM zt_project 
+		WHERE zt_project.id in 
+		<foreach collection="list" item="entity" separator="," open="(" close=")">
+				#{entity}
+		</foreach>
+		AND zt_project.arc_status = 1
+</select>
+
+<select id="getProjectOwnerIfExist" parameterType="string" resultMap="ProjectResult">
+	select 
+		 zt_project.id ,
+		td_sm_user.user_realname owner
+	    from zt_project 
+	    left join td_sm_user on zt_project.owner = td_sm_user.user_id 
+	    where zt_project.code = #{_parameter}
+</select>
+
+<select id="getMyProjectsInfo" parameterType="string" resultMap="ProjectResult">
+	select 
+			p.id,p.name_,p.arc_status,p.brief,p.icon,p.pic 
+	from zt_project p 
+	where p.`owner` = #{_parameter,jdbcType=VARCHAR}
+	union
+	select 
+		 p1.id,p1.name_,p1.arc_status,p1.brief,p1.icon,p1.pic 
+	from zt_project p1 LEFT JOIN c2_projectuser u on p1.id = u.PROJECT_ID 
+	where u.USER_ID = #{_parameter,jdbcType=VARCHAR}
+</select>
+
+<!-- ElementID:selectUnion,Generated=true -->
+<select id="selectUnion" parameterType="list" resultMap="ProjectResult">
+select 
+	<include refid="column_sql"/> 
+	from zt_project 
+	 INNER JOIN
+<foreach collection="list" item="entity" separator="UNION" open="(" close=")">
+		SELECT 
+			 id
+		FROM zt_project 
+			<where>
+	        <if test="entity.id != null">and zt_project.id = #{entity.id}</if>
+	        <if test="entity.name != null">and zt_project.name_ = #{entity.name}</if>
+	        <if test="entity.code != null">and zt_project.code = #{entity.code}</if>
+	        <if test="entity.status != null">and zt_project.status_ = #{entity.status}</if>
+	        <if test="entity.description != null">and zt_project.description = #{entity.description}</if>
+	        <if test="entity.createDate != null">and zt_project.create_date = #{entity.createDate}</if>
+	        <if test="entity.arcStatus != null">and zt_project.arc_status = #{entity.arcStatus}</if>
+	        <if test="entity.brief != null">and zt_project.brief = #{entity.brief}</if>
+	        <if test="entity.pic != null">and zt_project.pic = #{entity.pic}</if>
+	        <if test="entity.icon != null">and zt_project.icon = #{entity.icon}</if>
+	        <if test="entity.link != null">and zt_project.link = #{entity.link}</if>
+	        <if test="entity.cloudLink != null">and zt_project.cloud_link = #{entity.cloudLink}</if>
+	        <if test="entity.publish != null">and zt_project.publish = #{entity.publish}</if>
+	        <if test="entity.cloudPublish != null">and zt_project.cloud_publish = #{entity.cloudPublish}</if>
+	        <if test="entity.owner != null">and zt_project.owner = #{entity.owner}</if>
+	        <if test="entity.contractNo != null">and zt_project.contract_no = #{entity.contractNo}</if>
+			</where>
+</foreach>
+	c2_temp_table ON zt_project.id = c2_temp_table.id
+</select>
+
+<select id="getProjectsByOrganization" parameterType="int" resultMap="ProjectResult">
+	select * from zt_project p where arc_status='1' and create_date>=#{st} and create_date<![CDATA[<]]>#{et}
+	and exists (
+	select * from (select distinct t.project_id from c2_comunity_task t,c2_comunity_task_estimate e
+	where t.id = e.task_id and e.work_date >=#{st} and e.work_date<![CDATA[<]]>#{et})a
+	where a.project_id=p.id
+	)
+</select>
+</mapper>

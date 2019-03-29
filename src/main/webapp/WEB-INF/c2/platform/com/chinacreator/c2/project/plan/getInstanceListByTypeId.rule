@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getInstanceListByTypeId" log="false" className="com.chinacreator.c2.project.plan.InstanceService" method="getInstanceListByTypeId">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取执行情况列表</name>
+  <desc>获取用例执行情况列表</desc>
+  <inputs>
+    <input collection="false" desc="@param" id="condition" required="true" type="java.util.Map"/>
+    <input collection="false" desc="" id="pageable" required="true" type="com.chinacreator.c2.dao.mybatis.enhance.Pageable"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.dao.mybatis.enhance.Page"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.condition" name="condition" signature="QMap&lt;QString;QString;>;" type="java.util.Map"/>
+    <param autoValue="Input.pageable" name="pageable" signature="QPageable;" type="com.chinacreator.c2.dao.mybatis.enhance.Pageable"/>
+  </params>
+  <return signature="QPage&lt;*>;" type="com.chinacreator.c2.dao.mybatis.enhance.Page"/>
+</CustomRule>

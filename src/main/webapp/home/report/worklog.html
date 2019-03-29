@@ -1,0 +1,109 @@
+<style>
+.w-title {
+    clear: both;
+    padding: 8px 10px 8px 10px;
+    background-color: #F7F7F7;
+}
+#lackListDiv .list-show-animate.ng-enter{
+  transition:300ms 300ms linear all;
+  opacity:0;
+}
+#lackListDiv .list-show-animate.ng-enter.ng-enter-active{
+  opacity:1;
+} 
+#lackListDiv .list-show-animate.ng-leave{
+  transition:300ms linear all;
+  opacity:1;
+}
+#lackListDiv .list-show-animate.ng-leave.ng-leave-active{
+  opacity:0;
+}
+</style>
+
+<div class="container">
+    <div class="card m-t-20">
+    	<div class="card-header">
+			<h2>
+				日志管理<small>下方会列出工时不足的成员清单,待相关成员补全工时之后,点击<span class="c-red">工作日志</span>按钮导出当前时间段内的工作日志(Excel)</small>
+			</h2>
+		</div>
+		
+		<div class="card-body clearfix">
+        <div id="lackListDiv" class="listview lv-bordered lv-lg">
+        	<!-- 搜索 -->
+            <div class="lv-header-alt">
+	            <label id="timeSearch" class="radio radio-inline picker picker-white dropdown" ng-class="{open:timeSearchOpen}">
+	                <input type="radio" ng-model="searchTime" ng-value="3" ng-click="searchGroup(3)"/>
+	                <i class="input-helper"></i><span ng-bind="chooseTimeName"></span>
+	                <div class="dropdown-menu p-5" style="width:460px;">
+	                <div class="timeSearchButtonBar p-5">
+	                <button ng-repeat="db in dateChooseButtons" ng-click="buttonDate(db)" ng-class="{'btn-primary':db.active}" class="btn btn-default picker-shadow">{{db.name}}</button>
+	                </div>
+	                <div class="row">
+	                	<div class="col-sm-6"><div id="datetimepickerFrom"></div></div>
+	                	<div class="col-sm-6"><div id="datetimepickerTo"></div></div>
+	                </div>
+	                <div class="buttom-message c-white"><i class="md md-error m-r-5"></i>请选择查询的起始(左)-截止时间(右)。</div>
+	                </div>
+	            </label>
+				<c2-dropdown id="deptDropdown" tree-options="$params.deptTreeOptions" tree-nodes="$params.deptNodes" controller="workLogController" max-height="200" >
+					<div class="picker picker-white text-overflow" style="max-width:500px;">
+						<i class="md md-apps"></i> {{$params.selectedDeptNodes.length==0?"指定部门  ":""}}<span ng-repeat="dept in $params.selectedDeptNodes" ng-show="$index<=2">{{dept.name}}{{$index==$params.selectedDeptNodes.length-1||$index==2?" ":"、"}}{{$params.selectedDeptNodes.length>3&&$index==2?"等 ":""}}</span><span class="caret"></span>
+					</div>
+				</c2-dropdown>
+				<div class="pull-right">
+					<button class="btn btn-default"
+						ng-click="downLoadLackLog()" title="导出缺失清单">
+						<i class="md md-get-app"></i> 缺失清单
+					</button>
+					<button class="btn btn-default" ng-click="downLoadWorkLog()" title="导出工作日志(供导入项目管理系统版本)">
+						<i class="md md-get-app"></i> 工作日志(TD)
+					</button>
+					<button class="btn btn-default" ng-click="downLoadFinancialLog()" title="导出工作日志(供导入财务系统版本)">
+						<i class="md md-get-app"></i> 工作日志(财务)
+					</button>
+					<button class="btn btn-default" ng-click="openWeekDayModal()" title="维护工时">
+						<i class="md md-event-note"></i> 工作时间配置
+					</button>
+				</div>
+            </div>
+
+             <div class="lv-body">
+				<div ng-if="$params.lackList.length==0" class="lv-item list-show-animate text-center p-20">当前时间范围内没有日志缺失...</div>
+				
+				<div ng-if="$params.lackList.length!=0" class="wkr-tasklist list-show-animate" >
+					<table class="table table-hover m-b-20" style="border-bottom: 1px solid #eee;">
+						<thead>
+							<tr  style="border-bottom: 2px solid #f0f0f0;">
+								<th style="width: 30%; text-align: center; vertical-align: top;">
+								    
+								</th>
+								<th style="width: 40%; text-align: center; vertical-align: top;">缺失日期(MM/DD)</th>
+								<th style="width: 30%;text-align: center; vertical-align: top;">缺失时长(h)</th>
+							</tr>
+						</thead>
+						<tbody ng-repeat="lack in $params.lackList" >
+							<tr ng-repeat="est in lack"
+								 ng-class="{'w-title':$index==0}">
+								<td class="column"
+									style="width: 30%; text-align: center;">
+									<span class="f-14" ng-if="$index==0">{{est.userRealName}}</span>
+								</td>
+								<td class="column" style="width: 40%;text-align: center;">{{est.lackDate | date : 'yyyy-MM-dd'}}</td>
+								<td class="column" style="width: 30%;text-align: center;">{{est.lackEstimate?est.lackEstimate:"8"}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+            </div> 
+        </div>
+        </div>
+
+        <!-- <c2-pagination id="pageEle" total="page.total" page-size="10" on-page-change="pageList(pageIndex)"></c2-pagination> -->
+    </div>
+</div>
+
+<!-- <aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;">
+    <ui-view onload="stateOnload()"></ui-view>
+</aside> -->

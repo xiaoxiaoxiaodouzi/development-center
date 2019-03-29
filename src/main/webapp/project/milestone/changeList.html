@@ -1,0 +1,76 @@
+<style>
+<!--
+
+.dd-history-comment {
+	margin-left: 35px;
+}
+.discussion-timeline:before {
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 79px;
+    width: 2px;
+    background-color: #f3f3f3;
+    z-index: 1;
+}
+
+
+.discussion-item+.discussion-item {
+    padding-top: 15px;
+    border-top: 1px solid #f5f5f5;
+}
+
+.discussion-item {
+    position: relative;
+    margin: 15px 0 35px 79px;
+    padding-left: 25px;
+}
+
+.discussion-item-header:last-child {
+    padding-bottom: 0;
+}
+
+.discussion-item-header {
+    min-height: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #767676;
+    line-height: 20px;
+    word-wrap: break-word;
+}
+
+.discussion-item-icon {
+    float: left;
+    width: 32px;
+    height: 32px;
+    margin-top: -7px;
+    margin-left: -40px;
+    line-height: 28px;
+    color: #767676;
+    text-align: center;
+    background-color: #f3f3f3;
+    border: 2px solid #fff;
+    border-radius: 50%;
+}
+.avatar {
+    display: inline-block;
+    overflow: hidden;
+    line-height: 1;
+    vertical-align: middle;
+    border-radius: 3px;
+}
+-->
+</style>
+<div class="detail-white-card ">
+<div ng-if="milestoneActionHisArr.length==0"
+						class="lv-item list-show-animate text-center p-20">里程碑没有任何变更记录!</div>
+<div class="discussion-timeline" style="position: relative;">
+							<div ng-repeat="item in milestoneActionHisArr" timeline-item></div>
+						</div>
+		
+	</div>
+<aside id="detail-panel" state-aside-container class="cOverflow">
+		<ui-view name="sideUIView" onload="stateOnload()"></ui-view>
+	</aside>

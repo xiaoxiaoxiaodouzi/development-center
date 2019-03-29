@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="search/globalSearch" log="false" className="com.chinacreator.c2.search.C2ElasticSearch" method="simpleSearch">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>搜索</name>
+  <inputs>
+    <input collection="false" desc="" id="search" required="true" type="String"/>
+    <input collection="false" desc="" id="searchCondition" required="true" type="java.util.Map"/>
+    <input collection="false" desc="" id="page" required="false" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="searchHits" name="搜索结果" type="org.elasticsearch.search.SearchHits" value="Result.searchHits"/>
+    <output id="spendTime" type="java.lang.Long" value="Result.spendTime"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.search" name="search" signature="QString;" type="String"/>
+    <param autoValue="Input.searchCondition" name="searchCondition" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+    <param autoValue="Input.page" name="page" signature="QInteger;" type="Integer"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

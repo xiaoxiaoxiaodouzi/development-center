@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.appraisals.AppraisalWitelistMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_appraisals_whitelist.id ,
+		  c2_appraisals_whitelist.user_id ,
+		  c2_appraisals_whitelist.user_realname 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_appraisals_whitelist.id = #{id}</if>
+	    <if test="userId != null">and c2_appraisals_whitelist.user_id = #{userId}</if>
+	    <if test="userRealname != null">and c2_appraisals_whitelist.user_realname = #{userRealname}</if>
+</sql>
+
+
+<!-- ElementID:AppraisalWitelistResult,Generated=true -->
+<resultMap id="AppraisalWitelistResult" type="com.chinacreator.c2.appraisals.AppraisalWitelist">
+	<id property="id" column="id"/>
+	<result property="userId" column="user_id"/>
+	<result property="userRealname" column="user_realname"/>
+</resultMap>
+
+
+
+<!-- ElementName:cache,Generated=true -->
+<cache type="C2_Default_Dao_Cache"/>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.appraisals.AppraisalWitelist">
+	insert into c2_appraisals_whitelist(
+	         <if test="id != null">id</if>
+	         <if test="userId != null">,user_id</if>
+	         <if test="userRealname != null">,user_realname</if>
+	 	 	 )
+	 values (
+	         <if test="id != null">#{id,jdbcType=VARCHAR}</if>
+	         <if test="userId != null">,#{userId,jdbcType=VARCHAR}</if>
+	         <if test="userRealname != null">,#{userRealname,jdbcType=VARCHAR}</if>
+	 	 	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.appraisals.AppraisalWitelist" resultType="int">
+	select count(*) from c2_appraisals_whitelist 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.appraisals.AppraisalWitelist">
+	update c2_appraisals_whitelist
+<set>
+	<if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
+	<if test="userRealname != null">user_realname=#{userRealname,jdbcType=VARCHAR}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_appraisals_whitelist
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="userId==null">user_id = null,</if>
+		    <if test="userRealname==null">user_realname = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.appraisals.AppraisalWitelist">
+    delete from c2_appraisals_whitelist where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.appraisals.AppraisalWitelist" resultMap="AppraisalWitelistResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_appraisals_whitelist 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list">
+	insert into c2_appraisals_whitelist (id,user_id,user_realname) 
+<foreach collection="list" item="entity" index="index" separator="union all">
+		select 
+		#{entity.id,jdbcType = VARCHAR},
+				#{entity.userId,jdbcType = VARCHAR},
+				#{entity.userRealname,jdbcType = VARCHAR}
+		from dual
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_appraisals_whitelist where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	<choose>
+		<when test="@com.chinacreator.c2.dao.util.EntityBeanUtil@isEntityObj(entity)">#{entity.id}</when>
+		<otherwise>#{entity}</otherwise>
+	</choose>
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="AppraisalWitelistResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_appraisals_whitelist 
+</select>
+
+<!-- ElementID:selectUnion,Generated=true -->
+<select id="selectUnion" parameterType="list" resultMap="AppraisalWitelistResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_appraisals_whitelist 
+	 INNER JOIN
+<foreach collection="list" item="entity" separator="UNION" open="(" close=")">
+		SELECT 
+			 id
+		FROM c2_appraisals_whitelist 
+			<where>
+	        <if test="entity.id != null">and c2_appraisals_whitelist.id = #{entity.id}</if>
+	        <if test="entity.userId != null">and c2_appraisals_whitelist.user_id = #{entity.userId}</if>
+	        <if test="entity.userRealname != null">and c2_appraisals_whitelist.user_realname = #{entity.userRealname}</if>
+			</where>
+</foreach>
+	c2_temp_table ON c2_appraisals_whitelist.id = c2_temp_table.id
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.String" resultMap="AppraisalWitelistResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_appraisals_whitelist 
+		 where c2_appraisals_whitelist.id = #{id,jdbcType=VARCHAR}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.appraisals.AppraisalWitelist" resultMap="AppraisalWitelistResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_appraisals_whitelist 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="AppraisalWitelistResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_appraisals_whitelist 
+	where c2_appraisals_whitelist.id in (
+		select distinct id from c2_appraisals_whitelist inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_appraisals_whitelist 
+			<where>
+	        <if test="entity.id != null">and c2_appraisals_whitelist.id = #{entity.id}</if>
+	        <if test="entity.userId != null">and c2_appraisals_whitelist.user_id = #{entity.userId}</if>
+	        <if test="entity.userRealname != null">and c2_appraisals_whitelist.user_realname = #{entity.userRealname}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+</mapper>

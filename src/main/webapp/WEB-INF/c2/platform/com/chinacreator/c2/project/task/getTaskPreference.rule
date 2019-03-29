@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getTaskPreference" log="false" className="com.chinacreator.c2.project.task.TaskService" method="getTaskPreference">
+  <name>获取当前用户偏好信息</name>
+  <desc>通过偏好名称获取当前用户偏好信息,若名称为空则获取当前用户所有偏好信息</desc>
+  <inputs>
+    <input collection="false" desc="偏好名称" id="infoName" required="false"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.infoName" name="infoName" signature="QString;" type="java.lang.String"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

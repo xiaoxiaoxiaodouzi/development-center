@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="project/getProjectOwnerIfExist" log="false" className="com.chinacreator.c2.project.service.ProjectService" method="getProjectOwnerIfExist">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取项目负责人</name>
+  <inputs>
+    <input collection="false" desc="" id="code" required="true" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="String"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.code" name="code" signature="QString;" type="String"/>
+  </params>
+  <return signature="QString;" type="String"/>
+</CustomRule>

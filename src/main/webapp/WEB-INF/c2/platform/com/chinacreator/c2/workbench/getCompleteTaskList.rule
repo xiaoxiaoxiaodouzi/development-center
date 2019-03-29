@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="workbench/getCompleteTaskList" log="false" className="com.chinacreator.c2.workbench.MyTaskBoardService" method="getCompleteTaskList">
+  <name>任务看板根据条件查询已完成任务</name>
+  <desc>查询部分或者全部已完成任务</desc>
+  <inputs>
+    <input collection="false" desc="" id="condition" required="true" type="java.util.Map"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.condition" name="condition" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

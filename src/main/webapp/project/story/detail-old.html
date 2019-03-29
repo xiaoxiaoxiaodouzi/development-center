@@ -1,0 +1,318 @@
+<!-- 老的任务详情页，目前只有里程碑详情中使用了，要被废弃，全部使用新版本的detail.html -->
+<style>
+<!--
+.storyEdit dl {
+	margin-top: 0;
+	margin-bottom: 10px;
+}
+.storyEdit .pmbb-view .dl-horizontal{
+/* float: left; */
+margin-left: 30px;
+display: inline-block;
+}
+.storyEdit .pmbb-view .dl-horizontal dt {
+	width: auto;
+	display: inline-block;
+}
+.storyEdit .pmbb-view .dl-horizontal dd {
+	margin-left: 5px;
+	display: inline-block;
+}
+.storyEdit .dl-horizontal dt {
+	width: 60px;
+}
+.storyEdit .dl-horizontal dd {
+	margin-left: 60px;
+}
+.storyEdit .pmb-block {
+	padding: 20px 21px 0 !important;
+}
+.storyEdit .pmb-block .listview.lv-lg .lv-item {
+    padding: 0 0 0 0;
+}
+.storyEdit .pmb-block .listview .lv-attrs {
+  margin: 0 0 0 0;
+}
+.storyEdit .pmb-block .listview:not(.lv-message) .lv-title{
+	  margin-bottom:0px !important;
+}
+.storyEdit .pmb-block .listview .lv-attrs > li {
+   margin-top: 0px;
+}
+.storyEdit .d-label{
+   border: 1px solid rgb(33, 150, 243);
+   padding: 2px 12px;
+   background-color: rgb(228, 241, 253);
+}
+-->
+</style>
+<style>
+<!--
+.storyEdit-modal dl {
+	margin-top: 0;
+	margin-bottom: 10px;
+}
+.storyEdit-modal .pmbb-view .dl-horizontal{
+float: left;
+margin-left: 30px;
+display: inline-block;
+}
+.storyEdit-modal .pmbb-view .dl-horizontal dt {
+	width: auto;
+	display: inline-block;
+}
+.storyEdit-modal .pmbb-view .dl-horizontal dd {
+	margin-left: 5px;
+	display: inline-block;
+}
+.storyEdit-modal .dl-horizontal dt {
+	width: 60px;
+}
+.storyEdit-modal .dl-horizontal dd {
+	margin-left: 60px;
+}
+.storyEdit-modal .pmb-block {
+	padding: 0 0 0 0 !important;
+}
+.storyEdit-modal .pmb-block .listview.lv-lg .lv-item {
+    padding: 0 0 0 0;
+}
+.storyEdit-modal .pmb-block .listview .lv-attrs {
+  margin: 0 0 0 0;
+}
+.storyEdit-modal .pmb-block .listview:not(.lv-message) .lv-title{
+	  margin-bottom:0px !important;
+}
+.storyEdit-modal .pmb-block .listview .lv-attrs > li {
+   margin-top: 0px;
+}
+.storyEdit-modal .d-label{
+   border: 1px solid rgb(33, 150, 243);
+   padding: 2px 12px;
+   background-color: rgb(228, 241, 253);
+}
+-->
+</style>
+<div ng-controller="storyEditCtrl" id="profile-main" ng-class="{true: 'storyEdit', false: 'storyEdit-modal'}[entity.id!=undefined]">
+	<div class="pmb-block">
+		<div class="pmbb-header" data-ng-if="editInfo === 0">
+			<h2>
+				<i class="md  md-content-paste m-r-5"></i> {{entity.title}}
+			</h2>
+			<div class="actions" ng-if="editInfo === 0" perm-res="{{project.id}}##story_cud">
+          <a ng-click="edit('profileInfo')"><i  class="md md-edit"></i></a>
+      </div>
+		</div>
+		<div class="pmbb-body">
+			<div class="pmbb-view c-black" data-ng-if="editInfo === 0">
+				<dl class="dl-horizontal d-label">
+					<dt>优先级：{{ entity.pri }}</dt>
+				</dl>
+				<dl class="dl-horizontal d-label">
+					<dt>里程碑：{{ entity.milestone.title }}</dt>
+				</dl>
+				<dl class="dl-horizontal d-label">
+					<dt>模块：{{ entity.module.name }}</dt>
+				</dl>
+			</div>
+			<div style="display:block" class="pmbb-view h-l-2 m-t-10" data-ng-if="editInfo === 0" ng-bind-html="entity.spec | markdown"></div>
+			<form class="pmbb-edit" data-ng-show="editInfo === 1">
+				<dl class="dl-horizontal">
+					<dt class="p-t-10">标题</dt>
+					<dd>
+						<div class="fg-line">
+							<input data-ng-model="entity.title" type="text"
+								class="form-control" placeholder="">
+						</div>
+
+					</dd>
+				</dl>
+				<dl class="dl-horizontal"  style="display: inline-block;width:100px;margin-right: 20px">
+					<dt class="p-t-10">优先级</dt>
+					<dd>
+						<div class="fg-line">
+						<div class="select">
+							<select class="form-control" data-ng-model="entity.pri">
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+							</select>
+							</div>
+						</div>
+					</dd>
+				</dl>
+				<dl class="dl-horizontal" style="display: inline-block;width:200px;margin-right: 20px">
+					<dt class="p-t-10">里程碑</dt>
+					<dd>
+						<div class="fg-line">
+							<div class="select">
+								<select class="form-control" ng-model="entity.milestone" ng-options="a.title for a in mileList track by a.id">
+								</select>
+							</div>
+						</div>
+					</dd>
+				</dl>
+				<dl class="dl-horizontal" style="display:inline-block;width:180px;">
+					<dt class="p-t-10" style="width:40px">模块</dt>
+					<dd style="margin-left:40px">
+						<div class="fg-line m-t-5">
+							<c2-dropdown tree-options="treeOptionsEdit"
+								tree-nodes="zTreeNodesEdit"  
+								id="modTreeEdit">
+							<button class="picker picker-white ng-binding" style="background-color: transparent;">
+								<i class="md md-extension"></i> {{entity.module.name}} &nbsp;<span
+									class="caret"></span>
+							</button>
+							</c2-dropdown>
+						</div>
+					</dd>
+				</dl>
+
+			<div class="fg-line" data-ng-if="editInfo === 1">
+				<textarea height="300"
+					ng-model="entity.spec" c2-markdown-editor class="form-control"
+					rows="5" placeholder="需求描述"></textarea>
+			</div>
+			<div data-ng-if="entity.id!=undefined && editInfo===1">
+				<button class="btn btn-primary btn-sm" type="button"
+					data-ng-click="submit('profileInfo', 'Profile Information')">保存</button>
+				<button type="button" class="btn btn-link btn-sm"
+					data-ng-click="cancel('profileInfo')">取消</button>
+			</div>
+			<div style="text-align: right" data-ng-if="entity.id==undefined">
+	<button class="btn btn-primary btn-sm" type="button"
+		data-ng-click="submit('all', 'All')">保存</button>
+	<button type="button" class="btn btn-link btn-sm"
+		data-ng-click="cancel('all')">取消</button>
+</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+	angular
+			.module("project")
+			.registerCtrl(
+					'storyEditCtrl',
+					function($scope, $element, $state, $stateParams, $timeout,
+							$http, Messenger, Modal,$q) {
+						var e = $state.params
+								&& $state.params.edit ? $state.params.edit
+								: $scope.edit;
+						e=e?e:0;
+						$scope.storyid = $stateParams.storyid ? $stateParams.storyid
+								: $scope.storyid;
+						$scope.editSummary = e;
+						$scope.editInfo = e;
+						$scope.editTask = e;
+						var projectId = $stateParams.project;
+						$scope.treeOptionsEdit = {
+								view : {
+									selectedMulti : false
+								},
+								data : {
+									simpleData : {
+										idKey : "id",
+										pIdKey : "parent",
+										rootPId : 0,
+										enable : true
+									}
+								},
+								callback : {
+									onClick : function(event, treeId, treeNode, clickFlag) {
+										$scope.$apply(function() {
+											$scope.entity.module = treeNode;
+										});
+										//收拢下拉框
+										$("#modTreeEdit").controller("c2-dropdown").toggle();
+									}
+								}
+							};
+						var p1=$http.post("ws/getMilestoneListByProject", {
+							projectId : projectId
+						}).success(function(data) {
+							var mileList = [ {
+								title : "未指定",
+								id : 0
+							} ];
+							$scope.mileList = mileList.concat(data.result);
+						});
+						var p2=$http.post("ws/getModuleListByProject", {
+							projectId : projectId
+						}).success(function(data) {
+							var modList=[{id:undefined,parent:0,name:"未指定"}];
+							$scope.zTreeNodesEdit = modList.concat(data.result);
+						});
+						$q.all([p1,p2]).then(function(){
+							if ($scope.storyid) {
+								$http.post("ws/getStoryById", {
+									storyid : $scope.storyid
+								}).success(function(data) {
+									$scope.entity = data.result;console.log( $scope.entity.milestone);
+									$scope.entity.milestone=$scope.entity.milestone?$scope.entity.milestone:$scope.mileList[0];
+									$scope.entity.module=$scope.entity.module?$scope.entity.module:$scope.zTreeNodesEdit[0];
+								});
+							} else {
+								$scope.entity = {
+									project : {
+										id : $stateParams.project
+									},
+									milestone : $scope.mileList[0],
+									module:$scope.zTreeNodesEdit[0],
+									pri:3
+								};
+							}
+						});	
+						
+						var changeEdit = function(item, isEdit) {
+							if (item === 'profileSummary') {
+								$scope.editSummary = isEdit;
+							}
+							if (item === 'profileInfo') {
+								$scope.editInfo = isEdit;
+							}
+							if (item === 'task') {
+								$scope.editTask = isEdit;
+							}
+						};
+
+						$scope.submit = function(item, message) {
+							changeEdit(item, 0);
+							var obj = {};
+							if (item == 'all') {
+								obj = $scope.entity;
+							} else if (item == 'profileInfo') {
+								obj = jQuery.extend(true, {}, $scope.entity);
+							} else if (item == 'task') {
+
+							}
+
+							$http.post("ws/saveStory", {
+								story : obj
+							}).success(function(data) {
+								$scope.refreshList();
+								if ($("#modalDefault").length > 0) {
+									Modal.close();
+				                }else{
+				                	changeEdit(item, 0);			                	
+				                }
+								
+							});
+
+						};
+
+						$scope.cancel = function(item) {
+							if (item == 'all') {
+								Modal.close();
+							} else {
+								changeEdit(item, 0);
+							}
+						};
+
+						$scope.edit = function(item) {
+							changeEdit(item, 1);
+						};
+						
+					});
+</script>

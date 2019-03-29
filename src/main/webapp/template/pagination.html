@@ -1,0 +1,15 @@
+<ul class="pagination lv-pagination">
+	<li ng-if="pages.length > 0">
+		<a href="" data-ng-click="prevPage()" aria-label="Previous">
+			<i class="md md-chevron-left"></i>
+		</a>
+	</li>
+	<li ng-if="startPage != 1"><a href="" data-ng-click="goPage(1)">1</a></li>
+	<li ng-if="startPage > 2"><a href=""><i class="md md-more-horiz"></i></a></li>
+	<li ng-repeat="i in pages" class="{{i==pageIndex?'active':''}}"><a href="" data-ng-click="goPage(i)">{{i}}</a></li>
+	<li ng-if="endPage < totPage-1"><a href=""><i class="md md-more-horiz"></i></a></li>
+	<li ng-if="endPage != totPage"><a href="" data-ng-click="goPage(totPage)">{{totPage}}</a></li>
+	<li ng-if="pages.length > 0">
+		<a href="" data-ng-click="nextPage()" aria-label="Next"> <i class="md md-chevron-right"></i></a>
+	</li>
+</ul>

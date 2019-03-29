@@ -1,0 +1,288 @@
+<style>
+	.dropdown-menu .label-color {
+		width: 13px;
+		height: 13px;
+		display: inline-block;
+		border-radius: 3px;
+		vertical-align: middle;
+		margin: 0 3px 2px 0;
+	}
+
+	.num {
+		font-size: 16px;
+		padding: 5px;
+		color: cadetblue;
+	}
+
+	.bug-block-search {
+		display: inline-block;
+		padding: 1px 2px;
+		line-height: 20px;
+		font-size: smaller;
+		text-align: center;
+		border-radius: 3px;
+		margin-right: 5px;
+		word-wrap: normal;
+	}
+
+	.lv-title .lv-title-a .myA {
+		font-size: 16px;
+	}
+
+	.form-search {
+		height: 30px;
+		background: #eeeeee;
+		border: none;
+		margin-left: -10px;
+		border-radius: 3px;
+		width: 175px;
+		padding-left: 25px;
+		margin-right: 10px;
+		font-size: 12px;
+	}
+</style>
+<div ng-controller="bugAssessListCtrl" >
+	<!-- <div class="block-header">
+			</div> -->
+	<div class="card" id="profile-main">
+		<div class="card-header">
+			<h2>
+				BUG列表
+				<small>
+					New
+					<span class="num">{{bugStatusCount.CREATED}}</span>&nbsp;&nbsp; Open
+					<span class="num">{{bugStatusCount.OPENED}}</span>&nbsp;&nbsp; Reopen
+					<span class="num">{{bugStatusCount.REOPEN}}</span>&nbsp;&nbsp; Fixlater
+					<span class="num">{{bugStatusCount.FIXED_LATER}}</span>&nbsp;&nbsp; Rejected
+					<span class="num">{{bugStatusCount.REJECT}}</span>&nbsp;&nbsp; Fixed
+					<span class="num">{{bugStatusCount.DONE}}</span>&nbsp;&nbsp; Closed
+					<span class="num">{{bugStatusCount.CLOSED}}</span>&nbsp;&nbsp; 总计
+					<span class="num">{{bugStatusCountTotal}}</span>
+				</small>
+			</h2>
+		</div>
+
+		<div class="card-body clearfix">
+			<div class="listview lv-bordered lv-lg">
+				<div class="lv-header-alt">
+					<i class="md md-search" style="font-size: 18px;color: #A9A9A9;position: relative;top: -5px;left: 18px;"></i>
+					<input type="text" ng-model="search.title" class="form-search" placeholder="标题">
+
+					<c2-date-range-dropdown id="dateRangeDropDown" date-range="dateRange">
+						<div class="picker picker-white">
+							<i class="md md-today" title="日期选择"></i> {{dateRange.show}}
+							<span class="caret"></span>
+						</div>
+					</c2-date-range-dropdown>
+					
+					<c2-dropdown bind-data="search.statusList" items="allStatusList" item-name="name" multiple=true max-height="200" filter="false"
+					 clean-button="true">
+						<div class="picker picker-white text-overflow" style="max-width: 400px; text-align: left;padding-right: 0px;">
+							<i class="md md-bug-report"></i>
+							<span ng-if="search.statusList.length==0">状态
+								<i class="caret"></i>
+							</span>
+							<span class="bug-block-search bug-{{s.name | lowercase}}-color" ng-repeat="s in search.statusList">{{s.name}}</span>
+						</div>
+						<dropdown-item-template>
+							<div>
+								<span class="text bug-block bug-{{item.name}}">{{item.name}}</span>
+								<span class="md md-check check-mark"></span>
+							</div>
+						</dropdown-item-template>
+					</c2-dropdown>
+				</div>
+
+				<div class="lv-body">
+					<div ng-if="sList.length==0" class="lv-item no-animate text-center p-20">没有查到任何BUG。</div>
+					<div class="lv-item no-animate media" ng-repeat='s in sList'>
+
+						<div class="media-body">
+							<div class="lv-title" style="max-width: 100%;">
+								<div style="max-width: 70%;float:left;" class="lv-title-a text-overflow">
+									<b class="c-Reopen m-r-10">#{{s.no}}</b>
+									<a data-ui-sref="home.assesdetail.bugList.bug({bugNo:s.no,project:s.project.id})" title="{{s.title}}"   style="font-size:15px;font-family:微软雅黑;">{{s.title}}</a>
+								</div>
+								<div style=" height:38px;float: left;margin-left:40px;" class="text-overflow">
+									<span class="p-l-10 p-r-10 m-r-5 label-show text-overflow" ng-repeat="label in s.labels" ng-click="search.labels=[label]"
+									 style="cursor:pointer;background-color: {{label.color}};color:{{getTextColor(label.color)}}; border-radius:2px;">{{label.name}}</span>
+								</div>
+							</div>
+							<ul class="lv-attrs">
+								<div class="bug-block bug-{{fomatBugStatus(s.status)}}">{{fomatBugStatus(s.status)}}</div>
+								<li style="border: 0;background-color: inherit;" title="创建时间">
+									<i class="md md-today"></i> {{s.createTime|date:'yyyy-MM-dd HH:mm'}}</li>
+								<li style="border: 0;background-color: inherit;" title="创建人">
+									<i class="md md-person-outline"></i> {{s.createByRealname}}</li>
+								<li style="border: 0;background-color: inherit;" title="处理人">
+									<i class="md md-person"></i> {{s.assignedToRealname}}</li>
+								<li style="border: 0;background-color: inherit;" title="优先级">
+									<i class="md md-sort"></i>
+									<span ng-if="s.pri==1">高</span>
+									<span ng-if="s.pri==2">中</span>
+									<span ng-if="s.pri==3">低</span>
+								</li>
+								<li style="border: 0;background-color: inherit;" ng-if="s.milestone" title="里程碑">
+									<i class="md md-av-timer"></i> {{s.milestone.title}}</li>
+							</ul>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<c2-pagination id="pageEle" total="total" page-size="10" on-page-change="forRefreshList(pageIndex)"></c2-pagination>
+		</div>
+	</div>
+
+	<aside id="detail-panel" state-aside-container class="cOverflow">
+		<ui-view onload="stateOnload()"></ui-view>
+	</aside>
+</div>
+<script type="text/javascript">
+	angular.module("developmentCenter").registerCtrl(
+		'bugAssessListCtrl',
+		function ($scope, $http, $state, $stateParams, $timeout, Messenger,
+			Modal, $rootScope) {
+			
+			var timeStr = $scope.$parent.assess?($scope.$parent.assess.year+"-"+$scope.$parent.assess.month):($rootScope.assess.year+"-"+$rootScope.assess.month);
+			$scope.dateRange = { 
+				start: moment(timeStr,'YYYY-MM').startOf('month').valueOf(),
+				end:moment(timeStr,'YYYY-MM').endOf('month').valueOf() 
+			};
+			
+			
+			$scope.storyCUD = true;
+			$scope.allStatusList = [
+				{ value: 5, name: "Rejected", group: "待验证" },
+				{ value: 6, name: "Fixed", group: "待验证" },
+				{ value: 1, name: "New", group: "打开的" },
+				{ value: 2, name: "Open", group: "打开的" },
+				{ value: 3, name: "Reopen", group: "打开的" },
+				{ value: 4, name: "FixLater" },
+				{ value: 0, name: "Closed" }
+			];
+
+			$scope.search = {
+				type: 2,
+				title: '',
+				week:{},
+				statusList: [
+					{ value: 3, name: "Reopen" },
+				]
+			}
+
+			$scope.getTextColor = function (color) {
+				return getTextColorByBackColor(color);
+			};
+			
+			$scope.$watch("dateRange", function (v) {
+				if (angular.isUndefined(v)) return;
+				$scope.search.week.st = v.start;
+				$scope.search.week.et = v.end;
+			}, true);
+
+			$scope.$watch("search", function (v) {
+				$scope.refreshList(1);
+			}, true);
+
+			$scope.$on("flushBugList", function (event, msg) {
+				if (msg.pageNum) {
+					$scope.refreshList(msg.pageNum);
+				} else {
+					$scope.refreshList();
+				}
+			});
+
+			$scope.forRefreshList = function (pageIndex) {
+				$scope.currentPage = pageIndex;
+				$scope.refreshList(pageIndex);
+			}
+
+			$scope.refreshList = function (pageIndex) {
+				//处理参数为空字符串的情况
+				// var projectId = ($stateParams.project&&$stateParams.project!="") ? $stateParams.project : undefined;
+				var status = undefined;
+				pageIndex = pageIndex ? pageIndex : 1;
+
+				if ($scope.search.statusList && $scope.search.statusList.length == 0) {
+					$scope.sList = [];
+					$scope.total = 0;
+					$timeout(function () {
+						if ($("#pageEle").controller("c2Pagination")) {
+							$("#pageEle").controller("c2Pagination").goPage(0);
+						}
+					}, 0);
+					return;
+				}
+
+				var condition = {
+					title: $scope.search.title,
+				}
+				
+				if($scope.search.week.st && $scope.search.week.et){
+					condition.week = {st:$scope.search.week.st,et:$scope.search.week.et};
+				}
+
+				if ($scope.search.statusList && $scope.search.statusList.length != 7) {
+					condition.statusList = $scope.search.statusList;
+				}
+
+				$http.get('projects/v1/appraisals/' + $stateParams.assessId).success(function (datas) {
+					condition.assignedToList=[{userName:datas.userName}]
+					if ($scope.search.type == 1) {
+					condition.createBy = $scope.subject.userName;
+				}
+				$http.post("ws/bug/getBugList", {
+					condition: condition,
+					pageable: {
+						pageIndex: pageIndex
+					}
+				}).success(function (data) {
+					$scope.sList = data.result.contents;
+
+					$scope.bugStatusCount = {
+						CREATED: 0,
+						OPENED: 0,
+						REOPEN: 0,
+						FIXED_LATER: 0,
+						REJECT: 0,
+						DONE: 0,
+						CLOSED: 0
+					}
+
+					$.extend($scope.bugStatusCount, data.result.bugStatusCount);
+
+					$scope.bugStatusCountTotal = data.result.bugStatusCountTotal;
+					var total = data.result.total;
+					$scope.total = total;
+					$timeout(function () {
+						$("#pageEle").controller("c2Pagination").goPage(pageIndex);
+					}, 0);
+				});
+				})
+			};
+
+			$scope.fomatBugStatus = function (status) {
+				switch (status) {
+					case 0:
+						return "Closed";
+					case 1:
+						return "New";
+					case 2:
+						return "Open";
+					//								return "接受";
+					case 3:
+						return "Reopen";
+					case 4:
+						return "FixLater";
+					case 5:
+						return "Rejected";
+					case 6:
+						return "Fixed";
+					default:
+						return comment.type;
+				}
+			}
+		});
+</script>

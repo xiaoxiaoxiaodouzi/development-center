@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="isProjectPermited" log="false" className="com.chinacreator.c2.security.shiro.impls.ProjectAuthorizationProvider" method="isProjectPermited">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>项目权限鉴定</name>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="int"/>
+    <input collection="false" desc="" id="permExpr" required="true" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="boolean"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+    <param autoValue="Input.permExpr" name="permExpr" signature="QString;" type="String"/>
+  </params>
+  <return signature="Z" type="boolean"/>
+</CustomRule>

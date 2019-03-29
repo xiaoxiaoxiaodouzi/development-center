@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getEstimateByWorkDate" log="false" className="com.chinacreator.c2.project.task.TaskService" method="getSumEstimates">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>通过工作日期获取工时</name>
+  <desc>根据工作日期获取当天总的工时</desc>
+  <inputs/>
+  <outputs>
+    <output autoValue="Result" desc="返回当天已经录入的任务的总工时" id="result" name="方法返回值" type="int"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.estimate" name="estimate" signature="QEstimate;" type="com.chinacreator.c2.project.task.Estimate"/>
+  </params>
+  <return signature="I" type="int"/>
+</CustomRule>

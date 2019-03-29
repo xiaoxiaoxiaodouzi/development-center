@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="project/getProjectStatisticsByPage" log="false" className="com.chinacreator.c2.project.service.ProjectService" method="getProjectStatisticsByPage">
+  <name>获取项目基本统计信息</name>
+  <inputs>
+    <input collection="false" desc="" id="page" required="true" type="com.chinacreator.c2.dao.mybatis.enhance.Pageable"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.dao.mybatis.enhance.Page"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.page" name="page" signature="QPageable;" type="com.chinacreator.c2.dao.mybatis.enhance.Pageable"/>
+  </params>
+  <return signature="QPage&lt;QProjectSimpleStatistics;>;" type="com.chinacreator.c2.dao.mybatis.enhance.Page"/>
+</CustomRule>

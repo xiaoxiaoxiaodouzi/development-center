@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getAllAssistantsInfo" log="false" className="com.chinacreator.c2.project.info.MembersMgt" method="getAllAssistantsInfo">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>得到已有的助理名单</name>
+  <desc>得到所有助理的用户信息</desc>
+  <inputs/>
+  <outputs>
+    <output autoValue="Result" desc="助理的用户信息" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params/>
+  <return signature="QList&lt;QUserDTO;>;" type="java.util.List"/>
+</CustomRule>

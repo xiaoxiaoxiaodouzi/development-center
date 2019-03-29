@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="cleanStoryLabels" log="false" className="com.chinacreator.c2.project.story.StoryService" method="cleanStoryLabels">
+  <name>清空需求所有label</name>
+  <desc>清空需求标签</desc>
+  <inputs>
+    <input collection="false" desc="" id="storyId" required="true" type="int"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.storyId" name="storyId" signature="I" type="int"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

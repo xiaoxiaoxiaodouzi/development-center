@@ -1,0 +1,128 @@
+<style>
+@media (min-width: 768px) {
+  .echarts {
+    width: calc(100% - 60px);
+  }
+}
+@media (min-width: 1280px) {
+  .echarts {
+    width: calc(100% - 60px);
+  }
+}
+@media (min-width: 1400px) {
+  .echarts {
+    width: 1050px;
+  }
+}
+</style>
+
+<div class="container">
+  <div class="card" id="profile-main">
+		<div class="card-header pro-center">
+		    <div class="p-relative pro-center" style="">
+			 <div class="pmo-pic">
+        		<div class="p-relative">
+         			 <a href="">
+            		<img alt="" class="img-title" ng-src="{{squarePicUrl(project.pic)}}">
+          			</a>
+               </div>
+             </div>
+           </div>
+		   <h2>{{project.name}} <small>{{project.brief}}</small></h2>
+			
+		</div>
+		<div class="card-body clearfix pro-center">
+			<div class="listview lv-bordered lv-lg">
+				<div class="pro-header-alt">
+                    <label class="m-r-5 m-t-10 f-13 clickable" title="里程碑(已关闭/总数)" data-ui-sref="project.milestones">
+		                <i class="md md-av-timer pro-ico"></i>
+		                <span class="pro-st">
+		                	<span class="c-green m-r-5">
+		                		{{$params.statistics.finishedMilestoneNum?$params.statistics.finishedMilestoneNum:'0'}}
+		                	</span>
+		                	/
+		                	<span class="m-l-5">
+		                		{{$params.statistics.milestoneNum?$params.statistics.milestoneNum:'0'}}
+		                	</span>
+		                </span>
+		            </label>
+                    <label class="m-r-5 m-t-10 f-13 clickable" title="需求(已完成/总数)" data-ui-sref="project.story">
+		                <i class="md md-content-paste pro-ico"></i>
+		                	<span class="pro-st">
+			                	<span class="c-green m-r-5">
+			                		{{$params.statistics.finishedStoryNum?$params.statistics.finishedStoryNum:'0'}}
+			                	</span>
+			                	/
+			                	<span class="m-l-5">
+			                		{{$params.statistics.storyNum?$params.statistics.storyNum:'0'}}
+			                	</span>
+			                </span>
+		            </label>
+					<label class="m-r-5 m-t-10 f-13 clickable" title="任务(已完成/总数)" data-ui-sref="project.tasks">
+		                <i class="md md-format-list-bulleted pro-ico"></i>
+		                	<span class="pro-st">
+			                	<span class="c-green m-r-5">
+			                		{{$params.statistics.finishedTaskNum?$params.statistics.finishedTaskNum:'0'}}
+			                	</span>
+			                	/
+			                	<span class="m-l-5">
+			                		{{$params.statistics.taskNum?$params.statistics.taskNum:'0'}}
+			                	</span>
+			                </span>
+		            </label>
+		            <label class="m-r-5 m-t-10 f-13 clickable" title="BUG(已关闭/总数)" data-ui-sref="project.bugs">
+		                <i class="md md-bug-report pro-ico"></i>
+		                	<span class="pro-st">
+			                	<span class="c-green m-r-5">
+			                		{{$params.statistics.closedBugNum?$params.statistics.closedBugNum:'0'}}
+			                	</span>
+			                	/
+			                	<span class="m-l-5">
+			                		{{$params.statistics.bugNum?$params.statistics.bugNum:'0'}}
+			                	</span>
+			                </span>
+		            </label>
+                    <label class="m-r-5 m-t-10 f-13 clickable" title="成员" data-ui-sref="project.settings.members">
+		                <i class="md md-group pro-ico"></i><span class="pro-st">{{$params.statistics.memberNum?$params.statistics.memberNum:'0'}}</span>
+		            </label>   
+				</div>
+			</div>
+	    </div>
+  
+      <div class="pm-body clearfix">
+        <div class="pmb-block pro-center">
+        	   <div class="lv-body m-b-20 b-1-e p-b-30">
+        	   		<div style="display:inline-block;width:900px;">
+        	   		<h5 style="color: #010101; background: aliceblue; line-height: 40px;">BUG状态分布图：统计项目中所有BUG(生命周期)各阶段的占比</h5></div>
+					<div c2-echarts-Pie datazoomShow="false" style="display:inline-block; width:1050px; height:400px;" bind-data="$params.taskBugStatusData" 
+			        	   legend-orient="vertical" legend-x="80" legend-y="30"
+			        	   theme ="macarons"> 
+			        </div>
+	            </div>
+	            <div class="lv-body m-b-20 b-1-e p-b-30">
+	            	<div style="display:inline-block;width:900px;">
+        	   		<h5 style="color: #010101; background: aliceblue; line-height: 40px;">项目工作量统计：项目及各成员的总工作量统计，体现各成员的贡献度，工作量总计:{{$params.estimateCount}}(h)</h5></div>
+					<div c2-echarts-Pie datazoomShow="false" style="display:inline-block;width:1050px;height:400px;" bind-data="$params.allEstimateData" 
+			        	  legend-orient="vertical" legend-x="80" legend-y="30"
+			        	   theme ="macarons">
+			        	<!-- 旧的柱状图属性    yaxis-position="left" legend-orient="horizontal" xaxis-interval="0" yaxis-max="$params.allEstimateData.maxY"
+			        	 xaxis-boundary-gap ="true" datazoom-show="true" legend-x="80" legend-y="20"
+			        	 datazoom-start="$params.allEstimateData.dzStart" datazoom-end="100" datazoom-height="20" 
+			        	 title-x="center" title-y="70" -->
+			        </div>
+	            </div>
+	            <div class="lv-body m-b-20">
+	            	<div style="display:inline-block;width:900px;">
+        	   		<h5 style="color: #010101; background: aliceblue; line-height: 40px;">周工时统计：项目各周总工时数以及修复BUG所消耗的工时数</h5></div>
+					<div c2-echarts-line style="display:inline-block;width:1050px;height:500px;" bind-data="$params.weekEstimateData" title="周工时统计图" 
+			        	 yaxis-position="left" legend-orient="horizontal" xaxis-interval="0" yaxis-max="$params.weekEstimateData.maxY"
+			        	 xaxis-boundary-gap ="false" datazoom-show="true" legend-x="80" legend-y="30"
+			        	 datazoom-start="$params.weekEstimateData.dzStart" datazoom-end="100" datazoom-height="20" 
+			        	 title-x="center" title-y="70" theme ="macarons">
+			        </div>
+	            </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>

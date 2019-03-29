@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="delMoudleById" log="false" className="com.chinacreator.c2.project.info.ModuleService" method="delModuleById">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>删除模块</name>
+  <inputs>
+    <input collection="false" desc="" id="module" required="true" type="com.chinacreator.c2.project.info.Module"/>
+  </inputs>
+  <outputs/>
+  <res></res>
+  <params>
+    <param autoValue="Input.module" name="module" signature="QModule;" type="com.chinacreator.c2.project.info.Module"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

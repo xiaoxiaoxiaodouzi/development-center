@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie9" data-ng-app="developmentCenter" data-ng-controller="indexController as mactrl"><![endif]-->
+<![if IE 9 ]>
+<html data-ng-app="developmentCenter" data-ng-controller="indexController as mactrl">
+<![endif]>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>开发过程管理平台</title>
+
+    <!-- Vendor CSS -->
+    <link href="assets/css/animate.min.css" rel="stylesheet">
+    <link href="assets/css/material-design-iconic-font.min.css" rel="stylesheet">
+    <link href="assets/css/loading-bar.css" rel="stylesheet">
+
+
+    <!-- CSS -->
+    <link href="assets/css/navigation.css" rel="stylesheet" id="app-level">
+    <link href="assets/css/tui-grid.min.css" rel="stylesheet" >
+    <link href="css/globalSearch.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
+    <link href="assets/css/jquery-tabs.css" rel="stylesheet">
+    <!--  <link href="assets/css/jquery-ui.min.css" rel="stylesheet"> -->
+    <!-- <link href="assets/css/jquery-ui.theme.min.css" rel="stylesheet"> -->
+    <link href="assets/css/bootstrap-datetimepicker.css" rel="stylesheet">
+</head>
+
+<body data-ng-class="{ 'sw-toggled': mactrl.layoutType === '1' }">
+
+    <data ui-view></data>
+
+    <!-- <footer id="footer" data-ng-include src="'template/footer.html'"></footer> -->
+
+    <!-- Core -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Angular -->
+    <script src="assets/js/angular/angular.min.js"></script>
+    <script src="assets/js/angular/angular-route.min.js"></script>
+    <script src="assets/js/angular/angular-resource.min.js"></script>
+    <script src="assets/js/angular/angular-sanitize.min.js"></script>
+    <script src="assets/js/angular/angular-animate.min.js"></script>
+
+    <!-- Angular Modules -->
+    <script src="assets/js/angular/ext/angular-ui-router.min.js"></script>
+    <script src="assets/js/angular/ext/loading-bar.js"></script>
+    <script src="assets/js/angular/ext/ocLazyLoad.min.js"></script>
+    <script src="assets/js/angular/ext/ng-file-upload.min.js"></script>
+    <!--         <script src="assets/js/angular/ext/angular-vissense.min.js"></script> -->
+    <script src="assets/js/angular/ext/sortable.min.js"></script>
+
+    <!-- Common Vendors -->
+    <script src="assets/js/jquery.nicescroll.min.js"></script>
+    <script src="assets/js/bootstrap-notify.min.js"></script>
+    <script src="js/markdown/marked.min.js"></script>
+    <script src="js/markdown/highlight.min.js"></script>
+    <script src="assets/js/moment.min.js"></script>
+    <script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/js/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="assets/js/lrz/lrz.bundle.js"></script>
+    <script src="assets/js/jquery-Base.min.js"></script>
+    <script src="assets/js/jquery.fn.gantt.js" charset ="GB2312"></script>
+    <script src="assets/js/prettify.min.js"></script>
+    
+    <script src="assets/js/underscore.js"></script>
+    <script src="assets/js/backbone.js"></script>
+    <script src="assets/js/tui.code-snippet.js"></script>
+    <script src="assets/js/tui-grid.min.js"></script>
+
+    <script src="assets/js/diff.js"></script>
+
+    <!-- App level -->
+    <script src="js/common.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/interceptor/oauth2Interceptor.js"></script>
+    <script src="js/directive.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/route.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/animate.js"></script>
+    <script src="js/controllers/person.js"></script>
+    <script src="js/controllers/task.js"></script>
+    <script src="js/controllers/weekly-report.js"></script>
+    <script src="js/controllers/worklog.js"></script>
+    <script src="js/controllers/report.js"></script>
+    <script src="ext/widget/tree/directive.js"></script>
+    <script src="js/controllers/shares.js"></script>
+    <script src="js/controllers/workbench.js"></script>
+    <script src="js/controllers/teamGroup.js"></script>
+    <script src="js/controllers/settings.js"></script>
+    <script src="js/controllers/milestone.js"></script>
+
+
+</body>
+
+</html>

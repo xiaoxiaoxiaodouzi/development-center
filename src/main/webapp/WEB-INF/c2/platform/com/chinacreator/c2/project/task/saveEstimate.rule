@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="saveEstimate" log="false" className="com.chinacreator.c2.project.task.TaskService" method="saveEstimate">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>保存工时记录</name>
+  <inputs>
+    <input collection="false" desc="" id="estimate" required="true" type="com.chinacreator.c2.project.task.Estimate"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.estimate" name="estimate" signature="QEstimate;" type="com.chinacreator.c2.project.task.Estimate"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

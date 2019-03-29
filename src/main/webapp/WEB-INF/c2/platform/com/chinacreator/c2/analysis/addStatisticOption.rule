@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="workbench/addStatisticOption" log="false" className="com.chinacreator.c2.analysis.StatisticAnalysisService" method="addStatisticOption">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>添加图表子项</name>
+  <inputs>
+    <input collection="false" desc="" id="options" required="true" type="[LObject;"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.options" name="options" signature="[QObject;" type="[LObject;"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

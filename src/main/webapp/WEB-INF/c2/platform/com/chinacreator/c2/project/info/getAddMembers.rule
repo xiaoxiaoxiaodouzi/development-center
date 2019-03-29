@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getAddMembers" log="false" className="com.chinacreator.c2.project.info.MembersMgt" method="getAddMembers">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取加入成员</name>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="int"/>
+    <input collection="false" desc="" id="search" required="false" type="String"/>
+    <input collection="false" desc="" id="orgId" required="false" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+    <param autoValue="Input.search" name="search" signature="QString;" type="String"/>
+    <param autoValue="Input.orgId" name="orgId" signature="QString;" type="String"/>
+  </params>
+  <return signature="QList&lt;QUserDTO;>;" type="java.util.List"/>
+</CustomRule>

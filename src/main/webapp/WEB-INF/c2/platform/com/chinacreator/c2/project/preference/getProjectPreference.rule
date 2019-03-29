@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getProjectPreference" log="false" className="com.chinacreator.c2.project.preference.ProjectPreferenceService" method="get">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>查询项目偏好</name>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="Integer"/>
+    <input collection="false" desc="" id="preferNames" required="false" type="[LString;"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="QInteger;" type="Integer"/>
+    <param autoValue="Input.preferNames" name="preferNames" signature="[QString;" type="[LString;"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

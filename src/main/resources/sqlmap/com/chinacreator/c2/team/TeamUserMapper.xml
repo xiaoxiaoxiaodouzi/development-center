@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.team.TeamUserMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_comunity_teamuser.id ,
+		  c2_comunity_teamuser.team_id ,
+		  c2_comunity_teamuser.user_name ,
+		  c2_comunity_teamuser.import_time 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_comunity_teamuser.id = #{id}</if>
+	    <if test="teamId != null">and c2_comunity_teamuser.team_id = #{teamId}</if>
+	    <if test="userName != null">and c2_comunity_teamuser.user_name = #{userName}</if>
+	    <if test="importTime != null">and c2_comunity_teamuser.import_time = #{importTime}</if>
+</sql>
+
+
+<!-- ElementID:TeamUserResult,Generated=true -->
+<resultMap id="TeamUserResult" type="com.chinacreator.c2.team.TeamUser">
+	<id property="id" column="id"/>
+	<result property="teamId" column="team_id"/>
+	<result property="userName" column="user_name"/>
+	<result property="importTime" column="import_time"/>
+</resultMap>
+
+
+<!-- ElementID:one2one_sql,Generated=true -->
+<sql id="one2many_sql">
+</sql>
+
+
+
+
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.team.TeamUser">
+	insert into c2_comunity_teamuser(
+	         <if test="id != null">id</if>
+	         <if test="teamId != null">,team_id</if>
+	         <if test="userName != null">,user_name</if>
+	         <if test="importTime != null">,import_time</if>
+	 	 	 )
+	 values (
+	         <if test="id != null">#{id,jdbcType=NUMERIC}</if>
+	         <if test="teamId != null">,#{teamId,jdbcType=NUMERIC}</if>
+	         <if test="userName != null">,#{userName,jdbcType=VARCHAR}</if>
+	         <if test="importTime != null">,#{importTime,jdbcType=TIMESTAMP}</if>
+	 	 	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.team.TeamUser" resultType="int">
+	select count(*) from c2_comunity_teamuser 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.team.TeamUser">
+	update c2_comunity_teamuser
+<set>
+	<if test="teamId != null">team_id=#{teamId,jdbcType=NUMERIC},</if>
+	<if test="userName != null">user_name=#{userName,jdbcType=VARCHAR},</if>
+	<if test="importTime != null">import_time=#{importTime,jdbcType=TIMESTAMP}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_comunity_teamuser
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="teamId==null">team_id = null,</if>
+		    <if test="userName==null">user_name = null,</if>
+		    <if test="importTime==null">import_time = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.team.TeamUser">
+    delete from c2_comunity_teamuser where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.team.TeamUser" resultMap="TeamUserResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_teamuser 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list">
+	insert into c2_comunity_teamuser (id,team_id,user_name,import_time) 
+<foreach collection="list" item="entity" index="index" separator="union all">
+		select 
+		#{entity.id,jdbcType = NUMERIC},
+				#{entity.teamId,jdbcType = NUMERIC},
+				#{entity.userName,jdbcType = VARCHAR},
+				#{entity.importTime,jdbcType = TIMESTAMP}
+		from dual
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_comunity_teamuser where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	<choose>
+		<when test="@com.chinacreator.c2.dao.util.EntityBeanUtil@isEntityObj(entity)">#{entity.id}</when>
+		<otherwise>#{entity}</otherwise>
+	</choose>
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="TeamUserResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_teamuser 
+</select>
+
+<!-- ElementID:selectUnion,Generated=true -->
+<select id="selectUnion" parameterType="list" resultMap="TeamUserResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_teamuser 
+	 INNER JOIN
+<foreach collection="list" item="entity" separator="UNION" open="(" close=")">
+		SELECT 
+			 id
+		FROM c2_comunity_teamuser 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_teamuser.id = #{entity.id}</if>
+	        <if test="entity.teamId != null">and c2_comunity_teamuser.team_id = #{entity.teamId}</if>
+	        <if test="entity.userName != null">and c2_comunity_teamuser.user_name = #{entity.userName}</if>
+	        <if test="entity.importTime != null">and c2_comunity_teamuser.import_time = #{entity.importTime}</if>
+			</where>
+</foreach>
+	c2_temp_table ON c2_comunity_teamuser.id = c2_temp_table.id
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="TeamUserResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_teamuser 
+		 where c2_comunity_teamuser.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.team.TeamUser" resultMap="TeamUserResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_teamuser 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="TeamUserResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_teamuser 
+	where c2_comunity_teamuser.id in (
+		select distinct id from c2_comunity_teamuser inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_comunity_teamuser 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_teamuser.id = #{entity.id}</if>
+	        <if test="entity.teamId != null">and c2_comunity_teamuser.team_id = #{entity.teamId}</if>
+	        <if test="entity.userName != null">and c2_comunity_teamuser.user_name = #{entity.userName}</if>
+	        <if test="entity.importTime != null">and c2_comunity_teamuser.import_time = #{entity.importTime}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<select id="getTeamUsers" parameterType="int" resultType="string">
+	select user_name from c2_comunity_teamuser where team_id=#{teamId}
+	union
+	select owner from c2_comunity_team where id=#{teamId}
+</select>
+</mapper>

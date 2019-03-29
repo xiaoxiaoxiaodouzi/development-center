@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="addCommonCase" log="false" className="com.chinacreator.c2.project.testcase.CaseService" method="addCommonCase">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>导入公共用例</name>
+  <desc>将选择的公共用例添加至某分类下</desc>
+  <inputs>
+    <input collection="false" desc="" id="ids" required="true" type="String"/>
+    <input collection="false" desc="" id="projectId" required="true" type="String"/>
+    <input collection="false" desc="" id="typeId" required="true" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="公共用例添加至某分类下  @param ids  @param projectId  @param typeId" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.ids" name="ids" signature="QString;" type="String"/>
+    <param autoValue="Input.projectId" name="projectId" signature="QString;" type="String"/>
+    <param autoValue="Input.typeId" name="typeId" signature="QString;" type="String"/>
+  </params>
+  <return signature="QList&lt;QCase;>;" type="java.util.List"/>
+</CustomRule>

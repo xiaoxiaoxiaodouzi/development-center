@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getStoryById" log="false" className="com.chinacreator.c2.project.story.StoryService" method="getStoryById">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>按id查需求</name>
+  <inputs>
+    <input collection="false" desc="" id="storyid" required="true" type="java.lang.Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.project.story.Story"/>
+  </outputs>
+  <res></res>
+  <params>
+    <param autoValue="Input.storyid" name="storyid" signature="QInteger;" type="java.lang.Integer"/>
+  </params>
+  <return signature="QStory;" type="com.chinacreator.c2.project.story.Story"/>
+</CustomRule>

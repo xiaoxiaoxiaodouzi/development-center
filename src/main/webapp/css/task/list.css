@@ -1,0 +1,463 @@
+@keyframes taskUpdateSingeAnimate{
+0%   {background-color:white;}
+50%  {background-color:#EFF4F9;}
+100% {background-color:white;}
+}
+#taskListDiv .lv-header-alt c2-dropdown{
+	margin-top: 3px;
+}
+#searchBarPosition{
+	height: 60px;
+}
+#searchBar{
+	z-index: 2;
+}
+#searchBar.affix {
+	top:65px;
+}
+.btn-float:hover i{
+	transform:rotate(0);
+	-webkit-transform:rotate(0);
+}
+.dropdown-menu .label-color{
+  width: 13px;
+  height: 13px;
+  display: inline-block;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin: 0 3px 2px 0;
+}
+.label-show{
+	border-radius: 2px;
+	padding-bottom: 1px;
+	box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);
+}
+#taskDescMarkdown{
+	max-height: 0px;
+	transition: all 500ms;
+	transition-timing-function: linear;
+}
+#taskDescMarkdown.expand{
+	max-height: 150px;
+}
+#taskUser{
+	transition-duration:300ms;
+}
+#taskErrorMsg{
+	opacity:0;
+	transition-duration:800ms;
+}
+#taskErrorMsg.see{
+	opacity:1;
+}
+#addTaskEstimateDiv{
+  height: 35px;
+  padding-top: 3px;
+  margin-top: 2px;
+  padding-right: 16px;
+  position: absolute;
+  right: 70px;
+  top: 17px;
+}
+#addEstimateButton{
+  box-shadow: 0 0 0 0;
+  border: 1px solid #eee;
+  cursor: help;
+  border-radius: 2px 0 0 2px;
+}
+#addTaskEstimateDiv .adjust-bar{
+	width: 16px;line-height: 16px;position:absolute;right: 0;top: 3px;
+}
+#addTaskEstimateDiv .adjust-bar i{
+	cursor:pointer;
+	background-color: #eee;
+}
+#addTaskEstimateDiv .adjust-bar i.md-add{
+	border-radius: 0 2px 0 0;
+}
+#addTaskEstimateDiv .adjust-bar i.md-remove{
+	border-radius: 0 0 2px 0;
+}
+.media > .pull-left {
+  padding-right: 5px;
+}
+.user-head{
+	width:68px;
+	text-align: center;
+}
+#taskListDiv.listview .bug-title{
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+#taskListDiv.listview .lv-attrs > li{
+	border:0;
+	background-color: inherit;
+}
+#taskListDiv.listview .lv-item .lv-small{
+	width: 87%;
+    border: 1px solid #eee;
+    padding: 6px 7px 0;
+    background-color: white;
+}
+#taskListDiv.listview .lv-item .lv-small p{
+	margin-bottom: 8px;
+}
+.listview .lv-item .lv-small.ng-enter{
+	max-height: 0px;
+	overflow: hidden;
+	transition: 500ms cubic-bezier(0.5,0, 1, 1 ) all;
+}
+.listview .lv-item .lv-small.ng-enter.ng-enter-active{
+	max-height: 500px;
+}
+#taskListDiv.listview .lv-item .lv-small.ng-leave{
+	max-height: 500px;
+	overflow: hidden;
+	transition: 500ms cubic-bezier(0,1,0.1,0.9) all;
+}
+#taskListDiv.listview .lv-item .lv-small.ng-leave.ng-leave-active{
+	max-height: 0px;
+/* 	padding:0 7px 0; */
+}
+.listview .lv-item .lv-small p img{
+	max-width: 100%;
+}
+.media-body .popover-content{
+	color:black;
+}
+.media-body .popover-content{
+	color:black;
+}
+.lv-attrs i{
+	position: relative;
+    top: 1px;
+}
+.rotate.md-expand-more{
+	transform:none;
+	-webkit-transform:none;
+	transition: transform 500ms;
+}
+.rotate.md-expand-more.turn{
+	transform:rotate(180deg);
+	-webkit-transform:rotate(180deg);
+}
+.animate-show-expend{
+	display: none;
+}
+.animate-show-expend .editor-toolbar{
+	margin-top: 0;
+} 
+.listview .lv-item.list-update-animate{
+  transition-duration: 0ms;
+}
+.listview .lv-item.list-update-animate.ng-enter{
+/*   animation: pulse 1s; */
+  animation: taskUpdateSingeAnimate 1s;
+}
+.listview .lv-item.list-add-animate{
+  transition-duration: 0ms;
+}
+.listview .lv-item.list-add-animate.ng-enter{
+  animation: slideInDown 1s;
+  transition: all 1s cubic-bezier(0,0,0.28,1);
+  margin-bottom:-94px;
+  overflow: hidden;
+}
+.listview .lv-item.list-add-animate.ng-enter.ng-enter-active{
+  margin-bottom:0px;
+}
+.listview .lv-item.list-remove-animate{
+  transition-duration: 0ms;
+}
+.listview .lv-item.list-remove-animate.ng-leave{
+/*    animation: flipOutX 1s; */
+/*    opacity: 0; */
+   transition: all 500ms linear;
+   height: 94px;
+   overflow: hidden;
+}
+.listview .lv-item.list-remove-animate.ng-leave.ng-leave-active{
+  transform:rotateX(90deg);
+  height: 0px;
+  padding: 0px 40px;
+}
+.lv-item.list-show-animate.ng-enter{
+  transition:300ms 300ms linear all;
+  opacity:0;
+}
+.lv-item.list-show-animate.ng-enter.ng-enter-active{
+  opacity:1;
+} 
+.lv-item.list-show-animate.ng-leave{
+  transition:300ms linear all;
+  opacity:1;
+}
+.lv-item.list-show-animate.ng-leave.ng-leave-active{
+  opacity:0;
+}
+.listview .lv-item{
+  transition-property:background-color,transform,padding,margin;
+  transition-duration: 300ms;
+}
+.num{
+  font-size: 16px;
+  padding: 5px;
+  color: cadetblue;
+}
+.bug-num{
+  font-size: 16px;
+  padding: 5px;
+}
+.listview .lv-attrs{
+	margin:0 0 9px;
+}
+.listview .lv-attrs > li#close-task{
+	border:1px solid #F4D4A3;
+	cursor: pointer;
+}
+.listview .lv-attrs > li#close-task:HOVER > i{
+	color: #F44336;
+}
+#lv-text-normal p{
+	width: 898px;
+    overflow: visible;
+    overFlow-x: hidden;
+    word-break: break-all;
+    white-space: normal !important;
+    line-height: 2em;
+}
+#taskListDiv .lv-item .media-body .lv-title{
+	width: 85%;
+}
+@media (min-width: 480px){
+.listview.lv-lg .lv-item {
+    padding: 17px 40px 17px 40px;
+}
+}
+
+.task-progress{
+	background: url(../../assets/img/bgm-img.png) no-repeat !important;
+/* 	border: 1px solid #C2E1FF !important; */
+}
+
+.task-progress-delayed{
+    background-color: #FFEEE6 !important;
+/*     border: 1px solid #FF9E74 !important; */
+}
+
+ul.dropdown-menu.flip{
+	animation: flip 600ms;
+}
+
+.color-chooser{
+	padding: 0px 15px 10px;
+}
+.color-chooser .color-piece:hover {
+	position: relative;
+	z-index: 2;
+	outline: 2px solid #fff;
+	box-shadow: 0 0 5px 2px rgba(0,0,0,0.25)
+}
+.color-chooser .color-piece {
+	display: block;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	cursor: pointer;
+	float: left;
+}
+.timeSearchButtonBar{
+	border-bottom: 1px solid #eee;
+}
+.timeSearchButtonBar > button{
+	margin-right: 6px;
+	box-shadow:0 !important;
+}
+.radio.picker{
+	padding:6px 12px 6px 36px;
+	margin-left: -2px;
+}
+.radio.picker .input-helper:before{
+	top:6px;
+	left:12px;
+}
+.radio.picker .input-helper:after{
+	top:10px;
+	left:16px;
+}
+#rangeDate .buttom-message{
+	border-top: 1px solid #eee;
+    padding: 10px 15px 10px;
+    font-size: 12px;
+    background-color: #1C8CE4;
+    margin: 5px -5px -5px;
+}
+#taskListDiv.listview .lv-item.task-bugs{
+	padding-bottom: 5px;
+}
+#taskListDiv.listview .lv-item.task-bugs .user-head{
+	margin-left: 35px;
+}
+#taskListDiv.listview .lv-item.task-bugs .task-bug-buttons{
+	padding: 10px 0 12px;
+}
+#taskListDiv.listview .lv-item.task-bugs .task-bug-buttons > button{
+	padding: 5px 26px;
+    margin-right: 15px;
+}
+#bugs-view {
+	margin: 0px;position: relative;
+	transition-duration:500ms;
+	background: white;
+	line-height: 50px;
+	border-top:10px solid #D6EEFF;
+}
+#bugs-view.ng-hide-remove{
+	max-height: 0px;
+	overflow: hidden;
+	transition-timing-function:cubic-bezier(0.5,0, 1, 1 );
+}
+#bugs-view.ng-hide-remove.ng-hide-remove-active{
+	max-height: 500px;
+}
+#bugs-view.ng-hide-add{
+	max-height: 500px;
+	overflow: hidden;
+	transition-timing-function:cubic-bezier(0,1,0.1,0.9);
+}
+#bugs-view.ng-hide-add.ng-hide-add-active{
+	max-height: 0;
+}
+#bugs-view .head{
+	position:absolute;
+}
+#bugs-view .body{
+/* 	margin-left:25px; */
+}
+#bugs-view .col-sm-4{
+	padding:10px;
+	border-radius:5px;
+/* 	transition-duration: 300ms; */
+}
+#bugs-view .col-sm-4:HOVER{
+	/*background-color: #EFF4F9; */
+}
+#bugs-view .body .title{
+	margin-bottom:5px;
+	margin-left:25px;
+}
+#bugs-view .body .title b{
+	cursor: default;
+}
+#bugs-view .body .title a{
+	color: #333;
+}
+#bugs-view .body .title a:HOVER{
+	color: #2196F3;
+}
+#bugs-view .body .info{
+	height: 50px;
+	line-height: 50px;
+}
+#bugs-view .body .info > .btn{
+	padding: 1px 3px;
+	display: none;
+	transition-duration:0ms;
+	margin-bottom: 3px
+}
+#bugs-view .col-sm-4:HOVER .body .info > .btn{
+	display: inline;
+}
+#bug-task-switch.toggle-switch .md-bug-report{
+    transition-duration: 300ms;
+}
+#bug-task-switch.toggle-switch {
+    vertical-align: baseline;
+}
+#bug-task-switch.toggle-switch .ts-label {
+    margin: 0 10px 0 20px;
+    vertical-align: middle;
+}
+.p-lr-40{ padding: 0 40px;}
+
+c2-listview .listview .lv-item {
+	transition-duration: 0ms;
+}
+@keyframes load {
+0%   {transform:rotate(360deg);}
+100% {transform:rotate(0deg);}
+}
+
+c2-listview button.load-more i.md-replay{
+	animation:load 1s infinite;
+}
+c2-listview button.load-more,c2-listview button.load-more:hover,
+c2-listview button.load-more:focus,c2-listview button.load-more:active{
+	border: 1px solid #eee;
+	border-left:0;
+	border-right:0;
+	background-color: #f8f8f8;
+	margin-top: 0px;
+}
+
+c2-listview .media > .pull-left {
+  padding-right: 5px;
+}
+c2-listview .user-head{
+	width:68px;
+	text-align: center;
+}
+c2-listview .listview .bug-title{
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+c2-listview .listview .lv-attrs > li:not(.info):not(.primary):not(.warning):not(.danger){
+	border:0;
+	background-color: inherit;
+}
+c2-listview .listview .lv-item .lv-small{
+	width: 87%;
+    border: 1px solid #eee;
+    padding: 6px 7px 0;
+    background-color: white;
+}
+c2-listview .listview .lv-item .lv-small p{
+	margin-bottom: 8px;
+}
+c2-listview .listview .lv-item .lv-small.ng-hide-remove{
+	max-height: 0px;
+	overflow: hidden;
+	transition: 500ms cubic-bezier(0.5,0, 1, 1 ) all;
+}
+c2-listview .listview .lv-item .lv-small.ng-hide-remove.ng-hide-remove-active{
+	max-height: 500px;
+}
+c2-listview .listview .lv-item .lv-small.ng-hide-add{
+	max-height: 500px;
+	overflow: hidden;
+	transition: 500ms cubic-bezier(0,1,0.1,0.9) all;
+}
+c2-listview .listview .lv-item .lv-small.ng-hide-add.ng-hide-add-active{
+	max-height: 0px;
+}
+c2-listview .listview .lv-item .lv-small p img{
+	max-width: 100%;
+}
+c2-listview .lv-attrs i{
+	position: relative;
+    top: 1px;
+}
+/* 任务列表排序样式 */
+#taskListDiv .sortable-placeholder{
+	height: 96px;
+	background-color: #e1e1e1;
+}
+#taskListDiv .lv-item.ui-sortable-helper{
+	background-color: white;
+	transform:rotate(1deg);
+    border-bottom: 1px solid white;
+    margin: -3px -3px 3px -3px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+}

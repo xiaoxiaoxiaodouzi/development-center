@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="project/create" service="false" log="false" className="com.chinacreator.c2.project.service.ProjectService" method="createProject">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>创建项目服务</name>
+  <desc>创建项目</desc>
+  <inputs>
+    <input collection="false" desc="" id="project" name="初始项目对象" required="true" type="com.chinacreator.c2.project.info.Project"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="int"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.project" name="project" signature="QProject;" type="com.chinacreator.c2.project.info.Project"/>
+  </params>
+  <return signature="I" type="int"/>
+</CustomRule>

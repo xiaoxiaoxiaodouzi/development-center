@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="generateDefaultWeekDays" log="false" className="com.chinacreator.c2.project.service.WorkLogService" method="generateDefaultWeekDays">
+  <name>生成当月默认工作日及工时数</name>
+  <inputs>
+    <input collection="false" desc="" id="weekDays" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="boolean"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.weekDays" name="weekDays" signature="QList&lt;QWeekDay;>;" type="java.util.List"/>
+  </params>
+  <return signature="Z" type="boolean"/>
+</CustomRule>

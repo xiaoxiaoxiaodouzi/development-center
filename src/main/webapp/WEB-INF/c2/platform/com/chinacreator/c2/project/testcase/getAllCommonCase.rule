@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getAllCommonCase" log="false" className="com.chinacreator.c2.project.testcase.CaseService" method="getAllCommonCase">
+  <name>获取所有公共用例树</name>
+  <desc>获取所有的公共用例树</desc>
+  <inputs/>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params/>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

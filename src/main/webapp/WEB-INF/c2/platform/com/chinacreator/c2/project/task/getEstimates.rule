@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getEstimatesInfo" log="false" className="com.chinacreator.c2.project.task.TaskService" method="getEstimates">
+  <name>查询工时信息</name>
+  <inputs>
+    <input collection="false" desc="" id="estimate" required="true" type="com.chinacreator.c2.project.task.Estimate"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.estimate" name="estimate" signature="QEstimate;" type="com.chinacreator.c2.project.task.Estimate"/>
+  </params>
+  <return signature="QList&lt;QEstimate;>;" type="java.util.List"/>
+</CustomRule>

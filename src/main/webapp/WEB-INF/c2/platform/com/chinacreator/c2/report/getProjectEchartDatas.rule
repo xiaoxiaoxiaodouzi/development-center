@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="report/getProjectEchartDatas" log="false" className="com.chinacreator.c2.report.ReportServices" method="getProjectEchartDatas">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取项目Echart图表相关数据</name>
+  <inputs>
+    <input collection="false" desc="" id="params" required="true" type="com.chinacreator.c2.report.bean.EchartQueryParams"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.params" name="params" signature="QEchartQueryParams;" type="com.chinacreator.c2.report.bean.EchartQueryParams"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

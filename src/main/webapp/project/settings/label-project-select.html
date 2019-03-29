@@ -1,0 +1,182 @@
+<style>
+.template-lables .header{
+	padding: 10px 0 10px 20px;
+	line-height: 100%;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+.template-lables .labels .little-label{
+    padding: 6px 10px;
+    margin: 0 10px 10px 0;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 3px;
+}
+.project-view{
+	text-align: left;
+	overflow: hidden;
+    height: 125px;
+}
+.project-view .group-selected{
+	transition-duration:0ms;
+	position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    background-color: white;
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+.project-view .group-selected i{
+	font-size: 20px;
+    color: #009688;
+}
+</style>
+
+<div ng-controller="selectProjectCtrl">
+	<div class="block-header">
+		<h2>标签模版</h2>
+	</div>
+	<div class="row" style="margin:0;">
+		<div class="col-sm-6 col-md-4" ng-repeat="tl in tempalteLabelGroups">
+			<div class="card project-view template-lables pull-left"  ng-click="chooseGroup(tl)">
+				<div class="header c-gray">{{tl.name}}</div>
+				<div class="labels p-10">
+				    <div class="little-label pull-left" ng-repeat="label in tl.labels" style="background-color: {{label.color}}; color: {{getTextColor(label.color)}};">
+					<i class="md md-label-outline"></i>
+					<span>{{label.name}}</span>
+					</div>
+				</div>
+				<button ng-if="tl.selected" class="btn btn-icon group-selected" ng-click=""><i class="md md-check"></i></button>
+			</div>
+		</div>
+	</div>
+	<div class="block-header">
+		<h2>我的项目</h2>
+	</div>
+	<div class="row" style="margin:0;">
+		<div class="col-sm-6 col-md-4" ng-repeat="project in $model.myProjects.result | filter:noCurrentProject">
+			<div class="card project-view" ng-click="chooseProject(project)">
+				<div class="pv-header" style="height:125px;" ng-style="{'background-image':'url('+project.pic+')'}"></div>
+				<div class="pv-body">
+				   <div class="project-sketch">
+					    <h2 class="text-overflow t-o-8 ng-binding pull-left">{{project.name}}</h2>
+					    <small class="text-overflow t-o-9" title="{{project.brief}}">{{project.brief?project.brief:'没有任何项目描述'}}</small>
+	               </div>
+				</div>
+				<button ng-if="project.selected" class="btn btn-icon group-selected" ng-click=""><i class="md md-check"></i></button>	 
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-4"  ng-if="!$model.myProjects.result || $model.myProjects.result.length==0">
+			<div class="card" style="background: #F5F3F3">
+				<div class="card-header text-center">
+					您目前没有参与任何项目
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default btn-icon-text" ng-click="cancelSelect()">取消</button>
+		<button type="button" class="btn btn-success btn-icon-text" ng-click="next()">下一步</button>
+	</div>
+</div>
+
+
+<script>
+developmentCenter.registerCtrl('selectProjectCtrl',function($rootScope,$scope, $element, $state, $stateParams, $timeout,$http, Messenger, Modal,ModelFactory) {
+    var $model=$scope.$model={};
+
+    $model.myProjects=ModelFactory.ws('project/myprojects',{});
+    $model.myProjects.$load();
+    $scope.noCurrentProject = function(project){
+    	return project.id!=$stateParams.project;
+    }
+    //标签模版
+    $scope.tempalteLabelGroups = [
+       	{name:"工作分类",labels:[
+   	    	{name:"设计",color:"#5319e7"},
+			{name:"开发",color:"#009800"},
+   	    	{name:"优化",color:"#207de5"},
+   	    	{name:"支持",color:"#0052cc"},
+   	    	{name:"文档",color:"#006b75"}
+     	]},
+    	{name:"优先级",labels:[
+   	    	{name:"P0:严重",color:"#e11d21"},
+   	    	{name:"P1:重要",color:"#fbca04"},
+   	    	{name:"P2:普通",color:"#0052cc"},
+   	    	{name:"P3:轻微",color:"#006b75"}
+       	]},
+    	{name:"管理类",labels:[
+   	    	{name:"预研",color:"#5319e7"},
+   	    	{name:"出差",color:"#eb6420"},
+   	    	{name:"请假",color:"#207de5"},
+   	    	{name:"管理",color:"#009800"}
+       	]},
+       	{name:"BUG管理类",labels:[
+    	    {name:"P0:关键",color:"#e11d21"},
+    	    {name:"P1:重要",color:"#fbca04"},
+    	    {name:"P2:一般",color:"#009800"},
+    	    {name:"P3:提示",color:"#bfe5bf"},
+    	    {name:"T0:配置",color:"#009800"},
+    	    {name:"T1:功能",color:"#bfe5bf"},
+    	    {name:"T2:性能",color:"#006b75"},
+    	    {name:"T3:容错",color:"#bfdadc"},
+    	    {name:"T4:界面",color:"#207de5"},
+    	    {name:"T5:易用",color:"#c7def8"},
+    	    {name:"T6:环境",color:"#0052cc"},
+    	    {name:"T7:数据",color:"#bfd4f2"},
+    	    {name:"T8:完整",color:"#5319e7"},
+    	    {name:"T9:一致",color:"#d4c5f9"}
+       ]}
+    ];
+	
+    var projectId;
+	$scope.chooseGroup = function(labelGroup){
+		labelGroup.selected = !labelGroup.selected;
+	}
+	$scope.chooseProject = function(project){
+		if(project.selected){
+			project.selected = false;
+			projectId = null;
+		}else{
+			angular.forEach($model.myProjects.result,function(p){
+				p.selected = (p.id == project.id);
+				if(p.selected)projectId = project.id;
+			});
+		}
+	}
+	
+	$scope.next = function(){
+		var chooseLabels = [];
+		angular.forEach($scope.tempalteLabelGroups,function(l){
+			if(l.selected)chooseLabels = chooseLabels.concat(l.labels);
+		});
+		if(projectId||chooseLabels.length>0){
+			if(projectId){
+				$http.post("e/label/op/selectLabel",{project:projectId}).success(function(data){
+					chooseLabels=chooseLabels?chooseLabels.concat(data.result):data.result;
+					//去重
+					var n = {},r = [];
+				    angular.forEach(chooseLabels,function(label){
+				    	if (!n[label.name]) {
+				            n[label.name] = true;
+				            r.push(label);
+				        }
+				    })
+				    Modal.close({labels:r});
+				});
+			}else{
+				Modal.close({labels:chooseLabels});
+			}
+		}else Messenger.error("请选择标签模版或者项目。");
+	}
+	
+	$scope.cancelSelect = function() {
+		Modal.dismiss();
+	};
+	$scope.getTextColor=function(color){
+		return getTextColorByBackColor(color);
+	};
+});
+</script>

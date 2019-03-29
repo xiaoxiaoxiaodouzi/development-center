@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="message/getUserInfo" log="false" className="com.chinacreator.c2.project.message.MessageService" method="getUserInfo">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取用户信息</name>
+  <desc>获取用户信息</desc>
+  <inputs>
+    <input collection="false" desc="@param" id="userId" required="true"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.userId" name="userId" signature="QString;" type="java.lang.String"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

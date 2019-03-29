@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="delInstanceInfo" log="false" className="com.chinacreator.c2.project.plan.InstanceService" method="delInstanceInfo">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>删除实例信息</name>
+  <desc>删除某实例信息 包含步骤信息、步骤结果、实例结果信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="instanceId" required="true" type="int"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.instanceId" name="instanceId" signature="I" type="int"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

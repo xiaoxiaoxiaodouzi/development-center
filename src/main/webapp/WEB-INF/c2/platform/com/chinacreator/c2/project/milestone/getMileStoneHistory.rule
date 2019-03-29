@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getMileStoneHistory" log="false" className="com.chinacreator.c2.project.milestone.MilestoneService" method="getMileStoneHistory">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获得里程碑变更记录</name>
+  <inputs>
+    <input collection="false" desc="" id="milestoneId" required="false" type="int"/>
+    <input collection="false" desc="" id="isAll" required="false" type="boolean"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.milestoneId" name="milestoneId" signature="I" type="int"/>
+    <param autoValue="Input.isAll" name="isAll" signature="Z" type="boolean"/>
+  </params>
+  <return signature="QList&lt;QMilestoneHistoryDTO;>;" type="java.util.List"/>
+</CustomRule>

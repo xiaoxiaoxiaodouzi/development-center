@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="project/myprojects" log="false" className="com.chinacreator.c2.project.service.ProjectService" method="getMyProjects">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取我所有的项目</name>
+  <desc>获取当前用户参与的所有项目</desc>
+  <inputs/>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="当前用户参与的所有项目" type="java.util.List"/>
+  </outputs>
+  <params/>
+  <return signature="QList&lt;QProject;>;" type="java.util.List"/>
+</CustomRule>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="deleteProject" log="false" className="com.chinacreator.c2.project.service.ProjectService" method="deleteProject">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>删除项目</name>
+  <desc>删除项目</desc>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="int"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

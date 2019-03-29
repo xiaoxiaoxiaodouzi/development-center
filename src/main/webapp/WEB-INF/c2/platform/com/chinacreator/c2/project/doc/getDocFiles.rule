@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getDocFiles" log="false" className="com.chinacreator.c2.project.doc.DocFileService" method="getDocFiles">
+  <name>获得文档的附件</name>
+  <inputs>
+    <input collection="false" desc="" id="doc" required="true" type="com.chinacreator.c2.project.doc.Doc"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.doc" name="doc" signature="QDoc;" type="com.chinacreator.c2.project.doc.Doc"/>
+  </params>
+  <return signature="QList&lt;QDocFile;>;" type="java.util.List"/>
+</CustomRule>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="selectInstanceCountById" log="false" className="com.chinacreator.c2.project.plan.InstanceService" method="selectInstanceCountById">
+  <name>获取某测试计划下的实例总数</name>
+  <desc>获取某测试计划下的实例总数</desc>
+  <inputs>
+    <input collection="false" desc="" id="planId" required="true" type="Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="int"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.planId" name="planId" signature="QInteger;" type="Integer"/>
+  </params>
+  <return signature="I" type="int"/>
+</CustomRule>

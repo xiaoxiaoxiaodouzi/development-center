@@ -1,0 +1,98 @@
+<link href="css/task/addTask.css" rel="stylesheet">
+
+<div data-ng-controller="resultSettingCtrl" class="base-body">
+    <div class="task-new-header">
+    	    
+        <div class="task-tasklist-stage-wrap">
+        	<button type="button" class="close btn-close-new" ng-click="modalOptions.X()"><span aria-hidden="true">&times;</span></button>
+           	<h4 class="title-top-module">
+           	设置结果
+            </h4>
+            
+        </div>
+    </div>
+    
+    <div class="task-new-infos-wrap">
+        <form class="form-horizontal ng-pristine ng-valid">
+			<div class="tv-body" style="padding: 0px;">
+				<div class="row" style="margin-bottom: 10px;margin-top: 10px;">
+					<label class="col-sm-2 control-label">设置结果：</label>
+					<div class="col-sm-10">
+						 <label class="radio radio-inline m-r-5 m-t-10 p-t-0">
+				                <input type="radio" ng-model="stepResult.result" ng-value="成功" value="成功">
+				                <i class="input-helper"></i>成功
+				            </label>
+				            <label class="radio radio-inline m-r-5 m-t-10 p-t-0">
+				                <input type="radio" ng-model="stepResult.result" ng-value="失败" value="失败">
+				                <i class="input-helper"></i>失败
+				            </label>
+				            <label class="radio radio-inline m-r-5 m-t-10 p-t-0">
+				                <input type="radio" ng-model="stepResult.result" ng-value="待核查" value="待核查">
+				                <i class="input-helper"></i>待核查
+				            </label>
+				            <label class="radio radio-inline m-r-5 m-t-10 p-t-0">
+				                <input type="radio" ng-model="stepResult.result" ng-value="不可用" value="不可用">
+				                <i class="input-helper"></i>不可用
+				            </label>
+				            <label class="radio radio-inline m-r-5 m-t-10 p-t-0">
+				                <input type="radio" ng-model="stepResult.result" ng-value="阻塞" value="阻塞">
+				                <i class="input-helper"></i>阻塞
+				            </label>
+					</div>
+				</div>
+				<div class="row" style="margin-bottom: 10px;">
+					<label class="col-sm-2 control-label">备注：</label>
+					<div class="col-sm-9">
+						<textarea ng-model="stepResult.remark" class="form-control" rows="4" cols="100" 
+							 style="border: 1px solid #e0e0e0;" wrap="hard"	placeholder="备注"></textarea>
+					</div>
+				</div>
+			</div>
+		</form>
+		<span id="planAddErrorMsg" class="c-red m-r-10 m-l-10 m-t-10">{{planAddErrorMsg}}</span>
+    </div>
+    <div class="task-new-footer">
+    	<hr />
+        <form id="new-task-save">
+            <div style="margin:0 20px 10px 0; float:right;">
+                <button class="btn btn-link btn-sm" data-ng-click="cancelAdd()">取消</button>
+                <button class="btn btn-primary btn-sm" data-ng-click="saveResult()">提交</button>
+            </div>
+ 		 <div style="clear:both; float:none; height:0; overflow:hidden"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+angular.module("project").registerCtrl('resultSettingCtrl', 
+	function($scope, $rootScope, $http,$state, $stateParams, $timeout, Modal,Messenger) {
+	$scope.stepResult = {};
+	//保存测试计划
+	$scope.saveResult = function() {
+
+		$scope.formCheck = true;
+		$scope.planAddErrorMsg = "";
+
+		if (!$scope.stepResult.result) {
+			$scope.planAddErrorMsg = "结果不能为空！"
+			return;
+		}
+		$scope.stepResult.instanceId = $scope.step.instanceId;
+		$scope.stepResult.id = $scope.step.id;
+		$http.post("ws/saveStepResult",{result:$scope.stepResult}).success(function(data){
+			Messenger.post("结果【"+$scope.stepResult.result+"】设置成功");
+			Modal.close(data.result);
+			//$state.reload("project.instanceTree.instance");
+		});
+		
+	}
+
+	
+	//取消 关闭新增弹出框
+	$scope.cancelAdd = function() {
+		Modal.dismiss();
+	}
+	
+
+});
+</script>

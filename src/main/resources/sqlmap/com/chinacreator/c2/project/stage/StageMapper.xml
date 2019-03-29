@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.stage.StageMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_comunity_stage.id ,
+		  c2_comunity_stage.project_id ,
+		  c2_comunity_stage.name_ ,
+		  c2_comunity_stage.order_no ,
+		  c2_comunity_stage.state ,
+		  c2_comunity_stage.milestone_id 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_comunity_stage.id = #{id}</if>
+	    <if test="projectId != null">and c2_comunity_stage.project_id = #{projectId}</if>
+	    <if test="name != null">and c2_comunity_stage.name_ = #{name}</if>
+	    <if test="orderNo != null">and c2_comunity_stage.order_no = #{orderNo}</if>
+	    <if test="state != null">and c2_comunity_stage.state = #{state}</if>
+	    <if test="milestoneId != null and milestoneId != 0">and c2_comunity_stage.milestone_id = #{milestoneId}</if>
+	    <if test="milestoneId == 0">and c2_comunity_stage.milestone_id is null</if>
+</sql>
+
+
+<!-- ElementID:StageResult,Generated=true -->
+<resultMap id="StageResult" type="com.chinacreator.c2.project.stage.Stage">
+	<id property="id" column="id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="name" column="name_"/>
+	<result property="orderNo" column="order_no"/>
+	<result property="state" column="state"/>
+	<result property="milestoneId" column="milestone_id"/>
+</resultMap>
+
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.stage.Stage" resultType="int">
+	select count(*) from c2_comunity_stage 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.stage.Stage">
+	update c2_comunity_stage
+<set>
+	<if test="projectId != null">project_id=#{projectId,jdbcType=NUMERIC},</if>
+	<if test="name != null">name_=#{name,jdbcType=VARCHAR},</if>
+	<if test="orderNo != null">order_no=#{orderNo,jdbcType=NUMERIC},</if>
+	<if test="state != null">state=#{state,jdbcType=NUMERIC},</if>
+	<if test="milestoneId != null">milestone_id=#{milestoneId,jdbcType=NUMERIC}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_comunity_stage
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="projectId==null">project_id = null,</if>
+		    <if test="name==null">name_ = null,</if>
+		    <if test="orderNo==null">order_no = null,</if>
+		    <if test="state==null">state = null,</if>
+		    <if test="milestoneId==null">milestone_id = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.stage.Stage">
+    delete from c2_comunity_stage where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.stage.Stage" resultMap="StageResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_stage 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_comunity_stage where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	<choose>
+		<when test="@com.chinacreator.c2.dao.util.EntityBeanUtil@isEntityObj(entity)">#{entity.id}</when>
+		<otherwise>#{entity}</otherwise>
+	</choose>
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="StageResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_stage 
+</select>
+
+<!-- ElementID:selectUnion,Generated=true -->
+<select id="selectUnion" parameterType="list" resultMap="StageResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_stage 
+	 INNER JOIN
+<foreach collection="list" item="entity" separator="UNION" open="(" close=")">
+		SELECT 
+			 id
+		FROM c2_comunity_stage 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_stage.id = #{entity.id}</if>
+	        <if test="entity.projectId != null">and c2_comunity_stage.project_id = #{entity.projectId}</if>
+	        <if test="entity.name != null">and c2_comunity_stage.name_ = #{entity.name}</if>
+	        <if test="entity.orderNo != null">and c2_comunity_stage.order_no = #{entity.orderNo}</if>
+	        <if test="entity.state != null">and c2_comunity_stage.state = #{entity.state}</if>
+	        <if test="entity.milestoneId != null">and c2_comunity_stage.milestone_id = #{entity.milestoneId}</if>
+			</where>
+</foreach>
+	c2_temp_table ON c2_comunity_stage.id = c2_temp_table.id
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="StageResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_stage 
+		 where c2_comunity_stage.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.stage.Stage" resultMap="StageResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_stage 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="StageResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_stage 
+	where c2_comunity_stage.id in (
+		select distinct id from c2_comunity_stage inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_comunity_stage 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_stage.id = #{entity.id}</if>
+	        <if test="entity.projectId != null">and c2_comunity_stage.project_id = #{entity.projectId}</if>
+	        <if test="entity.name != null">and c2_comunity_stage.name_ = #{entity.name}</if>
+	        <if test="entity.orderNo != null">and c2_comunity_stage.order_no = #{entity.orderNo}</if>
+	        <if test="entity.state != null">and c2_comunity_stage.state = #{entity.state}</if>
+	        <if test="entity.milestoneId != null">and c2_comunity_stage.milestone_id = #{entity.milestoneId}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.stage.Stage" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_comunity_stage(
+		<trim prefixOverrides=",">
+		    <if test="projectId != null">project_id</if>
+		    <if test="name != null">,name_</if>
+		    <if test="orderNo != null">,order_no</if>
+		    <if test="state != null">,state</if>
+		    <if test="milestoneId != null">,milestone_id</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="projectId != null">#{projectId,jdbcType=NUMERIC}</if>
+		    <if test="name != null">,#{name,jdbcType=VARCHAR}</if>
+		    <if test="orderNo != null">,#{orderNo,jdbcType=NUMERIC}</if>
+		    <if test="state != null">,#{state,jdbcType=NUMERIC}</if>
+		    <if test="milestoneId != null">,#{milestoneId,jdbcType=NUMERIC}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_comunity_stage (project_id,name_,order_no,state,milestone_id)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.projectId,jdbcType = NUMERIC},
+		         #{entity.name,jdbcType = VARCHAR},
+		         #{entity.orderNo,jdbcType = NUMERIC},
+		         #{entity.state,jdbcType = NUMERIC},
+		         #{entity.milestoneId,jdbcType = NUMERIC}
+				)
+</foreach>
+</insert>
+
+<resultMap type="map" id="taskListResult">
+	<id property="id" column="id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="moduleId" column="module_id"/>
+	<result property="storyId" column="story_id"/>
+	<result property="stageId" column="stage_id"/>
+	<result property="name" column="name_"/>
+	<result property="pri" column="pri"/>
+	<result property="estimate" column="estimate"/>
+	<result property="consumed" column="consumed"/>
+	<result property="left" column="left_"/>
+	<result property="deadline" column="deadline"/>
+	<result property="isDone" column="is_done" javaType="boolean"/>
+	<result property="closed" column="closed" javaType="boolean"/>
+	<result property="isConfirm" column="is_confirm"/>
+	<result property="confirmUser" column="confirm_user"/>
+	<result property="description" column="description"/>
+	<result property="assignedTo" column="assigned_to"/>
+	<result property="finishedDate" column="finished_date"/>
+	<result property="bugId" column="bug_id"/>
+	<result property="userIcon" column="userIcon"/>
+	<result property="userRealname" column="userRealname"/>
+	<result property="milestoneTitle" column="milestoneTitle"/>
+	<result property="milestoneId" column="milestone_id"/>
+	<result property="taskType" column="task_type"/>
+	<result property="myTaskOrder" column="my_task_order"/>
+	<result property="projectTaskOrder" column="project_task_order"/>
+	<collection property="labels" column="id" select="taskLables"/>
+</resultMap>
+
+<select id="taskLables" parameterType="int" resultType="com.chinacreator.c2.project.label.Label">
+SELECT
+	l.id,
+	l.name,
+	l.color
+FROM
+	c2_comunity_label_task lt
+JOIN c2_comunity_label l ON lt.label_id = l.id
+WHERE
+	lt.task_id = #{id}
+</select>
+
+<select id="getTaskListByStage" parameterType="map" resultMap="taskListResult">
+	SELECT
+	t.*,
+	u.user_id userId,
+	u.remark1 userIcon,
+	u.user_realname userRealname,
+	m.title milestoneTitle,
+	d.name_ moduleName,
+	p.name_ projectName,
+	p.arc_status arcStatus,
+	b.id bugId,
+	b.title bugTitle,
+	b.status_ bugState,
+	b.no bugNo,
+	b.project bugProjectId
+	FROM
+		c2_comunity_task t
+	LEFT JOIN td_sm_user u ON t.assigned_to = u.user_name
+	LEFT JOIN c2_comunity_milestone m ON t.milestone_id = m.id
+	LEFT JOIN zt_project p ON t.project_id = p.id
+	LEFT JOIN zt_module d ON t.module_id=d.id
+	LEFT JOIN c2_community_bug b ON t.bug_id = b.id,c2_comunity_stage s
+	where t.project_id=s.project_id and t.project_id=#{projectId} and 
+	t.stage_id=s.id and s.id=#{id} 
+	and t.assigned_to in (<!-- 排除非项目成员 -->
+		select distinct t.user_name from c2_projectuser u,td_sm_user t where u.project_id=#{projectId}
+	and u.user_id=t.user_id
+	UNION
+		select t.user_name from zt_project p,td_sm_user t where p.`owner`=t.user_id and p.id=#{projectId}
+	) 
+	<if test="name != null and name!=''">and t.name_ like '%${name}%'</if>
+	<if test="week.et != null ">and t.deadline between #{week.st,jdbcType=DATE} and #{week.et,jdbcType=DATE}</if>
+	<if test="labels != null">and t.id in (select task_id from c2_comunity_label_task where label_id in
+		<foreach item="l" collection="labels" open="(" separator="," close=")">
+	        '${l.id}'
+	    </foreach>
+	    )
+     </if>
+    <!--  <if test="stageName=='已完成'">
+	  	and t.finished_date between date_sub(now(),interval 7 day) and now()
+	  </if> -->
+     <if test="milestone != null and milestone.id!=0">and t.milestone_id = #{milestone.id}</if>
+     <if test="milestone != null and milestone.id==0">and t.milestone_id is null</if>
+     <if test="projectPlan != null and projectPlan.id!=0">and t.project_plan =#{projectPlan.id}</if>
+     <if test="module != null and module.id!=0">
+     	and t.id in (
+     		select id from c2_comunity_task where project_id=#{projectId} and module_id=#{module.id}
+			union 
+			select t.id from c2_comunity_task t,zt_story s where t.story_id=s.id and t.project_id=#{projectId} 
+			and t.module_id is null and s.module=#{module.id}
+     	)
+     </if>
+     <if test="users != null and creator == null">and t.assigned_to in 
+		<foreach item="u" collection="users" open="(" separator="," close=")">
+	        '${u.userName}'
+	    </foreach>
+     </if>
+	ORDER BY project_task_order desc,
+      create_date desc
+</select>
+
+<select id="getMaxOrderNo" parameterType="map" resultMap="StageResult">
+	select max(order_no) order_no from c2_comunity_stage where project_id=#{projectId} 
+	<if test="milestoneId == 0">
+		and milestone_id is null
+	</if>
+	<if test="milestoneId != 0">
+		and milestone_id=#{milestoneId}
+	</if>
+</select>
+
+<select id="getMinOrderNoStage" parameterType="map" resultMap="StageResult">
+	select * from c2_comunity_stage where project_id=#{projectId} and milesonte_id=#{milestoneId} and order_no = (
+		select min(order_no) from c2_comunity_stage where project_id=#{projectId} and milesonte_id=#{milestoneId}
+	)
+</select>
+
+<update id="closeStage" parameterType="list">
+	update c2_comunity_task set closed='1',stage_id=null where  bug_id is null and id in 
+	<foreach item="l" collection="list" open="(" separator="," close=")">
+	        #{l.id}
+	</foreach>
+</update>
+
+<delete id="deleteByMilestoneId" parameterType="com.chinacreator.c2.project.stage.Stage">
+	delete from c2_comunity_stage 
+	<where>
+		<include refid="whereClause_sql"/>
+	</where>
+</delete>
+
+<select id="getCompleteTaskList" parameterType="map" resultMap="taskListResult">
+    SELECT
+	t.*,
+	u.user_id userId,
+	u.remark1 userIcon,
+	u.user_realname userRealname,
+	m.title milestoneTitle,
+	d.name_ moduleName,
+	p.name_ projectName,
+	p.arc_status arcStatus,
+	b.id bugId,
+	b.title bugTitle,
+	b.status_ bugState,
+	b.no bugNo,
+	b.project bugProjectId
+	FROM
+		c2_comunity_task t
+	LEFT JOIN td_sm_user u ON t.assigned_to = u.user_name
+	LEFT JOIN c2_comunity_milestone m ON t.milestone_id = m.id
+	LEFT JOIN zt_project p ON t.project_id = p.id
+	LEFT JOIN zt_module d ON t.module_id=d.id
+	LEFT JOIN c2_community_bug b ON t.bug_id = b.id,c2_comunity_stage s
+	where t.project_id=s.project_id and t.project_id=#{projectId} and 
+	t.stage_id = s.id and s.name_='已完成' and t.is_done = 1 and t.closed = 0
+	<if test="name != null and name!=''">and t.name_ like '%${name}%'</if>
+	<if test="week.st != null and week.et != null">
+	  and t.finished_date between #{week.st,jdbcType=DATE} and #{week.et,jdbcType=DATE}
+	</if>
+	<if test="!isAllCom">
+	  and t.finished_date between date_sub(now(),interval 7 day) and now()
+	</if>
+	<if test="labels != null">and t.id in (select task_id from c2_comunity_label_task where label_id in
+		<foreach item="l" collection="labels" open="(" separator="," close=")">
+	        '${l.id}'
+	    </foreach>
+	    )
+     </if>
+     <if test="milestone != null and milestone.id!=0">and t.milestone_id = #{milestone.id}</if>
+     <if test="milestone != null and milestone.id==0">and t.milestone_id is null</if>
+     <if test="users != null and creator == null">and t.assigned_to in 
+		<foreach item="u" collection="users" open="(" separator="," close=")">
+	        '${u.userName}'
+	    </foreach>
+     </if>
+	ORDER BY finished_date desc, id desc
+</select>
+</mapper>

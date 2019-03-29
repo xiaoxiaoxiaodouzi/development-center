@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="wr/submitWeeklyReport" log="false" className="com.chinacreator.c2.project.weeklyReport.WeeklyReportService" method="submitWeeklyReport">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>提交周报</name>
+  <desc>提交周报信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="report" required="true" type="com.chinacreator.c2.project.weeklyReport.WeeklyReport"/>
+    <input collection="false" desc="" id="tasks" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.report" name="report" signature="QWeeklyReport;" type="com.chinacreator.c2.project.weeklyReport.WeeklyReport"/>
+    <param autoValue="Input.tasks" name="tasks" signature="QList&lt;QTaskSnapshot;>;" type="java.util.List"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

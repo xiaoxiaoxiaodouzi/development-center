@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getMembersByOrgId" log="false" className="com.chinacreator.c2.project.info.MembersMgt" method="getMembersByOrgId">
+  <name>查询某机构下的用户</name>
+  <inputs>
+    <input collection="false" desc="" id="orgId" required="true" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.orgId" name="orgId" signature="QString;" type="String"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

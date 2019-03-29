@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataSources xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.chinacreator.com/platform/core/datasource" default="">
+  <datasource xsi:type="DBCPDataSource" default="true" id="dev-center" name="dev-center" sys="true" type="MySQL" isEncrypt="false">
+    <poolAttribute key="defaultAutoCommit" value="true" desc="自动提交"/>
+    <poolAttribute key="maxActive" value="500" desc="最大连接数"/>
+    <poolAttribute key="initialSize" value="300" desc="初始连接数"/>
+    <poolAttribute key="poolPreparedStatements" value="false" desc="启用预编译"/>
+    <poolAttribute key="maxOpenPreparedStatements" value="50" desc="预编译缓存数"/>
+    <poolAttribute key="maxIdle" value="400" desc="最大空闲数"/>
+    <poolAttribute key="minIdle" value="300" desc="最大空闲数"/>
+    <poolAttribute key="maxWait" value="-1" desc="从池中取连接的最大等待时间,单位ms"/>
+    <poolAttribute key="validationQueryTimeout" value="1" desc="验证查询超时时间"/>
+    <poolAttribute key="testOnBorrow" value="false" desc="获取时验证"/>
+    <poolAttribute key="testOnReturn" value="false" desc="返回时验证"/>
+    <poolAttribute key="testWhileIdle" value="true" desc="空闲验证"/>
+    <poolAttribute key="timeBetweenEvictionRunsMillis" value="5000" desc="空闲连接超时检测间隔"/>
+    <poolAttribute key="numTestsPerEvictionRun" value="3" desc="检测空闲连接超时数(每次)"/>
+    <poolAttribute key="minEvictableIdleTimeMillis" value="60000" desc="空闲连接超时时间(毫秒)"/>
+    <poolAttribute key="removeAbandoned" value="true" desc="移除弃用连接"/>
+    <poolAttribute key="removeAbandonedTimeout" value="300" desc="弃用连接超时时间(毫秒)"/>
+    <poolAttribute key="logAbandoned" value="false" desc="记录弃用连接日志"/>
+    <driverClassName>${dc_db_driver}</driverClassName>
+    <url>${dc_db_url}</url>
+    <username>${dc_db_username}</username>
+    <password>${dc_db_password}</password>
+    <dataSourceFactory>com.chinacreator.c2.dao.datasource.impl.DBCPDataSourceFactory</dataSourceFactory>
+  </datasource>
+  <datasource xsi:type="DBCPDataSource" id="erp" name="ERP库" type="Oracle" isEncrypt="false">
+    <poolAttribute key="defaultAutoCommit" value="true" desc="自动提交"/>
+    <poolAttribute key="maxActive" value="25" desc="最大连接数"/>
+    <poolAttribute key="initialSize" value="5" desc="初始连接数"/>
+    <poolAttribute key="poolPreparedStatements" value="false" desc="启用预编译"/>
+    <poolAttribute key="maxOpenPreparedStatements" value="50" desc="预编译缓存数"/>
+    <poolAttribute key="maxIdle" value="20" desc="最大空闲数"/>
+    <poolAttribute key="minIdle" value="5" desc="最大空闲数"/>
+    <poolAttribute key="maxWait" value="-1" desc="从池中取连接的最大等待时间,单位ms"/>
+    <poolAttribute key="validationQueryTimeout" value="1" desc="验证查询超时时间"/>
+    <poolAttribute key="testOnBorrow" value="false" desc="获取时验证"/>
+    <poolAttribute key="testOnReturn" value="false" desc="返回时验证"/>
+    <poolAttribute key="testWhileIdle" value="true" desc="空闲验证"/>
+    <poolAttribute key="timeBetweenEvictionRunsMillis" value="5000" desc="空闲连接超时检测间隔"/>
+    <poolAttribute key="numTestsPerEvictionRun" value="3" desc="检测空闲连接超时数(每次)"/>
+    <poolAttribute key="minEvictableIdleTimeMillis" value="60000" desc="空闲连接超时时间(毫秒)"/>
+    <poolAttribute key="removeAbandoned" value="true" desc="移除弃用连接"/>
+    <poolAttribute key="removeAbandonedTimeout" value="300" desc="弃用连接超时时间(毫秒)"/>
+    <poolAttribute key="logAbandoned" value="false" desc="记录弃用连接日志"/>
+    <driverClassName>oracle.jdbc.OracleDriver</driverClassName>
+    <url>jdbc:oracle:thin:@172.16.168.125:1521/erp</url>
+    <username>erp</username>
+    <password>erp</password>
+    <dataSourceFactory>com.chinacreator.c2.dao.datasource.impl.DBCPDataSourceFactory</dataSourceFactory>
+  </datasource>
+</DataSources>

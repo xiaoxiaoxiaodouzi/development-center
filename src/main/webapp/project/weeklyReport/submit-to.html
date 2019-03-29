@@ -1,0 +1,79 @@
+<style>
+.col-sm-6.col-xs-6{
+	position:inherit !important;
+}
+</style>
+<div class="container" style="width: 100%"
+	data-ng-controller="weekReportSubmitMemberCtrl">	
+	<div class="card">
+		<div class="listview lv-bordered lv-lg" >
+			<div class="lv-header-alt">
+				<h2 class="lvh-label hidden-xs">已选成员列表</h2>				
+			</div>
+
+			<div class="lv-body m-l-10 m-t-10" style="min-height:129px;overflow-y:auto;max-height:129px;">				
+				<div class="contacts clearfix m-r-0 row" style="overflow: hidden">
+					<div class="col-md-list col-sm-6 col-xs-6"
+						ng-repeat="checkedMember in addMemberChecked">
+						<div class="c-item c-item-selected" style="position: relative;" ng-click="selectedMember(checkedMember)">
+							<i class="md-choice md-done"></i>
+							<a href="" class="img-border ci-avatar-list" style="position: relative;"> <img
+								ng-src="{{checkedMember.remark1}}" alt="">
+							</a>
+
+							<div class="c-info" style="height: 100%;">
+								<strong title="{{checkedMember.userRealname}}">{{checkedMember.userRealname}}</strong>								
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	
+		<div class="listview lv-bordered lv-lg">
+			<div class="lv-header-alt">
+				<h2 class="lvh-label hidden-xs">待选成员列表</h2>			
+				
+				<ul class="lv-actions actions">
+					<li class="pm-search">
+						<div class="pms-inner">
+							<i class="md md-search"></i> <input type="text"
+								ng-model="userRealname" ng-model-options="{updateOn:'default blur',debounce:{'default':300,'blur':0}}" placeholder="Search...">
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div class="lv-body">				
+				
+				<div class="contacts clearfix m-r-0 row"
+					style="min-height: 250px; overflow-y: auto; max-height: 250px; margin-top: 10px; margin-left: 10px;">
+					
+					<div ng-if="isShowNull" align="center" style="font-size: 14px;color: red;margin-top: 100px;">未查询到最近合作过的伙伴，请使用搜索功能进行查询！</div>
+					
+					<div class="col-md-list col-sm-6 col-xs-6"
+						ng-repeat="addmember in addMembers">
+						<div ng-class="{'c-item':!addmember.selected,'c-item c-item-selected':addmember.selected}" ng-click="selectedMember(addmember)">
+							<a href="" class="img-border ci-avatar-list"> <img
+								ng-src="{{addmember.remark1}}" alt="">
+								<i class="md-choice md-done" ng-if="addmember.selected"></i>
+							</a>
+
+							<div class="c-info" style="height: 100%;">
+								<strong title="{{addmember.userRealname}}">{{addmember.userRealname}}</strong>								
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="m-t-30 right_btn">
+		<button class="btn btn-primary btn-sm" ng-click="save()">保存</button>
+		<button class="btn btn-link btn-sm" ng-click="close()">关闭</button>
+	</div>
+</div>

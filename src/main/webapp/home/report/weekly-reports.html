@@ -1,0 +1,255 @@
+<style>
+#report-form-list .lv-item {
+	padding: 12px 20px;
+}
+
+#report-form-list .lv-item:hover{
+	background-color:#EFF4F9;
+}
+
+#report-form-list .report-title:hover {
+	cursor: pointer;
+}
+
+#report-form-list .report-title {
+	max-width: 30%;
+    width: 30%;
+    text-align:left !important;;
+}
+
+.report-form-detail .card{
+	box-shadow:none;
+	margin-bottom:0px;
+}
+
+#report-form-list .report-open-content {
+    background-color: white;
+    border-bottom: 1px solid white;
+    margin:0px -3px 3px -3px ;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+#report-form-list .report-open-title {
+	background-color: #EFF4F9;
+	font-weight: bold;
+}
+
+#report-form-list .report-title .report-title-name {
+	color:#69aa46;
+	margin-left:30px;
+	width:100px;
+	max-width:100px;
+}
+
+#report-form-list .lv-item .turn{
+	transform:rotate(180deg);
+}
+
+#report-form-list .lv-item .md-keyboard-arrow-down{
+	transition: transform 500ms;
+}
+
+#report-form-list .lv-pagination{
+	border-top: 0px;
+}
+
+.report-label-earlier{
+	background-color: #4caf50;
+}
+
+.report-label-normal{
+	background-color: #7FDC82;
+}
+
+.report-label-latter{
+	background-color: #ff9800;
+}
+
+.report-label-lose{
+	background-color: #f44336;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+	cursor: pointer;
+}
+
+.report-form-title-green {
+	color: #69aa46 ;
+}
+
+.rf-summary {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.rf-content .table .column,
+#report-form-list .lv-item .column{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: clip;
+	text-align: center;
+}
+
+.rf-content .table {
+	margin-bottom:0px;
+}
+
+.rf-content .table .column >a {
+	color:#161617;
+}
+
+.rf-content .table .column >a:hover {
+	color:#2196f3;
+	cursor:pointer;
+}
+
+.report-form-detail .card .rf-content .lv-header-alt {
+	padding: 5px 12px 12px 20px;
+	border-bottom: 0px;
+	background-color: #eee;
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 10px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 0px; 
+}
+
+.table > thead > tr > th {
+  border-bottom: 0px;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+   background-color: inherit;
+}
+
+.report-form-detail{
+	display:block !important ;
+	overflow: hidden;
+	transition: max-height 0.3s ;
+	transition-delay:0s;
+	max-height:0px;
+}
+
+.report-form-detail.open{
+	transition: max-height 0.3s ;
+	transition-delay:0s;
+	max-height:20000px;
+}
+
+.w-report p:first {
+    margin-top: 15px;
+    line-height: 2em;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+</style>
+<div id="report-form-list" class="container">
+	<div class="card m-t-20">
+		<div class="card-header">
+			<h2>
+				周报列表<small>查询、展示项目报表</small>
+			</h2>
+		</div>
+
+		<div class="card-body clearfix">
+			<div  class="listview lv-bordered lv-lg ">
+				<!-- 搜索 -->
+				<div class="lv-header-alt">
+					<c2-dropdown class="animate" bind-data="$params.selectedProject" 
+						items="$params.projects" item-name="name" item-click="projectClick(item)">
+						<div class="picker"><i class="md md-visibility"></i> 
+						{{$params.selectedProject.name}}&nbsp;<span class="caret"></span></div>
+					</c2-dropdown>
+				</div>
+
+				<div ng-class="{'report-open-content':report.open}" ng-repeat="report in reportList" ng-init="initWeekReport(report);report.open=false;report.isShowCurrentWeek=true;report.index=$index;">
+					<!-- 周报列表 -->
+					<div index="{{report.index}}" class="lv-item media no-animate" ng-class="{'report-open-title':report.open}">
+							<div data-ui-sref="home.weeklyReport({reportId:report.id})" class="pull-left report-title column">{{report.year}}年第<span style="color:#69aa46">{{report.week}}</span>周&nbsp;{{report.start}}-{{report.end}}<span title="{{report.projectName}}" class="column report-title-name">{{report.projectName}}</span>
+							</div>
+							<div class="progress" title="{{report.statisticsDesc}}"
+								style="width: 350px; margin-bottom: 0px; float: left;margin-left:30px">
+								<div class="progress-bar progress-bar-success"
+									style="width: {{report.statistics.normalRate}}%">
+									{{report.statistics.normal}}</div>
+								<div class="progress-bar progress-bar-warning"
+									style="width: {{report.statistics.delayedRate}}%">
+									{{report.statistics.delayed}}</div>
+							</div>
+							<span class="label pull-right {{report.statusClass}}"
+								style="width: 70px; font-size: 12px">
+									<i class="md md-add-circle-outline"
+										ng-if="report.statusClass=='report-label-lose'" title="创建周报"></i>{{report.status}}
+							</span>
+					</div>
+					<div class="report-form-detail" ng-class="{'open':report.open}">
+							<div class="card">
+									<div class="card-header" style="padding: 10px 0px 0px 23px;">
+										<h2>总结 <small  ng-bind-html="report.summary | markdown"></small></h2>
+									</div>
+									<div class="rf-content listview">
+							        	<div class="lv-header-alt" style="">
+							                <label class="radio radio-inline m-r-5 m-t-10">
+								                <input type="radio" ng-model="report.isShowCurrentWeek" ng-value="true" ng-change="switchWeekReportView(report)"/>
+								                <i class="input-helper"></i>本周任务
+								            </label>
+											<label class="radio radio-inline m-r-5 m-t-10">
+								                <input type="radio" ng-model="report.isShowCurrentWeek" ng-value="false" ng-change="switchWeekReportView(report)"/>
+								                <i class="input-helper"></i>下周任务
+								            </label>
+								          </div>
+							        	<div class="text-center p-20" ng-if="report.taskList.length==0">没有查到下周任务...</div>
+								        <div ng-if="report.taskList.length!=0">
+											<table class="table table-striped">
+											<thead>
+												<tr>
+													<th style="width: 20px;text-align: -webkit-auto;" class="m-l-10">#</th>
+													<th style="width: 350px; text-align: center;">任务名称</th>
+													<th style="width: 80px; text-align: center;">截止日期</th>
+													<th style="width: 70px; text-align: center;">执行人</th>
+													<th style="width: 60px; text-align: center;">状态</th>
+													<th style="width: 70px; text-align: center;">周工时</th>
+													<th style="width: 80px; text-align: center;">逾期原因</th>
+													<th style="width: 80px; text-align: center;">处理方式</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="task in report.taskList"
+													ng-init="task.isOverdue=(task.consumed<task.estimate);task.reportId=reportId">
+													<td class="column m-l-10">{{$index+1}}</td>
+													<td class="column" style="width: 350px; max-width: 350px;">
+													<a data-ui-sref="home.weeklyReports.taskDetail({taskId:'{{task.taskId}}'})"  title="{{task.name}}">
+															{{task.name}}
+													</a></td>
+													<td class="column" style="width: 80px; max-width: 80px;">{{task.deadline
+														| date : 'MM/dd'}}</td>
+													<td class="column" style="width: 60px; max-width: 60px;">{{task.assignedTo}}</td>
+													<td class="column" style="width: 70px; max-width: 70px;"><span
+														class="label"
+														ng-class="{'label-success':!task.isOverdue,'label-warning':task.isOverdue}">{{task.consumed}}/{{task.estimate}}</span>
+													</td>
+													<td class="column" style="width: 70px; max-width: 70px;">{{task.worked}}</td>
+													<td class="column" style="width: 80px;">
+														{{task.reason}}
+													</td>
+													<td class="column" style="width: 80px;">{{task.handle}}</td>
+												</tr>
+											</tbody>
+										</table>
+										</div>
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+
+		<c2-pagination total="$params.page.total" page-size="10"
+			on-page-change="pageList(pageIndex)"></c2-pagination>
+	</div>
+</div>
+
+<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;">
+    <ui-view onload="stateOnload()"></ui-view>
+</aside>

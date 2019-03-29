@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.info.UserPreferencesMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  td_sm_userpreferences.user_id ,
+		  td_sm_userpreferences.info_name ,
+		  td_sm_userpreferences.info_content ,
+		  td_sm_userpreferences.info_desc ,
+		  td_sm_userpreferences.info_lastupdate 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="userId != null">and td_sm_userpreferences.user_id = #{userId}</if>
+	    <if test="infoName != null">and td_sm_userpreferences.info_name = #{infoName}</if>
+	    <if test="infoContent != null">and td_sm_userpreferences.info_content = #{infoContent}</if>
+	    <if test="infoDesc != null">and td_sm_userpreferences.info_desc = #{infoDesc}</if>
+	    <if test="infoLastupdate != null">and td_sm_userpreferences.info_lastupdate = #{infoLastupdate}</if>
+</sql>
+
+
+<!-- ElementID:UserPreferencesResult,Generated=true -->
+<resultMap id="UserPreferencesResult" type="com.chinacreator.c2.project.info.UserPreferences">
+	<result property="userId" column="user_id"/>
+	<result property="infoName" column="info_name"/>
+	<result property="infoContent" column="info_content"/>
+	<result property="infoDesc" column="info_desc"/>
+	<result property="infoLastupdate" column="info_lastupdate"/>
+</resultMap>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.info.UserPreferences">
+	insert into td_sm_userpreferences(
+	         <if test="userId != null">user_id</if>
+	         <if test="infoName != null">,info_name</if>
+	         <if test="infoContent != null">,info_content</if>
+	         <if test="infoDesc != null">,info_desc</if>
+	         <if test="infoLastupdate != null">,info_lastupdate</if>
+	 	 	 )
+	 values (
+	         <if test="userId != null">#{userId,jdbcType=VARCHAR}</if>
+	         <if test="infoName != null">,#{infoName,jdbcType=VARCHAR}</if>
+	         <if test="infoContent != null">,#{infoContent,jdbcType=VARCHAR}</if>
+	         <if test="infoDesc != null">,#{infoDesc,jdbcType=VARCHAR}</if>
+	         <if test="infoLastupdate != null">,#{infoLastupdate,jdbcType=TIMESTAMP}</if>
+	 	 	 )
+</insert>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.info.UserPreferences">
+	update td_sm_userpreferences
+<set>
+	<if test="infoName != null">info_name=#{infoName,jdbcType=VARCHAR},</if>
+	<if test="infoContent != null">info_content=#{infoContent,jdbcType=VARCHAR},</if>
+	<if test="infoDesc != null">info_desc=#{infoDesc,jdbcType=VARCHAR},</if>
+	<if test="infoLastupdate != null">info_lastupdate=#{infoLastupdate,jdbcType=TIMESTAMP}</if>
+</set>
+<where>
+	<choose>
+        <when test="userId != null">and user_id = #{userId,jdbcType=VARCHAR} and info_name=#{infoName,jdbcType=VARCHAR}</when>
+        <otherwise>and user_id = </otherwise>
+    </choose>
+</where>
+</update>
+
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.info.UserPreferences" resultMap="UserPreferencesResult">
+	select 
+		<include refid="column_sql"/>
+	    from td_sm_userpreferences 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+</mapper>

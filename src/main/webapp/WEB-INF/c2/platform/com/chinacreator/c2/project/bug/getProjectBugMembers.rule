@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getProjectBugMembers" log="false" className="com.chinacreator.c2.project.info.BugMembers" method="getMembers">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取项目bug的成员列表</name>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="int"/>
+    <input collection="false" desc="" id="bugId" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+    <param autoValue="Input.bugId" name="bugId" signature="I" type="int"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

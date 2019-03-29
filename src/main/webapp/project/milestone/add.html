@@ -1,0 +1,231 @@
+<style>
+<!--
+dl {
+	margin-top: 0;
+	margin-bottom: 10px;
+}
+
+.dl-horizontal dt {
+	width: 60px
+}
+
+.dl-horizontal dd {
+	margin-left: 80px;
+}
+
+#profile-main .pmb-block {
+	padding: 20px 21px 0;
+}
+-->
+
+.editor-toolbar {
+    z-index: 0;
+}
+
+.tasklist-create-temps {
+    padding: 0 0 10px 0;
+    list-style: none;
+}
+.temp-handler {
+    padding: 2px 0;
+}
+.temp-info {
+    margin: -10px 30px;
+}
+.temp-stages {
+    line-height: 20px;
+    white-space: normal;
+    font-size: 12px;
+    color: #A6A6A6;
+}
+</style>
+<div ng-controller="milestoneAddCtrl" id="profile-main">
+			<form class="pmbb-edit">
+				<dl class="dl-horizontal">
+					<dt class="p-t-10">名称</dt>
+					<dd>
+						<div class="fg-line">
+							<input id="title" data-ng-model="milestone.title" type="text"
+								class="form-control" placeholder="">
+						</div>
+
+					</dd>
+				</dl>
+				<dl class="dl-horizontal">
+					<dt class="p-t-10">截止时间</dt>
+					<dd>
+						<div class="fg-line">
+							<input type="text" date-time-picker format="YYYY-MM-DD" class="form-control ng-valid ng-touched ng-isolate-scope ng-dirty ng-valid-parse" ng-model="milestone.date">
+						</div>
+					</dd>
+				</dl>
+				<dl class="dl-horizontal">
+					<dt class="p-t-10">模板</dt>
+					<dd>
+						<div class="tab-pane" id="tasklist-create-temps"> 
+			   					<ul class="tasklist-create-temps">
+			   						<li class="temp-handler active"> 
+			   							<label class="radio radio-inline m-r-5 m-t-10">
+							                <input type="radio" name="temps" ng-model="temps" ng-value="1">
+							                <i class="input-helper"></i>
+							            </label>
+			   							<div class="temp-info"> 
+			   								<div class="temp-stages"> 
+			   									<span ng-show="!taskConfirm">未开始 &gt; 进行中 &gt; 待审核 &gt; 已完成</span>  
+			   									<span ng-show="taskConfirm">待确认 &gt; 未开始 &gt; 进行中 &gt; 待审核 &gt; 已完成</span>  
+			   								</div> 
+			   							</div>
+			   						</li>
+			   						<!-- <li class="temp-handler active"> 
+			   							<label class="radio radio-inline m-r-5 m-t-10">
+							                <input type="radio" name="temps" ng-model="temps" ng-value="1">
+							                <i class="input-helper"></i>
+							            </label>
+			   							<div class="temp-info"> 
+			   								<strong class="f-15">周计划</strong> 
+			   								<div class="temp-stages"> 
+			   									<span>UI &gt; 持久层&后台逻辑 &gt; IDE &gt; 其他</span>  
+			   								</div> 
+			   							</div>
+			   						</li>
+			   						<li class="temp-handler"> 
+				   						<label class="radio radio-inline m-r-5 m-t-10">
+							                <input type="radio" name="temps" ng-model="temps" ng-value="2">
+							                <i class="input-helper"></i>
+							            </label> 
+				   						<div class="temp-info"> 
+				   							<strong class="f-15">设计</strong> 
+				   							<div class="temp-stages"> 
+				   								<span>策划 &gt; 原型图 &gt; 效果图 &gt; 审核中 &gt; 完成</span>  
+				   							</div> 
+				   						</div>
+			   						</li>
+			   						<li class="temp-handler "> 
+			   							<label class="radio radio-inline m-r-5 m-t-10">
+							                <input type="radio" name="temps" ng-model="temps" ng-value="3">
+							                <i class="input-helper"></i>
+							            </label> 
+			   							<div class="temp-info"> 
+			   								<strong class="f-15">研发</strong> 
+			   								<div class="temp-stages">
+			   									<span>需求点 &gt; 设计中 &gt; 研发中 &gt; 测试中 &gt; 已发布</span>  
+			   								</div> 
+			   							</div>
+			   						</li>
+			   						<li class="temp-handler"> 
+			   							<label class="radio radio-inline m-r-5 m-t-10">
+							                <input type="radio" name="temps" ng-model="temps" ng-value="4">
+							                <i class="input-helper"></i>
+							            </label> 
+			   							<div class="temp-info"> 
+			   								<strong class="f-15">用户支持</strong> 
+			   								<div class="temp-stages"> 
+			   									<span>用户问题 &gt; 解决中 &gt; 已解决 &gt; 反馈用户&问题解决</span>  
+			   								</div> 
+			   							</div>
+			   						</li> -->
+			   					</ul> 
+			   				</div> 
+					</dd>
+				</dl>
+			</form>
+			<div class="fg-line">
+				<textarea height="300" ng-model="milestone.desc" c2-markdown-editor
+					class="form-control" rows="5" placeholder="需求描述"></textarea>
+			</div>
+	
+	<div class="modal-footer">
+		<button id="submit" class="btn btn-primary btn-sm" type="button"
+				data-ng-click="submit()">保存</button>
+		<button type="button" class="btn btn-link btn-sm" data-ng-click="cancel()">取消</button>
+	</div>
+
+</div>
+<script>
+angular.module("project").registerCtrl('milestoneAddCtrl',function($scope, $element, $state, $stateParams, $timeout,$http, Messenger, Modal) {
+	
+	var initMilestoneAdd=function(){
+		$http.post("ws/getProjectPreference",{projectId:$scope.project,preferNames:["projectTaskConfirmState"]})
+		.success(function(data,status,headers,config){
+			if(!angular.isUndefined(data.result) 
+					&& !angular.isUndefined(data.result.projectTaskConfirmState) 
+					&& !angular.isUndefined(data.result.projectTaskConfirmState.preferContent)){
+				$scope.taskConfirm = "true"==data.result.projectTaskConfirmState.preferContent;
+			}else{
+				$scope.taskConfirm = false;
+			}
+		});
+	}
+	
+	$scope.temps = 1;
+	
+	$scope.template = "";
+	
+	$scope.milestone={};
+	
+	$scope.submit = function() {
+		
+		if(!$scope.project||$scope.project==""){
+			Messenger.post({
+		                'message': "没有产品参数，添加失败！",
+		                'type': 'error',
+		            });
+			return;
+		}
+		
+	    if(angular.isUndefined($scope.milestone.title)){
+	    	   Messenger.post({
+	                'message': "标题不能为空！",
+	                'type': 'error',
+	            });
+	            return;
+	    }
+	    
+	    if(angular.isUndefined($scope.milestone.date)){
+	    	   Messenger.post({
+	                'message': "时间不能为空！",
+	                'type': 'error',
+	            });
+	            return;
+	    }
+	    if(angular.isDefined($scope.temps)){
+	    	$scope.template = $('.temp-stages')[0].innerText;
+	    }
+	    //将按钮失效几秒钟避免重复提交数据
+		timer(5);
+	    
+		$http.post("ws/addMilestone",{
+			milestone:{
+				title:$scope.milestone.title,
+				enddate:$scope.milestone.date,
+				description:$scope.milestone.desc,
+				projectId:$scope.project
+			},
+			template:$scope.template
+		}).success(function(data){
+		   Messenger.post({type:'success',message:'添加成功'});
+		   Modal.close(data);   
+		});
+	};
+	
+	function timer(time) {
+		var btn = $("#submit");
+		 btn.attr("disabled", true);  //按钮禁止点击
+		 var hander = setInterval(function() {
+		  if (time <= 0) {
+		   clearInterval(hander); //清除倒计时
+		   btn.attr("disabled", false);
+		   return false;
+		  }else {
+			time--;
+		  }
+		 }, 1000);
+	}
+
+	$scope.cancel = function() {
+		Modal.close();
+	};
+	
+	initMilestoneAdd();
+});
+</script>

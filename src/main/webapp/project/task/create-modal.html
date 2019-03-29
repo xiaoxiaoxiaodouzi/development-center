@@ -1,0 +1,251 @@
+<style>
+#taskModalInputDiv.fg-float .fg-label {
+  top: 25px;
+}
+#taskModalInputDiv.fg-float .fg-toggled + .fg-label {
+  top: 0px;
+  font-size: 11px;
+}
+#tast-estimate-picker:HOVER{
+	border-color: #eee;
+}
+#tast-estimate-updown{
+	  width: 15px;
+	  float: right;
+	  line-height: 15px;
+	  color:white;
+	  transition-duration: 300ms;
+}
+.picker:HOVER #tast-estimate-updown{
+	  color:#000;
+	  background-color: #eee;
+	  cursor: pointer;
+}
+</style>
+
+<!-- 新建任务的对话框还没有地方使用 -->
+<div ng-controller="NewTaskModalController">
+	<div>
+	    <c2-dropdown bind-data="taskWeek" items="taskWeeks" class="m-l-20">
+			<div class="picker" ng-class="{'btn-danger':!taskWeek&&taskWeekRed}">
+					<i class="md md-alarm"></i> <span ng-if="!taskWeek">时间</span>{{taskWeek.time}} &nbsp;<span class="caret"></span>
+			</div>
+		</c2-dropdown>
+	    <c2-dropdown id="moduleDropdown" class="m-l-20" tree-options="treeOptions" tree-nodes="zTreeNodes" max-height="200">
+			<div class="picker" ng-class="{'btn-danger':!taskModule&&taskModuleRed}">
+					<i class="md md-extension"></i> <span ng-if="!taskModule">模块</span>{{taskModule.name}}&nbsp;<span class="caret"></span>
+			</div>
+		</c2-dropdown>
+	    <c2-dropdown bind-data="taskMilestone" items="milestones" class="m-l-20" item-name="title" clean-button="true">
+			<div class="picker">
+					<i class="md md-av-timer"></i> <span ng-if="!taskMilestone">里程碑</span>{{taskMilestone.title}} &nbsp;<span class="caret"></span>
+			</div>
+		</c2-dropdown>
+	    <c2-dropdown bind-data="taskTag" items="tags" class="m-l-20" multiple=true item-name="name" max-height="200" clean-button="true">
+			<div class="picker">
+				<i class="md md-bookmark-outline"></i> <span ng-if="taskTag.length==0">标签 &nbsp;<i class="caret"></i></span><span class="p-l-5 p-r-5 m-l-5" ng-style="tag.backgroundStyle" ng-repeat="tag in taskTag">{{tag.name}}</span>
+			</div>
+		</c2-dropdown>
+		
+		<div class="picker m-l-20 p-0" id="tast-estimate-picker" style="height: 32px;">
+			<div style="padding: 6px 6px 6px 12px;" class="pull-left">
+				<i class="md md-history"></i> 工时  
+				<input type="number" class="form-control" ng-model="task.estimate" placeholder="工时(h)" ng-trim="true" min="0" required="required"
+				 style="float: right;width: 100px;height: 30px;margin-top: -6px;">
+				<!-- <span style="width: 26px;display: inline-block;">{{task.estimate}}</span> -->
+			</div>
+			<!-- <div id="tast-estimate-updown"><i class="md md-add f-15" ng-click="task.estimate=task.estimate+1"></i><i class="md md-remove f-15" ng-click="task.estimate=task.estimate>0?task.estimate-1:task.estimate"></i></div> -->
+		</div>
+	</div>
+	<div class="row m-t-20">
+		<div class="text-center pull-left" style="width:45px;margin-left: 25px;">
+		    <c2-dropdown class="listview" id="taskUser" bind-data="taskUser" items="taskUsers" item-name="name" ng-class="{'bgm-red':!taskUser.name&&taskUserRed}">
+			<img class="lv-img-sm ng-scope" ng-src="{{taskUser.icon}}">
+			<div>{{taskUser.name}}</div>
+			</c2-dropdown>
+		</div>
+		
+		<div id="taskModalInputDiv" class="form-group fg-float has-feedback pull-left m-l-20 p-t-20 m-b-15" style="width:85%;" ng-class="{'has-error':!task.name&&taskNameRed}">
+	        <div class="fg-line" ng-class="{'fg-toggled':task.name}" style="width:96%">
+	            <input id="taskInput" ng-model="task.name"  type="text" class="form-control fg-input">
+	        </div>
+	        <label class="fg-label">任务</label>
+        	<span style="cursor: pointer;pointer-events: auto;" ng-click="addTaskDescExpend=!addTaskDescExpend" class="md md-expand-more rotate form-control-feedback" ng-class="{turn:addTaskDescExpend}"></span>
+	    </div>
+	</div>
+
+	<div class="row animate-show-expend" ng-show="addTaskDescExpend" style="width: 85%; margin-left: 75px;">
+	<textarea c2-markdown-editor height="100" ng-model="task.description"></textarea>
+	</div>
+
+	<div class="modal-footer">
+		<button id="submit" class="btn btn-success" ng-click ="creatTask()"> &nbsp;&nbsp; 保 存 &nbsp;&nbsp; </button>
+		<button class="btn btn-default" ng-click ="dismiss()"> &nbsp;&nbsp; 取 消 &nbsp;&nbsp; </button>
+	</div>
+</div>
+
+<script>
+developmentCenter.registerCtrl('NewTaskModalController',function($scope,Modal,$http,$stateParams,$timeout,$state,$rootScope,$ocLazyLoad,Messenger){
+	var currentUser = {id:$rootScope.subject.userId,name:$rootScope.subject.userRealname,icon:$rootScope.subject.remark1,userName:$rootScope.subject.userName};
+	$scope.taskUser = currentUser;
+	$scope.task = {estimate:15};
+	if($scope.bug&&$scope.bug.id){
+		$scope.task.bugId=$scope.bug.id;
+		$scope.task.bugNo = $scope.bug.bugNo;
+		$scope.task.name="修复BUG:"+$scope.bug.title;
+	}
+	
+	$scope.projectId = $stateParams.project?$stateParams.project:$scope.projectId;
+	
+	$http.post("ws/getProjectPreference",{projectId:$scope.projectId,preferNames:["projectTaskConfirmState"]})
+	.success(function(data,status,headers,config){
+		if(!angular.isUndefined(data.result) 
+				&& !angular.isUndefined(data.result.projectTaskConfirmState) 
+				&& !angular.isUndefined(data.result.projectTaskConfirmState.preferContent)){
+			$scope.taskConfirm = "true"==data.result.projectTaskConfirmState.preferContent;
+		}else{
+			$scope.taskConfirm = false;
+		}
+	});
+	
+	//工时
+	$ocLazyLoad.load(['assets/js/jquery.mousewheel.js']).then(function(){
+		$("#tast-estimate-picker").mousewheel(function(event, delta) {
+	        if(delta>0)$scope.task.estimate++;
+	        if(delta<0&&$scope.task.estimate>0)$scope.task.estimate--;
+	        $scope.$apply();
+	        return false;
+	    });
+	});
+	
+	// 时间
+	var thisWeek = {value:"本周完成",estStartDate:moment().isoWeekday(1).toDate().getTime(),deadline:moment().isoWeekday(5).toDate().getTime(),time:moment().isoWeekday(1).format("YYYY/MM/DD")+"—"+moment().isoWeekday(5).format("YYYY/MM/DD")};
+	var nextWeek = {value:"下周完成",estStartDate:moment().add(7, 'd').isoWeekday(1).toDate().getTime(),deadline:moment().add(7, 'd').isoWeekday(5).toDate().getTime(),time:moment().add(7, 'd').isoWeekday(1).format("YYYY/MM/DD")+"—"+moment().add(7, 'd').isoWeekday(5).format("YYYY/MM/DD")};
+	var unknow = {value:"未知",estStartDate:moment().dayOfYear(365).toDate().getTime(),deadline:moment().dayOfYear(365).toDate().getTime(),time:moment().dayOfYear(365).format("YYYY/MM/DD")+"—"+moment().dayOfYear(365).format("YYYY/MM/DD")};
+	$scope.taskWeeks = [thisWeek,nextWeek,unknow];
+	$scope.taskWeek = thisWeek;
+	//模块
+	$scope.treeOptions = {
+			view: {
+				selectedMulti: false
+			},
+			data:{
+				simpleData:{
+					enable:true,
+					pIdKey:"parent"
+				}
+			},
+			callback:{
+				onClick:function(event, treeId, treeNode, clickFlag){
+					$scope.$apply(function(){
+						$scope.taskModule = treeNode;
+					});
+					$("#moduleDropdown").controller("c2-dropdown").toggle();
+				}
+			}
+	};
+	$http.post("e/module/op/selectModule",{projectId:{id:$scope.projectId}}).success(function(data){
+		$scope.zTreeNodes = data.result;
+	});
+	
+	//里程碑
+	$http.post("ws/milestone/selectAllUnclosedMilestone",{milestone:{projectId:$scope.projectId}}).success(function(data){
+		$scope.milestones = data.result;
+	});
+	
+	//标签
+	$http.post("e/label/op/selectLabel",{project:$scope.projectId}).success(function(data){
+		angular.forEach(data.result,function(v,n){
+			v.backgroundStyle = {"background-color":v.color,"border-radius":"2px","color":getTextColorByBackColor(v.color)};
+		});
+		$scope.tags = data.result;
+	});
+	//项目成员
+	$http.post("ws/getMembers",{projectId:$scope.projectId}).success(function(data){
+		var taskMembers = [];
+		angular.forEach(data.result,function(v,n){
+			taskMembers.push({id:v.userDTO.user_id,name:v.userDTO.user_realname,icon:v.userDTO.remark1,userName:v.userDTO.user_name});
+		});
+		$scope.taskUsers = taskMembers;
+		$scope.projectUsers = angular.copy(taskMembers);
+	});
+	
+	//创建任务
+	$scope.creatTask = function(){
+		var taskCheck = true;
+		if(angular.isUndefined($scope.taskUser.name)){
+			$scope.taskUserRed = true;
+			taskCheck = false;
+		}
+		if(angular.isUndefined($scope.task.name)){
+			$scope.taskNameRed = true;
+			taskCheck = false;
+		}
+		if(angular.isUndefined($scope.taskWeek)){
+			$scope.taskWeekRed = true;
+			taskCheck = false;
+		}
+// 		if(angular.isUndefined($scope.taskModule)){
+// 			$scope.taskModuleRed = true;
+// 			taskCheck = false;
+// 		}
+		
+		if(taskCheck){
+			//将按钮失效几秒钟避免重复提交数据
+			timer(5);
+			$scope.task.estStartDate = $scope.taskWeek.estStartDate;
+    		$scope.task.deadline = $scope.taskWeek.deadline;
+    		$scope.task.assignedTo = $scope.taskUser.userName;
+    		$scope.task.userRealname = $scope.taskUser.name;
+    		$scope.task.userIcon = $scope.taskUser.icon;
+    		$scope.task.left = $scope.task.estimate;
+    		$scope.task.consumed = 0;
+    		$scope.task.milestoneId = $scope.taskMilestone?$scope.taskMilestone.id:$scope.taskMilestone;
+    		$scope.task.milestoneTitle = $scope.taskMilestone?$scope.taskMilestone.title:$scope.taskMilestone;
+    		$scope.task.labels = $scope.taskTag;
+    		$scope.task.labelTask = [];
+    		angular.forEach($scope.taskTag,function(tag){
+    			$scope.task.labelTask.push({"labelId":tag.id});
+    		});
+    		if(angular.isDefined($scope.taskModule))$scope.task.moduleId = $scope.taskModule.id;
+    		$scope.task.projectId = $scope.projectId;
+    		
+    		$http.post("ws/creatTask",{task:$scope.task,stageName:null,taskConfirm:$scope.taskConfirm}).success(function(data){
+    			$scope.task.id = data.result.id;
+    			$http.post('message/'+$scope.taskUser.id+'/task.add.taskModal',{task:$scope.task});
+    			
+    			//关联了bug
+	    		if($scope.task.bugId){
+					//修改bug状态为打开
+					$http.post("ws/bug/changeBugStatus",{bugId:$scope.task.bugId,status:2}).success(function(){
+						//修改bug负责人为任务分配的人
+	    				$http.post("ws/bug/changeBugMan",{bugId:$scope.task.bugId,man:$scope.task.assignedTo,changeMan:$rootScope.subject.userName,manRealname:$scope.task.userRealname});
+					});
+	    		}
+	    		
+	    		Messenger.success("添加任务成功");
+	    		Modal.close($scope.task);
+    		});
+		}else{
+			$("#taskErrorMsg").addClass("see");
+			$timeout(function(){
+				$("#taskErrorMsg").removeClass("see");
+			},2000);
+		}
+	}
+	
+	function timer(time) {
+		var btn = $("#submit");
+		 btn.attr("disabled", true);  //按钮禁止点击
+		 var hander = setInterval(function() {
+		  if (time <= 0) {
+		   clearInterval(hander); //清除倒计时
+		   btn.attr("disabled", false);
+		   return false;
+		  }else {
+			time--;
+		  }
+		 }, 1000);
+	}
+});
+</script>

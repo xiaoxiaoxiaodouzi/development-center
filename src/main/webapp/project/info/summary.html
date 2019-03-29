@@ -1,0 +1,52 @@
+<div class="pmb-block">
+    <div class="pmbb-header">
+        <h3><i class="md md-wifi-tethering m-r-5"></i> 摘要</h3>
+
+        <div class="actions" data-ng-if="projectInfoEdit && !editable.brief">
+          <a href="" data-ng-click="editable.brief=true;oldStates.brief=project.brief;" >
+              <i class="md md-edit"></i>
+          </a>
+        </div>
+    </div>
+    <div class="pmbb-body p-l-30 p-r-30">
+        <div class="pmbb-view h-l-2" ng-if="!editable.brief">
+            {{project.brief}}
+        </div>
+
+        <form data-ng-submit="saveProject();editable.brief=false;" class="pmbb-edit" data-ng-if="editable.brief">
+            <div class="fg-line">
+                <textarea class="form-control" rows="3" ng-model="project.brief" ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 2000, 'blur': 0 } }"></textarea>
+            </div>
+            <div class="m-t-10">
+                <button class="btn btn-primary btn-sm" type="submit">保存</button>
+                <button class="btn btn-link btn-sm" data-ng-click="editable.brief=false;project.brief=oldStates.brief;" >取消</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="pmb-block">
+    <div class="pmbb-header">
+        <h3><i class="md md-assignment m-r-5"></i> 项目描述</h3>
+
+        <div class="actions" data-ng-if="projectInfoEdit && !editable.description">
+          <a href="" data-ng-click="editable.description=true;oldStates.description=project.description;" >
+              <i class="md md-edit"></i>
+          </a>
+        </div>
+    </div>
+    <div class="pmbb-body p-l-30 p-r-30">
+        <div class="pmbb-view text-justify h-l-2" ng-if="!editable.description" ng-bind-html="project.description | markdown">
+        </div>
+        <form data-ng-submit="saveProject();editable.description=false;" class="pmbb-edit" data-ng-if="editable.description">
+            <textarea c2-markdown-editor height="300" id="project-description" ng-model="project.description"></textarea>
+            <div class="m-t-10">
+                <button class="btn btn-primary btn-sm" type="submit">保存</button>
+                <button class="btn btn-link btn-sm" data-ng-click="editable.description=false;project.description=oldStates.description;" >取消</button>
+            </div>
+        </form>
+    </div>
+    <div class="pmbb-body p-l-30 p-r-30">
+
+    </div>
+</div>

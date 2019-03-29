@@ -1,0 +1,81 @@
+<div class="container" style="width: 100%"
+	data-ng-controller="transformTeamOwnerCtrl">	
+	<div class="card">	
+		<div class="listview lv-bordered lv-lg">
+			<div class="lv-header-alt">
+				<h2 class="lvh-label hidden-xs">成员列表</h2>			
+			</div>
+
+			<div class="lv-body">				
+				
+				<div class="contacts clearfix row"
+					style="min-height: 250px; overflow-y: auto; max-height: 250px; margin-top: 10px; margin-left: 10px;">
+					
+					<div class="col-md-list col-sm-6 col-xs-6"
+						ng-repeat="member in members">
+						<div class="c-item" ng-class="{'c-item-selected':$index==selectedIndex}" ng-click="selectedMember(member.userName,$index)">
+							<a href="" class="img-border ci-avatar-list"> <img
+								ng-src="{{member.icon}}" alt="">
+								<i class="md-choice md-done" ng-if="$index==selectedIndex"></i>
+							</a>
+
+							<div class="c-info" style="height: 100%;">
+								<strong title="{{member.userRealname}}">{{member.userRealname}}</strong>								
+							</div>
+						</div>
+					</div>
+					
+					<div style="text-align:center" ng-show="!members">暂无成员数据</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="m-t-30 right_btn">
+		<button class="btn btn-primary btn-sm" ng-click="save()">保存</button>
+		<button class="btn btn-link btn-sm" ng-click="close()">关闭</button>
+	</div>
+</div>
+
+<script>
+angular.module("developmentCenter").registerCtrl('transformTeamOwnerCtrl',
+	function ($scope, $rootScope, $http, $state, $stateParams,debounce,$timeout, Messenger, Modal){
+	
+	//团队所有成员
+	$http.get("team/v1/"+$scope.team.id+"/users").success(function(data){
+		var userNameList = [];
+		data.forEach(d=>{
+			if($scope.team.owner!=d.userName){
+				userNameList.push(d.userName);
+			}
+		})
+		if(userNameList.length>0){
+			$http.post("ws/getUserInfoByUsername",{userNameList:userNameList}).success(function(data){
+				$scope.members = data.result;
+			})
+		}
+	})
+	
+	$scope.selectedMember = function(memberId,index){		
+		$scope.ownerId = memberId;
+		$scope.selectedIndex = index;
+	}
+	
+	$scope.save = function(){
+		if(!angular.isUndefined($scope.ownerId) && ""!=$scope.ownerId){
+			$http.post("team/v1/"+$scope.team.id+"/transform?owner="+$scope.ownerId)
+			.success(function(data){
+				Messenger.success("移交成功！");
+				Modal.close();
+			});
+		}else{
+			Messenger.error("请选择移交的成员！");
+		}
+	}
+	
+	$scope.close = function(){
+		Modal.dismiss();
+	}
+})
+</script>

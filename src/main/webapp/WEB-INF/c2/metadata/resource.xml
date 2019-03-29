@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PRSet xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/perm">
+  <resources>
+    <resource id="advancedSet_menu" name="高级设置菜单" path="other/" type="custom"/>
+    <resource id="projectInfo_edit" name="项目信息编辑" path="other/" type="custom"/>
+    <resource id="milestone_cud" name="新增编辑删除里程碑" path="other/" type="custom"/>
+    <resource id="task_close" name="关闭任务" path="other/" type="custom"/>
+    <resource id="task_del" name="删除任务" path="other/" type="custom"/>
+    <resource id="weekReport_submit" name="周报提交" path="other/" type="custom"/>
+    <resource id="story_cud" name="新增编辑删除需求" path="other/" type="custom"/>
+    <resource id="doc_del" name="删除文档" path="other/" type="custom"/>
+    <resource id="member_new" name="邀请成员" path="other/" type="custom"/>
+    <resource id="member_add" name="导入成员" path="other/" type="custom"/>
+    <resource id="member_remove" name="移除成员" path="other/" type="custom"/>
+    <resource id="member_authorize" name="成员授权" path="other/" type="custom"/>
+    <resource id="model_cud" name="新增编辑删除模块" path="other/" type="custom"/>
+    <resource id="project_change" name="转让归档删除项目" path="other/" type="custom"/>
+    <resource id="" name="任务列表" path="taskList" type="service"/>
+    <resource id="WjYi1v8iTbukKMDudzlocw" name="根据模块id查询模块详情" type="service"/>
+    <resource id="" name="获取模块详情" type="service"/>
+    <resource id="ASoo-lzsQAO3bIAKJokXsw" name="获取模块详情" type="service"/>
+  </resources>
+</PRSet>

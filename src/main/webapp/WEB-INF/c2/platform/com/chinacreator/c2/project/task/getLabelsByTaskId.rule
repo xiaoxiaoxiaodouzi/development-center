@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getLabels" log="false" className="com.chinacreator.c2.project.task.TaskService" method="getLabelsByTaskId">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取任务标签</name>
+  <desc>通过taskId及projectId获取当前任务标签列表及项目所有标签列表</desc>
+  <inputs>
+    <input collection="false" desc="" id="taskId" required="true" type="int"/>
+    <input collection="false" desc="" id="projectId" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.taskId" name="taskId" signature="I" type="int"/>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

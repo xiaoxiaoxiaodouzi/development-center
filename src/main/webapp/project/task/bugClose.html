@@ -1,0 +1,71 @@
+<div ng-controller="BugReopenModalController">
+<div class="p-l-10 p-r-10 f-14">
+<div class="form-group fg-line">
+	<c2-dropdown class="w-100" bind-data="bugVersion" items="projectVersion" item-name="bug_version" max-height="200">
+    <label for="closeVersion">版本</label>
+    <input id="closeVersion" ng-model="bugVersion.bug_version" type="text" class="form-control input-sm dropdown-toggle" placeholder="选择版本">
+    </c2-dropdown>
+</div>
+<div class="form-group m-b-0">
+    <div class="fg-line">
+    	<label for="rejectTextarea">备注</label>
+        <textarea id="rejectTextarea" class="form-control" ng-model="reason" placeholder="编点什么...."></textarea>
+    </div>
+</div>
+</div>
+<div class="p-10 text-right">
+	<span ng-show="errorMsg" class="c-red bug-reject-modal-error-msg m-r-10">{{errorMsgText}}</span> 
+	<button ng-click="reopen()" class="btn btn-primary simple-shadow">关闭任务</button>
+	<button ng-click="dismiss()" class="btn btn-default simple-shadow">取消</button>
+</div>
+</div>
+
+<style>
+.bug-reject-modal-error-msg.ng-hide-add {
+  opacity:1;
+  transition: 1s linear all;
+}
+
+.bug-reject-modal-error-msg.ng-hide-add-active {
+  opacity:0;
+}
+</style>
+<script>
+developmentCenter.registerCtrl('BugReopenModalController',function($scope,Modal,$timeout,$http,$ocLazyLoad){
+	//文本域自动高度
+	$ocLazyLoad.load("assets/js/autosize.min.js").then(function(){
+		autosize($("#rejectTextarea"));
+	});
+	//bug项目版本
+	$http.post("ws/bug/getProjectHistoryVersion",{projectId:$scope.projectId}).success(function(data){
+		$scope.projectVersion=data.result;
+	});
+	
+	$scope.errorMsg = false;
+	
+	function showError(text){
+		$scope.errorMsg = true;
+		$scope.errorMsgText = text;
+		$timeout(function(){
+			$scope.errorMsg = false;
+		},1500);
+	}
+	$scope.reopen = function(){
+		if(!$scope.bugVersion){
+			showError("请选择版本");
+			$("#closeVersion").focus();
+			return ;
+		}
+		$http.post("ws/bug/changeBugStatus", {
+			bugId : $scope.bugId,
+			status:0,
+			comment : $scope.reason,
+			bugVersion:$scope.bugVersion.bug_version
+		}).success(function(data) {
+			//bug关闭，bug关联的所有任务也要关闭
+			$http.post("ws/bugTaskClosed",{bugId:$scope.bugId});
+			Modal.close();
+		});
+	}
+});
+</script>

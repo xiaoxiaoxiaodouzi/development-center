@@ -1,0 +1,57 @@
+<style>
+#bottomPart {
+	padding-top:15px;
+}
+#saveLsit {
+	position:relative;
+}
+#saveList button {
+	position:absolute;
+	bottom:5%;
+	right:6%;
+}
+#deptMemberDropdown {
+	margin-left:65%;
+}
+#deptMemberDropdown div i {
+	margin-right:5px;
+}
+.md-choice {
+	left:80px;
+}
+.btn {
+	width:70px;
+}
+#whiteNameDiv .text-line-hidden{
+	width: 185px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+</style>
+
+<div class="container" style="width: 100%" ng-controller="teamLogWhiteListCtrl">
+	<div class="card">
+		<div class="listview lv-bordered lv-lg" >
+				<div class="lv-header-alt">
+					<h2 class="lvh-label hidden-xs">{{whiteNameTitle}}</h2>
+					<c2-dropdown ng-show="logAdmin" id="deptMemberDropdown" tree-options="deptMemberTreeOptions" tree-nodes="deptMemberTree" max-height="300" overflow="auto">
+						<div class="picker picker-white text-overflow" style="max-width:500px;">
+							<i class="md md-account-child" title="白名单成员选择"></i>选择部门成员<span class="caret"></span>
+						</div>
+					</c2-dropdown>		
+				</div>
+	
+				<div id="whiteNameDiv" class="lv-body">
+					<div class="contacts clearfix row" style="min-height: 129px; overflow-y: auto; max-height: 400px; margin: 10px;">
+					<div class="pull-left m-l-10 p-5 text-line-hidden" ng-repeat="u in users" title="{{u.userRealname}}【{{u.orgShowName}}】">{{u.userRealname}}【{{u.orgShowName}}】</div>
+					</div>
+				</div>
+		</div>
+	</div>
+<!-- 	<div id="bottomPart"> -->
+<!-- 		<div id="saveList"> -->
+<!-- 			<button class="btn btn-primary" ng-click="saveList()">保存</button> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+</div>

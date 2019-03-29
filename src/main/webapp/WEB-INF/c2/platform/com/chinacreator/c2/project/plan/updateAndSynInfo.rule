@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="updateAndSynInfo" log="false" className="com.chinacreator.c2.project.plan.InstanceService" method="updateAndSynInfo">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>更新并同步用例信息</name>
+  <desc>更新实例信息并同步用例基本信息 包含步骤信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="caseInstance" required="true" type="com.chinacreator.c2.project.plan.Instance"/>
+    <input collection="false" desc="" id="stepList" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="信息并同步用例基本信息 包含步骤信息  @param caseInstance" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.caseInstance" name="caseInstance" signature="QInstance;" type="com.chinacreator.c2.project.plan.Instance"/>
+    <param autoValue="Input.stepList" name="stepList" signature="QList&lt;QInstanceStep;>;" type="java.util.List"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

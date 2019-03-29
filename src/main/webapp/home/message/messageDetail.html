@@ -1,0 +1,204 @@
+<style type="text/css">
+.auto-height-chat{
+	height:477px;
+	overflow:auto;
+}
+
+.auto-height-no-chat{
+	height:554px;
+	overflow:auto;
+}
+</style>
+<div class="ms-body" ng-controller="msgDetailCtrl">
+	<div class="listview lv-message">
+		<div class="lv-header-alt bgm-white">
+			<div id="ms-menu-trigger">
+				<div class="line-wrap">
+					<div class="line top"></div>
+					<div class="line center"></div>
+					<div class="line bottom"></div>
+				</div>
+			</div>
+			<div class="lvh-label hidden-xs">
+				<div class="lv-avatar pull-left"  ng-if="currentFromUser.user_id!='$system'&&currentFromUser.user_id!='$broadcast'">
+					<img src="{{currentFromUser.icon_url}}" alt="">
+				</div>
+				<div class="lv-avatar bgm-red pull-left" ng-if="currentFromUser.user_id=='$system'">系统</div>
+				<div class="lv-avatar bgm-red pull-left" ng-if="currentFromUser.user_id=='$broadcast'">通知</div>
+				<span class="c-black">{{currentFromUser.user_realname}}</span>
+			</div>
+			
+
+		
+		</div>
+		
+		<div id="msgBody" class="lv-body c-overflow"  ng-class="{'auto-height-chat':hasReply(),'auto-height-no-chat':!hasReply()}">
+		<div ng-repeat="msgDetail in fromUserMsgDetail" id="{{msgDetail.id_}}">
+			<div class="lv-item media" ng-if="msgDetail.msg_from!=currentUser.userId">
+				<div class="lv-avatar pull-left"  ng-if="msgDetail.msg_from!='$system'&&msgDetail.msg_from!='$broadcast'">
+					<img src="{{msgDetail.icon_url}}" alt="">
+				</div>
+				<div class="lv-avatar bgm-red pull-left" ng-if="msgDetail.msg_from=='$system'">系统</div>
+				 <div class="lv-avatar bgm-red pull-left" ng-if="msgDetail.msg_from=='$broadcast'">通知</div>
+				<div class="media-body">
+					<div class="ms-item" style="font-size: larger;color:#000000;background:#eee">{{msgDetail.messageVo.content}}
+						<a ng-if="msgDetail.messageVo.link" class="lv-small" style="color: #2196f3;padding-top:8px;width: 50px;" href="#{{msgDetail.messageVo.link}}">查看详情</a>
+					</div>
+					<small class="ms-date"><i class="md md-access-time"></i>{{
+						msgDetail.arrival | date:'yyyy/MM/dd HH:mm:ss' }}</small>
+				</div>
+			</div>
+
+			<div class="lv-item media right" ng-if="msgDetail.msg_from==currentUser.userId">
+				<div class="lv-avatar pull-right"  ng-if="msgDetail.msg_from!='$system'&&msgDetail.msg_from!='$broadcast'">
+					<img src="{{currentUser.remark1}}" alt="">
+				</div>
+				<div class="lv-avatar bgm-red pull-right" ng-if="msgDetail.msg_from=='$system'">系统</div>
+				<div class="lv-avatar bgm-red pull-left" ng-if="msgDetail.msg_from=='$broadcast'">通知</div>
+				<div class="media-body">
+					<div class="ms-item" style="font-size: larger;background:#b2e281">{{msgDetail.messageVo.content}}
+						<div ng-if="msgDetail.messageVo.link"><a class="lv-small" style="color: #2196f3;padding-top:8px;width: 50px;" href="#{{msgDetail.messageVo.link}}">查看详情</a></div>
+					</div>
+					<small class="ms-date"><i class="md md-access-time"></i>{{
+						msgDetail.arrival | date:'yyyy/MM/dd HH:mm:ss' }}</small>
+				</div>
+			</div>
+		</div>
+		</div>
+		
+		<div class="lv-footer ms-reply" ng-if="hasReply()">
+			<textarea id="msgContent" ng-keypress="keypress($event)" placeholder="要说点什么..."></textarea>
+		
+			<button ng-click="sendMsg()" title="Ctrl+Ente发送消息">
+				<i class="md md-send"></i>
+			</button>
+		</div>
+
+	</div>
+</div>
+<script type="text/javascript">
+	angular.module("developmentCenter").registerCtrl(
+			'msgDetailCtrl',
+			function($scope, $rootScope, $http, $state, $stateParams, $timeout,
+					Messenger, Modal,socketio,$location) {
+				
+				socketio.on($scope,'pushSystem',function(data){
+					$scope.initMsgDetailCtrl();
+		        });
+				
+				socketio.on($scope,'pushBroadcast',function(data){
+					$scope.initMsgDetailCtrl();
+				});
+
+				$scope.initMsgDetailCtrl = function() {
+					
+					if ($stateParams&&$stateParams.user_id&&$stateParams.user_id != ""&& $stateParams.user_id != "$broadcast"){
+						//加载当前active
+						$scope.loadFromUserMsgDetail($stateParams.user_id);
+					}else{
+						$scope.setCurrentFromUser({user_id:"$broadcast",user_realname:"通知"});
+						$scope.loadBroadcastMsgDetail();
+					}
+					
+					if(undefined!=$scope.msgFromUserList&&$stateParams.user_id != "$broadcast"&&$stateParams.user_id != "$system"){
+						var user=$scope.getUserInUserList($stateParams.user_id);
+						if(!user){
+							$scope.loadMsgFromUserList();
+						}
+					}
+				}
+				
+				$scope.loadFromUserMsgDetail = function(msgFromUser) {
+					
+					$http.post("ws/getFromUserMsgDetail", {
+						"msgFromUser" : msgFromUser,
+						"condition" : {}
+					}).success(function(data) {
+						$scope.fromUserMsgDetail = data.result.rows;
+						
+						$scope.setCurrentFromUser(data.result.msgFrom);
+						
+						$rootScope.loadMessage();
+						
+						$timeout($scope.scrollToEnd,500);
+
+					});
+				}
+
+				$scope.loadBroadcastMsgDetail = function() {
+					$http.post("ws/getBroadcastMsgDetail", {
+						"condition" : {}
+					}).success(function(data) {
+						$scope.fromUserMsgDetail = data.result.rows;
+						$rootScope.loadMessage();
+						
+						$timeout($scope.scrollToEnd,500);
+					});
+				}
+
+				$scope.isShow=function(){
+					if($scope.currentFromUser.user_id=="$system"||$scope.currentFromUser.user_id=="$broadcast"){
+						return false;
+					}
+					return true;
+				}
+				
+				$scope.scrollTo=function(id){
+					var msgBody=$("#msgBody");
+					msgBody.animate({
+						scrollTop:$("#"+id).offset().top - msgBody.offset().top + msgBody.scrollTop()
+					});
+				}
+				
+				$scope.scrollToEnd=function(){
+					var msgBody=$("#msgBody");
+					var size=msgBody.children().last().length;
+					if(size<=0) return;
+					msgBody.animate({
+						scrollTop:msgBody.children().last().offset().top - msgBody.offset().top + msgBody.scrollTop()
+					});
+				}
+				
+				$scope.sendMsg=function(){
+					
+					if($("#msgContent").val()==""){
+						Messenger.post({type:'info',message:'请输入消息内容！'});
+						return;
+					}
+					
+					if(!$scope.currentUser){
+						Messenger.post({type:'info',message:'无法获取当前用户信息！'});
+						return;
+					}
+					
+					
+					if(!$scope.currentFromUser){
+						Messenger.post({type:'info',message:'请选择消息接收者！'});
+						return;
+					}
+
+					$http.post("ws/pushSystem",{
+						msgTo:$scope.currentFromUser.user_id,
+						msgContent:$("#msgContent").val(),
+						isPersistent:true
+					}).success(function(data){
+						$("#msgContent").val("");
+						$scope.loadFromUserMsgDetail($scope.currentFromUser.user_id);
+						document.getElementById("msgBody").scrollTop=document.getElementById("msgBody").scrollHeight;
+					});
+				}
+				
+				
+				$scope.hasReply=function(){
+					return $stateParams.user_id!='$system'&&$stateParams.user_id!='$broadcast';
+				}
+				
+				 $scope.keypress = function ($event) {
+		                if($event.keyCode==10){
+		                	$scope.sendMsg();
+		                }
+		            }
+				
+				$scope.initMsgDetailCtrl();
+			});
+</script>

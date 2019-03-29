@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="wl/getEstimateInfosOfLack" log="false" className="com.chinacreator.c2.project.service.WorkLogService" method="getEstimateInfosOfLack">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取缺失工时信息</name>
+  <desc>查询缺失工时信息</desc>
+  <inputs>
+    <input collection="false" desc="start:起始时间," id="start" required="true" type="java.sql.Date"/>
+    <input collection="false" desc="start:起始时间," id="end" required="true" type="java.sql.Date"/>
+    <input collection="false" desc="start:起始时间," id="deptIds" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.start" name="start" signature="QDate;" type="java.sql.Date"/>
+    <param autoValue="Input.end" name="end" signature="QDate;" type="java.sql.Date"/>
+    <param autoValue="Input.deptIds" name="deptIds" signature="QList&lt;QString;>;" type="java.util.List"/>
+  </params>
+  <return signature="QList&lt;QList&lt;QMap&lt;QString;QObject;>;>;>;" type="java.util.List"/>
+</CustomRule>

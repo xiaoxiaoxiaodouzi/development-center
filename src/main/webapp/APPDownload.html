@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
+<meta name="format-detection" content="telephone=no">
+<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+<title>开发中心app下载</title>
+<script src="assets/js/jquery.min.js"></script>
+</head>
+<body style="background-color: #4285f4;">
+	<div style="margin:0 auto;width:-webkit-max-content;height:auto;">
+		<div style="margin:0 auto;margin-top:100px;width:120px;height: 120px;background-color: white;border-radius:5px;border: 10px;border-color: white;">
+			<img src="assets/img/App_icon.png" style="margin:10px;width:100px;height: 100px;border-radius:5px;border: 10px;border-color: white;"/>
+		</div>
+		<div style="margin-top:50px;color:white;text-align: center;font-size: 24px;">科创开发中心</div>
+		<div id="downloadContent" style="margin-top:50px;color:white;text-align: center;font-size: 18px;">下载中···</div>		
+	</div>
+	<div style="position: fixed;bottom: 20px;color:white; width:100%; text-align: center;font-size: 12px;">Copyright 1998-2017 湖南科创信息技术股份有限公司</div>
+<script>
+  var isMobile = {
+    Wechat : function() {
+      return navigator.userAgent.match(/MicroMessenger/i) ? true : false;
+    },
+    Android : function() {
+      return navigator.userAgent.match(/Android/i) ? true : false;
+    },
+    BlackBerry : function() {
+      return navigator.userAgent.match(/BlackBerry/i) ? true : false;
+    },
+    iOS : function() {
+      return navigator.userAgent.match(/iPhone|iPad|iPod/i) ? true : false;
+    },
+    Windows : function() {
+      return navigator.userAgent.match(/IEMobile/i) ? true : false;
+    },
+    any : function() {
+      return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Windows());
+    }
+  };
+  var downloadc = document.getElementById("downloadContent");
+  if(isMobile.Wechat()){
+  	downloadc.textContent = '点击右上角按钮，选择在浏览器打开页面即可开始下载了';
+  }else if (isMobile.iOS()) {
+  	downloadc.textContent = '跳转中···';
+    window.location.href="https://itunes.apple.com/us/app/ke-chuang-kai-fa-zhong-xin/id1135148802?l=zh&ls=1&mt=8";
+  }else if(isMobile.Android()){
+  	downloadc.textContent = '获取数据中…';
+  	$.getJSON("http://project.c2cloud.cn/app/version",function(data){
+  		window.location.href=data.android.url;
+  	}).fail(function() {
+  	  	downloadc.textContent = '抱歉，无法获取最新版本信息';
+    });
+  }else {
+  	downloadc.textContent = '工程师还在撸代码，但是暂时还不支持目前访问的设备';
+  } 
+</script>
+</body>
+</html>

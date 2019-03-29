@@ -1,0 +1,211 @@
+<link href="css/task/addTask.css" rel="stylesheet">
+<style>
+.col-sm-6.col-xs-6{
+	position:inherit !important;
+}
+</style>
+<div data-ng-controller="addTeamCtrl" class="base-body">
+    <div class="task-new-header">
+
+        <div class="task-tasklist-stage-wrap">
+            <button type="button" class="close btn-close-new" ng-click="modalOptions.X()"><span aria-hidden="true">&times;</span></button>
+            <h4 class="title-top-module">新增团队</h4>
+
+        </div>
+        <ng-form name="aform">
+            <div class="task">
+                <input id="tean-name" name="teamName" type="text" placeholder="团队名称" ng-model="newTeam.name"
+                    ng-required="true" class="form-control" data-ng-class="{'has-error-border':!newTeam.name&&teamNameRed}"
+                    ng-model-options="{updateOn:'blur'}" ng-keypress="blurIfEnterKeyWasPressed($event)" />
+            </div>
+        </ng-form>
+    </div>
+    <div class="new-white-card task-new-handler-warp">
+        <div class="listview lv-bordered lv-lg" >
+			<div class="lv-header-alt">
+				<h2 class="lvh-label hidden-xs">已选成员列表</h2>				
+			</div>
+
+			<div class="lv-body m-l-10 m-t-10" style="min-height:129px;overflow-y:auto;max-height:129px;">				
+				<div class="contacts clearfix m-r-0 row" style="overflow: hidden">
+					<div class="col-md-list col-sm-6 col-xs-6"
+						ng-repeat="checkedMember in addMemberChecked">
+						<div class="c-item c-item-selected" style="position: relative;" ng-click="selectedMember(checkedMember)">
+							<i class="md-choice md-done" style="left:89px"></i>
+							<a href="" class="img-border ci-avatar-list" style="position: relative;"> <img
+								ng-src="{{checkedMember.remark1}}" alt="">
+							</a>
+
+							<div class="c-info" style="height: 100%;">
+								<strong title="{{checkedMember.userRealname}}">{{checkedMember.userRealname}}</strong>								
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	
+		<div class="listview lv-bordered lv-lg">
+			<div class="lv-header-alt">
+				<h2 class="lvh-label hidden-xs">待选成员列表</h2>			
+						
+				<div class="pull-right">
+					<c2-dropdown id="deptDropdown" class="m-r-20" tree-options="deptTreeOptions" tree-nodes="deptTree" max-height="200" class="pull-right" clean-button="true" after-clean-event="treeClean()">
+						<div class="picker">
+							<i class="md md-account-balance" title="部门/组选择"></i> {{deptName?"":"指定部门/组  "}}{{deptName}}<span class="caret"></span>
+						</div>
+					</c2-dropdown>
+					<ul class="lv-actions actions">
+						<li class="pm-search">
+							<div class="pms-inner">
+								<i class="md md-search f-15 m-f-w p-l-5 c-search"></i> <input type="text"
+									ng-model="condition.name" ng-model-options="{updateOn:'default blur',debounce:{'default':600,'blur':0}}" placeholder="姓名" class="b-none">
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		
+			<div class="lv-body">				
+						
+				<div class="contacts clearfix m-r-0 row"
+					style="min-height: 140px; overflow-y: auto; max-height: 250px; margin-top: 10px; margin-left: 10px;">
+							
+					<div ng-if="isLoad" align="center" style="font-size: 14px;margin-top: 10px;">正在加载，请稍等...</div>
+							
+					<div ng-if="isShowNull" align="center" style="font-size: 14px;color: red;margin-top: 10px;">未查询到相关人员！</div>
+							
+					<div class="col-md-list col-sm-6 col-xs-6" ng-repeat="addmember in addMembers">
+						<div ng-class="{'c-item':!addmember.selected,'c-item c-item-selected':addmember.selected}" ng-click="selectedMember(addmember)">
+		
+							<a href="" class="img-border ci-avatar-list" style="position: relative;"> <img
+								ng-src="{{addmember.remark1}}" alt="">
+								<i class="md-choice md-done" style="left:89px" ng-if="addmember.selected" ng-class="{'bgm-green':addmember.choosed}" style="left:88px"></i>
+							</a>
+		
+							<div class="c-info" style="height: 100%;">
+								<strong title="{{addmember.userRealname}}">{{addmember.userRealname}}</strong>
+								<small title="{{addmember.orgShowName}}">{{addmember.orgShowName}}</small>								
+							</div>
+						</div>
+					</div>
+		
+				</div>
+		
+			</div>
+		</div>
+    </div>
+    <div class="task-new-footer">
+        <hr />
+        <form id="new-task-save">
+            <div style="margin:0 20px 10px 0; float:right;">
+            	<span id="addTaskErrorMsg" class="c-red pull-left m-r-10 m-t-10">请填写团队名称</span>
+                <button class="btn btn-link btn-sm" data-ng-click="addTeamCancel()">取消</button>
+                <button class="btn btn-primary btn-save-task" data-ng-click="createNewTeam()">创建</button>
+            </div>
+            <div style="clear:both; float:none; height:0; overflow:hidden"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+angular.module("developmentCenter").registerCtrl('addTeamCtrl',
+	function ($scope, $rootScope, $http, $state, $stateParams,debounce,$timeout, Messenger, Modal){
+	
+	$scope.condition = {orgId:'',name:''};
+	
+	$scope.newTeam = {owner:$rootScope.subject.userName};
+	$scope.deptName = null;
+	
+	$scope.addMemberChecked = {};
+	
+	$scope.$watch("condition",function(v,o){
+		$scope.getAddMembers();
+	},true);
+	
+	$scope.getAddMembers = function(){
+		$scope.addMembers = [];
+		$scope.isLoad = true;
+		$scope.isShowNull = false;
+		$scope.chooseAllColor = false;
+		
+		$http.get("team/v1/getMembers?orgId="+$scope.condition.orgId+"&name="+$scope.condition.name).success(function(data, status, headers, config){
+			$scope.isLoad = false;
+			if(data.length==0 && ($scope.condition.orgId!='' || $scope.condition.name!=''))
+				$scope.isShowNull = true;
+			$scope.addMembers = data;
+		});
+	}
+	
+	$scope.selectedMember = function(addMember){
+		if(addMember.userName==$scope.newTeam.owner){
+			Messenger.error("您将成为团队创建者，无需重复添加")
+			return;
+		}
+		addMember.selected = !addMember.selected;
+		if(addMember.selected){
+			$scope.addMemberChecked[addMember.userId]=addMember;
+		}else{
+			delete $scope.addMemberChecked[addMember.userId];
+		}
+	}
+	
+	$scope.addTeamCancel = function(){
+		Modal.dismiss();
+	}
+	
+	$scope.createNewTeam = function(){
+		if(angular.isUndefined($scope.newTeam.name)){
+			$scope.teamNameRed = true;
+			$('#addTaskErrorMsg').addClass("see");
+			$timeout(function () {
+				$("#addTaskErrorMsg").removeClass("see");
+			}, 2000);
+			return;
+		}
+		
+		$scope.newTeam.teamUser=[];
+		
+		angular.forEach($scope.addMemberChecked, function (value, key) {
+			$scope.newTeam.teamUser.push({userName:value.userName})
+		});
+		
+		$http.post("team/v1/addTeam",$scope.newTeam)
+		.success(function(data, status, headers, config){			
+			Modal.close(data);
+		});
+	}	
+	
+	$scope.deptTreeOptions = {
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "id",
+					pIdKey: "pId",
+					rootPId: 0
+				}
+			},
+			callback: {
+				onClick: zTreeOnClick
+			}
+	} ;
+	
+	function zTreeOnClick(event, treeId, treeNode){
+		$scope.deptName = treeNode.name;
+		$scope.condition.orgId = treeNode.id;
+		$("#deptDropdown").controller("c2Dropdown").toggle();
+	}
+	
+	$scope.treeClean = function(){
+		$scope.deptName = null;
+		$scope.condition.orgId = null;
+		$("#deptDropdown").controller("c2Dropdown").toggle();
+	}
+	
+	$http.get("ws/dept/getCurrentUserDeptTree").success(function(data){
+		$scope.deptTree = data.result ;
+	});
+})
+</script>

@@ -1,0 +1,31 @@
+<div ng-controller="changeController">
+	<input type="text" ng-model="reason" placeholder="请填入变更理由" required="required"
+		class="form-control" />
+	<div>
+
+		<button class="btn btn-primary btn-sm" type="button"
+			data-ng-click="save();">提交</button>
+		<button class="btn btn-link btn-sm" ng-click="cancel()">取消</button>
+
+	</div>
+</div>
+<script>
+	angular.module("project").registerCtrl(
+			'changeController',
+			function($scope, $http, $state, $stateParams, $timeout, Messenger,
+					Modal) {
+				$scope.save=function(){
+					if(!$scope.reason||$scope.reason==""){
+						Messenger.post({
+			                'message': "请填写理由",
+			                'type': 'error',
+			            });
+						return;
+					}
+					Modal.close($scope);
+				};
+				$scope.cancel=function(){
+					Modal.dismiss($scope);
+				};
+			});
+</script>

@@ -1,0 +1,844 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.report.workLog.WorkLogMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_community_worklog.ID ,
+		  c2_community_worklog.HTBH ,
+		  c2_community_worklog.RWJC ,
+		  c2_community_worklog.DJRQ ,
+		  c2_community_worklog.GZRQ ,
+		  c2_community_worklog.GZSC ,
+		  c2_community_worklog.YGBH ,
+		  c2_community_worklog.YGXM ,
+		  c2_community_worklog.SZBM ,
+		  c2_community_worklog.GCFC ,
+		  c2_community_worklog.XMGC ,
+		  c2_community_worklog.GCHD ,
+		  c2_community_worklog.GZDD ,
+		  c2_community_worklog.GZLX ,
+		  c2_community_worklog.DJR ,
+		  c2_community_worklog.MS ,
+		  c2_community_worklog.XMWBS ,
+		  c2_community_worklog.TJSC ,
+		  c2_community_worklog.ZXZT ,
+		  c2_community_worklog.HTID ,
+		  c2_community_worklog.STRUTS 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="ID != null">and c2_community_worklog.ID = #{ID}</if>
+	    <if test="HTBH != null">and c2_community_worklog.HTBH = #{HTBH}</if>
+	    <if test="RWJC != null">and c2_community_worklog.RWJC = #{RWJC}</if>
+	    <if test="DJRQ != null">and c2_community_worklog.DJRQ = #{DJRQ}</if>
+	    <if test="GZRQ != null">and c2_community_worklog.GZRQ = #{GZRQ}</if>
+	    <if test="GZSC != null">and c2_community_worklog.GZSC = #{GZSC}</if>
+	    <if test="YGBH != null">and c2_community_worklog.YGBH = #{YGBH}</if>
+	    <if test="YGXM != null">and c2_community_worklog.YGXM = #{YGXM}</if>
+	    <if test="SZBM != null">and c2_community_worklog.SZBM = #{SZBM}</if>
+	    <if test="GCFC != null">and c2_community_worklog.GCFC = #{GCFC}</if>
+	    <if test="XMGC != null">and c2_community_worklog.XMGC = #{XMGC}</if>
+	    <if test="GCHD != null">and c2_community_worklog.GCHD = #{GCHD}</if>
+	    <if test="GZDD != null">and c2_community_worklog.GZDD = #{GZDD}</if>
+	    <if test="GZLX != null">and c2_community_worklog.GZLX = #{GZLX}</if>
+	    <if test="DJR != null">and c2_community_worklog.DJR = #{DJR}</if>
+	    <if test="MS != null">and c2_community_worklog.MS = #{MS}</if>
+	    <if test="XMWBS != null">and c2_community_worklog.XMWBS = #{XMWBS}</if>
+	    <if test="TJSC != null">and c2_community_worklog.TJSC = #{TJSC}</if>
+	    <if test="ZXZT != null">and c2_community_worklog.ZXZT = #{ZXZT}</if>
+	    <if test="HTID != null">and c2_community_worklog.HTID = #{HTID}</if>
+	    <if test="STRUTS != null">and c2_community_worklog.STRUTS = #{STRUTS}</if>
+</sql>
+
+
+<!-- ElementID:WorkLogResult,Generated=true -->
+<resultMap id="WorkLogResult" type="com.chinacreator.c2.report.workLog.WorkLog">
+	<id property="ID" column="ID"/>
+	<result property="HTBH" column="HTBH"/>
+	<result property="RWJC" column="RWJC"/>
+	<result property="DJRQ" column="DJRQ"/>
+	<result property="GZRQ" column="GZRQ"/>
+	<result property="GZSC" column="GZSC"/>
+	<result property="YGBH" column="YGBH"/>
+	<result property="YGXM" column="YGXM"/>
+	<result property="SZBM" column="SZBM"/>
+	<result property="GCFC" column="GCFC"/>
+	<result property="XMGC" column="XMGC"/>
+	<result property="GCHD" column="GCHD"/>
+	<result property="GZDD" column="GZDD"/>
+	<result property="GZLX" column="GZLX"/>
+	<result property="DJR" column="DJR"/>
+	<result property="MS" column="MS"/>
+	<result property="XMWBS" column="XMWBS"/>
+	<result property="TJSC" column="TJSC"/>
+	<result property="ZXZT" column="ZXZT"/>
+	<result property="HTID" column="HTID"/>
+	<result property="STRUTS" column="STRUTS"/>
+</resultMap>
+
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.report.workLog.WorkLog" useGeneratedKeys="true">
+	<selectKey keyProperty="ID" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_community_worklog(
+		<trim prefixOverrides=",">
+		    <if test="HTBH != null">HTBH</if>
+		    <if test="RWJC != null">,RWJC</if>
+		    <if test="DJRQ != null">,DJRQ</if>
+		    <if test="GZRQ != null">,GZRQ</if>
+		    <if test="GZSC != null">,GZSC</if>
+		    <if test="YGBH != null">,YGBH</if>
+		    <if test="YGXM != null">,YGXM</if>
+		    <if test="SZBM != null">,SZBM</if>
+		    <if test="GCFC != null">,GCFC</if>
+		    <if test="XMGC != null">,XMGC</if>
+		    <if test="GCHD != null">,GCHD</if>
+		    <if test="GZDD != null">,GZDD</if>
+		    <if test="GZLX != null">,GZLX</if>
+		    <if test="DJR != null">,DJR</if>
+		    <if test="MS != null">,MS</if>
+		    <if test="XMWBS != null">,XMWBS</if>
+		    <if test="TJSC != null">,TJSC</if>
+		    <if test="ZXZT != null">,ZXZT</if>
+		    <if test="HTID != null">,HTID</if>
+		    <if test="STRUTS != null">,STRUTS</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="HTBH != null">#{HTBH,jdbcType=VARCHAR}</if>
+		    <if test="RWJC != null">,#{RWJC,jdbcType=VARCHAR}</if>
+		    <if test="DJRQ != null">,#{DJRQ,jdbcType=DATE}</if>
+		    <if test="GZRQ != null">,#{GZRQ,jdbcType=DATE}</if>
+		    <if test="GZSC != null">,#{GZSC,jdbcType=VARCHAR}</if>
+		    <if test="YGBH != null">,#{YGBH,jdbcType=VARCHAR}</if>
+		    <if test="YGXM != null">,#{YGXM,jdbcType=VARCHAR}</if>
+		    <if test="SZBM != null">,#{SZBM,jdbcType=VARCHAR}</if>
+		    <if test="GCFC != null">,#{GCFC,jdbcType=VARCHAR}</if>
+		    <if test="XMGC != null">,#{XMGC,jdbcType=VARCHAR}</if>
+		    <if test="GCHD != null">,#{GCHD,jdbcType=VARCHAR}</if>
+		    <if test="GZDD != null">,#{GZDD,jdbcType=VARCHAR}</if>
+		    <if test="GZLX != null">,#{GZLX,jdbcType=VARCHAR}</if>
+		    <if test="DJR != null">,#{DJR,jdbcType=VARCHAR}</if>
+		    <if test="MS != null">,#{MS,jdbcType=VARCHAR}</if>
+		    <if test="XMWBS != null">,#{XMWBS,jdbcType=VARCHAR}</if>
+		    <if test="TJSC != null">,#{TJSC,jdbcType=VARCHAR}</if>
+		    <if test="ZXZT != null">,#{ZXZT,jdbcType=VARCHAR}</if>
+		    <if test="HTID != null">,#{HTID,jdbcType=VARCHAR}</if>
+		    <if test="STRUTS != null">,#{STRUTS,jdbcType=VARCHAR}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.report.workLog.WorkLog" resultType="int">
+	select count(*) from c2_community_worklog 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.report.workLog.WorkLog">
+	update c2_community_worklog
+<set>
+	<if test="HTBH != null">HTBH=#{HTBH,jdbcType=VARCHAR},</if>
+	<if test="RWJC != null">RWJC=#{RWJC,jdbcType=VARCHAR},</if>
+	<if test="DJRQ != null">DJRQ=#{DJRQ,jdbcType=DATE},</if>
+	<if test="GZRQ != null">GZRQ=#{GZRQ,jdbcType=DATE},</if>
+	<if test="GZSC != null">GZSC=#{GZSC,jdbcType=VARCHAR},</if>
+	<if test="YGBH != null">YGBH=#{YGBH,jdbcType=VARCHAR},</if>
+	<if test="YGXM != null">YGXM=#{YGXM,jdbcType=VARCHAR},</if>
+	<if test="SZBM != null">SZBM=#{SZBM,jdbcType=VARCHAR},</if>
+	<if test="GCFC != null">GCFC=#{GCFC,jdbcType=VARCHAR},</if>
+	<if test="XMGC != null">XMGC=#{XMGC,jdbcType=VARCHAR},</if>
+	<if test="GCHD != null">GCHD=#{GCHD,jdbcType=VARCHAR},</if>
+	<if test="GZDD != null">GZDD=#{GZDD,jdbcType=VARCHAR},</if>
+	<if test="GZLX != null">GZLX=#{GZLX,jdbcType=VARCHAR},</if>
+	<if test="DJR != null">DJR=#{DJR,jdbcType=VARCHAR},</if>
+	<if test="MS != null">MS=#{MS,jdbcType=VARCHAR},</if>
+	<if test="XMWBS != null">XMWBS=#{XMWBS,jdbcType=VARCHAR},</if>
+	<if test="TJSC != null">TJSC=#{TJSC,jdbcType=VARCHAR},</if>
+	<if test="ZXZT != null">ZXZT=#{ZXZT,jdbcType=VARCHAR},</if>
+	<if test="HTID != null">HTID=#{HTID,jdbcType=VARCHAR},</if>
+	<if test="STRUTS != null">STRUTS=#{STRUTS,jdbcType=VARCHAR}</if>
+</set>
+<where>
+	<choose>
+        <when test="ID != null">and ID = #{ID}</when>
+        <otherwise>and ID = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_community_worklog
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="HTBH==null">HTBH = null,</if>
+		    <if test="RWJC==null">RWJC = null,</if>
+		    <if test="DJRQ==null">DJRQ = null,</if>
+		    <if test="GZRQ==null">GZRQ = null,</if>
+		    <if test="GZSC==null">GZSC = null,</if>
+		    <if test="YGBH==null">YGBH = null,</if>
+		    <if test="YGXM==null">YGXM = null,</if>
+		    <if test="SZBM==null">SZBM = null,</if>
+		    <if test="GCFC==null">GCFC = null,</if>
+		    <if test="XMGC==null">XMGC = null,</if>
+		    <if test="GCHD==null">GCHD = null,</if>
+		    <if test="GZDD==null">GZDD = null,</if>
+		    <if test="GZLX==null">GZLX = null,</if>
+		    <if test="DJR==null">DJR = null,</if>
+		    <if test="MS==null">MS = null,</if>
+		    <if test="XMWBS==null">XMWBS = null,</if>
+		    <if test="TJSC==null">TJSC = null,</if>
+		    <if test="ZXZT==null">ZXZT = null,</if>
+		    <if test="HTID==null">HTID = null,</if>
+		    <if test="STRUTS==null">STRUTS = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="ID != null">and ID = #{ID}</when>
+			<otherwise>and ID = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.report.workLog.WorkLog">
+    delete from c2_community_worklog where 1=1 and ID = #{ID}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.report.workLog.WorkLog" resultMap="WorkLogResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_worklog 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_community_worklog (HTBH,RWJC,DJRQ,GZRQ,GZSC,YGBH,YGXM,SZBM,GCFC,XMGC,GCHD,GZDD,GZLX,DJR,MS,XMWBS,TJSC,ZXZT,HTID,STRUTS)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.HTBH,jdbcType = VARCHAR},
+		         #{entity.RWJC,jdbcType = VARCHAR},
+		         #{entity.DJRQ,jdbcType = DATE},
+		         #{entity.GZRQ,jdbcType = DATE},
+		         #{entity.GZSC,jdbcType = VARCHAR},
+		         #{entity.YGBH,jdbcType = VARCHAR},
+		         #{entity.YGXM,jdbcType = VARCHAR},
+		         #{entity.SZBM,jdbcType = VARCHAR},
+		         #{entity.GCFC,jdbcType = VARCHAR},
+		         #{entity.XMGC,jdbcType = VARCHAR},
+		         #{entity.GCHD,jdbcType = VARCHAR},
+		         #{entity.GZDD,jdbcType = VARCHAR},
+		         #{entity.GZLX,jdbcType = VARCHAR},
+		         #{entity.DJR,jdbcType = VARCHAR},
+		         #{entity.MS,jdbcType = VARCHAR},
+		         #{entity.XMWBS,jdbcType = VARCHAR},
+		         #{entity.TJSC,jdbcType = VARCHAR},
+		         #{entity.ZXZT,jdbcType = VARCHAR},
+		         #{entity.HTID,jdbcType = VARCHAR},
+		         #{entity.STRUTS,jdbcType = VARCHAR}
+				)
+</foreach>
+</insert>
+
+
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="WorkLogResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_worklog 
+</select>
+
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.report.workLog.WorkLog" resultMap="WorkLogResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_worklog 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="WorkLogResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_community_worklog 
+	where c2_community_worklog.ID in (
+		select distinct ID from c2_community_worklog inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct ID
+			from c2_community_worklog 
+			<where>
+	        <if test="entity.ID != null">and c2_community_worklog.ID = #{entity.ID}</if>
+	        <if test="entity.HTBH != null">and c2_community_worklog.HTBH = #{entity.HTBH}</if>
+	        <if test="entity.RWJC != null">and c2_community_worklog.RWJC = #{entity.RWJC}</if>
+	        <if test="entity.DJRQ != null">and c2_community_worklog.DJRQ = #{entity.DJRQ}</if>
+	        <if test="entity.GZRQ != null">and c2_community_worklog.GZRQ = #{entity.GZRQ}</if>
+	        <if test="entity.GZSC != null">and c2_community_worklog.GZSC = #{entity.GZSC}</if>
+	        <if test="entity.YGBH != null">and c2_community_worklog.YGBH = #{entity.YGBH}</if>
+	        <if test="entity.YGXM != null">and c2_community_worklog.YGXM = #{entity.YGXM}</if>
+	        <if test="entity.SZBM != null">and c2_community_worklog.SZBM = #{entity.SZBM}</if>
+	        <if test="entity.GCFC != null">and c2_community_worklog.GCFC = #{entity.GCFC}</if>
+	        <if test="entity.XMGC != null">and c2_community_worklog.XMGC = #{entity.XMGC}</if>
+	        <if test="entity.GCHD != null">and c2_community_worklog.GCHD = #{entity.GCHD}</if>
+	        <if test="entity.GZDD != null">and c2_community_worklog.GZDD = #{entity.GZDD}</if>
+	        <if test="entity.GZLX != null">and c2_community_worklog.GZLX = #{entity.GZLX}</if>
+	        <if test="entity.DJR != null">and c2_community_worklog.DJR = #{entity.DJR}</if>
+	        <if test="entity.MS != null">and c2_community_worklog.MS = #{entity.MS}</if>
+	        <if test="entity.XMWBS != null">and c2_community_worklog.XMWBS = #{entity.XMWBS}</if>
+	        <if test="entity.TJSC != null">and c2_community_worklog.TJSC = #{entity.TJSC}</if>
+	        <if test="entity.ZXZT != null">and c2_community_worklog.ZXZT = #{entity.ZXZT}</if>
+	        <if test="entity.HTID != null">and c2_community_worklog.HTID = #{entity.HTID}</if>
+	        <if test="entity.STRUTS != null">and c2_community_worklog.STRUTS = #{entity.STRUTS}</if>
+			</where>
+		) ${entity.tableAlias} using (ID)
+</foreach>
+)
+</select>
+
+<select id="selectEstimateInfosOfLack" parameterType="map" resultMap="LackListResult" useCache="false">
+<trim prefixOverrides="UNION ALL">
+	<foreach collection="members" item="member">
+			UNION ALL
+			select w.estimate ,(w.estimate-IFNULL(t1.GZSC,0)) lackestimate,w.workdate lackdate,(select td_sm_user.user_realname from td_sm_user where td_sm_user.user_name = #{member.userName,jdbcType=VARCHAR}) lackperson
+					from c2_community_task_weekday w 
+					left join 
+					(
+						select sum(binary(c2_comunity_task_estimate.consumed)) GZSC,c2_comunity_task_estimate.work_date GZRQ from c2_comunity_task
+									LEFT JOIN c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id 
+									<where>
+										<if test="member != null">and c2_comunity_task_estimate.account = #{member.userName,jdbcType=VARCHAR} </if>	 
+										<choose>
+											<when test="member.inDate !=null and member.inDate.after(start)">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{member.inDate,jdbcType=DATE}</when>
+											<otherwise>and c2_comunity_task_estimate.work_date <![CDATA[>=]]>  #{start,jdbcType=DATE}</otherwise>
+										</choose>
+										<!-- <if test="start != null">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}</if> -->
+										<choose>
+											<when test="member.outDate != null and member.outDate.before(end)">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{member.outDate,jdbcType=DATE}</when>
+											<otherwise>and c2_comunity_task_estimate.work_date <![CDATA[<=]]>  #{end,jdbcType=DATE}</otherwise>
+										</choose>
+										<!-- <if test="end != null">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{end,jdbcType=DATE} </if> -->
+									</where> 
+						GROUP BY c2_comunity_task_estimate.work_date
+					) t1  on w.workdate = t1.GZRQ
+			where 
+				(t1.GZSC  <![CDATA[<]]> w.estimate or t1.GZSC is null) and w.estimate != 0
+				<!-- <if test="start != null">and w.workdate <![CDATA[>=]]> #{start,jdbcType=DATE}</if> 
+				<if test="end != null">and w.workdate <![CDATA[<=]]>  #{end,jdbcType=DATE}</if> -->
+				<choose>
+					<when test="member.inDate !=null and member.inDate.after(start)">and w.workdate <![CDATA[>=]]> #{member.inDate,jdbcType=DATE}</when>
+					<otherwise>and w.workdate <![CDATA[>=]]>  #{start,jdbcType=DATE}</otherwise>
+				</choose>
+				<choose>
+					<when test="member.outDate != null and member.outDate.before(end)">and w.workdate <![CDATA[<=]]> #{member.outDate,jdbcType=DATE}</when>
+					<otherwise>and w.workdate <![CDATA[<=]]>  #{end,jdbcType=DATE}</otherwise>
+				</choose>
+	</foreach>
+</trim>
+</select>
+
+<resultMap id="LackListResult" type="map">
+	<result property="userRealName" column="lackperson"/>
+	<result property="lackEstimate" column="lackestimate" jdbcType="NUMERIC"/>
+	<result property="estimate" column="estimate" jdbcType="NUMERIC"/>
+	<result property="lackDate" column="lackdate" jdbcType="DATE"/>
+</resultMap>
+
+<select id="selectAllMemberOfProjects" resultType="map" parameterType="list">
+	select distinct(td_sm_user.user_name) id ,td_sm_user.user_realname name 
+	from 
+	c2_projectuser left join td_sm_user on c2_projectuser.user_id = td_sm_user.user_id 
+	where 
+	td_sm_user.user_isvalid = 2 and 
+	c2_projectuser.project_id in 
+	<foreach collection="list" open="(" close=")" separator="," item="project">
+		#{project,jdbcType=NUMERIC}
+	</foreach>
+</select>
+
+<select id="selectWorkLog4DocGen" parameterType="map" resultMap="DocGenResult" useCache="false">
+		select 
+		  <!-- RY_PROJECT.LOG_TITLE HTBH , -->
+		  c2_community_worklog.RWJC ,
+		  c2_community_worklog.DJRQ ,
+		  c2_community_worklog.GZRQ ,
+		  c2_community_worklog.GZSC ,
+		  c2_community_worklog.YGBH ,
+		  c2_community_worklog.YGXM ,
+		  c2_community_worklog.SZBM ,
+		  c2_community_worklog.GCFC ,
+		  c2_community_worklog.XMGC ,
+		  c2_community_worklog.GCHD ,
+		  c2_community_worklog.GZDD ,
+		  c2_community_worklog.GZLX ,
+		  c2_community_worklog.DJR ,
+		  c2_community_worklog.MS ,
+		  c2_community_worklog.XMWBS ,
+		  c2_community_worklog.TJSC ,
+		  c2_community_worklog.ZXZT <!-- ,
+		  RY_PROJECT.HT_ID HTID -->
+	    from c2_community_worklog
+		 <where>
+			<if test="start!=null">and c2_community_worklog.GZRQ <![CDATA[>=]]> #{start,jdbcType=DATE}</if>
+			<if test="end!=null">and c2_community_worklog.GZRQ <![CDATA[<=]]> #{end,jdbcType=DATE}</if>
+			<if test="members!=null">and c2_community_worklog.YGBH in
+					<foreach collection="members" item="member" open="(" close=")" separator=",">
+						<if test="member.remark2!=null">#{member.remark2,jdbcType=VARCHAR}</if>
+					</foreach>
+			</if>
+		</where>
+		order by c2_community_worklog.YGBH desc,c2_community_worklog.GZRQ asc
+</select>
+
+<resultMap type="java.util.LinkedHashMap" id="DocGenResult">
+	<result property="合同编号" column="HTBH"/>
+	<result property="任务简称" column="RWJC"/>
+	<result property="登记日期" column="DJRQ"/>
+	<result property="工作日期" column="GZRQ"/>
+	<result property="工作时长" column="GZSC"/>
+	<result property="员工工号" column="YGBH"/>
+	<result property="员工姓名" column="YGXM"/>
+	<result property="所在部门" column="SZBM"/>
+	<result property="过程范畴" column="GCFC"/>
+	<result property="项目过程" column="XMGC"/>
+	<result property="过程活动" column="GCHD"/>
+	<result property="工作地点" column="GZDD"/>
+	<result property="工作类型" column="GZLX"/>
+	<result property="登记人" column="DJR"/>
+	<result property="描述" column="MS"/>
+	<result property="项目WBS" column="XMWBS"/>
+	<result property="统计时长" column="TJSC"/>
+	<result property="执行状态" column="ZXZT"/>
+	<result property="合同ID" column="HTID"/>
+</resultMap>
+
+
+
+<delete id="deleteBeforeSyn" parameterType="map">
+    delete from c2_community_worklog 
+    <where>
+	        <if test="start != null">
+		    	and c2_community_worklog.GZRQ <![CDATA[>=]]> #{start,jdbcType=DATE}
+			</if>
+			<if test="end != null">
+		    	and c2_community_worklog.GZRQ <![CDATA[<=]]> #{end,jdbcType=DATE}
+			</if>
+			<if test="memberInfos != null">
+		    	and c2_community_worklog.YGBH in
+					<foreach collection="memberInfos" item="member" open="(" close=")" separator=",">
+						<if test="member.remark2!=null">#{member.remark2,jdbcType=VARCHAR}</if>
+					</foreach>
+			</if>
+</where>
+</delete>
+
+<select id="selectWorkLog4Syn" parameterType="map" resultMap="WorkLogResult" useCache="false">
+		select 
+			         <!-- zt_project.`code` HTBH, -->
+			         c2_comunity_task.name_ RWJC,
+			         c2_comunity_task_estimate.record_date DJRQ,
+			         c2_comunity_task_estimate.work_date GZRQ,
+			         c2_comunity_task_estimate.consumed GZSC,
+					 td_sm_user.remark2 YGBH,
+					 td_sm_user.user_realname YGXM,
+					 t1.SZBM ,
+					 <!-- zt_tasktype.GCFC,
+					 zt_tasktype.XMGC,
+					 zt_tasktype.GCHD,
+					 (select '731-长沙' from dual) GZDD,
+					 (select '01-正常工作' from dual) GZLX, -->
+					 td_sm_user.user_realname DJR,
+					 c2_comunity_task.description MS,
+					 zt_project.code XMWBS,
+					 tempTab.TJSC
+					<!--  (select '52-完成' from dual) ZXZT,
+					 (select '基础平台软件部' from dual) SZBM,
+					 RY_PROJECT.HT_ID HTID,
+					 (select '正常' from dual) STRUTS -->
+					 from c2_comunity_task 
+						LEFT JOIN c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id 
+						LEFT JOIN zt_project on c2_comunity_task.project_id = zt_project.id
+						LEFT JOIN td_sm_user on c2_comunity_task_estimate.account = td_sm_user.user_name
+						LEFT JOIN (
+							select sum(binary(c2_comunity_task_estimate.consumed)) TJSC,c2_comunity_task_estimate.work_date,td_sm_user.user_name from c2_comunity_task 
+							LEFT JOIN c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id 
+							LEFT JOIN td_sm_user on c2_comunity_task_estimate.account = td_sm_user.user_name 
+							<where>
+								<if test="member != null">and td_sm_user.user_name in
+									<foreach collection="memberInfo" item="member" open="(" close=")" separator=",">
+										#{member.userName,jdbcType=VARCHAR}
+									</foreach>
+								 </if>	 
+								<if test="start != null">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}</if>
+								<if test="end != null">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{end,jdbcType=DATE} </if>
+							</where> 
+							GROUP BY c2_comunity_task_estimate.work_date,td_sm_user.user_name
+						) tempTab on c2_comunity_task_estimate.work_date = tempTab.work_date and td_sm_user.user_name = tempTab.user_name
+						LEFT JOIN (SELECT #{memberInfo.dept.orgShowName} SZBM from dual) t1 on 1=1 
+			<where>
+				<if test="memberInfo != null">and td_sm_user.user_name in
+					<foreach collection="memberInfo" item="member" open="(" close=")" separator=",">
+						#{member.userName,jdbcType=VARCHAR}
+					</foreach>
+				</if>	 
+				<if test="start != null">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}</if>
+				<if test="end != null">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{end,jdbcType=DATE} </if>
+			</where>
+</select>
+
+<!--Generated=true-->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_community_worklog where ID in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.ID}
+</foreach>
+</trim>
+</delete>
+
+<!--Generated=true-->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="WorkLogResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_worklog 
+		 where c2_community_worklog.ID = #{ID,jdbcType=NUMERIC}
+</select>
+
+<select id="selectFinancialReport" parameterType="list" resultType="map" useCache="false">
+		select 		 
+					 (select CONCAT(
+					 	'WL',
+					 	DATE_FORMAT(c2_comunity_task_estimate.record_date,'%y%m%d%H%i%s'),
+					 	(select RIGHT(CONCAT('00000',(select CAST((select nextval('financeReport_SEQ')) AS CHAR) from dual)),5)from dual)) 
+					 from dual) LOG_ID,
+					 zt_project.code PROJECT_CODE,
+			         zt_project.name_ CONTRACT_NAME,
+			         td_sm_user.remark2 USER_NAME,
+			         td_sm_user.user_realname USER_REALNAME,
+			         c2_comunity_task_estimate.consumed WORK_TL,
+			         t1.*
+					 from c2_comunity_task 
+						LEFT JOIN c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id 
+						LEFT JOIN zt_project on c2_comunity_task.project_id = zt_project.id
+						LEFT JOIN td_sm_user on c2_comunity_task_estimate.account = td_sm_user.user_name
+						LEFT JOIN (SELECT #{memberInfo.dept.orgSn} ORG_ID,#{memberInfo.dept.orgShowName} ORG_NAME from dual) t1 on 1=1
+			<where>
+				<if test="memberInfos != null">and c2_comunity_task_estimate.account in
+					<foreach collection="memberInfos" item="member" open="(" close=")" separator=",">
+						#{member.userName,jdbcType=VARCHAR}
+					</foreach>
+				</if>	 
+				<if test="start != null">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}</if>
+				<if test="end != null">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{end,jdbcType=DATE} </if>
+			</where>
+</select>
+
+<select id="teamGroupEstimateLack" parameterType="map" resultMap="LackListResult" useCache="false">
+<trim prefixOverrides="UNION ALL">
+	<foreach collection="members" item="member">
+			UNION ALL
+			select w.estimate ,(w.estimate-IFNULL(t1.GZSC,0)) lackestimate,w.workdate workDate,#{member.userName,jdbcType=VARCHAR} account,"缺失" description
+					from c2_community_task_weekday w 
+					left join 
+					(
+						select sum(binary(c2_comunity_task_estimate.consumed)) GZSC,c2_comunity_task_estimate.work_date GZRQ from c2_comunity_task
+									LEFT JOIN c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id 
+									<where>
+										<if test="member != null">and c2_comunity_task_estimate.account = #{member.userName,jdbcType=VARCHAR} </if>	 
+<!-- 										<if test="start != null">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}</if> -->
+										<choose>
+											<when test="member.inDate !=null and member.inDate.after(start)">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{member.inDate,jdbcType=DATE}</when>
+											<otherwise>and c2_comunity_task_estimate.work_date <![CDATA[>=]]>  #{start,jdbcType=DATE}</otherwise>
+										</choose>
+<!-- 										<if test="end != null">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{end,jdbcType=DATE} </if> -->
+										<choose>
+											<when test="member.outDate != null and member.outDate.before(end)">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{member.outDate,jdbcType=DATE}</when>
+											<otherwise>and c2_comunity_task_estimate.work_date <![CDATA[<=]]>  #{end,jdbcType=DATE}</otherwise>
+										</choose>
+									</where> 
+						GROUP BY c2_comunity_task_estimate.work_date
+					) t1  on w.workdate = t1.GZRQ
+			where 
+				(t1.GZSC  <![CDATA[<]]> w.estimate or t1.GZSC is null) and w.estimate != 0 
+<!-- 				<if test="start != null">and w.workdate <![CDATA[>=]]> #{start,jdbcType=DATE}</if>  -->
+				<choose>
+					<when test="member.inDate !=null and member.inDate.after(start)">and w.workdate <![CDATA[>=]]> #{member.inDate,jdbcType=DATE}</when>
+					<otherwise>and w.workdate <![CDATA[>=]]>  #{start,jdbcType=DATE}</otherwise>
+				</choose>
+				<choose>
+					<when test="member.outDate != null and member.outDate.before(end)">and w.workdate <![CDATA[<=]]> #{member.outDate,jdbcType=DATE}</when>
+					<otherwise>and w.workdate <![CDATA[<=]]>  #{end,jdbcType=DATE}</otherwise>
+				</choose>
+<!-- 				<if test="end != null">and w.workdate <![CDATA[<=]]>  #{end,jdbcType=DATE}</if> -->
+	</foreach>
+</trim>
+</select>
+
+<select id="teamGroupEstimateOvertime" parameterType="map" resultType="map" useCache="false">
+<trim prefixOverrides="UNION ALL">
+	<foreach collection="members" item="member">
+			UNION ALL
+			select t1.GZSC,cast((t1.GZSC-w.estimate) as decimal(11,2)) overestimate,w.workdate workDate,#{member.userName,jdbcType=VARCHAR} account,t1.count
+					from c2_community_task_weekday w 
+					left join 
+					(
+						select sum(binary(c2_comunity_task_estimate.consumed)) GZSC,c2_comunity_task_estimate.work_date GZRQ,count(*) count from c2_comunity_task
+									LEFT JOIN c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id 
+									<where>
+										<if test="member != null">and c2_comunity_task_estimate.account = #{member.userName,jdbcType=VARCHAR} </if>	 
+<!-- 										<if test="start != null">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}</if> -->
+										<choose>
+											<when test="member.inDate !=null and member.inDate.after(start)">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{member.inDate,jdbcType=DATE}</when>
+											<otherwise>and c2_comunity_task_estimate.work_date <![CDATA[>=]]>  #{start,jdbcType=DATE}</otherwise>
+										</choose>
+<!-- 										<if test="end != null">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{end,jdbcType=DATE} </if> -->
+										<choose>
+											<when test="member.outDate != null and member.outDate.before(end)">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{member.outDate,jdbcType=DATE}</when>
+											<otherwise>and c2_comunity_task_estimate.work_date <![CDATA[<=]]>  #{end,jdbcType=DATE}</otherwise>
+										</choose>
+									</where> 
+						GROUP BY c2_comunity_task_estimate.work_date
+					) t1  on w.workdate = t1.GZRQ
+			where 
+				(t1.GZSC  <![CDATA[>]]> w.estimate  and t1.GZSC is not null)
+				<choose>
+					<when test="member.inDate !=null and member.inDate.after(start)">and w.workdate <![CDATA[>=]]> #{member.inDate,jdbcType=DATE}</when>
+					<otherwise>and w.workdate <![CDATA[>=]]>  #{start,jdbcType=DATE}</otherwise>
+				</choose>
+				<choose>
+					<when test="member.outDate != null and member.outDate.before(end)">and w.workdate <![CDATA[<=]]> #{member.outDate,jdbcType=DATE}</when>
+					<otherwise>and w.workdate <![CDATA[<=]]>  #{end,jdbcType=DATE}</otherwise>
+				</choose>
+	</foreach>
+</trim>
+</select>
+
+<select id="selectWorkLogs4ERP" parameterType="map" resultType="java.util.LinkedHashMap" useCache="false">
+		select 		 
+					 (select CONCAT('UWL',DATE_FORMAT(SYSDATE(),'%y'),LPAD(nextval('workLog_SEQ'),6,0)) from dual) '日志ID',
+					 (select '' from dual) '机构ID',
+					 (select '' from dual) '机构名',
+					 SUBSTRING(zt_project.code,1,5) 'PROJECT_CODE',
+					 zt_project.contract_no '合同编号',
+					 zt_project.name_ '合同名称',
+					 td_sm_user.user_realname `USER_REALNAME`,
+					 td_sm_user.user_name 'USER_NAME',
+			         c2_comunity_task_estimate.consumed '工作时长',
+			         c2_comunity_task_estimate.work_date '日志日期',
+			         c2_comunity_task_estimate.description '工作内容'
+					 from c2_comunity_task 
+						LEFT JOIN c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id 
+						LEFT JOIN zt_project on c2_comunity_task.project_id = zt_project.id
+						LEFT JOIN td_sm_user on c2_comunity_task_estimate.account = td_sm_user.user_name
+			<where>
+				<if test="members != null and members.size()&gt;0">and td_sm_user.user_name in
+					<foreach collection="members" item="member" open="(" close=")" separator=",">
+						#{member.userName,jdbcType=VARCHAR}
+					</foreach>
+				</if>	 
+				<if test="projectId != null">and c2_comunity_task.project_id = #{projectId}</if>
+				<if test="start != null">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}</if>
+				<if test="end != null">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{end,jdbcType=DATE} </if>
+			</where>
+			order by zt_project.id desc
+</select>
+
+<resultMap type="map" id="projectTaskMap">
+	<collection property="labels" column="taskId" select="taskLables"></collection>
+	<collection property="times" column="taskId" select="logTime"></collection>
+</resultMap>
+
+<select id="logTime" parameterType="int" resultType="map">
+	select min(record_date) firstTime,max(record_date) lastTime
+	from c2_comunity_task_estimate where task_id=#{taskId}
+</select>
+
+<select id="taskLables" parameterType="int" resultType="map">
+SELECT
+    l.id,
+    l.name,
+    l.color
+FROM
+    c2_comunity_label_task lb
+JOIN c2_comunity_label l ON lb.label_id = l.id
+WHERE
+    lb.task_id = #{taskId}
+</select>
+
+<select id="selectProjectTasks" parameterType="map" resultMap="projectTaskMap" useCache="false">
+	select 		 
+					distinct c2_comunity_task.id taskId,
+					 zt_project.name_ '项目名称',
+					 zt_module.name_ '模块',
+					 c2_comunity_task.name_ '任务名称',
+					 c2_comunity_milestone.title '里程碑',
+					 zt_project_plan.name '项目计划',
+					 t1.user_realname '任务创建人',
+					 zt_project_plan.end_date '计划截止时间',
+					 td_sm_user.user_realname '任务执行人',
+					 c2_comunity_task.create_date '任务开始时间',
+					 c2_comunity_task.finished_date '任务结束时间',
+					 c2_comunity_task.deadline '任务预计完成时间',
+					 c2_comunity_task.estimate '预估工时',
+			         c2_comunity_task.consumed '实际工时'
+					 from c2_comunity_task 
+					 left join zt_module on zt_module.id = c2_comunity_task.module_id
+					 left join c2_comunity_milestone on c2_comunity_milestone.id = c2_comunity_task.milestone_id
+					 left join zt_project_plan on zt_project_plan.id = c2_comunity_task.project_plan
+					 left join c2_comunity_task_estimate on c2_comunity_task_estimate.task_id=c2_comunity_task.id
+					 left join zt_project on c2_comunity_task.project_id = zt_project.id
+					 left join td_sm_user on c2_comunity_task_estimate.account = td_sm_user.user_name
+					 left join td_sm_user t1 on t1.user_name = c2_comunity_task.creator
+			<where>
+				<if test="members != null and members.size()&gt;0">and td_sm_user.user_name in
+					<foreach collection="members" item="member" open="(" close=")" separator=",">
+						#{member.userName,jdbcType=VARCHAR}
+					</foreach>
+				</if>	 
+				<if test="projects != null and projects.size()&gt;0">and c2_comunity_task.project_id in
+					<foreach collection="projects" item="projectId" open="(" close=")" separator=",">
+						#{projectId}
+					</foreach>
+				</if>
+				<if test="start != null">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}</if>
+				<if test="end != null">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{end,jdbcType=DATE} </if>
+			</where>
+			order by c2_comunity_task.project_id desc
+</select>
+
+<select id="selectOverdueLogs4ERP" parameterType="map" resultType="java.util.LinkedHashMap" useCache="false">
+	select 		 
+					 (select CONCAT('UWL',DATE_FORMAT(SYSDATE(),'%y'),LPAD(nextval('workLog_SEQ'),6,0)) from dual) '日志ID',
+					 (select '' from dual) '机构ID',
+					 (select '' from dual) '机构名',
+					 SUBSTRING(zt_project.code,1,5) 'PROJECT_CODE',
+					 zt_project.contract_no '合同编号',
+					 zt_project.name_ '合同名称',
+					 td_sm_user.user_realname `USER_REALNAME`,
+					 td_sm_user.user_name 'USER_NAME',
+			         c2_comunity_task_estimate.consumed '工作时长',
+			         c2_comunity_task_estimate.work_date '工作日期',
+			         c2_comunity_task_estimate.record_date '实际填写日期',
+			         c2_comunity_task_estimate.description '工作内容'
+					 from c2_comunity_task 
+						LEFT JOIN c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id 
+						LEFT JOIN zt_project on c2_comunity_task.project_id = zt_project.id
+						LEFT JOIN td_sm_user on c2_comunity_task_estimate.account = td_sm_user.user_name
+			
+			<where>
+				<if test="members != null and members.size()&gt;0">and td_sm_user.user_name in
+					<foreach collection="members" item="member" open="(" close=")" separator=",">
+						#{member.userName,jdbcType=VARCHAR}
+					</foreach>
+				</if>
+				<if test="projectId != null">and c2_comunity_task.project_id = #{projectId}</if>
+				<if test="start != null">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}</if>
+				<if test="end != null">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{end,jdbcType=DATE} </if>
+				and date_add(c2_comunity_task_estimate.work_date, interval 1 day)<![CDATA[<]]>str_to_date(DATE_FORMAT(c2_comunity_task_estimate.record_date,'%Y-%m-%d'),'%Y-%m-%d')
+			</where>
+			order by zt_project.id desc
+</select>
+
+<select id="selectProjectWorkLogs" parameterType="map" resultType="java.util.LinkedHashMap" useCache="false">
+		select 		 
+					 zt_project.name_ '项目名称',
+					 c2_comunity_task.name_ '任务名称',
+					 c2_comunity_task.creator '任务创建人',
+					 c2_comunity_task.create_date '任务创建时间',
+					 td_sm_user.user_name '任务执行人',
+					 c2_comunity_task_estimate.work_date '任务执行时间',
+					 c2_comunity_task_estimate.description '任务执行日志',
+			         c2_comunity_task_estimate.consumed '任务执行工时数'
+					 from c2_comunity_task 
+						LEFT JOIN c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id 
+						LEFT JOIN zt_project on c2_comunity_task.project_id = zt_project.id
+						LEFT JOIN td_sm_user on c2_comunity_task_estimate.account = td_sm_user.user_name
+			<where>
+				<if test="members != null">and td_sm_user.user_name in
+					<foreach collection="members" item="member" open="(" close=")" separator=",">
+						#{member,jdbcType=VARCHAR}
+					</foreach>
+				</if>	 
+				<if test="projectIds != null">and c2_comunity_task.project_id in
+					<foreach collection="projectIds" item="projectId" open="(" close=")" separator=",">
+						#{projectId}
+					</foreach>
+				</if>
+				<if test="start != null">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}</if>
+				<if test="end != null">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{end,jdbcType=DATE} </if>
+			</where>
+</select>
+
+
+<select id="selectOverWorkLogs4ERP" parameterType="map" resultType="java.util.LinkedHashMap" useCache="false">
+			select 		
+					(select '' from dual) '机构ID',
+					(select '' from dual) '机构名',
+					td_sm_user.user_realname 'USER_REALNAME',
+					td_sm_user.user_name 'USER_NAME',
+					(t1.GZSC-w.estimate) '加班时长',
+					w.workdate '加班日期'
+					from c2_community_task_weekday w 
+					left join 
+					(
+						select sum(binary(c2_comunity_task_estimate.consumed)) GZSC,c2_comunity_task_estimate.work_date GZRQ,account from c2_comunity_task
+						LEFT JOIN c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id 
+						GROUP BY c2_comunity_task_estimate.work_date,c2_comunity_task_estimate.account
+					) t1  on w.workdate = t1.GZRQ,td_sm_user
+				where 
+					(t1.GZSC  > w.estimate)  and td_sm_user.user_name=t1.account
+				<if test="members != null">and td_sm_user.user_name in
+					<foreach collection="members" item="member" open="(" close=")" separator=",">
+						#{member.userName,jdbcType=VARCHAR}
+					</foreach>
+				</if>	 
+				<if test="start != null">and t1.GZRQ <![CDATA[>=]]> #{start,jdbcType=DATE}</if>
+				<if test="end != null">and t1.GZRQ <![CDATA[<=]]> #{end,jdbcType=DATE} </if>
+			order by t1.GZRQ,td_sm_user.user_name
+</select>
+
+<select id="weekDayNullWorkLogs" parameterType="map" resultType="java.util.LinkedHashMap" useCache="false">
+		select 		
+				(select '' from dual) '机构ID',
+				(select '' from dual) '机构名',
+				td_sm_user.user_realname 'USER_REALNAME',
+				td_sm_user.user_name 'USER_NAME',
+				GZSC '加班时长',
+				GZRQ '加班日期'
+		from(
+			select sum(binary(c2_comunity_task_estimate.consumed)) GZSC,c2_comunity_task_estimate.work_date GZRQ,account from c2_comunity_task
+			LEFT JOIN c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id 
+			where 1=1 
+			<if test="members != null">and account in
+				<foreach collection="members" item="member" open="(" close=")" separator=",">
+					#{member.userName,jdbcType=VARCHAR}
+				</foreach>
+			</if>	
+			<if test="start != null">and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}</if>
+			<if test="end != null">and c2_comunity_task_estimate.work_date <![CDATA[<=]]> #{end,jdbcType=DATE} </if>
+			GROUP BY c2_comunity_task_estimate.work_date,c2_comunity_task_estimate.account
+		)t,td_sm_user
+		where td_sm_user.user_name=t.account
+</select>
+
+</mapper>

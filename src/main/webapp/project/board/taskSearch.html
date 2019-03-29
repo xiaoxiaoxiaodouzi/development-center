@@ -1,0 +1,713 @@
+<style>
+	.scrum-panel-body {
+		position: absolute;
+		top: 65px;
+		width: 300px;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 1;
+		/* overflow-y: auto; */
+	}
+
+	.scrum-filter-wrap .filter-input-wrap {
+		padding: 0 20px;
+	}
+
+	.filter-input-wrap,
+	.scrum-filter-executor {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		margin-top: 10px;
+	}
+
+	.scrum-filter-wrap .filter-input-wrap .filter-title {
+		padding: 10px 0;
+		color: #333;
+	}
+
+	/* .scrum-filter-wrap .filter-input-wrap:after {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: -18px;
+    content: '';
+    border-bottom: 1px solid #EEEEEE;
+    z-index: 2;
+} */
+
+	.scrum-filter-wrap .filter-input-wrap .filter-title .icon {
+		margin-right: 10px;
+		color: #808080;
+	}
+
+	.filter-clear-handler {
+		display: none;
+		color: #3da8f5;
+		font-size: 14px;
+		position: absolute;
+		top: 10px;
+		right: 20px;
+		z-index: 2;
+	}
+
+	.filter-input-wrap input {
+		height: 38px;
+		border: 1px solid #d9d9d9;
+		border-radius: 3px;
+		padding-left: 10px;
+	}
+
+	.scrum-filter-tag .filter-title {
+		margin: 15px 20px 8px;
+	}
+
+	.list {
+		padding: 0;
+		list-style: none;
+	}
+
+	.list>li {
+		position: relative;
+		line-height: 30px;
+	}
+
+	.scrum-panel .list li.selected:after {
+		position: absolute;
+		top: 8px;
+		right: 20px;
+		font-size: 14px;
+		line-height: 24px;
+		color: #A6A6A6;
+		content: "\f26b";
+	}
+
+	.task-detail-header {
+		padding: 0 15px;
+		border-bottom: 1px solid rgba(0, 0, 0, .1);
+	}
+
+	.task-tasklist-stage-wrap {
+		position: relative;
+		margin: 0px 5px 16px;
+	}
+
+	dl {
+		margin-top: 0;
+		margin-bottom: 10px;
+		margin-left: 25px;
+	}
+
+	.dl-horizontal dt {
+		width: 60px
+	}
+
+	.dl-horizontal dd {
+		margin-left: 80px;
+	}
+
+	.actions {
+		position: absolute;
+		right: 10px;
+		top: 2px;
+	}
+
+	.scrum-panel-title {
+		margin: 0 20px;
+		font-size: 15px;
+		font-weight: 600;
+		color: #333;
+		border-bottom: 1px solid #e5e5e5;
+		line-height: 47px;
+	}
+
+	.scrum-panel-title .md-close {
+		width: 30px;
+		right: 0;
+		cursor: pointer;
+	}
+
+	.md-close.close-handler:before {
+		position: relative;
+		right: -6px;
+		font-size: 18px;
+		color: #a6a6a6;
+	}
+
+	.screen-title {
+		color: #333;
+		padding: 10px 20px;
+	}
+
+	.ico-drop {
+		position: relative;
+		top: 3px;
+	}
+
+	.screen-check {
+		font-size: 18px;
+		color: #2196F3;
+	}
+
+	.toggle-switch.screen-title {
+		line-height: 20px;
+	}
+
+	.toggle-switch.screen-title:hover {
+		background: #f5f5f5;
+		cursor: pointer;
+	}
+
+	.filter-category {
+		padding: 0 20px;
+	}
+
+	.default-filters-wrap {
+		padding: 10px 0;
+	}
+
+	.between-line {
+		border-top: 1px solid #eee;
+		padding-top: 20px !important;
+	}
+
+	.pmbb-header {
+		font-size: 13px;
+		padding-left: 44px;
+		background: #f5f5f5;
+		height: 40px;
+		line-height: 40px;
+	}
+
+	.milestone-set {
+		padding: 10px 30px;
+	}
+	
+	#taskDropdown.dropdown.open .dropdown-menu{
+		left:-200px
+	}
+</style>
+
+<div data-ng-controller="stageSearchController">
+	<div class="scrum-panel-body f-14">
+		<div class="scrum-filter-wrap">
+			<div class="scrum-panel-title">视图
+				<div class="pull-right">
+					<a class="md md-close close-handler" ng-click="close()"></a>
+				</div>
+			</div>
+
+			<!-- 模块树过滤 -->
+			<!-- <div style="max-height: 200px;overflow-y: auto;">
+				<ul id="moduleTree1" class="ztree tree-transparent" style="top: 10px;position: relative;padding: 0 5px 10px 15px;"></ul>
+			</div> -->
+
+			<div class="filter-input-wrap m-t-0">
+				<input ng-model="debounce.name" placeholder="根据任务名称过滤">
+			</div>
+			<div class="default-filters-wrap">
+				<div class="scrum-filter-executor m-t-0">
+					<div class="filter-category">
+						<c2-date-range-dropdown id="taskDropdown" date-range="dateRange" date-buttons="dateButtons" buttom-message="未完成的任务按计划结束时间过滤，已完成的按完成时间过滤。">
+							<div class="screen-title p-l-0 p-r-0">
+								<i class="md md-today m-r-5" title="日期选择"></i> {{dateRange.show}}
+								<span class="pull-right">
+									<i class="md md-expand-more f-18"></i>
+								</span>
+							</div>
+						</c2-date-range-dropdown>
+					</div>
+				</div>
+				<div class="scrum-filter-executor p-l-20 p-r-20 m-t-0">
+					<c2-dropdown class="animate" bind-data="debounce.users" items="projectUsers" item-name="name" multiple=true
+					 max-height="200" filter="true" filter-pinyin="true" clean-button="true">
+						<div class="screen-title p-l-0 p-r-0 text-overflow">
+							<i class="md md-account-child m-r-5"></i>
+							<span ng-if="debounce.users.length==0">选择成员</span>
+							<span class="p-r-5" ng-repeat="user in debounce.users">{{user.name}} </span>
+							<span class="ico-drop pull-right">
+								<i class="md md-expand-more f-18"></i>
+							</span>
+						</div>
+					</c2-dropdown>
+				</div>
+
+				<div class="scrum-filter-executor p-l-20 p-r-20 m-t-0">
+					<c2-dropdown class="animate" bind-data="debounce.labels" items="projectLabels" item-name="name" multiple=true
+					 max-height="200" filter="true" clean-button="true">
+						<div class="screen-title p-l-0 p-r-0 text-overflow">
+							<i class="md md-bookmark-outline m-r-5"></i>
+							<span ng-if="debounce.labels.length==0">选择标签</span>
+							<span class="p-l-5 p-r-5 m-l-5 label-show" ng-style="label.backgroundStyle" ng-repeat="label in debounce.labels">{{label.name}}</span>
+							<span class="ico-drop pull-right">
+								<i class="md md-expand-more f-18"></i>
+							</span>
+						</div>
+						<dropdown-item-template>
+							<div>
+								<span class="label-color" style="background-color: {{item.color}};">&nbsp;</span>
+								<span class="text">{{item.name}}</span>
+								<span class="md md-check check-mark"></span>
+							</div>
+						</dropdown-item-template>
+					</c2-dropdown>
+				</div>
+
+				<div class="scrum-filter-executor p-l-20 p-r-20 m-t-0">
+					<c2-dropdown class="animate" bind-data="debounce.milestone" items="projectMilestones" item-name="title" max-height="200"
+					 filter="true" clean-button="true">
+						<div class="screen-title p-l-0 p-r-0 text-overflow">
+							<i class="md md-extension"></i>
+							<span ng-if="!debounce.milestone.title">未分配里程碑</span>
+							<span class="p-r-5">{{debounce.milestone.title}} </span>
+							<span class="ico-drop pull-right">
+								<i class="md md-expand-more f-18"></i>
+							</span>
+						</div>
+					</c2-dropdown>
+				</div>
+
+				<div class="scrum-filter-executor p-l-20 p-r-20 m-t-0">
+					<c2-dropdown id="taskSearchProjectPlan" tree-options="treePlanOptions" tree-nodes="projectPlans" max-height="300"
+					 clean-button="true" after-clean-event="cleanPlan()">
+						<div class="screen-title p-l-0 p-r-0 text-overflow">
+							<i class="md md-description"></i>
+							<span ng-if="!debounce.projectPlan.name">所属计划</span>
+							<span class="p-r-5">{{debounce.projectPlan.name}} </span>
+							<span class="ico-drop pull-right">
+								<i class="md md-expand-more f-18"></i>
+							</span>
+						</div>
+					</c2-dropdown>
+				</div>
+
+				<div class="scrum-filter-executor m-t-0">
+					<div class="toggle-switch screen-title" ng-click="debounce.comShow=!debounce.comShow">
+						<span class="m-l-25">显示"已完成"列表</span>
+						<span ng-if="debounce.comShow" class="pull-right" ng-model="debounce.comShow">
+							<i class="md md-check screen-check"></i>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- <div class="scrum-filter-wrap" ng-show="search.milestone.id!=0 && milestone.status!='2'">
+			<div class="filter-input-wrap">
+				<div class="filter-title f-14 between-line">
+					<span class="md md-settings m-r-5"></span> 里程碑设置
+				</div>
+			</div>
+			<div class="default-filters-wrap">
+				<div class="scrum-filter-executor m-t-0">
+					<div class="pmbb-header b-1-e">
+						<span class="pull-left">{{milestone.title}} </span>
+						<span class="pull-right" style="margin-right:30px">
+							<span class="f-13"> 截止：{{milestone.date | date:'yyyy年MM月dd日'}} </span>
+							<span style="margin-left: 10px">
+								<span ng-if="milestone.status==0">
+									<font color='#00BCD4' class="f-13">已保存</font>
+								</span>
+								<span ng-if="milestone.status==1">
+									<font color='green' class="f-13">已确认</font>
+								</span>
+								<span ng-if="milestone.status==2">
+									<font color='grey' class="f-13">已关闭</font>
+								</span>
+							</span>
+							<span ng-if="milestone.status!='2'" style="margin-left: 10px" perm-res="{{project.id}}##milestone_cud">
+								<ul class="actions ng-scope">
+									<li class="dropdown" style="display: inline-block; top:-2px;">
+										<a href="" data-toggle="dropdown" aria-expanded="true">
+											<i class="md md-more-vert"></i>
+										</a>
+										<ul class="dropdown-menu dropdown-menu-right">
+											<li ng-if="milestone.status!='2'">
+												<a data-ng-click="editMilestone()" href="">编辑</a>
+											</li>
+											<li>
+												<a data-ng-click="delMilestone(milestone)" href="">删除</a>
+											</li>
+											<li ng-if="milestone.status!='2'">
+												<a data-ng-click="updateStatus(milestone,2)" href="">关闭</a>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</span>
+						</span>
+					</div>
+
+					<div class="pmbb-body milestone-set">
+						<div class="my-pm-view m-l-15" data-ng-if="!isEditInfo" ng-bind-html="milestone.desc | markdown"></div>
+						<form class="pmbb-edit" data-ng-if="isEditInfo">
+							<div class="pmbb-view ng-scope">
+								<div class="col-md-6">
+									<div class="fg-line f-13">
+										<label for="title">名称</label>
+										<input id="title" type="text" class="form-control ng-pristine ng-valid ng-touched" ng-model="milestone.title" required="required">
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="fg-line f-13">
+										<label for="exampleInputEmail1">截止日期</label>
+										<input id="deadline" type="text" date-time-picker class="form-control ng-pristine ng-valid ng-touched" ng-model="milestone.date"
+										 format="YYYY-MM-DD">
+									</div>
+								</div>
+								<div class="col-md-12">
+									<textarea height="200" ng-model="milestone.desc" c2-markdown-editor class="form-control" rows="5" placeholder="需求描述"></textarea>
+								</div>
+								<div ng-if="isChange" class="fg-line" style="margin-top: 20px;margin-bottom: 20px;">
+									<input placeholder="请输入变更理由..." type="text" data-ng-model="milestone.reason" required="required" class="form-control ng-pristine ng-valid ng-touched">
+								</div>
+								<div class="p-l-20">
+									<button class="btn btn-primary btn-sm" type="submit" data-ng-click="saveInfo()">保存</button>
+									<button class="btn btn-link btn-sm" data-ng-click="cancelInfo()">取消</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div> -->
+	</div>
+</div>
+
+<script>
+	developmentCenter.registerCtrl('stageSearchController',
+		function ($stateParams, debounce,$timeout, $scope, Modal, $http, $state, ModelFactory, Messenger, $ocLazyLoad) {
+			loadMilestoneInfo();
+			loadProjectPlans();
+			getMilestoneStoryReport();
+			getMilestoneTaskReport();
+			//项目成员
+			$http.post("ws/getMembers", { projectId: $stateParams.project }).success(function (data) {
+				var taskMembers = [];
+				angular.forEach(data.result, function (v, n) {
+					taskMembers.push({ id: v.userDTO.user_id, name: v.userDTO.user_realname, icon: v.userDTO.remark1, userName: v.userDTO.user_name });
+				});
+				$scope.projectUsers = taskMembers;
+			});
+			//标签
+			$http.post("e/label/op/selectLabel", { project: $stateParams.project }).success(function (data) {
+				angular.forEach(data.result, function (v, n) {
+					v.backgroundStyle = { "background-color": v.color, "color": getTextColorByBackColor(v.color) };
+				});
+				$scope.projectLabels = angular.copy(data.result);
+			});
+
+			$scope.searchTime = 1;
+			$scope.dateButtons = ['thisWeek', 'nextWeek', 'preWeek', 'thisMonth', 'preMonth', 'thisYear'];
+
+			$scope.dateRange = { show: "时间段", start: moment().startOf('week').toDate().getTime() };
+
+			$scope.$watch("dateRange", function (v) {
+				if (angular.isUndefined(v)) return;
+				$scope.search.week.st = v.start;
+				$scope.search.week.et = v.end;
+			}, true);
+			$scope.$watch("search", function (v, ov) {
+				if (v != ov) {
+					$scope.$emit("stageSearchBo", { search: $scope.search });
+				}
+			}, 700);
+
+			var debounceSearchFn = debounce(function (ds) {
+				// //如果清空里程碑，则默认加一个里程碑
+				// if(ds.milestone == null){
+				// 	ds.milestone={id:'0',projectId:$stateParams.project}
+				// }
+				angular.extend($scope.search, angular.copy(ds));
+			}, 600);
+
+			$scope.$watch("debounce", function (v) {
+				debounceSearchFn(v);
+			}, true);
+
+			$scope.story = { opened: 0, closed: 0 };
+			$scope.milestone = { taskDoneNum: 0, taskUndoneNum: 0 };
+
+			//需求和任务数量变化感知函数
+			$scope.$on("numChangeBto", function (event, msg) {
+				getMilestoneStoryReport();
+				getMilestoneTaskReport();
+			});
+
+			function getMilestoneStoryReport() {
+				$http.post("ws/getMilestoneStoryReport", {
+					search: {
+						milestoneId: 0,
+						projectId: $stateParams.project
+					}
+				}).success(function (data) {
+					if (data.result == undefined) {
+						return false;
+					}
+					$scope.story.opened = data.result.opened;
+					$scope.story.closed = data.result.closed;
+				});
+			}
+
+			function getMilestoneTaskReport() {
+				$http.post("ws/getMilestoneTaskReport", {
+					search: {
+						milestoneId: 0,
+						projectId: $stateParams.project
+					}
+				}).success(
+
+					function (data) {
+						if (data.result == undefined) {
+							return false;
+						}
+
+						if (data.result.done) {
+							$scope.milestone.taskDoneNum = data.result.done;
+						}
+
+						if (data.result.undone) {
+							$scope.milestone.taskUndoneNum = data.result.undone;
+						}
+					});
+			}
+
+			//plan	
+			$scope.treePlanOptions = {
+				view: {
+					selectedMulti: false
+				},
+				data: {
+					simpleData: {
+						enable: true,
+						pIdKey: "parent"
+					}
+				},
+				callback: {
+					onClick: function (event, treeId, treeNode, clickFlag) {
+						$scope.$apply(function () {
+							$scope.projectPlan = treeNode;
+							$scope.debounce.projectPlan = treeNode;
+						});
+						// $("#newModuleDropdown").controller("c2-dropdown").toggle();
+					}
+				}
+			};
+			
+			//清空计划
+			$scope.cleanPlan = function(){
+				$scope.projectPlan = undefined;
+				$scope.debounce.projectPlan = undefined;
+			}
+
+			function loadProjectPlans() {
+				if ($scope.project.id) {
+					$http.get("ProjectPlan/all/project", {
+						params: {
+							projectId: $scope.project.id
+						}
+					}).success(function (data) {
+						var rootNode = {
+							id: 0,
+							name: $scope.project.name,
+						}
+						data.push(rootNode)
+						$scope.projectPlans = data;
+						$timeout(function(){
+							var ztree = $("#taskSearchProjectPlan").controller("c2-dropdown").getTree();
+							ztree.expandNode(ztree.getNodes()[0], true, false, true);
+						},400);
+					})
+				}
+			}
+
+
+			function loadMilestoneInfo() {
+				if (!$scope.search.milestone) {
+					return;
+				}
+				if (!$scope.search.milestone.id) {
+					return;
+				}
+
+				$http.post("ws/getMilestoneById", {
+					"id": $scope.search.milestone.id
+				}).success(
+
+					function (data) {
+						if (data.result == undefined) {
+							$('#mileName')[0].innerHTML = '未分配里程碑';
+							return false;
+						}
+						$('#mileName')[0].innerHTML = data.result.title;
+						$scope.milestone.id = $scope.search.milestone.id;
+						$scope.milestone.title = data.result.title;
+						$scope.milestone.date = data.result.enddate;
+						$scope.milestone.desc = data.result.description;
+						$scope.milestone.projectId = data.result.projectId;
+						$scope.milestone.status = data.result.status;
+						$scope.milestone.reason = '';
+						$scope.milestoneBak = angular.copy($scope.milestone);
+
+						if ($scope.milestoneBak.status == '1') {
+							$scope.$watch("milestone", function (newv) {
+								$scope.isChange = false;
+								if ($scope.milestoneBak.title != $scope.milestone.title || $scope.milestoneBak.date != $scope.milestone.date || $scope.milestoneBak.desc != $scope.milestone.desc) {
+									$scope.isChange = true;
+								}
+							}, true);
+						}
+					});
+
+				var saveMilestone = function () {
+					$http.post("ws/updateMilestone", {
+						milestone: {
+							id: $scope.milestone.id,
+							title: $scope.milestone.title,
+							enddate: $scope.milestone.date,
+							description: $scope.milestone.desc,
+							projectId: $scope.project.id
+						},
+						comment: $scope.milestone.reason
+					}).success(
+
+						function (data) {
+							Messenger.post({
+								type: 'success',
+								message: '保存成功'
+							});
+							loadMilestoneInfo();
+							for (var i = 0; i < $scope.$parent.projectMilestones.length; i++) {
+								if ($scope.$parent.projectMilestones[i].id == $scope.milestone.id) {
+									$scope.$parent.projectMilestones[i].title = $scope.milestone.title;
+								}
+							}
+						});
+				};
+
+				$scope.saveInfo = function () {
+					saveMilestone();
+				}
+
+				$scope.editMilestone = function () {
+					$scope.isEditInfo = true;
+				}
+
+				$scope.cancelInfo = function () {
+					$scope.milestone = angular.copy($scope.milestoneBak);
+					$scope.isEditInfo = false;
+				}
+			}
+
+			$scope.updateStatus = function (milestone, status) {
+				var doUpdate = function () {
+					var entityDataSource = ModelFactory.entity("c2_comunity_milestone", "id", {
+						id: milestone.id
+					});
+					entityDataSource.$promise.then(function (entity) {
+						entity.status = status;
+						$http.post("ws/updateMilestone", {
+							milestone: entity
+						}).success(function (data) {
+							Messenger.post({
+								'message': "关闭成功！",
+								'type': 'success',
+							});
+							$state.go("project.milestoneDetail", { milestoneId: mileston.id });
+						});
+					});
+				};
+				if (status == 2 && $scope.story.opened > 0) {
+					Messenger.post({
+						'message': "里程碑下有需求未关闭，不能关闭里程碑！",
+						'type': 'error',
+					});
+					return;
+					Modal.open("project/milestone/close-confirm.html", {}, {
+						onClose: doUpdate
+					});
+				} else {
+					doUpdate();
+				}
+
+			};
+
+			$scope.delMilestone = function (milestone) {
+				Modal.openConfirm({
+					title: "删除确认",
+					message: "该里程碑下存在已关闭的需求<span style='color:green'>" + $scope.story.closed + "</span>个，" +
+						"未关闭的需求<span style='color:red'>" + $scope.story.opened + "</span>个，" +
+						"已完成的任务<span style='color:green'>" + $scope.milestone.taskDoneNum + "</span>个，" +
+						"未完成的任务<span style='color:red'>" + $scope.milestone.taskUndoneNum + "</span>个，点击删除后数据将无法恢复，是否确认删除？",
+					btnText: "删除",
+					btnClass: "btn-block bgm-lightblue simple-shadow",
+					onClose: function () {
+						$http.post("ws/delMilestone", {
+							"milestone": {
+								"id": milestone.id
+							}
+						}).success(function (data, status, headers, config) {
+							if (data.result == true) {
+								$scope.close();//关闭视图
+								for (var i = 0; i < $scope.$parent.projectMilestones.length; i++) {
+									if ($scope.$parent.projectMilestones[i].id == milestone.id) {
+										$scope.$parent.projectMilestones.splice(i, 1);
+									}
+								}
+								$state.go('project.boardtask', { milestoneId: 0 });
+								Messenger.post({
+									'message': "删除成功！",
+									'type': 'success',
+								});
+							}
+
+						});
+					}
+				});
+
+			}
+
+			$scope.close = function () {
+				$scope.$parent.$parent.$parent.showView = false;
+				$('aside.chat').removeClass('toggled');
+
+			}
+
+			$scope.treeOptions = {
+				data: {
+					simpleData: {
+						enable: true,
+						idKey: "id",
+						pIdKey: "parent",
+						rootPId: 0
+					}
+				},
+				callback: {
+					onClick: function onClick(event, treeId, treeNode) {
+						$scope.debounce.module = { id: treeNode.id };
+						debounceSearchFn($scope.debounce);
+					}
+				}
+			};
+
+			//模块
+			$http.post("e/module/op/selectModule", { projectId: { id: $stateParams.project } })
+				.success(function (data) {
+					var modList = [{ id: 0, name: "所有模块", order: 1, parent: undefined, projectId: {} }];
+					for (var i = 0; i < data.result.length; i++) {
+						modList.push(data.result[i]);
+					}
+					$scope.moduleNodes = modList;
+				});
+
+			//加载ztree
+			$ocLazyLoad.load(['assets/ztree/jquery.ztree.all.min.js', 'assets/ztree/zTreeStyle.css'])
+				.then(function () {
+					$scope.$watch("moduleNodes", function (v) {
+						if (angular.isUndefined(v))
+							return;
+						$.fn.zTree.init($("#moduleTree1"), $scope.treeOptions, $scope.moduleNodes);
+					});
+				})
+		});
+</script>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getInstanceTreeById" log="false" className="com.chinacreator.c2.project.plan.InstanceService" method="getInstanceTreeById">
+  <name>通过计划id获取实例树</name>
+  <desc>通过计划id获取实例树信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="planId" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.planId" name="planId" signature="I" type="int"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

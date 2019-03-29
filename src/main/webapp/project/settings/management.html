@@ -1,0 +1,152 @@
+<div class="card management" ng-if="projectChange">
+    <div class="card-header">
+        <h2>项目封面</h2>
+    </div>
+
+    <div class="card-body card-padding p-t-0">
+        <div class="pmo-pic">
+            <div class="p-relative">
+                <a href="">
+                    <img alt="" class="img-responsive" ng-src="{{project.pic}}">
+                </a>
+                <a class="pmop-edit" href="" ng-click="changeProjectPic()">
+                    <i class="md md-camera-alt"></i>
+                    <span>编辑项目封面</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card management" ng-if="projectChange">
+    <div class="card-header">
+        <h2>基本信息</h2>
+    </div>
+
+    <div class="card-body card-padding p-t-0">
+        <form data-ng-submit="saveProject();">
+            <div class="row">
+                <div class="col-md-12">
+                    <label class="fg-label">项目名称</label>
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <input type="text" ng-model="projectCopy.name" class="form-control fg-input">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="fg-label">合同编号</label>
+                    <div class="form-group">
+                        <div class="fg-line">
+                        	<c2-dropdown class="fg-line" item-click="erpClick(erpProject)" bind-data="erpProject" items="projects" item-name="pname" max-height="300" filter="true"filter-property="pcode,pname" filter-placeholder="名称/编号">
+					            <input type="text" ng-model="erpProject.pcode" readonly="readonly" class="form-control fg-input">
+					        </c2-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="fg-label">项目编号</label>
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <input type="text" ng-model="projectCopy.code" disabled class="form-control fg-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="fg-label">项目简介</label>
+                    <div class="form-group">
+                        <div class="fg-line">
+                            <input type="text" ng-model="projectCopy.brief" class="form-control fg-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="fg-label">项目描述</label>
+                    <textarea c2-markdown-editor height="200" id="project-description" ng-model="projectCopy.description"></textarea>
+                </div>
+            </div>
+            <div class="m-t-10">
+                <button class="btn btn-primary btn-sm" type="submit">保存</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="card" ng-if="projectChange">
+    <div class="card-header">
+        <h2>权限设置</h2>
+    </div>
+
+    <div class="card-body card-padding p-t-0">
+        <div class="toggle-switch" data-ts-color="blue" style="margin-right: 50px;">
+            <label for="ts3" class="ts-label">允许普通成员创建任务：</label>
+            <input id="ts3" type="checkbox" hidden="hidden" ng-model="cuTask" ng-click="setCuTask()">
+            <label for="ts3" class="ts-helper"></label>
+        </div>
+        
+        <div class="toggle-switch" data-ts-color="blue">
+            <label for="ts4" class="ts-label">任务是否强制确认：</label>
+            <input id="ts4" type="checkbox" hidden="hidden" ng-model="taskConfirm" ng-click="setTaskConfirm()">
+            <label for="ts4" class="ts-helper"></label>
+        </div>
+    </div>
+</div>
+
+<div class="card" ng-if="projectChange">
+    <div class="card-header">
+        <h2>转让项目</h2>
+    </div>
+
+    <div class="card-body card-padding p-t-0">
+        <div class="alert alert-info" role="alert">请注意！ 项目转让后，你将不再是“项目所有者”，你将失去某些管理权限（如添加成员、维护模块、删除项目等）。</div>
+        <button class="btn btn-warning btn-icon-text" ng-click="transformOwner()"><i class="md md-transform"></i>转让项目</button>
+    </div>
+</div>
+
+<div class="card"  data-ng-if="projectChange && projectCopy.arcStatus == '1'">
+    <div class="card-header">
+        <h2>归档项目</h2>
+    </div>
+
+    <div class="card-body card-padding p-t-0">
+        <div class="alert alert-info" role="alert">
+            项目归档后，普通参与者将无法再看到当前项目，只有项目所有者能在“已归档项目”中对项目状况进行查看
+            <br/>
+            <br/> 已归档项目不再允许录入日志
+        </div>
+        <button class="btn btn-info waves-effect btn-icon-text" ng-click="filingProject()">
+            <i class="md md-archive"></i>归档项目
+        </button>
+    </div>
+</div>
+
+<div class="card" data-ng-if="projectChange">
+    <div class="card-header">
+        <h2>删除项目</h2>
+    </div>
+
+    <div class="card-body card-padding p-t-0">
+        <div class="alert alert-info" role="alert">
+            删除项目将会连同其相关的所有数据（包括 任务，模块，需求 等在内）一起删除。
+            <br/>
+            <br/>
+            <strong style="color:#FF5722;">此操作无法恢复!</strong>
+        </div>
+        <button class="btn btn-danger btn-icon-text" ng-click="deleteProject()"><i class="md md-delete"></i>删除项目</button>
+    </div>
+</div>
+
+<div class="card" ng-if="permissionLoaded && !projectChange">
+    <div class="unauthorized">
+            <h2>对不起!</h2>
+            <small>您没有权限修改项目的的高级设置!</small>
+            
+            <footer>
+                <a href="javascript:void(0)" onClick="history.go(-1);return true;" title="返回"><i class="md md-arrow-back"></i></a>
+                <a data-ui-sref="project.home" title="项目首页"><i class="md md-home"></i></a>
+            </footer>
+     </div>
+</div>

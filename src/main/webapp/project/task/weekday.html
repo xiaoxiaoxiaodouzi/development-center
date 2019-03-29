@@ -1,0 +1,50 @@
+<style>
+.wd-event{
+	cursor: pointer;
+	height:30px;
+	background-color:inherit !important;
+	font-size:25px !important;
+	color:black !important;
+	border:white !important;
+	text-align:center
+}
+
+.wd-prev-button,.wd-next-button {
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	margin: 0;
+	height: 2.1em;
+	padding: 0 .6em;
+	font-size: 1em;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.wd-prev-button>span, .wd-next-button>span {
+    position: relative;
+    top: -.05em;
+    margin: 0 .2em;
+    vertical-align: middle;
+    margin-top: 5px;
+}
+
+.modal .modal-header {
+    padding: 23px 26px 0px 26px !important;
+} 
+</style>
+
+<div class="row p-20" ng-controller="weekDayController">
+	<div c2-full-calendar id="calendar"
+		class="est-callender-wrap col-sm-12" start-date="$params.startDate"
+		format="YYYY-MM-DD" events="$params.weekDayEvents"
+		event-click="eventClick(params)"
+		event-after-render="estimateEventAfterRender(params)"
+		event-after-all-render="estimateEventAfterAllRender(params)"
+		view-render="estimateViewRender(params)"></div>
+		
+	<div class="modal-footer" style="text-align:center;padding:0px 15px 10px 15px;">
+		<button class="btn btn-primary btn-sm" ng-click="generateDefaultWeekDays()" title="生成默认工时(8/天)">
+			<i class="md md-add-alarm"></i> 生成当前月默认工时
+		</button>
+	</div>
+</div>

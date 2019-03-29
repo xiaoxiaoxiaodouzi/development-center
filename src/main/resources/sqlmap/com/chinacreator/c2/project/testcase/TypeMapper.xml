@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.testcase.TypeMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_community_case_type.id ,
+		  c2_community_case_type.pid ,
+		  c2_community_case_type.name ,
+		  c2_community_case_type.project_id ,
+		  c2_community_case_type.no_ 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_community_case_type.id = #{id}</if>
+	    <if test="pid != null">and c2_community_case_type.pid = #{pid}</if>
+	    <if test="name != null">and c2_community_case_type.name = #{name}</if>
+	    <if test="projectId != null">and c2_community_case_type.project_id = #{projectId}</if>
+	    <if test="no != null">and c2_community_case_type.no_ = #{no}</if>
+</sql>
+
+
+<!-- ElementID:TypeResult,Generated=true -->
+<resultMap id="TypeResult" type="com.chinacreator.c2.project.testcase.Type">
+	<id property="id" column="id"/>
+	<result property="pid" column="pid"/>
+	<result property="name" column="name"/>
+	<result property="projectId" column="project_id"/>
+	<result property="no" column="no_"/>
+</resultMap>
+
+<resultMap id="TypeTreeResult" type="java.util.HashMap">
+	<id property="id" column="id" javaType="java.lang.Integer"/>
+	<result property="pid" column="pid"/>
+	<result property="name" column="name"/>
+	<association property="type" column="type"/>
+</resultMap>
+
+
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.testcase.Type" resultType="int">
+	select count(*) from c2_community_case_type 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.testcase.Type">
+	update c2_community_case_type
+<set>
+	<if test="pid != null">pid=#{pid,jdbcType=NUMERIC},</if>
+	<if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
+	<if test="projectId != null">project_id=#{projectId,jdbcType=NUMERIC},</if>
+	<if test="no != null">no_=#{no,jdbcType=NUMERIC}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_community_case_type
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="pid==null">pid = null,</if>
+		    <if test="name==null">name = null,</if>
+		    <if test="projectId==null">project_id = null,</if>
+		    <if test="no==null">no_ = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.testcase.Type">
+    delete from c2_community_case_type where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.testcase.Type" resultMap="TypeResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_case_type 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_community_case_type where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="TypeResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_case_type 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="TypeResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_case_type 
+		 where c2_community_case_type.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.testcase.Type" resultMap="TypeResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_case_type 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="TypeResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_community_case_type 
+	where c2_community_case_type.id in (
+		select distinct id from c2_community_case_type inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_community_case_type 
+			<where>
+	        <if test="entity.id != null">and c2_community_case_type.id = #{entity.id}</if>
+	        <if test="entity.pid != null">and c2_community_case_type.pid = #{entity.pid}</if>
+	        <if test="entity.name != null">and c2_community_case_type.name = #{entity.name}</if>
+	        <if test="entity.projectId != null">and c2_community_case_type.project_id = #{entity.projectId}</if>
+	        <if test="entity.no != null">and c2_community_case_type.no_ = #{entity.no}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.testcase.Type" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_community_case_type(
+		<trim prefixOverrides=",">
+		    <if test="pid != null">pid</if>
+		    <if test="name != null">,name</if>
+		    <if test="projectId != null">,project_id</if>
+		    <if test="no != null">,no_</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="pid != null">#{pid,jdbcType=NUMERIC}</if>
+		    <if test="name != null">,#{name,jdbcType=VARCHAR}</if>
+		    <if test="projectId != null">,#{projectId,jdbcType=NUMERIC}</if>
+		    <if test="no != null">,#{no,jdbcType=NUMERIC}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_community_case_type (pid,name,project_id,no_)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.pid,jdbcType = NUMERIC},
+		         #{entity.name,jdbcType = VARCHAR},
+		         #{entity.projectId,jdbcType = NUMERIC},
+		         #{entity.no,jdbcType = NUMERIC}
+				)
+</foreach>
+</insert>
+
+<select id="getCaseTypeById" parameterType="java.util.HashMap" resultType="java.util.HashMap" useCache="false">
+	select 'type' type,id,concat('t_',id) tid,concat('t_',pid) tpid,name 
+	from (select * from c2_community_case_type where project_id=#{projectId} order by no_) as a 
+	union 
+	select 'case' type,id,concat('c_',id) tid,concat('t_',type_id) tpid,name 
+	from (select c.* from c2_community_case c,c2_community_case_type t
+	where c.type_id=t.id and c.project_id=#{projectId}
+	<if test="name!=null and name !=''">
+		and c.name like '%${name}%'
+	</if>
+	 <if test="level!=null and level !=''">
+		and c.level = #{level}
+	</if>
+	<if test="isCommon==true">
+		and c.is_common = '0'
+	</if>
+	order by c.order_no) as b 
+	union
+	select 'type' type,0,concat('t_',0) tid,null,'用例树' name 
+	from dual
+</select>
+
+<select id="selectSubTypeList" parameterType="java.util.HashMap" resultMap="TypeResult">
+	select * from c2_community_case_type where pid=#{id} 
+	<if test="projectId!=null and projectId!=''">
+		and project_id=#{projectId}
+	</if>
+	<if test="planId!=null and planId!=''">
+		and project_id = (select project_id from c2_community_case_plan where id=#{planId})
+	</if>
+</select>
+
+<select id="getMaxNoByProjectId" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	select max(no_) no from c2_community_case_type where project_id=#{projectId,jdbcType=NUMERIC}
+</select>
+
+<update id="updateTypeNoAfterDel" parameterType="java.util.HashMap">
+	update c2_community_case_type set no_ = no_-1 where project_id=#{projectId} and no_ > #{no}
+</update>
+
+<select id="getCaseListById" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	select * from c2_community_case where type_id=#{id}
+</select>
+
+<select id="getTypeListByProject" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	<if test="planId!=null and planId!=''">
+		select * from (select 'case' type,i.id,concat('c_',i.id) tid,concat('t_',c.type_id) tpid,i.name
+		from c2_community_case_instance i,c2_community_case c,c2_community_case_type t
+		where i.case_id = c.id and c.type_id = t.id and i.plan_id=#{planId} order by c.order_no)as a
+		UNION
+		select * from (select 'type' type,id,concat('t_',id) tid,concat('t_',pid) tpid,name
+		from c2_community_case_type where project_id in (
+		select c.project_id from c2_community_case_instance i,c2_community_case c
+		where i.case_id = c.id and i.plan_id=#{planId}) order by no_)as b
+	</if>
+	<if test="projectId!=null and projectId!=''">
+		select 'type' type,id,concat('t_',id) tid,concat('t_',pid) tpid,name 
+		from (select * from c2_community_case_type where project_id=#{projectId} order by no_) as a 
+	</if>
+</select>
+</mapper>

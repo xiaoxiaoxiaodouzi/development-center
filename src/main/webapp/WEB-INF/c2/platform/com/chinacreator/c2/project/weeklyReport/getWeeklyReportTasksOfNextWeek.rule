@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="wr/getWeeklyReportTasksOfNextWeek" log="false" className="com.chinacreator.c2.project.weeklyReport.WeeklyReportService" method="getWeeklyReportTasksOfNextWeek">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取周报下周计划任务</name>
+  <inputs>
+    <input collection="false" desc="" id="startParam" required="true" type="java.util.Map"/>
+    <input collection="false" desc="" id="endParam" required="true" type="java.util.Map"/>
+    <input collection="false" desc="" id="projectId" required="true" type="Integer"/>
+    <input collection="false" desc="" id="reportId" required="true" type="Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Collection"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.startParam" name="startParam" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+    <param autoValue="Input.endParam" name="endParam" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+    <param autoValue="Input.projectId" name="projectId" signature="QInteger;" type="Integer"/>
+    <param autoValue="Input.reportId" name="reportId" signature="QInteger;" type="Integer"/>
+  </params>
+  <return signature="QCollection&lt;QObject;>;" type="java.util.Collection"/>
+</CustomRule>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="addStory" log="false" className="com.chinacreator.c2.project.story.StoryService" method="addStory">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>新增需求</name>
+  <inputs>
+    <input collection="false" desc="" id="story" required="true" type="com.chinacreator.c2.project.story.Story"/>
+    <input collection="false" desc="" id="labelList" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.project.story.Story"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.story" name="story" signature="QStory;" type="com.chinacreator.c2.project.story.Story"/>
+    <param autoValue="Input.labelList" name="labelList" signature="QList&lt;QLabel;>;" type="java.util.List"/>
+  </params>
+  <return signature="QStory;" type="com.chinacreator.c2.project.story.Story"/>
+</CustomRule>

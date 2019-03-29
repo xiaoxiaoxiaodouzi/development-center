@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.label.LabelMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_comunity_label.id ,
+		  c2_comunity_label.project ,
+		  c2_comunity_label.name ,
+		  c2_comunity_label.color ,
+		  c2_comunity_label.createtime ,
+		  c2_comunity_label.rank 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_comunity_label.id = #{id}</if>
+	    <if test="project != null">and c2_comunity_label.project = #{project}</if>
+	    <if test="name != null">and c2_comunity_label.name = #{name}</if>
+	    <if test="color != null">and c2_comunity_label.color = #{color}</if>
+	    <if test="createtime != null">and c2_comunity_label.createtime = #{createtime}</if>
+	    <if test="rank != null">and c2_comunity_label.rank = #{rank}</if>
+</sql>
+
+
+
+
+
+
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.label.Label" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_comunity_label(
+		<trim prefixOverrides=",">
+		    <if test="project != null">project</if>
+		    <if test="name != null">,name</if>
+		    <if test="color != null">,color</if>
+		    <if test="createtime != null">,createtime</if>
+		    <if test="rank != null">,rank</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="project != null">#{project,jdbcType=NUMERIC}</if>
+		    <if test="name != null">,#{name,jdbcType=VARCHAR}</if>
+		    <if test="color != null">,#{color,jdbcType=VARCHAR}</if>
+		    <if test="createtime != null">,#{createtime,jdbcType=TIMESTAMP}</if>
+		    <if test="rank != null">,#{rank,jdbcType=NUMERIC}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.label.Label" resultType="int">
+	select count(*) from c2_comunity_label 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.label.Label">
+	update c2_comunity_label
+<set>
+	<if test="project != null">project=#{project,jdbcType=NUMERIC},</if>
+	<if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
+	<if test="color != null">color=#{color,jdbcType=VARCHAR},</if>
+	<if test="createtime != null">createtime=#{createtime,jdbcType=TIMESTAMP},</if>
+	<if test="rank != null">rank=#{rank,jdbcType=NUMERIC}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.label.Label">
+    delete from c2_comunity_label where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.label.Label" resultMap="LabelResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_label 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+		order by rank,id desc;
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_comunity_label (project,name,color,createtime,rank)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.project,jdbcType = NUMERIC},
+		         #{entity.name,jdbcType = VARCHAR},
+		         #{entity.color,jdbcType = VARCHAR},
+		         #{entity.createtime,jdbcType = TIMESTAMP},
+		         #{entity.rank,jdbcType = NUMERIC}
+				)
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_comunity_label where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</delete>
+
+
+
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="LabelResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_label 
+</select>
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="LabelResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_label 
+	where c2_comunity_label.id in (
+		select distinct id from c2_comunity_label inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_comunity_label 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_label.id = #{entity.id}</if>
+	        <if test="entity.project != null">and c2_comunity_label.project = #{entity.project}</if>
+	        <if test="entity.name != null">and c2_comunity_label.name = #{entity.name}</if>
+	        <if test="entity.color != null">and c2_comunity_label.color = #{entity.color}</if>
+	        <if test="entity.createtime != null">and c2_comunity_label.createtime = #{entity.createtime}</if>
+	        <if test="entity.rank != null">and c2_comunity_label.rank = #{entity.rank}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="LabelResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_label 
+		 where c2_comunity_label.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.label.Label" resultMap="LabelResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_label 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<select id="selectByIssueId" parameterType="string" resultMap="LabelResult" useCache="false">
+	select <include refid="column_sql"/>
+	from c2_comunity_label 
+	where id in
+	(select label_id from c2_comunity_issue_label 
+		where issue_id=#{issueId,jdbcType=VARCHAR})
+</select>
+
+<select id="selectLabelsByTaskId" parameterType="java.util.HashMap" resultType="map" useCache="false">
+		 select 
+		     C2_COMUNITY_LABEL_TASK.task_id,
+		     c2_comunity_label.id ,
+		     c2_comunity_label.product ,
+		     c2_comunity_label.name ,
+		     c2_comunity_label.color 
+		  from C2_COMUNITY_LABEL_TASK
+		  left join c2_comunity_label on C2_COMUNITY_LABEL_TASK.label_id = c2_comunity_label.id
+		  where C2_COMUNITY_LABEL_TASK.task_id in (${taskIds})
+</select>
+
+<!-- ElementID:LabelResult,Generated=true -->
+<resultMap id="LabelResult" type="com.chinacreator.c2.project.label.Label">
+	<id property="id" column="id"/>
+	<result property="project" column="project"/>
+	<result property="name" column="name"/>
+	<result property="color" column="color"/>
+	<result property="createtime" column="createtime"/>
+	<result property="rank" column="rank"/>
+</resultMap>
+
+<select id="selectLabelByIssueId" parameterType="java.util.HashMap" resultType="java.util.HashMap" useCache="false">
+ select l.* from c2_comunity_issue_label il, c2_comunity_label l
+  where il.label_id= l.id
+  and il.issue_id = #{issueId,jdbcType=VARCHAR}
+</select>
+
+<!--Generated=true-->
+<update id="updateNull" parameterType="map">
+	update c2_comunity_label
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="project==null">project = null,</if>
+		    <if test="name==null">name = null,</if>
+		    <if test="color==null">color = null,</if>
+		    <if test="createtime==null">createtime = null,</if>
+		    <if test="rank==null">rank = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+</mapper>

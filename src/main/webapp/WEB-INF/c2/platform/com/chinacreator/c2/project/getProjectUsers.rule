@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getProjectUsers" log="false" className="com.chinacreator.c2.project.teamLog.ProjectLogService" method="getProjectUsers">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取项目成员</name>
+  <desc>项目成员</desc>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="String"/>
+    <input collection="false" desc="" id="startDate" required="true" type="java.sql.Date"/>
+    <input collection="false" desc="" id="endDate" required="true" type="java.sql.Date"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="QString;" type="String"/>
+    <param autoValue="Input.startDate" name="startDate" signature="QDate;" type="java.sql.Date"/>
+    <param autoValue="Input.endDate" name="endDate" signature="QDate;" type="java.sql.Date"/>
+  </params>
+  <return signature="QList&lt;QUser;>;" type="java.util.List"/>
+</CustomRule>

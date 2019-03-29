@@ -1,0 +1,40 @@
+<style>
+.c-info{
+	height:20px !important;
+}
+</style>
+
+<div class="base-body" ng-controller="viewTeamCtrl">
+    <div class="new-white-card task-new-handler-warp">
+        <div class="contacts clearfix row">
+			<div class="col-md-2 col-sm-6 col-xs-6" ng-repeat="member in members">
+				<div class="c-item">
+					<a href="" class="ci-avatar">
+						<img ng-src="{{member.icon}}" alt="">
+					</a>
+
+					<div class="c-info">
+						<strong class="m-b-15">{{member.userRealname}}</strong>
+					</div>
+				</div>
+			</div>
+			<div style="text-align:center" ng-show="!members">暂无成员数据</div>
+		</div>
+    </div>
+</div>
+
+<script>
+angular.module("developmentCenter").registerCtrl('viewTeamCtrl',
+	function ($scope, $http){
+	
+	var userNameList = [];
+	$scope.users.forEach(u=>{
+		userNameList.push(u.userName);
+	})
+	if(userNameList.length>0){
+		$http.post("ws/getUserInfoByUsername",{userNameList:userNameList}).success(function(data){
+			$scope.members = data.result;
+		})
+	}
+})
+</script>

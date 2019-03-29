@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.workbench.MyTaskBoardMapper">	
+
+<resultMap type="map" id="taskListResult">
+	<id property="id" column="id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="moduleId" column="module_id"/>
+	<result property="storyId" column="story_id"/>
+	<result property="name" column="name_"/>
+	<result property="pri" column="pri"/>
+	<result property="estimate" column="estimate"/>
+	<result property="consumed" column="consumed"/>
+	<result property="left" column="left_"/>
+	<result property="deadline" column="deadline"/>
+	<result property="isDone" column="is_done" javaType="boolean"/>
+	<result property="closed" column="closed" javaType="boolean"/>
+	<result property="isConfirm" column="is_confirm"/>
+	<result property="confirmUser" column="confirm_user"/>
+	<result property="description" column="description"/>
+	<result property="assignedTo" column="assigned_to"/>
+	<result property="finishedDate" column="finished_date"/>
+	<result property="stageId" column="stage_id"/>
+	<result property="bugId" column="bug_id"/>
+	<result property="userIcon" column="userIcon"/>
+	<result property="userRealname" column="userRealname"/>
+	<result property="milestoneTitle" column="milestoneTitle"/>
+	<result property="milestoneId" column="milestone_id"/>
+	<result property="taskType" column="task_type"/>
+	<result property="myTaskOrder" column="my_task_order"/>
+	<result property="projectTaskOrder" column="project_task_order"/>
+</resultMap>
+
+<select id="getTaskListByStage" parameterType="map" resultMap="taskListResult">
+	SELECT
+	t.*,
+	u.user_id userId,
+	u.remark1 userIcon,
+	u.user_realname userRealname,
+	m.title milestoneTitle,
+	d.name_ moduleName,
+	p.name_ projectName,
+	p.arc_status arcStatus,
+	b.id bugId,
+	b.title bugTitle,
+	b.status_ bugState,
+	b.no bugNo,
+	b.project bugProjectId,
+	pp.prefer_content taskConfirm
+	FROM
+		c2_comunity_task t
+	LEFT JOIN td_sm_user u ON t.assigned_to = u.user_name
+	LEFT JOIN c2_comunity_milestone m ON t.milestone_id = m.id
+	LEFT JOIN zt_project p ON t.project_id = p.id
+	LEFT JOIN zt_module d ON t.module_id=d.id
+	left join (select * from c2_comunity_project_preference where prefer_name='projectTaskConfirmState') pp on t.project_id=pp.project_id
+	LEFT JOIN c2_community_bug b ON t.bug_id = b.id ,c2_comunity_stage s
+  where t.stage_id = s.id and s.name_=#{stage.name}
+		and ( t.is_done = 0 or (t.is_done = 1 and t.closed = 0))
+	  <if test="week.st != null and week.et != null and stage.name!='已完成'">
+	  	and t.deadline between #{week.st,jdbcType=DATE} and #{week.et,jdbcType=DATE}
+	  </if>
+	  <if test="week.st != null and week.et != null and stage.name=='已完成'">
+	  	and t.finished_date between #{week.st,jdbcType=DATE} and #{week.et,jdbcType=DATE}
+	  </if>
+	  <!-- <if test="stage.name=='已完成'">
+	  	and t.finished_date between date_sub(now(),interval 15 day) and now()
+	  </if> -->
+      
+      <if test="projects != null">and t.project_id in 
+		<foreach item="p" collection="projects" open="(" separator="," close=")">
+	        '${p.id}'
+	    </foreach>
+      </if>
+      <if test="creator !=null">and t.creator = #{creator}</if>
+      <if test="name != null and name!=''">and t.name_ like '%${name}%'</if>
+      <if test="bug">and t.bug_id is not null</if>
+      <if test="userName != null and userName !=''">
+      	and t.assigned_to = #{userName} 
+      </if>
+      ORDER BY my_task_order desc,t.finished_date desc,t.id desc
+</select>
+
+<select id="getCompleteTaskList" parameterType="map" resultMap="taskListResult">
+	SELECT
+	t.*,
+	u.user_id userId,
+	u.remark1 userIcon,
+	u.user_realname userRealname,
+	m.title milestoneTitle,
+	d.name_ moduleName,
+	p.name_ projectName,
+	p.arc_status arcStatus,
+	b.id bugId,
+	b.title bugTitle,
+	b.status_ bugState,
+	b.no bugNo,
+	b.project bugProjectId,
+	pp.prefer_content taskConfirm
+	FROM
+		c2_comunity_task t
+	LEFT JOIN td_sm_user u ON t.assigned_to = u.user_name
+	LEFT JOIN c2_comunity_milestone m ON t.milestone_id = m.id
+	LEFT JOIN zt_project p ON t.project_id = p.id
+	LEFT JOIN zt_module d ON t.module_id=d.id
+	left join (select * from c2_comunity_project_preference where prefer_name='projectTaskConfirmState') pp on t.project_id=pp.project_id
+	LEFT JOIN c2_community_bug b ON t.bug_id = b.id ,c2_comunity_stage s
+  where t.stage_id = s.id and s.name_='已完成'
+		and t.is_done = 1 and t.closed = 0
+	  <if test="week.st != null and week.et != null">
+	  	and t.finished_date between #{week.st,jdbcType=DATE} and #{week.et,jdbcType=DATE}
+	  </if>
+	  <if test="!isAllCom">
+	  	and t.finished_date between date_sub(now(),interval 15 day) and now()
+	  </if>
+      
+      <if test="projects != null">and t.project_id in 
+		<foreach item="p" collection="projects" open="(" separator="," close=")">
+	        '${p.id}'
+	    </foreach>
+      </if>
+      <if test="creator !=null">and t.creator = #{creator}</if>
+      <if test="name != null and name!=''">and t.name_ like '%${name}%'</if>
+      <if test="bug">and t.bug_id is not null</if>
+      <if test="userName != null and userName !=''">
+      	and t.assigned_to = #{userName} 
+      </if>
+      ORDER BY t.finished_date desc,t.id desc
+</select>
+
+</mapper>

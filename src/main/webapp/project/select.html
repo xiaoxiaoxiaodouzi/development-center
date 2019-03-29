@@ -1,0 +1,107 @@
+<style>
+.star-active{
+	color:#ff9800 !important;
+	opacity:1 !important;
+}
+</style>
+
+<div ng-controller="selectProjectCtrl">
+	<div class="block-header" ng-if="starProjects.length>0">
+		<h2>星标项目</h2>
+	</div>
+	<div class="row" style="margin:0;" ng-if="starProjects.length>0">
+		<div class="col-sm-6 col-md-4" ng-repeat="project in starProjects">
+			<div class="card project-view" style="height:120px;" ng-click="selectOk(project);">
+				<div class="pv-header" style="height:125px;" ng-style="{'background-image':'url('+project.pic+')'}"></div>
+				 <div class="pv-body">
+				   <div class="project-sketch">
+					    <h2 class="text-overflow t-o-8 ng-binding pull-left">{{project.name}}</h2>
+					    <a class="stop-propagate md md md-star star-overflow pull-right f-18"   ng-class="{'star-active':project.star}"></a>
+					    <small class="text-overflow" title="{{project.brief}}">{{project.brief?project.brief:'没有任何项目描述'}}</small>
+	               </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="block-header">
+		<h2>我的项目</h2>
+	</div>
+	<div class="row" style="margin:0;">
+		<div class="col-sm-6 col-md-4" ng-repeat="project in $model.myProjects.result">
+			<div class="card project-view" style="height:120px;" ng-click="selectOk(project);">
+				<div class="pv-header" style="height:125px;" ng-style="{'background-image':'url('+project.pic+')'}"></div>
+				<div class="pv-body">
+				   <div class="project-sketch">
+					    <h2 class="text-overflow t-o-8 ng-binding pull-left">{{project.name}}</h2>
+					    <a class="stop-propagate md md md-star star-overflow pull-right f-18"  ng-class="{'star-active':project.star}"></a>
+					    <small class="text-overflow t-o-9" title="{{project.brief}}">{{project.brief?project.brief:'没有任何项目描述'}}</small>
+	               </div>
+	
+					<!--<a ui-sref="project.home({project:project.id})" class="pv-follow-btn">进入</a>  -->
+				</div>	 
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-4"  ng-if="!$model.myProjects.result || $model.myProjects.result.length==0">
+			<div class="card" style="background: #F5F3F3">
+				<div class="card-header text-center">
+					您目前没有参与任何项目
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal-footer">
+		<button type="button" class="btn btn-link" ng-click="cancelSelect()">取消</button>
+	</div>
+</div>
+
+
+<script>
+angular.module("developmentCenter").registerCtrl('selectProjectCtrl',function($rootScope,$scope, $element, $state, $stateParams, $timeout,$http, Messenger, Modal,ModelFactory) {
+	
+    var $model=$scope.$model={};
+    var $params=$scope.$params={};
+
+    $scope.loaded=false;
+    $model.myProjects=ModelFactory.ws('project/myprojects',{});
+    $model.myProjects.$load().then(function(){
+      var projectids=[];
+      for(var i=0;i<$model.myProjects.result.length;i++){
+        projectids.push($model.myProjects.result[i].id);
+      }
+      
+      $http.post("ws/getUserPreferences",{infoName:"starProject"}).success(function(data){
+    	 if(data.result){
+    		 $scope.starProjects = new Array();
+    		 var starProjectIds = data.result.infoContent.split(",");
+    		 angular.forEach($model.myProjects.result,function(p){
+    			 angular.forEach(starProjectIds,function(pid){
+        			 if(p.id+"" == pid){
+        				 p.star = true;
+        				 $scope.starProjects.push(p);
+        			 }
+        		 }); 
+    		 });
+    	 }
+      });
+    });
+    
+	
+	$scope.selectOk=function(project){
+		Modal.close(project);
+	}
+
+	$scope.cancelSelect = function() {
+		Modal.dismiss();
+	};
+	
+	$scope.sendMsg=function(){
+		$http.post("ws/pushBroadcast",{
+				msgContent:"师兄？"
+		}).success(function(data){
+		   console.log(data);
+		});
+	}
+
+});
+</script>

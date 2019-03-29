@@ -1,0 +1,145 @@
+<link href="css/task/addTask.css" rel="stylesheet">
+<style>
+	.modal-nal {
+		display: flex;
+		flex: 1 1 auto;
+		border-bottom: 1px solid rgb(229, 229, 229);
+		margin: 0 20px;
+	}
+
+	.modal-nal ul li {
+		float: left;
+		list-style: none;
+		height: 48px;
+		display: flex;
+		font-size: 15px;
+	}
+
+	.modal-nal ul li:last-child {
+		margin-right: 0;
+	}
+
+	.modal-nal ul li a {
+		color: #000;
+		padding: 0 15px;
+		height: 48px;
+		line-height: 48px;
+		display: block;
+	}
+
+	.modal-nal ul li a:hover {
+		cursor: pointer;
+		color:#2196f3
+	}
+
+	.add-border {
+		border-bottom: 3px solid #03a9f4;
+		color:#2196f3 !important;
+	}
+
+	.btn-close-new{
+		position: absolute;
+    right: 16px;
+    top: 10px;
+	}
+</style>
+
+<div data-ng-controller="addPlans" class="base-body">
+		<div class="task-new-header">
+			<div class="task-tasklist-stage-wrap">
+				<h4 style="font-size:15px" class="title-top-module">创建计划至
+					<c2-dropdown class="animate" bind-data="project" items="projects" item-name="name" item-click="projectClick(project)" filter="true"
+					 filter-pinyin="false" filter-property="name,code" max-height="300" class="tasklist-title">
+						<a class="dropdown-toggle c-blue" data-ng-class="{'have-value':project.name,'has-error':taskProjectRed}">
+							{{ project.name ? project.name : "待分配项目" }}
+							<span class="caret"></span>
+						</a>
+					</c2-dropdown>
+				</h4>
+			</div>
+			<ng-form name="aform">
+				<div class="task">
+					<input id="ProjectPlan-name" name="projectPlanName" type="text" ng-model="projectPlan.name"  class="form-control" data-ng-class="{'has-error-border':!projectPlan.name&&projectPlanNameRed}"
+					 ng-model-options="{updateOn:'blur'}" ng-keypress="blurIfEnterKeyWasPressed($event)" />
+				</div>
+			</ng-form>
+			<button style="float: right" type="button" class="close btn-close-new" ng-click="modalOptions.X()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+		</div>
+		<div class="new-white-card task-new-handler-warp">
+			<div class="task-new-handler-set">
+				<div class="task-new-handler">
+	                <h6 class="task-info-title">负责人</h6>
+	                <c2-dropdown class="animate" bind-data="assignTo" id="taskUserDropdown" items="projectUsers" item-name="userRealname"
+	                    max-height="200" filter-only="filterOnly" filter-property="userRealname"
+	                    filter-placeholder="项目成员搜索..." item-click="userClick(assignTo)" filter="true" filter-pinyin="false">
+	                    <a class="dropdown-toggle" ng-class="{'have-value':assignTo.userRealname,'has-error':!assignTo&&projectPlanNameRed}">
+	                        <img class="lv-img-sm" ng-if="assignTo" ng-src="{{assignTo.icon}}">
+	                        <span data-ng-class="{'has-error':taskUserRed}">{{ assignTo.userRealname ?
+	                            assignTo.userRealname : "待分配" }}</span>
+	                    </a>
+	                    <dropdown-item-template>
+	                        <span class="text">{{item.userRealname}}</span>
+	                        <span class="md md-check check-mark" style="margin-top: -2px;"></span>
+	                    </dropdown-item-template>
+	                </c2-dropdown>
+	            </div>
+	            <div class="task-new-handler middle">
+					<h6 class="task-info-title">优先级</h6>
+					<div class="task-new-line">
+						<c2-dropdown class="animate" bind-data="projectPlan.level" item-click="levelClick(projectPlan.level)" items="allLevels" item-name="title"
+						 multiple=false max-height="200">
+						 	<a class="dropdown-toggle" ng-class="{'have-value':assignTo.userRealname,'has-error':!assignTo&&projectPlanNameRed}">
+		                        <i class="md md-sort"></i>
+		                        <span >{{ projectPlan.level ?
+		                            projectPlan.level.title : "选择优先级" }}</span>
+		                    </a>
+						</c2-dropdown>
+					</div>
+				</div>
+				<div class="task-new-handler middle">
+					<h6 class="task-info-title">启动时间</h6>
+
+					<div class="task-new-line">
+						<span class="md md-event" ng-click="showDeadline()" ng-class="{'have-value':projectPlan.startDate,'has-error':!projectPlan.startDate&&projectPlanNameRed}"></span>
+						<input  id="deadline" show-clear="true" name="deadline" type="text" class="form-control" ng-class="{'have-value':projectPlan.startDate}"
+						 date-time-picker clear-icon="md md-delete" ng-model="projectPlan.startDate" placeholder="选择启动时间" format="YYYY-MM-DD">
+						</input>
+					</div>
+				</div>
+				<div class="task-new-handler middle">
+					<h6 class="task-info-title">预计完成时间</h6>
+					<div class="task-new-line">
+						<span class="md md-event" ng-click="showDeadline()" ng-class="{'have-value':projectPlan.endDate,'has-error':!projectPlan.endDate&&projectPlanNameRed}"></span>
+						<input  id="deadline" show-clear="true" name="deadline" type="text" class="form-control" ng-class="{'have-value':projectPlan.endDate}"
+						 date-time-picker clear-icon="md md-delete" ng-model="projectPlan.endDate" placeholder="选择完成时间" format="YYYY-MM-DD">
+						</input>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="m-t-20 m-l-25">
+
+		<div class="rf-summary" style="background-color: white;
+    border: 1px solid rgba(0,0,0,.05);
+    margin-left: -5px;margin-right: 20px;">
+			<textarea c2-markdown-editor height="150" id="task-description" ng-model="projectPlan.description"></textarea>
+		</div>
+	</div>
+
+		<div class="task-new-infos-wrap">
+			<div class="task-new-footer">
+				<hr />
+				<form id="new-task-save">
+					<div style="margin:0 20px 10px 0; float:right;">
+						<span id="addTaskErrorMsg" class="c-red pull-left m-r-10 m-t-10">请完善计划</span>
+						<!-- <button class="btn btn-link btn-sm" data-ng-click="continuePlan()">创建并继续</button> -->
+						<button class="btn btn-primary btn-save-task" data-ng-click="createNewPlan()">创建</button>
+					</div>
+					<div style="clear:both; float:none; height:0; overflow:hidden"></div>
+				</form>
+			</div>
+		</div>
+</div>

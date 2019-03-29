@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.story.StoryLabelMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_comunity_label_story.id ,
+		  c2_comunity_label_story.label_id ,
+		  c2_comunity_label_story.story_id 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_comunity_label_story.id = #{id}</if>
+	    <if test="labelId != null">and c2_comunity_label_story.label_id = #{labelId}</if>
+	    <if test="storyId != null">and c2_comunity_label_story.story_id = #{storyId}</if>
+</sql>
+
+
+<!-- ElementID:StoryLabelResult,Generated=true -->
+<resultMap id="StoryLabelResult" type="com.chinacreator.c2.project.story.StoryLabel">
+	<id property="id" column="id"/>
+	<result property="labelId" column="label_id"/>
+	<result property="storyId" column="story_id"/>
+</resultMap>
+
+
+
+
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.story.StoryLabel" resultType="int">
+	select count(*) from c2_comunity_label_story 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.story.StoryLabel">
+	update c2_comunity_label_story
+<set>
+	<if test="labelId != null">label_id=#{labelId,jdbcType=NUMERIC},</if>
+	<if test="storyId != null">story_id=#{storyId,jdbcType=NUMERIC}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:update,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_comunity_label_story
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="labelId==null">label_id = null,</if>
+		    <if test="storyId==null">story_id = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.story.StoryLabel">
+    delete from c2_comunity_label_story where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.story.StoryLabel" resultMap="StoryLabelResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_label_story 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_comunity_label_story where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="StoryLabelResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_label_story 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="StoryLabelResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_label_story 
+		 where c2_comunity_label_story.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.story.StoryLabel" resultMap="StoryLabelResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_label_story 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="StoryLabelResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_label_story 
+	where c2_comunity_label_story.id in (
+		select distinct id from c2_comunity_label_story inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_comunity_label_story 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_label_story.id = #{entity.id}</if>
+	        <if test="entity.labelId != null">and c2_comunity_label_story.label_id = #{entity.labelId}</if>
+	        <if test="entity.storyId != null">and c2_comunity_label_story.story_id = #{entity.storyId}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.story.StoryLabel" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_comunity_label_story(
+		<trim prefixOverrides=",">
+		    <if test="labelId != null">label_id</if>
+		    <if test="storyId != null">,story_id</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="labelId != null">#{labelId,jdbcType=NUMERIC}</if>
+		    <if test="storyId != null">,#{storyId,jdbcType=NUMERIC}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_comunity_label_story (label_id,story_id)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.labelId,jdbcType = NUMERIC},
+		         #{entity.storyId,jdbcType = NUMERIC}
+				)
+</foreach>
+</insert>
+
+<delete id="deleteByStoryLabel" parameterType="com.chinacreator.c2.project.story.StoryLabel">
+     delete from c2_comunity_label_story where story_id=#{storyId}
+     <if test="labelId != null">and label_id = #{labelId}</if>
+</delete>
+
+<delete id="deleteByLabelId" parameterType="com.chinacreator.c2.project.story.StoryLabel">
+     delete from c2_comunity_label_story where label_id = #{labelId}
+</delete>
+
+<select id="selectLabelsByStoryId" parameterType="com.chinacreator.c2.project.story.StoryLabel" resultType="java.util.HashMap">
+SELECT
+    l.color,
+    l.createtime,
+	l.id,
+	l.name,
+	l.project,
+	ls.id label_story_id,
+	ls.story_id
+FROM
+	c2_comunity_label_story ls,
+	c2_comunity_label l
+WHERE
+	ls.story_id = #{storyId}
+AND ls.label_id = l.id
+</select>
+
+<select id="selectLabelsByStoryList" parameterType="List" resultType="java.util.HashMap">
+	select
+	  c2_comunity_label_story.id story_label_id,
+	  c2_comunity_label_story.story_id,
+      c2_comunity_label.color,
+      c2_comunity_label.createtime,
+	  c2_comunity_label.id,
+	  c2_comunity_label.name,
+	  c2_comunity_label.project
+	from c2_comunity_label_story,c2_comunity_label
+	where c2_comunity_label_story.label_id=c2_comunity_label.id and c2_comunity_label_story.story_id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</select>
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="saveModule" log="false" className="com.chinacreator.c2.project.info.ModuleService" method="saveModule">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>保存模块</name>
+  <inputs>
+    <input collection="false" desc="" id="module" required="true" type="com.chinacreator.c2.project.info.Module"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.project.info.Module"/>
+  </outputs>
+  <res></res>
+  <params>
+    <param autoValue="Input.module" name="module" signature="QModule;" type="com.chinacreator.c2.project.info.Module"/>
+  </params>
+  <return signature="QModule;" type="com.chinacreator.c2.project.info.Module"/>
+</CustomRule>

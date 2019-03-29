@@ -1,0 +1,189 @@
+<style>
+	.rotate.md-expand-more.turn {
+		transform: rotate(180deg);
+	}
+
+	.rotate.md-expand-more {
+		transform: none;
+		transition: transform 500ms;
+	}
+
+	.wr-view .table>tbody>tr>td.add-task:hover {
+		background-color: white;
+	}
+</style>
+
+<div class="card-header">
+	<h2 style="display: inline-block;">
+		创建
+		<span style="color:#69aa46">{{project.name}}</span> 项目 第{{$params.weekReport.week}}周 周报
+	</h2>
+	<div class="modal-footer pull-right" style="display: inline-block;padding:0px;">
+		<button class="btn btn-primary btn-sm md-save" ng-click="saveWeekReport()">
+			<i class="md"></i> 提交
+		</button>
+		<a class="btn btn-link btn-sm" data-ui-sref="project.weeklyReports">
+			<i class="md md-keyboard-return"></i>返回
+		</a>
+	</div>
+</div>
+
+<div class="card-body">
+	<div class="wr-view">
+		<div>
+			<c2-dropdown style="width: 140px; margin-top: 3px;" bind-data="$params.visibleRange" item-name="name" items="$params.visibleRanges"
+			 item-click="visibleRangeClick(item)">
+				<button class="btn btn-default btn-icon-text waves-effect" style="padding-bottom: 10px; box-shadow: none;">
+					<i class="md md-visibility"></i> {{$params.visibleRange.name}}&nbsp;
+					<span class="caret"></span>
+				</button>
+				<dropdown-item-template>
+					<span class="text">{{item.name}}</span>
+					<span class="md md-check check-mark"></span>
+				</dropdown-item-template>
+			</c2-dropdown>
+
+			<label class="radio radio-inline m-r-5 m-t-10"> 提交给 : </label>
+			<label class="m-r-5 m-t-10" ng-if="$params.submit2.length!=0" ng-repeat="user in $params.submit2" ng-show="$index<=5">
+				{{user.userRealname}}{{$index==5||$index==$params.submit2.length-1?"":","}}{{$params.submit2.length>=6&&$index==5?"等":""}}
+			</label>
+
+			<!-- <a class="md md-add-circle-outline" style="cursor:pointer;font-size: 22px;" herf="javascript:void(0)" ng-click="addWeekReportSendTo()"></a> -->
+			<div style="display:inline;float:right">
+				<label class="radio radio-inline m-r-5 m-t-10" ng-class="{'red':$params.evalWarning}">
+					<i class="md md-report-problem m-r-5" ng-if="$params.evalWarning"></i> 进度评价: </label>
+				<label class="radio radio-inline m-r-5 m-t-10" ng-repeat="eval in $params.evals">
+					<input type="radio" ng-model="$params.weekReport.status" ng-value="eval" ng-change="$params.evalWarning=false" />
+					<i class="input-helper"></i>{{eval}}
+				</label>
+			</div>
+		</div>
+		<div style="margin-top: -13px;">
+			<h3 style="display: inline-block;">
+				<span style="color:#000">本周总结</span>
+			</h3>
+			<textarea c2-markdown-editor height="150" ng-model="$params.weekReport.summary"></textarea>
+		</div>
+		<div style="margin-top: -13px;">
+			<h3 style="display: inline-block;">
+				<span style="color:#000">下周计划</span>
+			</h3>
+			<textarea c2-markdown-editor height="150" ng-model="$params.weekReport.nextSummary"></textarea>
+		</div>
+		<div style="margin-top: -13px;">
+			<h3 style="display: inline-block;">
+				<span style="color:#000">可能存在问题</span>
+			</h3>
+			<textarea c2-markdown-editor height="150" ng-model="$params.weekReport.existProblems"></textarea>
+		</div>
+
+		<div class="p-members">
+			<!--  <span>项目成员</span> -->
+			<ul class="pp1">
+				<li class="zc" ng-class="{'selected':!$params.memberFilter}" ng-click="memberSelect()">
+					<a href="javascript:void(0)">全部</a>
+				</li>
+			</ul>
+			<ul class="pp2">
+				<li ng-repeat="member in memberList" ng-click="memberSelect(member)" ng-if="$index<=8" ng-class="{'zc':member.userDTO.remark1=='1','ts':member.userDTO.remark1=='2','yq':member.userDTO.remark1=='3','selected':member.selected}">
+					<a href="javascript:void(0)">{{member.userDTO.userRealname}}</a>
+				</li>
+				<li class="dropdown" ng-if="memberList.length>8" ng-click="focusSelectedHideMemberIfExist()" ng-class="{'zc':$params.selectedHideMember.userDTO.remark1=='1' || !$params.selectedHideMember,'ts':$params.selectedHideMember.userDTO.remark1=='2','yq':$params.selectedHideMember.userDTO.remark1=='3','selected':$params.selectedHideMember.selected}">
+					<a href="javascript:void(0)" data-toggle="dropdown" ng-class="{'selected':$params.selectedHideMember.selected}">
+						{{$params.selectedHideMember?$params.selectedHideMember.userDTO.userRealname:''}}
+						<i class="md md-keyboard-control" ng-if="!$params.selectedHideMember" style="width: 50px;"></i>
+						<i class="caret m-b-5" ng-if="$params.selectedHideMember"></i>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li ng-repeat="member in memberList" class="item" ng-if="$index>8" ng-click="hidedMemberSelected(member)" ng-class="{'zc':member.userDTO.remark1=='1','ts':member.userDTO.remark1=='2','yq':member.userDTO.remark1=='3','selected':member.userDTO.selected}">
+							<a href="javascript:void(0)">{{member.userDTO.userRealname}}</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+		<div class="text-center p-20" ng-if="$params.taskList.length==0">没有查到任务...</div>
+
+		<div class="wkr-tasklist" ng-if="taskInfoList.length!=0">
+			<table class="table table-hover m-b-0">
+				<thead>
+					<tr style="border-bottom: 2px solid #f0f0f0;">
+						<th style="width: 420px; text-align: center; vertical-align: top;">
+							<label class="radio radio-inline m-r-5 m-b-10 pull-left">
+								<input type="radio" ng-model="$params.isShowCurrentWeek" ng-value="true" ng-change="switchWeekReportSubmitView()" />
+								<i class="input-helper"></i>本周任务
+							</label>
+							<label class="radio radio-inline m-r-5 m-b-10 pull-left">
+								<input type="radio" ng-model="$params.isShowCurrentWeek" ng-value="false" ng-change="switchWeekReportSubmitView()" />
+								<i class="input-helper"></i>下周计划
+							</label>
+							<label class="radio radio-inline m-r-5 m-b-10 pull-left" ng-click="refreshTaskList()">
+								刷新
+								<i class="md md-refresh"></i>
+							</label>
+						</th>
+						<th style="width: 72px; text-align: center; vertical-align: top;">截止日期</th>
+						<th style="width: 60px; text-align: center; vertical-align: top;">状态</th>
+						<th style="width: 60px; text-align: center; vertical-align: top;">周工时</th>
+						<th style="width: 80px; text-align: center; vertical-align: top;">逾期原因</th>
+						<th style="width: 80px; text-align: center; vertical-align: top;">处理方式</th>
+					</tr>
+				</thead>
+				<tbody ng-repeat="taskInfo in $params.taskList | filter:taskInfoFilter" ng-if="$params.taskList.length!=0">
+					<tr>
+						<td colspan="6" class="w-title p-l-10">
+							<strong class="f-14 m-r-15 pull-left w-width">{{taskInfo.userDTO.userRealname}}</strong>
+							<span>本项目
+								<strong style="color:#69aa46" class="m-l-10 m-r-10" ng-bind="taskInfo.currentProjectEstimateCount"></strong>
+								小时/其他项目
+								<strong style="color:#2196f3" class="m-l-10 m-r-10" ng-bind="taskInfo.otherProjectEstimateCount"></strong>
+								小时
+							</span>
+							<a class="pull-right" ng-if="!$params.isShowCurrentWeek" href="javascript:void(0)" ng-click="openNewTask($index);" style="padding-left: 6px;">添加任务
+								<i class="md md-expand-more rotate f-14" ng-class="{turn:!taskDown}" title="展开关联任务"></i>
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="6" class="p-l-10 add-task" id="taskDiv_{{$index}}" style="display: none;">
+							<div ng-include="taskInfo.templateUrlOfAddTask"></div>
+						</td>
+					</tr>
+					<tr ng-repeat="task in taskInfo.taskSnapShotList | filter:{crossProject:false}">
+						<td class="column p-l-20" style="width: 420px; max-width: 420px; text-align: left;">
+							<a style="cursor:pointer" ng-click="taskDetailSideBarToggle(task.taskId)" title="{{task.name}}">
+								{{task.name}}
+							</a>
+						</td>
+						<td class="column" style="width: 72px; max-width: 72px;">{{task.deadline | date : 'MM/dd'}}</td>
+						<td class="column" style="width: 60px; max-width: 60px;">
+							<span class="label" ng-class="{'normal-task':task.status=='1','delay-task':task.status=='3','cross-week-task':task.status=='2'}">{{task.consumed}}/{{task.estimate}}</span>
+						</td>
+						<td class="column" style="width: 60px; max-width: 60px;">{{task.worked}}</td>
+						<td class="column" style="width: 80px;">
+							<select ng-if="task.status=='3'" ng-class="{'require':task.reasonWarning}" ng-model="task.reasonItem" style="width: inherit;"
+							 ng-change="task.reason=task.reasonItem.name;task.reasonWarning=false" ng-options="reasonItem.name group by reasonItem.group for reasonItem in $params.reasonItems">
+								<option value="?" selected="selected"></option>
+							</select>
+						</td>
+						<td class="column" style="width: 80px;">
+							<select ng-if="task.status=='3'" ng-class="{'require':task.handleWarning}" ng-model="task.handleItem" style="width: inherit;"
+							 ng-change="task.handle=task.handleItem.name;task.handleWarning=false" ng-options="handleItem.name for handleItem in $params.handleItems">
+								<option value="?" selected="selected"></option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary btn-sm md-save" ng-click="saveWeekReport()">
+			<i class="md"></i> 提交
+		</button>
+		<button class="btn btn-link btn-sm" ng-click="return()">
+			<i class="md md-keyboard-return"></i>返回
+		</button>
+	</div>
+</div>

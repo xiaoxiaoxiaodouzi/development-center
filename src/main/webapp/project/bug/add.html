@@ -1,0 +1,793 @@
+<style>
+	.modal-header {
+	display:none
+}
+.btn-close-new {
+	font-size:25px;
+}
+
+.title-top-module {
+	padding-top:6px;
+}
+
+.task-tasklist-stage-wrap {
+    position: relative;
+    margin: 0 0 16px;
+    padding-top: 20px;
+}
+.dropdown-menu .label-color {
+	width: 13px;
+	height: 13px;
+	display: inline-block;
+	border-radius: 3px;
+	vertical-align: middle;
+	margin: 0 3px 2px 0;
+}
+
+.null-error {
+	border: 1px solid #f99d97;
+}
+
+.c2-chosen-container {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 13px;
+	zoom: 1;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+.c2-chosen-container-multi .c2-chosen-choices {
+	position: relative;
+	overflow: hidden;
+	margin: 0;
+	padding: 0 5px;
+	width: 100%;
+	height: auto !important;
+	height: 1%;
+	border: 1px solid #aaa;
+	background-color: #fff;
+	background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(1%, #eee),
+		color-stop(15%, #fff) );
+	background-image: -webkit-linear-gradient(#eee 1%, #fff 15%);
+	background-image: -moz-linear-gradient(#eee 1%, #fff 15%);
+	background-image: -o-linear-gradient(#eee 1%, #fff 15%);
+	background-image: linear-gradient(#eee 1%, #fff 15%);
+	cursor: text;
+}
+
+.c2-chosen-container-multi .c2-chosen-choices {
+	border: 0;
+	/* border-bottom: 1px solid #e0e0e0; */
+	background: none;
+	padding: 0;
+}
+
+.c2-chosen-container .c2-chosen-choices {
+	border-left: 0;
+	border-top: 0;
+	border-right: 0;
+}
+
+.c2-chosen-container-multi .c2-chosen-choices li.c2-search-field {
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+}
+
+.c2-chosen-container-multi .c2-chosen-choices li {
+	float: left;
+	list-style: none;
+}
+
+.c2-chosen-container .c2-chosen-drop {
+	position: absolute;
+	top: 100%;
+	left: -9999px;
+	z-index: 1010;
+	width: 100%;
+	border: 1px solid #aaa;
+	border-top: 0;
+	background: #fff;
+	box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+}
+
+.c2-chosen-container .c2-chosen-drop {
+	border: 0;
+}
+
+.c2-chosen-container .c2-chosen-drop {
+	margin-top: 1px;
+	display: block;
+	left: 0;
+	width: 100%;
+	-webkit-transition: all;
+	-o-transition: all;
+	transition: all;
+	-webkit-transition-duration: 300ms;
+	transition-duration: 300ms;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transform: scale(0);
+	-ms-transform: scale(0);
+	-o-transform: scale(0);
+	transform: scale(0);
+	opacity: 0;
+	filter: alpha(opacity = 0);
+}
+
+.c2-chosen-container.c2-chosen-with-drop .c2-chosen-drop {
+	left: 0;
+}
+
+.c2-chosen-container:not (.c2-chosen-right ) .c2-chosen-drop {
+	-webkit-transform-origin: 0 0;
+	-moz-transform-origin: 0 0;
+	-ms-transform-origin: 0 0;
+	transform-origin: 0 0;
+}
+
+.c2-chosen-container.c2-chosen-container-active .c2-chosen-drop {
+	-webkit-transform: scale(1);
+	-ms-transform: scale(1);
+	-o-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+	filter: alpha(opacity = 100);
+}
+
+.c2-chosen-container .c2-chosen-results {
+	padding: 0;
+	margin: 0;
+}
+
+.c2-chosen-container .c2-chosen-results {
+	color: #444;
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: auto;
+	margin: 0 4px 4px 0;
+	padding: 0 0 0 4px;
+	max-height: 240px;
+	-webkit-overflow-scrolling: touch;
+}
+
+.c2-chosen-container .c2-chosen-results>li:not (.c2-disabled-result ):not
+	(.c2-result-selected ):not (.c2-group-result ):not (:hover ) {
+	background: #fff !important;
+}
+
+.c2-chosen-container .c2-chosen-results>li:not (.c2-disabled-result ):not
+	(.c2-result-selected ):not (.c2-group-result ) {
+	color: #262626;
+}
+
+.c2-chosen-container .c2-chosen-results li.c2-active-result {
+	display: list-item;
+	cursor: pointer;
+}
+
+.c2-chosen-container .c2-chosen-results>li {
+	padding: 8px 17px;
+	color: #4C4C4C;
+	-webkit-transition: background-color;
+	-o-transition: background-color;
+	transition: background-color;
+}
+
+.c2-chosen-container .c2-chosen-results li {
+	display: none;
+	margin: 0;
+	padding: 5px 6px;
+	list-style: none;
+	line-height: 15px;
+	word-wrap: break-word;
+	-webkit-touch-callout: none;
+}
+
+.c2-chosen-container .c2-chosen-results > li:not(.c2-disabled-result):not(.c2-result-selected):not(.c2-group-result):hover {
+    background-color: #e4e4e4;
+    color: #262626;
+}
+
+ul.dropdown-menu.flip{
+	animation: flip 600ms;
+}
+.color-chooser{
+	padding: 0px 15px 10px;
+}
+.color-chooser .color-piece:hover {
+	position: relative;
+	z-index: 2;
+	outline: 2px solid #fff;
+	box-shadow: 0 0 5px 2px rgba(0,0,0,0.25)
+}
+.color-chooser .color-piece {
+	display: block;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	cursor: pointer;
+	float: left;
+}
+</style>
+<div id="addBugMainBody" ng-controller="addBugCtrl">
+	<div class="task-new-header">
+		<div class="task-tasklist-stage-wrap">
+			<button type="button" class="close btn-close-new" ng-click="modalOptions.X()"><span aria-hidden="true">&times;</span></button>
+			<div ng-if="!judgePageUnderMilestone">
+				<h4 class="title-top-module">新增bug至
+					<c2-dropdown class="animate" bind-data="selectProject" items="projects" item-name="name" item-click="projectClick(selectProject)"
+					 disabled="taskProjectDisabled" filter="true" filter-pinyin="false" filter-property="name,code" max-height="300"
+					 class="tasklist-title">
+						<a class="dropdown-toggle c-blue" data-ng-class="{'have-value':project.name,'has-error':taskProjectRed}">
+							<span ng-if="selectProject.name==undefined">待分配项目</span><span ng-if="selectProject.name!=undefined">{{selectProject.name}}
+							</span>
+							<span class="caret"></span>
+						</a>
+					</c2-dropdown>
+				</h4>
+			</div>
+		</div>
+	</div>
+	<!-- <div ng-if="!judgePageUnderMilestone" class="card-header">
+            	<h4 class="title-top-module">新增bug</h4>
+    		</div>   -->
+	<div class="card-body card-padding">
+		<div class="fg-line" ng-class="{'has-error':!bug.title&&formCheck}" style="margin-bottom: 20px;">
+			<input autofocus="" type="text" data-ng-model="bug.title" class="form-control ng-pristine ng-valid ng-touched"
+			 placeholder="标题">
+		</div>
+
+		<div class="fg-line" ng-class="{'has-error':!bug.bugVersion&&formCheck}">
+			<div id="bugVersion_chosen-container" class="c2-chosen-container c2-chosen-container-multi " style="width: 100%;"
+			 title="">
+				<c2-dropdown title="版本" dropdown-filter-value="bug_version.bug_version" bind-data="bug_version" items="projectVersion"
+				 filter="true" multiple=false item-name="bug_version" max-height="200" clean-button="true" style="width:100%">
+					<input type="text" id="bugVersion" placeholder="版本" data-ng-model="bug_version.bug_version" class="c2-default form-control"
+					 autocomplete="off" style="width:100%;color: #000;">
+				</c2-dropdown>
+			</div>
+		</div>
+
+		<div style="margin-top: 20px;">
+			<c2-dropdown class="animate" bind-data="assignTo" ng-class="{'null-error':!assignTo&&formCheck}" items="projectUsers"
+			 item-name="userRealname" multiple=false max-height="200" filter="true" filter-pinyin="true">
+				<div class="picker picker-white text-overflow" style="max-width:160px;padding-left:0px;">
+					<i class="md md-account-child"></i> <span ng-if="assignTo==undefined">选择成员</span><span ng-if="assignTo!=undefined">{{assignTo.userRealname}}
+					</span> <span class="caret"></span>
+				</div>
+			</c2-dropdown>
+			<c2-dropdown title="优先级" bind-data="selectPrioritys" items="allPriorityList" multiple=false item-name="title"
+			 max-height="200" clean-button="true">
+				<button class="btn btn-default btn-icon-text picker-shadow text-overflow" style="padding-left:0px;">
+					<i class="md md-sort"></i>
+					<span ng-if="selectPrioritys==undefined">优先级&nbsp;<i class="caret"></i></span>
+					<span ng-if="selectPrioritys!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{selectPrioritys.title}}</span>
+				</button>
+			</c2-dropdown>
+
+			<c2-dropdown title="模块" style="margin-top: 3px;" tree-options="treeOptions" id="modTree" tree-nodes="zTreeNodes">
+				<div class="picker picker-white">
+					<i class="md md-view-module"> </i>
+					<span ng-if="bug.module==undefined">模块&nbsp;</span>
+					<span ng-if="bug.module!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{bug.module.name}}</span>
+				</div>
+			</c2-dropdown>
+
+			<c2-dropdown id="addBugprojectPlan" tree-options="treePlanOptions" tree-nodes="projectPlans" max-height="300" clean-button="true">
+				<div class="picker picker-white">
+					<i class="md md-description"> </i>
+					<span ng-if="bug.projectPlan==undefined">计划&nbsp;</span>
+					<span ng-if="bug.projectPlan!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{bug.projectPlan.name}}</span>
+				</div>
+			</c2-dropdown>
+
+			<c2-dropdown class="animate" id="addTaskTagDropdown" bind-data="selectLabels" items="tags" multiple=true item-name="name"
+			 max-height="200" last-item-button="dropdownAddTag(e)" filter="true">
+				<div class="picker text-overflow" style="max-width:500px;">
+					<i class="md md-bookmark-outline"></i> <span ng-if="selectLabels.length==0">标签 &nbsp;<i class="caret"></i></span><span
+					 class="p-l-5 p-r-5 m-l-5 label-show" ng-style="tag.backgroundStyle" ng-repeat="tag in selectLabels">{{tag.name}}</span>
+				</div>
+				<dropdown-item-template>
+					<div>
+						<span class="label-color" style="background-color: {{item.color}};">&nbsp;</span>
+						<span class="text">{{item.name}}</span>
+						<span class="md md-check check-mark"></span>
+					</div>
+				</dropdown-item-template>
+			</c2-dropdown>
+
+		</div>
+
+		<div>
+			<div class="detail-infos-note-view on-bottom" ng-class="{'on-top':$params.spec}">
+				<!-- <div class="note-adder-set" title="点击编辑" style="min-height: 20px;width: 100%; padding-top: 10px;"
+						ng-show="hideUEditor" ng-class="{'note-input-hide':hideUEditor==false}"  ng-mousedown="ueMousedown($event)" ng-mouseup="ueMouseup($event)">
+						<div class="add-note-handler c2lightbox"><div id="markdowntext" ng-bind-html="bug.spec | markdown"></div></div>
+					</div> -->
+				<div id="task-desc-editor">
+					<textarea c2-markdown-editor height="200" id="task-description" ng-model="$params.spec"></textarea>
+				</div>
+			</div>
+			<!-- <textarea ng-model="bug.spec" c2-markdown-editor class="form-control" rows="5" rows="5" height="300"  placeholder="需求描述"></textarea> -->
+			<div style="margin-left:80%;">
+				<button id="submit" class="btn btn-primary btn-sm" type="button" data-ng-click="saveBug();">提交</button>
+				<button class="btn btn-link btn-sm" ng-click="cancelAdd()">取消</button>
+			</div>
+			<span id="bugErrorMsg" class="c-red m-r-10 m-t-10">{{bugErrorMsg}}</span>
+		</div>
+
+	</div>
+
+</div>
+
+<script type="text/javascript">
+	angular.module("developmentCenter").registerCtrl(
+		'addBugCtrl',
+		function ($scope, $rootScope, $http, $state, $compile, $stateParams, $timeout, Messenger, $compile, Modal) {
+			$scope.selectProject = {};
+			var $params = $scope.$params = {};
+			//$scope.hideUEditor = false ;
+			$scope.bug = $scope.module ? { project: {id:$stateParams.project}, module: $scope.module } : { project: {id:$stateParams.project}, module: undefined };
+			var taskProjects = [];
+			$scope.selectLabels = [];
+			$scope.allLabelList = [];
+
+			//$scope.bug.milestone =undefined;
+			$scope.allMilestoneList = [];
+
+			$scope.selectPrioritys = { id: 3, title: '低' };
+			$scope.allPriorityList = [{ id: 1, title: '高' }, { id: 2, title: '中' }, { id: 3, title: '低' }];
+
+			//$scope.bug.module=undefined;
+			$scope.allModuleList = [];
+
+			$scope.assignTo = undefined;
+			$scope.projectUsers = [];
+
+			//判断是否在里程碑页面
+			$scope.judgePageUnderMilestone = $state.includes("project.milestoneDetail");
+			$scope.boardbug = $state.includes("project.boardbug") || $state.includes("home.workbench.myBugs");
+
+			var initAddBug = function () {
+				loadBugSpec();//加载bug描述                     
+				loadAllLabelAndMilestone();
+				loadProjectPlan();
+				loadAllModule();
+				loadProjectMember();
+
+				$("#bugVersion").focusin(function () {
+					$timeout(function () {
+						$("#bugVersion_chosen-container").addClass("c2-chosen-with-drop c2-chosen-container-active");
+					}, 100);
+				});
+
+				$("#bugVersion").focusout(function () {
+					$timeout(function () {
+						$("#bugVersion_chosen-container").removeClass("c2-chosen-with-drop c2-chosen-container-active");
+					}, 200);
+				});
+
+				loadProjectVersion();
+
+				if ($scope.judgePageUnderMilestone) {
+					$("#addBugMainBody").removeClass("container");
+					$("#addBugCard").removeClass("card");
+				}
+			};
+
+			var loadBugSpec = function () {
+				if ($scope.instance != null) {
+					//bug单自动生成内容信息
+					$http.post("ws/getBugSpec", { instance: $scope.instance, step: $scope.step }).success(function (data) {
+						$scope.bug.bugVersion = data.result.version;
+						//$scope.bug.spec = data.result.spec;
+						//$scope.hideUEditor = true ;
+						$params.spec = data.result.spec;
+					});
+				}
+
+			}
+
+			$http.post("ws/task/getMyDoingProjects", { userId: $rootScope.subject.userId })
+				.success(function (data) {
+					$.each(data.result, function (index, ele) {
+						//若从项目详情页加载，且该项目的项目id存在与用户参与的项目中，则默认选择当前项目
+						if ($state.includes("project") && $stateParams.project == ele.id) {
+							$scope.bug.project.id = $rootScope.$state.params.project;
+							initAddBug();
+							$scope.selectProject = { id: ele.id, name: ele.name, owner: ele.owner };
+						} else if ($scope.project && $scope.project.id == ele.id) {
+							$scope.bug.project.id = $scope.project.id;
+							initAddBug();
+							$scope.selectProject = { id: ele.id, name: ele.name, owner: ele.owner };
+						}
+						taskProjects.push({ id: ele.id, name: ele.name, owner: ele.owner });
+					})
+					$scope.projects = taskProjects;
+				});
+
+			$scope.projectClick = function (project) {
+				if ($scope.bug.project.id == project.id) return;
+				$scope.bug.project.id = project.id;
+				$scope.refreshContent();
+				$scope.selectProject = { id: project.id, name: project.name, owner: project.owner };
+				initAddBug();
+			}
+
+			$scope.refreshContent = function () {
+				$scope.bug_version = undefined;
+				$scope.bug.module = undefined;
+				$scope.bug.milestone = undefined;
+			}
+
+			$scope.versionNameFilter = function (version) {
+				if (!$scope.bug.bugVersion) return true;
+				if (version.bug_version.indexOf($scope.bug.bugVersion) != -1) {
+					return true;
+				}
+				return false;
+			}
+
+			//获取项目下历史版本
+			var loadProjectVersion = function () {
+				$http.post("ws/bug/getProjectHistoryVersion", { projectId: $scope.bug.project.id }).success(function (data) {
+					if (data) {
+						$scope.projectVersion = data.result;
+					}
+				});
+			};
+
+			var loadProjectMember = function () {
+				$scope.projectUsers = [];
+				//项目成员
+				$http.post("ws/getMembers", { projectId: $scope.bug.project.id }).success(function (data) {
+					angular.forEach(data.result, function (v, n) {
+						if (v.userDTO.user_id == $rootScope.subject.userId) {
+							$scope.assignTo = { userId: v.userDTO.user_id, userRealname: v.userDTO.user_realname, icon: v.userDTO.remark1, userName: v.userDTO.user_name };
+						}
+						$scope.projectUsers.push({ userId: v.userDTO.user_id, userRealname: v.userDTO.user_realname, icon: v.userDTO.remark1, userName: v.userDTO.user_name });
+					});
+				});
+			};
+
+			//plan	
+			$scope.treePlanOptions = {
+				view: {
+					selectedMulti: false
+				},
+				data: {
+					simpleData: {
+						enable: true,
+						pIdKey: "parent"
+					}
+				},
+				callback: {
+					onClick: function (event, treeId, treeNode, clickFlag) {
+						$scope.$apply(function () {
+							$scope.projectPlan = treeNode;
+							$scope.bug.projectPlan = treeNode;
+						});
+						// $("#newModuleDropdown").controller("c2-dropdown").toggle();
+					}
+				}
+			};
+
+			var loadProjectPlan = function () {
+				if ($scope.bug.project) {
+					$http.get("ProjectPlan/all/project", {
+						params: {
+							projectId: $scope.bug.project.id
+						}
+					}).success(function (data) {
+						data.forEach(function (i) {
+							if (i.id == $scope.planId) {
+								$scope.bug.projectPlan = i;
+								$scope.projectPlan = i;
+							}
+						})
+						var rootNode = {
+							id: 0,
+							name: $scope.selectProject.name,
+						}
+						data.push(rootNode)
+						$scope.projectPlans = data;
+						$timeout(function(){
+							var ztree = $("#addBugprojectPlan").controller("c2-dropdown").getTree();
+							ztree.expandNode(ztree.getNodes()[0], true, false, true);
+						},400);
+					})
+				}
+			}
+
+
+			var loadAllLabelAndMilestone = function () {
+				$http.post("ws/getAllLabelAndMilestone", {
+					"projectId": $scope.bug.project.id,
+					"isUnclosed": true
+				})
+					.success(function (data) {
+						if (data.result.allLabelList) {
+							angular.forEach(data.result.allLabelList, function (v, n) {
+								v.backgroundStyle = { "background-color": v.color, "color": getTextColorByBackColor(v.color) };
+							});
+							$scope.tags = data.result.allLabelList;
+						}
+						if (data.result.allMilestoneList) $scope.allMilestoneList = data.result.allMilestoneList;
+						//若在里程碑详情页新建bug
+						/* if($scope.judgePageUnderMilestone) {
+							$.each(data.result.allMilestoneList,function (index, val){
+								if(val.id == $stateParams.milestoneId) $scope.bug.milestone = val;
+							})
+						} */
+					});
+			};
+
+			var loadAllModule = function () {
+				$scope.treeOptions = {
+					view: {
+						selectedMulti: false,
+						addHoverDom: addHoverDom,
+						removeHoverDom: removeHoverDom
+					},
+					data: {
+						simpleData: {
+							idKey: "id",
+							pIdKey: "parent",
+							rootPId: 0,
+							enable: true
+						}
+					},
+					callback: {
+						onClick: function (event, treeId, treeNode, clickFlag) {
+							$scope.$apply(function () {
+								if (treeNode.id != '0') {
+									$scope.bug.module = treeNode;
+								}
+							});
+							//收拢下拉框
+							//$scope.moduleDropdownController.toggle();
+							$("#modTree").controller("c2-dropdown").toggle();
+						},
+						onRename: function caseRename(event, treeId, treeNode, isCancel) {
+							$http.post("ws/module/updateModuleName", { id: treeNode.id, name: treeNode.name });
+						}
+					}
+				};
+
+				$http.post("ws/getModuleListByProject", {
+					projectId: $scope.bug.project.id
+				}).success(function (data) {
+					var modList = [{ id: 0, parent: undefined, name: "所有模块" }];
+					$scope.zTreeNodes = modList.concat(data.result);
+					/* if($stateParams.moduleId == 0 ){
+						$scope.bug.module=$scope.zTreeNodes[0];
+					} */
+
+				});
+			}
+
+			//增加子模块模块
+			function addHoverDom(treeId, treeNode) {
+				var sObj = $("#" + treeNode.tId + "_span");
+				if (treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+				var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+					+ "' title='新增模块' onfocus='this.blur();'></span>";
+				sObj.after(addStr);
+				var btn = $("#addBtn_" + treeNode.tId);
+				if (btn) btn.bind("click", function () {
+					$http.post("ws/module/addModule", { parent: treeNode.id, projectId: $scope.bug.project.id }).success(function (data) {
+						var newNode = { id: data.result.id, parent: treeNode.tid, name: "" };
+						newNode = $.fn.zTree.getZTreeObj('modTreeTree').addNodes(treeNode, newNode);
+						$.fn.zTree.getZTreeObj('modTreeTree').editName(newNode[0]);
+					})
+					return false;
+				});
+			};
+			//新增按钮样式移除
+			function removeHoverDom(treeId, treeNode) {
+				$("#addBtn_" + treeNode.tId).unbind().remove();
+			};
+
+			$scope.getTextColor = function (color) {
+				return getTextColorByBackColor(color);
+			};
+
+			$scope.saveBug = function () {
+				$scope.formCheck = true;
+				$scope.bugErrorMsg = "";
+
+				if (!$scope.bug.title) {
+					$scope.bugErrorMsg = "bug标题不能为空！";
+					return;
+				}
+
+				// 					if(!$scope.bug.module) return;
+
+				if (!$scope.bug_version.bug_version) {
+					$scope.bugErrorMsg = "bug版本不能为空！";
+					return;
+				} else {
+					$scope.bug.bugVersion = $scope.bug_version.bug_version;
+				}
+
+				if (!$scope.assignTo) {
+					$scope.bugErrorMsg = "bug处理人不能为空！";
+					return;
+				}
+				$scope.bug.pri = $scope.selectPrioritys.id;
+				$scope.bug.initAssignedTo = $scope.assignTo.userName;
+
+				//if(!$scope.hideUEditor){
+				$scope.bug.spec = $params.spec;
+				//}
+				if ($scope.tempStepList != null && $scope.tempStepList.length > 0) {
+					var flag = false;
+					for (var i = 0; i < $scope.tempStepList.length; i++) {
+						if ($scope.tempStepList[i].id <= 0) {
+							flag = true;
+							break;
+						}
+					}
+					if (flag) {
+						if (!confirm("未保存的步骤信息会被清空，是否确认生成BUG单？")) {
+							Modal.dismiss();
+						} else {
+							addBug();
+						}
+					} else {
+						addBug();
+					}
+				} else {
+					addBug();
+				}
+
+			}
+
+			function timer(time) {
+				var btn = $("#submit");
+				btn.attr("disabled", true);  //按钮禁止点击
+				var hander = setInterval(function () {
+					if (time <= 0) {
+						clearInterval(hander); //清除倒计时
+						btn.attr("disabled", false);
+						return false;
+					} else {
+						time--;
+					}
+				}, 1000);
+			}
+
+			$scope.cancelAdd = function () {
+				//if($scope.judgePageUnderMilestone) {
+				Modal.dismiss();
+				//} else {
+				//	$state.go("project.bugs");
+				//}
+			}
+
+			var addBug = function () {
+				//将按钮失效几秒钟避免重复提交数据
+				timer(5);
+				$http.post("ws/bug/addBug", {
+					bug: $scope.bug,
+					labelList: $scope.selectLabels
+				}).success(function (data) {
+					Modal.close(data.result);
+					if ($scope.boardbug) {
+						$rootScope.$broadcast("createNewBug", data.result);
+					} else if ($state.includes("project.bugs")) {
+						$rootScope.$broadcast("flushBugList", data.result);
+					}
+				});
+			}
+
+			function startEditing($event) {
+				if ($($event.target).is('a') || $($event.target).is('img')) {
+					return;
+				}
+				$scope.hideUEditor = false;
+			}
+
+			var mousedownPostion = undefined;
+
+			$scope.ueMousedown = function ($event) {
+				mousedownPostion = { x: $event.clientX, y: $event.clientY };
+			}
+
+			$scope.ueMouseup = function ($event) {
+				if (mousedownPostion) {
+					var moved = Math.abs($event.clientX - mousedownPostion.x) + Math.abs($event.clientY - mousedownPostion.y);
+					if (moved < 10) {
+						startEditing($event);
+					}
+					mousedownPostion = undefined;
+				}
+			}
+
+			$scope.chosenItemClick = function (item) {
+				$scope.bug.bugVersion = item.bug_version;
+			}
+
+			//添加标签事件:新建标签
+			$scope.dropdownAddTag = function (e) {
+				//					var dc = $("#addTaskTagDropdown").controller("c2Dropdown");
+				$scope.tagDropdownMenuEle = $(e.currentTarget).parents("ul.dropdown-menu");
+				if (!$scope.tagHtml) {
+					$scope.tagColorArray = ["#e11d21", "#eb6420", "#fbca04", "#009800",
+						"#006b75", "#207de5", "#0052cc", "#5319e7", "#f7c6c7", "#fad8c7",
+						"#fef2c0", "#bfe5bf", "#bfdadc", "#c7def8", "#bfd4f2"];
+					$scope.createTagEle = angular.element('<li class="createTagLi"><span class="pickerColor" ng-style="chosenColorStyle">&nbsp;</span><input id="pickerColorInput" class="pickerColorInput" ng-style="inputColorStyle"/></li>' +
+						'<li class="color-chooser createTagLi"><span ng-repeat="bcolor in tagColorArray" ng-click="colorSelected(bcolor)" class="color-piece" style="background-color:{{bcolor}}"> </span><div class="clearfix"></div></li>' +
+						'<li class="createTagLi"><button ng-click="addTag()" class="btn bgm-blue" style="width:50%;border-radius: 0 0 0 2px;"><i class="md md-check"></i>确定</button><button ng-click="backLablesSelect()" style="width:50%;border-radius: 0 0 2px 0;" class="btn"><i class="md md-arrow-back"></i> 返回</button></li>');
+					$scope.tagDropdownMenuEle.append($scope.createTagEle);
+					$compile($scope.createTagEle)($scope);
+					$scope.createTagEle.hide();
+					$scope.tagHtml = true;
+				}
+
+				$scope.tagDropdownMenuEle.addClass("flip");
+				$timeout(function () {
+					toggleTagDropdownMenu(false);
+					var randomColor = $scope.tagColorArray[parseInt(15 * Math.random())];
+					$scope.chosenColorStyle = { 'background-color': randomColor };
+					$scope.inputColorStyle = { 'border-bottom-color': randomColor };
+					$scope.tagColor = randomColor;
+					$("#pickerColorInput").val("").focus();
+					$timeout(function () {
+						$scope.tagDropdownMenuEle.removeClass("flip")
+					}, 300);
+				}, 300);
+			}
+			$scope.colorSelected = function (bcolor) {
+				$scope.chosenColorStyle = { 'background-color': bcolor };
+				$scope.inputColorStyle = { 'border-bottom-color': bcolor };
+				$scope.tagColor = bcolor;
+			};
+			$scope.addTag = function () {
+				var tagName = $("#pickerColorInput").val();
+				if (!tagName) {
+					Messenger.error("请填写标签名称!");
+					return;
+				}
+				var label = {
+					name: tagName,
+					color: $scope.tagColor,
+					project: $stateParams.project
+				}
+				$http.post("ws/addLabel", { label: label }).success(function (data) {
+					var newLabel = data.result;
+					newLabel.backgroundStyle = { "background-color": newLabel.color, "color": getTextColorByBackColor(newLabel.color) };
+					$scope.tags.push(newLabel);
+					$scope.selectLabels.push(newLabel);
+					$("#addTaskTagDropdown").controller("c2Dropdown").toggle();
+					toggleTagDropdownMenu(true);
+				});
+			}
+			$scope.backLablesSelect = function () {
+				$scope.tagDropdownMenuEle.addClass("flip");
+				$timeout(function () {
+					toggleTagDropdownMenu(true);
+					$timeout(function () {
+						$scope.tagDropdownMenuEle.removeClass("flip")
+					}, 300);
+				}, 300);
+			};
+
+			function toggleTagDropdownMenu(side) {
+				if (side) {
+					$scope.tagDropdownMenuEle.width("");
+					$scope.tagDropdownMenuEle.children().not(".createTagLi").show();
+					$scope.createTagEle.hide();
+				} else {
+					$scope.tagDropdownMenuEle.width($scope.tagDropdownMenuEle.width());
+					$scope.tagDropdownMenuEle.children().not(".createTagLi").hide();
+					$scope.createTagEle.show();
+				}
+			}
+		});
+</script>

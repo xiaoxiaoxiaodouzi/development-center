@@ -1,0 +1,31 @@
+<div ng-controller="editStageController">
+<div class="p-l-10 p-r-10 f-14">
+<div class="form-group m-b-0">
+    <div class="fg-line">
+    	<input class="form-control" ng-model="name" required="required"/>
+    </div>
+</div>
+</div>
+<div class="p-10 text-right">
+	<button ng-click="save()" class="btn btn-primary simple-shadow">保存</button>
+	<button ng-click="dismiss()" class="btn btn-default simple-shadow">取消</button>
+</div>
+</div>
+
+<script>
+developmentCenter.registerCtrl('editStageController',function($scope,Modal,$http,Messenger){
+	$scope.name = $scope.stage.name;
+	$scope.save = function(){
+		if(!$scope.name){
+			Messenger.error("阶段名不能为空！");
+			return ;
+		}
+		$scope.stage.name = $scope.name;
+		$http.post("ws/editStage", {
+			stage : $scope.stage
+		}).success(function(data) {
+			Modal.close();
+		});
+	}
+});
+</script>

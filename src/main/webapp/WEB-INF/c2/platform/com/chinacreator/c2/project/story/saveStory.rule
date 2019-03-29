@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="saveStory" log="false" className="com.chinacreator.c2.project.story.StoryService" method="saveStory">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>保存需求</name>
+  <desc>保存需求</desc>
+  <inputs>
+    <input collection="false" desc="" id="story" required="false" type="com.chinacreator.c2.project.story.Story"/>
+    <input collection="false" desc="" id="taskList" required="false" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="int"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.story" name="story" signature="QStory;" type="com.chinacreator.c2.project.story.Story"/>
+    <param autoValue="Input.taskList" name="taskList" signature="QList&lt;QTask;>;" type="java.util.List"/>
+  </params>
+  <return signature="I" type="int"/>
+</CustomRule>

@@ -1,0 +1,186 @@
+<link href="css/task/detail.css" rel="stylesheet">
+
+<style>
+	.task-affirm {
+    background-color: #00BCD4;
+}
+.task-affirm:hover {
+    color: #fff;
+    background: rgba(0, 188, 212, 0.9);
+    cursor: pointer;
+}
+.task-affirm.ensure {
+    background: #009688;
+}
+</style>
+<div>
+	<div class="task-detail-header">
+		<div class="task-tasklist-stage-wrap">
+			<a ng-if="!detailTask.bugId && detailTask.isConfirm=='0'" class="bug-block task-affirm" data-ng-click="confirmTask()">待确认</a>
+			<a ng-if="!detailTask.bugId && detailTask.isConfirm=='1'" class="bug-block task-affirm ensure" data-ng-click="confirmTask()">已确认</a>
+			<span style="color: #a6a6a6;font-size: 16px;margin-right: 10px;">{{taskType}}</span>
+			<span style="color: #a6a6a6;">所属项目 : </span>
+			<a style="color:#474747;" ng-class="{'have-value':project.name}">{{project.name?project.name:"待分配"}}</a>
+			<span>，</span>
+			<c2-dropdown id="detailModuleDropdown" tree-options="treeOptions" tree-nodes="moduleNodes" max-height="300" class="tasklist-title">
+				<span style="color: #a6a6a6;">所属模块 : </span>
+				<a class="dropdown-toggle" ng-class="{'have-value':taskModule.name}">{{taskModule.name?taskModule.name:"待分配"}}</a>
+			</c2-dropdown>
+			<span ng-if="detailTask.bugId"> ，<span style="color: #a6a6a6;">BUG关联 :</span> <a class="c-purple" data-ui-sref="project.bugComment({bugNo:'{{detailTask.bugNo}}',project:'{{detailTask.projectId}}'})">#{{detailTask.bugNo}}</a></span>
+			<ul class="actions ng-scope">
+				<li class="dropdown" data-ng-show="taskDel||isTaskCreator()">
+					<a href="" data-toggle="dropdown">
+						<i class="md md-more-vert"></i>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li>
+							<a href="" data-ng-click="deleteTask()">删除任务</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<ng-form name="aform">
+			<div class="task">
+				<label class="checkbox checkbox-inline m-r-20 m-t-5">
+					<input type="checkbox" ng-model="isTaskDone" ng-click="taskDoneClick(isTaskDone)" title="{{isTaskDone?'启用任务':'完成任务'}}">
+					<i class="input-helper"></i>
+					</input>
+				</label> <input id="task-name" name="taskName" type="text" class="form-control" ng-model="detailTask.name"
+				 ng-required="true" ng-class="{'task-name-error':aform.taskName.$error.required}" ng-model-options="{updateOn:'blur'}"
+				 ng-keypress="blurIfEnterKeyWasPressed($event)" />
+			</div>
+		</ng-form>
+	</div>
+	<div class="detail-white-card task-detail-handler-wrap">
+		<div class="task-detail-handler-set">
+			<div class="task-detail-handler">
+				<h6 class="task-info-title">分配给</h6>
+				<c2-dropdown class="animate" bind-data="taskUser" items="taskUsers" item-name="name" max-height="200" item-click="userMenuClick(taskUser)"
+				 filter="true">
+					<a class="dropdown-toggle" ng-class="{'have-value':taskUser.name}">
+						<img class="lv-img-sm" ng-if="taskUser" ng-src="{{taskUser.icon}}">
+						<div class="md md-person img-24" ng-if="!taskUser" style="margin-right: 8px;"></div>
+						{{taskUser.name?taskUser.name:"待认领"}}
+					</a>
+				</c2-dropdown>
+			</div>
+			<div class="task-detail-handler middle">
+				<h6 class="task-info-title">截止日期</h6>
+				<div class="task-detail-line">
+					<span class="md md-event" ng-click="showDeadline()" ng-class="{'have-value':detailTask.deadline}"></span>
+					<input ignore-readonly="true" readonly id="deadline" show-clear="true" name="deadline" type="text" class="form-control"
+					 ng-class="{'have-value':detailTask.deadline}" date-time-picker clear-icon="md md-delete" ng-model="detailTask.deadline"
+					 placeholder="选择截止日期" format="YYYY-MM-DD">
+					</input>
+				</div>
+			</div>
+			<div class="task-detail-handler">
+				<h6 class="task-info-title">预计工时</h6>
+				<div class="task-detail-line">
+					<span class="md md-schedule" ng-class="{'have-value':detailTask.estimate}"></span>
+					<input type="text" id="estimate" class="form-control" ng-model="detailTask.estimate" ng-model-options="{updateOn:'blur'}"
+					 ng-keypress="blurIfEnterKeyWasPressed($event)" ng-class="{'have-value':detailTask.estimate}">
+					</input>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="task-detail-infos-wrap">
+		<div class="detail-infos-view">
+			<div class="milestone-card on-top" ng-class="{'on-bottom':taskMilestone||taskStory}">
+				<div class="milestone-add-wrap">
+					<span class="md md-place detail-infos-icon" ng-class="{'have-value':taskMilestone.title}"></span>
+					<c2-dropdown bind-data="taskMilestone" items="milestones" item-name="title" max-height="300" clean-button="true"
+					 item-click="mileStoneMenuClick(taskMilestone)">
+						<a class="dropdown-toggle" ng-class="{'have-value':taskMilestone.title}">{{taskMilestone.title?taskMilestone.title:"添加里程碑"}}</a>
+					</c2-dropdown>
+				</div>
+			</div>
+
+			<div class="milestone-card">
+				<div class="milestone-add-wrap">
+					<span class="md md-extension detail-infos-icon" ng-class="{'have-value':projectPlan.name}"></span>
+					<c2-dropdown id="taskDetailProjectPlan" tree-options="treePlanOptions" tree-nodes="projectPlans" max-height="300"
+					clean-button="true" >
+						<a class="dropdown-toggle" ng-class="{'have-value':projectPlan.name}">{{projectPlan.name ?
+							projectPlan.name:"添加计划"}}</a>
+					</c2-dropdown>
+				</div>
+			</div>
+
+			<div class="story-card">
+				<div class="milestone-add-wrap">
+					<span class="md md-content-paste detail-infos-icon" ng-class="{'have-value':taskStory.title}"></span>
+					<c2-dropdown id="story" bind-data="taskStory" items="storys" item-name="title" max-height="300" clean-button="true"
+					 item-click="storyMenuClick(taskStory)">
+						<a class="dropdown-toggle" ng-class="{'have-value':taskStory.title}">{{taskStory.title ? taskStory.title:"添加需求"}}</a>
+					</c2-dropdown>
+				</div>
+			</div>
+
+			<div class="label-card " ng-class="{'on-top':taskStory||tempTaskLabels.length!=0,'on-bottom':taskStory||descriptionBak}">
+				<div class="label-add-wrap">
+					<span class="md md-label detail-infos-icon" ng-class="{'have-value':tempTaskLabels.length!=0}"></span>
+					<c2-dropdown bind-data="tempTaskLabels" items="allLabels" item-name="name" multiple=true max-height="300"
+					 item-click="labelMenuClick()">
+						<div class="dropdown-toggle" ng-class="{'have-value':tempTaskLabels.length!=0}" style="cursor:pointer;">
+							<span ng-show="tempTaskLabels.length==0">添加标签</span>
+							<a class="p-l-5 p-r-5 m-l-5" ng-style="label.backgroundStyle" ng-repeat="label in tempTaskLabels">{{label.name}}</a>
+						</div>
+						<dropdown-item-template>
+							<div><span class="label-color" style="background-color: {{item.color}};">&nbsp;</span> {{item.name}} <span class="md md-check check-mark"></span></div>
+						</dropdown-item-template>
+					</c2-dropdown>
+				</div>
+			</div>
+			<div class="detail-infos-note-view on-bottom" ng-class="{'on-top':tempTaskLabels.length!=0||$params.description}">
+				<div class="note-adder-set" title="点击编辑" ng-class="{'note-input-hide':hideUEditor==false}" ng-mousedown="ueMousedown($event)"
+				 ng-mouseup="ueMouseup($event)">
+					<span class="md md-description detail-infos-icon" ng-class="{'have-value':$params.description}"></span>
+					<div class="add-note-handler c2lightbox">
+						<div id="markdowntext"></div>
+					</div>
+				</div>
+				<form id="task-desc-editor" data-ng-if="!hideUEditor">
+					<textarea c2-markdown-editor height="150" id="task-description" ng-model="$params.description"></textarea>
+					<div class="m-l-10 m-b-10" style="margin-top:-25px;">
+						<button class="btn btn-primary btn-sm" data-ng-click="ueditorBlur();hideUEditor=true;">保存</button>
+						<button class="btn btn-link btn-sm" data-ng-click="showUEditor()">取消</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="detail-white-card">
+		<ul style="margin: 0;padding: 0;">
+			<div ng-repeat="actionHis in taskActionHisArr" ng-init="HistoryExchange(actionHis)">
+				<li class="activity" style="list-style:none;" ng-click="actionHis.showFieldChangeHis=!actionHis.showFieldChangeHis">
+					<div class="activity-content">
+						<span class="md {{actionHis.cssName}} activity-type-icon pull-left muted"></span>
+						<span class="time-stamp muted pull-right muted">{{actionHis.date}}</span>
+						<span class="muted info">{{actionHis.actor}} {{actionHis.detail}} </span>
+
+						<!-- <span class="activity-type-icon muted" style="font-size: 16px;" 
+							ng-show="actionHis.fieldChangeHisArr"
+							ng-class="{'md md-remove-circle-outline':actionHis.showFieldChangeHis==true,'md md-add-circle-outline':actionHis.showFieldChangeHis==false}">
+						</span> -->
+					</div>
+					<div class="dd-history-comment" ng-show="actionHis.showFieldChangeHis==true && actionHis.fieldChangeHisArr">
+						<span ng-show="actionHis.hisActionCom">{{actionHis.hisActionCom}}<br></span>
+						<span ng-repeat="history in actionHis.fieldChangeHisArr">
+							修改了<strong> {{history.field}}</strong>，旧值为"{{history.oldVal}}"，新值为"{{history.newVal}}"。<br>
+						</span>
+					</div>
+				</li>
+			</div>
+		</ul>
+		<div class="m-5" style="padding: 5px;border-top: 1px solid rgb(245, 243, 243);text-align: center;" ng-if="taskActionHisArr.length>=5">
+			<a href="javascript:void(0)" ng-click="changeHistoryShow()">
+				<i ng-class="{'md md-expand-more':showAllHistory==true,'md md-chevron-left':showAllHistory==false}" class="md md-chevron-left"></i>
+				{{showAllHistory==true?"显示部分":"显示全部"}}
+			</a>
+		</div>
+	</div>
+</div>

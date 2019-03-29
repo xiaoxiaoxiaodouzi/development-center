@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="wr/getWeeklyReportListByProjectId" log="false" className="com.chinacreator.c2.project.weeklyReport.WeeklyReportService" method="getWeeklyReportListByProjectId">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>通过项目id获取项目所有周报列表</name>
+  <desc>通过项目id获取周报列表</desc>
+  <inputs>
+    <input collection="false" desc="项目id" id="projectId" required="false" type="java.lang.Integer"/>
+    <input collection="false" desc="分页对象" id="pageable" required="true" type="com.chinacreator.c2.dao.mybatis.enhance.Pageable"/>
+    <input collection="false" desc="项目id" id="statusFilter" required="true"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="@throws InvocationTargetException   @throws IllegalAccessException" id="result" name="方法返回值" type="com.chinacreator.c2.dao.mybatis.enhance.Page"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="QInteger;" type="java.lang.Integer"/>
+    <param autoValue="Input.pageable" name="pageable" signature="QPageable;" type="com.chinacreator.c2.dao.mybatis.enhance.Pageable"/>
+    <param autoValue="Input.statusFilter" name="statusFilter" signature="QString;" type="java.lang.String"/>
+  </params>
+  <return signature="QPage&lt;QMap&lt;QString;QObject;>;>;" type="com.chinacreator.c2.dao.mybatis.enhance.Page"/>
+</CustomRule>

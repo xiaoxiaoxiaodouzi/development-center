@@ -1,0 +1,85 @@
+<style>
+#supportList.listview .lv-item{
+	transition-duration:0ms;
+}
+#supportList.listview .lv-attrs li.state{
+width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;margin-right: 5px;
+}
+#supportList.listview .lv-attrs > li{
+	border: 0px;
+}
+</style>
+
+<div class="container">
+<div class="card m-t-20">
+    	<div class="card-header">
+			<h2>
+				支持单列表 <small>和我有关的支持单都在这里</small>
+			</h2> 
+			<button title="新建支持单" class="btn bgm-blue btn-float" ng-click="addClick()">
+				<i class="md md-add"></i>
+			</button>
+		</div>
+		
+		<div class="card-body clearfix">
+        <div id="supportList" class="listview lv-bordered lv-lg">
+        	<div class="lv-header-alt">
+				<label class="checkbox checkbox-inline m-l-20 m-t-10" title="显示还未接受的支持单">
+	                <input type="checkbox" ng-model="search.New"/>
+	                <i class="input-helper"></i> New
+	            </label>
+	            <label class="checkbox checkbox-inline m-l-10 m-t-10" title="显示已接受的支持单">
+	                <input type="checkbox" ng-model="search.Accept"/>
+	                <i class="input-helper"></i> Accept
+	            </label>
+	            <label class="checkbox checkbox-inline m-l-10 m-t-10" title="显示已完成的支持单">
+	                <input type="checkbox" ng-model="search.Done"/>
+	                <i class="input-helper"></i> Done
+	            </label>
+	            <label class="checkbox checkbox-inline m-l-10 m-t-10" title="显示已关闭的支持单">
+	                <input type="checkbox" ng-model="search.Closed"/>
+	                <i class="input-helper"></i> Closed
+	            </label>
+	            <c2-dropdown class="m-l-20" id="deptDrop" tree-options="deptTreeOptions" tree-nodes="supportOrgs" max-height="200" clean-button="true" after-clean-event="cleanSupportOrg()">
+					<div class="picker picker-white text-overflow" style="margin-top: 3px;max-width:500px;">
+						<i class="md md-account-balance" title="申请部门"></i>  <span ng-if="!org">选择申请部门</span>{{org.name}} &nbsp;<span class="caret"></span>
+					</div>
+				</c2-dropdown>
+				<c2-dropdown tree-options="workTreeOptions" tree-nodes="workOrgs" max-height="200" clean-button="true" after-clean-event="cleanWorkOrg()">
+					<div class="picker picker-white text-overflow" style="margin-top: 3px;max-width:500px;">
+						<i class="md md-account-balance" title="执行部门"></i>  <span ng-if="!worg">选择执行部门</span>{{worg.name}} &nbsp;<span class="caret"></span>
+					</div>
+				</c2-dropdown>
+	            <!-- <c2-dropdown class="m-l-20" bind-data-id="search.orgId" bind-data="org" items="supportOrgs" item-name="name" item-id="id" max-height="200" clean-button="true">
+					<div class="picker picker-white" style="margin-top: 3px;">
+						<i class="md md-account-balance" title="申请部门" ></i> <span ng-if="!org">选择申请部门</span>{{org.name}} &nbsp;<span class="caret"></span>
+					</div>
+				</c2-dropdown> -->
+				<!-- <c2-dropdown bind-data-id="search.doOrgId" bind-data="worg" items="workOrgs" item-name="name" item-id="id" max-height="200" clean-button="true">
+					<div class="picker picker-white" style="margin-top: 3px;">
+						<i class="md md-account-balance" title="执行部门"></i> <span ng-if="!worg">选择执行部门</span>{{worg.name}} &nbsp;<span class="caret"></span>
+					</div>
+				</c2-dropdown> -->
+        	</div>
+			<div class="lv-body">
+				<div ng-if="page.total==0" class="p-20 text-center">没有搜索到相关的支持单,您可以<a ng-click="addClick()">申请支持单</a>。</div>
+				<div class="lv-item media" ng-repeat="support in supportList">
+					<div class="media-body">
+						<div class="lv-title"><a data-ui-sref="home.supportInfo({supportId:support.id})">{{support.title}}</a></div>
+						<ul class="lv-attrs">
+							<li class="state" ng-class="{'bgm-green':support.state==0,'bgm-orange':support.state==1,'bgm-blue':support.state==2,'bgm-gray':support.state==3}" >{{supportStateName(support.state)}}</li>
+							<li><i class="md md-account-balance" title="申请部门"></i> {{support.fromOrg}}</li>
+							<li><i class="md md-account-balance" title="执行部门"></i> {{support.toOrg}}</li>
+							<li><i class="md md-person" title="执行负责人"></i> {{support.manageUsername}}</li>
+							<li ng-if="support.success==0" class="c-red">执行失败</li>
+							<li ng-if="support.success==1" class="c-green">执行成功</li>
+							<li ng-if="support.accountWorkload"><i class="md md-history" title="结算工作量"></i> {{support.accountWorkload}}</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<c2-pagination ng-hide="page.total==0" total="page.total" page-size="10" on-page-change="getList(pageIndex)"></c2-pagination>
+        </div>
+</div>
+</div>

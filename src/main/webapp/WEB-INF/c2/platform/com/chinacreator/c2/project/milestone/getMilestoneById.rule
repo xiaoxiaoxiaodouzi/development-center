@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getMilestoneById" log="false" className="com.chinacreator.c2.project.milestone.MilestoneService" method="getMilestoneById">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取里程碑</name>
+  <desc>获取里程碑</desc>
+  <inputs>
+    <input collection="false" desc="" id="id" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.project.milestone.Milestone"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.id" name="id" signature="I" type="int"/>
+  </params>
+  <return signature="QMilestone;" type="com.chinacreator.c2.project.milestone.Milestone"/>
+</CustomRule>

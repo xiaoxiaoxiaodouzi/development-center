@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getUserInfoByUsername" log="false" className="com.chinacreator.c2.project.info.MembersMgt" method="getUserInfoByUsername">
+  <name>得到名称图标在内的显示信息</name>
+  <desc>获取用户名列表中对应的用户信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="userNameList" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="名列表中对应的用户信息" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.userNameList" name="userNameList" signature="QList&lt;QString;>;" type="java.util.List"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QString;>;>;" type="java.util.List"/>
+</CustomRule>

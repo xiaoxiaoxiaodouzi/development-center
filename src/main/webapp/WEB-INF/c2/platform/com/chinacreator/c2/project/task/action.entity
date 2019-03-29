@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity:Entity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cdata="http://www.chinacreator.com/platform/mvc/cdata" xmlns:docket="http://www.chinacreator.com/platform/mvc/docket" xmlns:entity="http://www.chinacreator.com/platform/mvc/entity" sn="action">
+  <docket:name>操作</docket:name>
+  <docket:createType>来自数据库</docket:createType>
+  <docket:primaryKey>
+    <docket:pkAttribute attribute="id"/>
+  </docket:primaryKey>
+  <docket:attributes>
+    <docket:attribute code="id" length="8" name="操作id" nullable="false" type="mediumint" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="target_type" name="操作对象类型" nullable="false" type="string32" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="target_id" length="8" name="操作对象id" nullable="false" type="mediumint" default="0">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="project_id" length="8" name="所属项目" nullable="false" type="mediumint" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="actor" name="操作人" nullable="false" type="string64" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="type_" name="操作类型" nullable="false" type="string32" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="date_" name="操作时间" nullable="false" type="timestamp" default="CURRENT_TIMESTAMP">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="comment" name="操作描述" nullable="false" type="text" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="extra" length="33554420" name="额外信息" nullable="true" type="text">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="extra1" length="33554420" name="额外信息" nullable="true" type="text">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+  </docket:attributes>
+  <docket:subDokcets>
+    <docket:subDocket code="history" name="操作详情" id="entity:com.chinacreator.c2.project.task.history" fk="id:action_id"/>
+  </docket:subDokcets>
+  <docket:events/>
+  <docket:table ds="mysql" table="c2_comunity_action"/>
+  <entity:datas/>
+  <entity:views/>
+</entity:Entity>

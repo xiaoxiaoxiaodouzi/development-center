@@ -1,0 +1,209 @@
+<link rel="stylesheet" href="../../assets/css/gantt/style.css" />
+<link rel="stylesheet" href="../../assets/css/gantt/prettify.min.css" />
+<style>
+	body {
+		font-family: Helvetica, Arial, sans-serif;
+		font-size: 13px;
+		padding: 0 0 50px 0;
+	}
+
+	.contain {
+		width: 800px;
+		margin: 0 auto;
+	}
+	.form-search {
+   height: 30px;
+    background: #eeeeee;
+    border: none;
+    margin-left: -10px;
+    border-radius: 3px;
+    width: 250px;
+    padding-left: 25px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.dropdown-menu{
+	z-index: 25 !important;
+}
+</style>
+<div class="container m-t-10" >
+	<div class="card" ng-controller="ganttCtrl">
+		<div class="listview lv-bordered lv-lg" style="    margin-top: 30px;">
+			<div class="lv-header-alt ng-binding" style="padding-left: 30px;">
+				<i class="md md-search" style="font-size: 18px;color: #A9A9A9;position: relative;top: -4px;left: 18px;"></i>
+				<input type="text" ng-model="debounce.name" class="form-search" placeholder="标题名称">
+
+				<!-- 	<c2-dropdown class="animate" bind-data="search.milestone" items="milestones" item-name="title" max-height="200"
+					 filter="true" clean-button="true">
+						<div class="picker picker-white text-overflow">
+							<span ng-if="!search.milestone"><i class="md md-av-timer" title="里程碑"></i>选择里程碑</span>
+							<span ng-if="search.milestone"><i class="md md-av-timer" title="里程碑"></i>{{search.milestone.title}}</span><span
+							 class="caret"></span>
+						</div>
+					</c2-dropdown> -->
+
+				<c2-dropdown class="animate" bind-data="search.planStatus" items="AllPlanStatus" item-name="title" max-height="200"
+				 clean-button="true">
+					<div class="picker picker-white text-overflow">
+						<span ng-if="!search.planStatus"><i class="md md-av-timer" title="完成度"></i>选择完成度</span>
+						<span ng-if="search.planStatus"><i class="md md-av-timer" title="完成度"></i>{{search.planStatus.title}}</span><span
+						 class="caret"></span>
+					</div>
+				</c2-dropdown>
+
+				<c2-dropdown class="animate" bind-data="debounce.assignedToList" items="projectUsers" item-name="userRealname"
+				 multiple=true max-height="200" filter="true" filter-pinyin="true" clean-button="true">
+					<div class="picker picker-white text-overflow" style="    line-height: normal;">
+						<i class="md md-account-child m-r-5"></i>
+						<span ng-if="debounce.assignedToList.length==0">负责人</span>
+						<span class="p-r-5" ng-repeat="user in debounce.assignedToList">{{user.userRealname}} </span>
+						<span class="ico-drop pull-right">
+							<i class="md md-expand-more f-18"></i>
+						</span>
+					</div>
+				</c2-dropdown>
+
+				<c2-date-range-dropdown class="animate" max-height="200" date-range="dateRange" date-buttons="dateButtons"
+				 buttom-message="过滤计划开始时间、结束时间在选择的区间段">
+					<div class="picker picker-white text-overflow" style="    line-height: normal;">
+						<i class="md md-today m-r-5" title="日期选择"></i> {{dateRange.show}}
+						<span class="pull-right">
+							<i class="md md-expand-more f-18"></i>
+						</span>
+					</div>
+				</c2-date-range-dropdown>
+			</div>
+			<div class="gantt_ot" style="width:auto;">
+				<div class="gantt"></div>
+			</div>
+		</div>
+		<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;top:113px;width:745px;z-index: 99;">
+			<ui-view onload="stateOnload()"></ui-view>
+		</aside>
+	</div>
+</div>
+<script>
+	developmentCenter.registerCtrl('ganttCtrl', function ($stateParams, $rootScope, $compile, markdownConverter, Modal, $state, $scope, $http, Messenger, $timeout, debounce) {
+		var levelStatus = { '0': 'ganttRed', '1': 'ganttGreen', '2': 'ganttOrange' }
+		$scope.search = {
+			week: { st: null, et: null },
+			assignedToList: []
+		}
+
+		//这里是为了解决刷新页面侧滑框统计数据没有的情况，让用户必须通过点击才能看到，刷新直接收起侧滑框
+		var url = window.location.href;
+		if (url.includes('gantt')) {
+			window.location.replace('#/project/' + $stateParams.project + '/gantt')
+		}
+
+		$http.post("ws/getMembers", { projectId: $stateParams.project }).success(function (data) {
+			var ary = [];
+			angular.forEach(data.result, function (v, n) {
+				ary.push({ userId: v.userDTO.user_id, userRealname: v.userDTO.user_realname, icon: v.userDTO.remark1, userName: v.userDTO.user_name });
+			});
+			$scope.projectUsers = ary;
+		});
+		var completes = {
+			'0': 0,
+			'1': 25,
+			'2': 50,
+			'3': 75,
+			'4': 100
+		}
+		$scope.AllPlanStatus = [{ title: '小于25%', value: 0 }, { title: '25%-50%之间', value: 1 }, { title: '50%-75%之间', value: 2 }, { title: '大于75%', value: 3 }];
+
+		$scope.dateButtons = ['thisWeek', 'nextWeek', 'preWeek', 'thisMonth', 'preMonth', 'thisYear'];
+
+		$scope.dateRange = { show: "时间段", start: null, end: null };
+
+		$scope.$watch("dateRange", debounce(function (v) {
+			if (angular.isUndefined(v)) return;
+			$scope.search.week = {
+				st: v.start, et: v.end
+			};
+		}, 200), true);
+
+		$scope.$watch("debounce", function (v) {
+			debounceSearchFn(v);
+		}, true);
+
+		$scope.$watch("search", function (v, ov) {
+			InitData(null, $scope.search);
+		}, true);
+
+		var debounceSearchFn = debounce(function (ds) {
+			angular.extend($scope.search, angular.copy(ds));
+		}, 600);
+
+		var InitData = function (parent, search) {
+			$http.get("ProjectPlan/project", {
+				params: {
+					projectId: $stateParams.project,
+					parent: null,
+					search
+				}
+			}).success(function (data) {
+				var ary = [];
+				if (data.length > 0) {
+					data.forEach(function (i) {
+						var params = {
+							id: i.id,
+							name: i.name,
+							desc: (i.assigned ? i.assigned.userRealname : '--'),
+							completes: i.completes,
+							values: [{
+								from: i.startDate,
+								to: i.endDate,
+								label: i.description,
+								customClass: levelStatus[i.level],
+								dataObj: i,//用于点击获取数据的属性
+								desc: i.description
+							}]
+						};
+						ary.push(params)
+					})
+				}
+				//初始化gantt
+				$(".gantt").gantt({
+					source: ary,
+					navigate: 'scroll',//// 底部使用拖拽的刻度尺还是按钮：scroll和buttons
+					scale: "weeks",// 这里是设置默认比例。这里总共有四个参数：months  weeks days  hours.
+					maxScale: "months", // 这里是设置最大比例。这里总共有四个参数：months  weeks days  hours.
+					minScale: "days", // 这里是设置最小比例。这里总共有四个参数：months  weeks days  hours.
+					itemsPerPage: 20, //设置甘特图每页显示多少条
+
+					//选择已有的计划
+					onItemClick: function (data) {
+						$state.go('project.gantt.planDetail', { projectPlan: data, planId: data.id })
+					},
+
+					/* 	//添加计划
+						onAddClick: function (dt, rowId) {
+							alert("Empty space clicked - add an item!");
+						}, 
+						onRender: function () {
+							if (window.console && typeof console.log === "function") {
+								console.log("chart rendered");
+							} 
+						} */
+				});
+			})
+		}
+
+		$scope.$on('updateprojectPlan', function () {
+			InitData();
+		})
+
+		InitData();
+		/* //弹窗功能
+		$(".gantt").popover({
+			selector: ".bar",
+			title: "I'm a popover",
+			content: "And I'm the content of said popover.",
+			trigger: "hover",
+			placement: "auto right"
+		}); */
+		//prettyPrint();
+	});
+</script>

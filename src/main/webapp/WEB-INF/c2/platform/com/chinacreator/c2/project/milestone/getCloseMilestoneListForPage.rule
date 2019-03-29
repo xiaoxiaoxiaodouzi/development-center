@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getCloseMilestoneListForPage" log="false" className="com.chinacreator.c2.project.milestone.MilestoneService" method="getCloseMilestoneListForPage">
+  <name>已关闭的里程碑列表</name>
+  <desc>分页获取已关闭的里程碑列表</desc>
+  <inputs>
+    <input collection="false" desc="" id="pageIndex" required="true" type="int"/>
+    <input collection="false" desc="" id="pageSize" required="true" type="int"/>
+    <input collection="false" desc="" id="condition" required="true" type="java.util.Map"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.pageIndex" name="pageIndex" signature="I" type="int"/>
+    <param autoValue="Input.pageSize" name="pageSize" signature="I" type="int"/>
+    <param autoValue="Input.condition" name="condition" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

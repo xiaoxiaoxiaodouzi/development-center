@@ -1,0 +1,104 @@
+#search-dropdown .dropdown-menu{
+	top:79%;left: 11px;width: 502px;
+}
+#globalSearchDiv .lv-item .ico-type{ 
+	text-align: center; 
+	margin-top: 5px;
+    padding-top: 2px;
+    border-radius: 50%;
+    border: 3px solid #ebefea;
+    width: 38px;
+    height: 38px;
+}
+#globalSearchDiv .lv-item .ico-type:hover{
+	cursor: pointer;
+	border-color: #CDE6FF;
+	color:#4285F4;
+    transition-duration: 300ms;
+}
+#globalSearchDiv .lv-item .ico-type-list{ 
+	text-align: center; 
+	margin-top: 5px;
+    padding-top: 2px;
+    border-radius: 50%;
+    background:#4285F4;
+    color:#fff;
+    border: 3px solid #4285F4;
+    width: 28px;
+    height: 28px;
+}
+#globalSearchDiv .listview .lv-item {
+	transition-duration:0ms;
+}
+#globalSearchDiv .cursor-pointer{
+	cursor: pointer;
+}
+#globalSearchDiv .clear-ico{margin-left:2px; position:relative; top:1px}
+#globalSearchDiv .clear-ico:hover{ color:red; cursor: pointer;}
+#globalSearchDiv .listview.lv-lg .b-n:hover{ background-color:#fff !important;}
+
+.p-l-0{ padding-left: 0;}
+.s-des-t{ color: #555; font-size:12px;}
+.s-type-t{ vertical-align: middle; line-height: 28px; margin-left: 10px;}
+.choose-display{ display: inline-block; position: relative; top: 6px;}
+.choose-display li{ list-style-type:none; display:inline-block; padding-left:8px;}
+.choose-display li span{ font-family: Microsoft YaHei ,SimSun; font-size:13px;}
+
+.search-toggled #globalSearchDiv{
+	opacity:1;
+	top:65px;
+	z-index: 7;
+}
+#globalSearchDiv{
+	opacity:0;
+	top:10000px;
+	z-index: 0;
+	transition-duration:300ms;
+	position: fixed;  left:0; background:#edecec; outline: none; width:100%; height: calc(100% - 65px);
+}
+#globalSearchDiv em{
+    color: red;
+    font-style: inherit;
+}
+
+#search-detail-panel{
+	position: fixed;
+    background: #fff;
+    padding: 20px 0;
+    width: 580px;
+    box-shadow: 0 0 10px rgba(51, 51, 51, 0.38);
+    height: calc(100% - 65px);
+    right: -600px;
+    top: 65px;
+    transition: all;
+    transition-duration: 300ms;
+    z-index: 10;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+#search-detail-panel.toggled {
+    right: 0;
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+#globalSearchDiv .listview .lv-attrs > li{
+	border:0;
+	background-color: inherit;
+}
+#globalSearchDiv .listview .user-head{
+	width:68px;
+	text-align: center;
+}
+
+.btn1:hover{ background:#4caf50; color:white;}
+.btn2:hover{ background:#00BCD6; color:white;}
+.btn3:hover{ background:#f44336; color:white;}
+.btn4:hover{ background:#ff9800; color:white;}
+.btn5:hover{ background:#009688; color:white;}
+.btn6:hover{ background:#999; color:white;}
+.btn1{ color:#4caf50; background:transparent;}
+.btn2{ color:#00BCD6; background:transparent;}
+.btn3{ color:#f44336; background:transparent;}
+.btn4{ color:#ff9800; background:transparent;}
+.btn5{ color:#009688; background:transparent;}
+.btn6{ color:#999; background:transparent;}

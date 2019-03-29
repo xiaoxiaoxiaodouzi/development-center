@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.erp.AaMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  aaa.asd 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="asd != null">and aaa.asd = #{asd}</if>
+</sql>
+
+
+<!-- ElementID:AaResult,Generated=true -->
+<resultMap id="AaResult" type="com.chinacreator.c2.erp.Aa">
+	<id property="asd" column="asd"/>
+</resultMap>
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.erp.Aa">
+	insert into aaa(
+	         <if test="asd != null">asd</if>
+	 	 	 )
+	 values (
+	         <if test="asd != null">#{asd,jdbcType=CHAR}</if>
+	 	 	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.erp.Aa" resultType="int">
+	select count(*) from aaa 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.erp.Aa">
+	update aaa
+<set>
+,
+</set>
+<where>
+	<choose>
+        <when test="asd != null">and asd = #{asd}</when>
+        <otherwise>and asd = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update aaa
+	<set>
+		<trim suffixOverrides=",">
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="asd != null">and asd = #{asd}</when>
+			<otherwise>and asd = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.erp.Aa">
+    delete from aaa where 1=1 and asd = #{asd}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.erp.Aa" resultMap="AaResult">
+	select 
+		<include refid="column_sql"/>
+	    from aaa 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list">
+	insert into aaa (asd) 
+<foreach collection="list" item="entity" index="index" separator="union all">
+		select 
+		#{entity.asd,jdbcType = CHAR}
+		from dual
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from aaa where asd in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.asd}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="AaResult">
+	select 
+		<include refid="column_sql"/>
+	    from aaa 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.String" resultMap="AaResult">
+	select 
+		<include refid="column_sql"/>
+	    from aaa 
+		 where aaa.asd = #{asd,jdbcType=CHAR}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.erp.Aa" resultMap="AaResult">
+	select 
+		<include refid="column_sql"/>
+	    from aaa 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="AaResult">
+select 
+	<include refid="column_sql"/> 
+	from aaa 
+	where aaa.asd in (
+		select distinct asd from aaa inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct asd
+			from aaa 
+			<where>
+	        <if test="entity.asd != null">and aaa.asd = #{entity.asd}</if>
+			</where>
+		) ${entity.tableAlias} using (asd)
+</foreach>
+)
+</select>
+</mapper>

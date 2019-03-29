@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="bugTaskClosed" log="false" className="com.chinacreator.c2.project.task.TaskService" method="bugTaskClosed">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>bug任务关闭</name>
+  <inputs>
+    <input collection="false" desc="" id="bugId" required="true" type="Integer"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.bugId" name="bugId" signature="QInteger;" type="Integer"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

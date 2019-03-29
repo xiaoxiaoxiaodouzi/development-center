@@ -1,0 +1,70 @@
+<div ng-controller="createProjectController">
+	
+	<div ng-hide="stepCreatProject" class="toggle-switch" data-ts-color="cyan">
+        <label for="fromErp" class="ts-label">从ERP导入项目</label>
+        <!-- erp要求：项目不在erp库里的不允许录日志
+        <input id="fromErp" type="checkbox" ng-model="fromErp" ng-click="fromErpClick()">
+        <label for="fromErp" class="ts-helper"></label> -->
+    </div>
+	    
+	<div class="m-t-20" ng-show="!fromErp">
+	    <div class="form-group fg-float">
+	        <div class="fg-line">
+	            <input id="projectCodeInput" ng-readonly="stepCreatProject" type="text" class="form-control fg-input" ng-model="$model.project.code">
+	        </div>
+	        <label class="fg-label">项目编号</label>
+	    </div>
+	    <div class="form-group fg-float">
+	        <div class="fg-line">
+	            <input id="projectContractInput" ng-readonly="stepCreatProject" type="text" class="form-control fg-input" ng-model="$model.project.contractNo">
+	        </div>
+	        <label class="fg-label">合同编号</label>
+	    </div>
+	    <div class="form-group fg-float">
+	        <div class="fg-line">
+	            <input id="projectNameInput" type="text" class="form-control fg-input" ng-model="$model.project.name">
+	        </div>
+	        <label class="fg-label">项目名称</label>
+	    </div>
+	    <div class="form-group fg-float">
+	        <c2-dropdown class="animate fg-line fg-toggled" bind-data="projectOwner" items="allUsers" item-name="userRealname" item-click="focusInput()" max-height="300" filter="true" filter-pinyin="false" filter-property="userRealname,jp,qp,jobNumber" filter-only="true" filter-placeholder="姓名/拼音">
+	            <input id="projectOwnerInput" readonly="readonly" type="text" class="form-control fg-input" ng-model="projectOwner.userRealname">
+	        </c2-dropdown>
+	        <label class="fg-label">项目所有者</label>
+	    </div>
+    </div>
+    
+    
+    <div class="m-t-20" ng-show="fromErp">
+	    <div class="input-group" >
+	       <span class="input-group-addon"><i class="md md-search"></i></span>
+	       <div class="fg-line">    
+	           <input type="text" class="form-control" ng-model="search.code" autofocus ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 }}" placeholder="项目编号/名称">
+	       </div>
+	   </div>
+    	<div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                    	<th class="select-cell"></th>
+                    	<th>项目编号</th>
+                        <th>项目名称<span style="float:right;">共搜索到 <span class="c-green">{{total}} </span>个项目</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="ep in erpProjects" ng-class="{active:ep.active}" ng-click="selectProject(ep)">
+                    	<td class="select-cell"><div class="checkbox"><label><input ng-model="ep.active"  name="select" type="checkbox" class="select-box" ng-click="checkboxClick($event)"><i class="input-helper" ></i></label></div></td>
+                        <td>{{ep.pcode}}</td>
+                        <td>{{ep.pname}}</td> 
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+            <button ng-show="stepCreatProject&&!fromErp" type="button" class="btn btn-primary no-transition" ng-click="fromErp=true;stepCreatProject=false;">上一步</button>
+            <button ng-show="fromErp" type="button" class="btn btn-primary no-transition" ng-click="projectNextStep()">下一步</button>
+            <button ng-show="!fromErp" type="button" class="btn btn-primary no-transition" ng-click="saveProject()">创建</button>
+    </div>
+</div>

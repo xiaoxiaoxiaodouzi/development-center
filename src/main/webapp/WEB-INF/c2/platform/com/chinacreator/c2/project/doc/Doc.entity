@@ -1,0 +1,784 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity:Entity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.chinacreator.com/platform/mvc/rule" xmlns:cdata="http://www.chinacreator.com/platform/mvc/cdata" xmlns:docket="http://www.chinacreator.com/platform/mvc/docket" xmlns:dync="http://www.chinacreator.com/platform/mvc/ui/dync" xmlns:entity="http://www.chinacreator.com/platform/mvc/entity" xmlns:form="http://www.chinacreator.com/platform/mvc/form" xmlns:template="http://www.chinacreator.com/c2/ui/template" sn="doc">
+  <docket:name>项目文档</docket:name>
+  <docket:createType>来自数据库</docket:createType>
+  <docket:primaryKey>
+    <docket:pkAttribute attribute="id"/>
+  </docket:primaryKey>
+  <docket:attributes>
+    <docket:attribute code="id" name="主键" nullable="false" type="mediumint" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="name" name="文档名称" nullable="false" type="string128" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="desc_" name="文档描述" nullable="true" type="string1024" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="project" name="项目" nullable="false" type="mediumint" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="visit_count" name="访问次数" nullable="true" type="mediumdouble" default="0">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="public_static" name="是否发布" nullable="true" type="char20" default="0">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="content" name="内容" nullable="true" type="text" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="author_id" name="作者" nullable="true" type="string64" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="createtime" name="创建时间" nullable="true" type="timestamp" default="CURRENT_TIMESTAMP">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+  </docket:attributes>
+  <docket:subDokcets/>
+  <docket:events>
+    <docket:event id="add" name="新增">
+      <docket:logic>
+        <node xsi:type="RuleRef" id="insert" name="单记录插入" ruleId="rule:c2.dao.insert">
+          <inputs>
+            <input autoFrom="data" code="entity"/>
+          </inputs>
+        </node>
+      </docket:logic>
+      <docket:ui name="新增">
+        <form:control type="page/modal">
+          <form:attributes source="page/modal">
+            <dync:attribute id="title" value="新增项目文档">
+              <dync:render/>
+              <dync:children/>
+            </dync:attribute>
+          </form:attributes>
+        </form:control>
+        <form:child xsi:type="form:Group" id="main" name="项目文档">
+          <form:control type="container/div">
+            <form:attributes source="container/div"/>
+          </form:control>
+          <form:child xsi:type="form:Field" binding="$model.entity.id" id="id" name="主键" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.name" id="name" name="文档名称" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.desc" id="desc" name="文档描述" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.project" id="project" name="项目" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.visitCount" id="visitCount" name="访问次数" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.publicStatic" id="publicStatic" name="是否发布" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.content" id="content" name="内容" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+        </form:child>
+        <form:child xsi:type="form:Group" id="toolbar" name="主按钮组">
+          <form:control type="container/toolbar_modal_footer">
+            <form:attributes source="container/toolbar_modal_footer"/>
+          </form:control>
+          <form:child xsi:type="form:Field" id="btn_add" name="新增">
+            <form:control type="widget/button">
+              <form:attributes source="widget/button">
+                <dync:attribute default="" desc="按钮图标，Font Awesom 3.2.1中定义的所有图标都可用" group="HTML设置" hidden="false" id="icon" name="图标" required="false" value="fa-check">
+                  <dync:render colSpan="1" height="0" multi="false" name="selectIcon"/>
+                  <dync:children/>
+                </dync:attribute>
+                <dync:attribute default="" desc="按钮事件。&#xA;                $param $event AngularJS的[event](https://docs.angularjs.org/guide/expression#-event-)事件。" group="事件设置" hidden="false" id="click" name="点击事件" required="false" value="btn_add_click($event)">
+                  <dync:render colSpan="1" height="0" multi="false" name="event">
+                    <dync:item name="params" value="$event"/>
+                  </dync:render>
+                  <dync:children/>
+                </dync:attribute>
+                <dync:attribute default="btn-primary" desc="按钮样式" group="HTML设置" hidden="false" id="style" name="样式" required="false" value="btn-success">
+                  <dync:render colSpan="1" height="0" multi="false" name="select">
+                    <dync:item name="默认" value="btn-default"/>
+                    <dync:item name="主要" value="btn-primary"/>
+                    <dync:item name="成功" value="btn-success"/>
+                    <dync:item name="信息" value="btn-info"/>
+                    <dync:item name="警告" value="btn-warning"/>
+                    <dync:item name="危险" value="btn-danger"/>
+                    <dync:item name="链接" value="btn-link"/>
+                    <dync:item name="通用" value="btn-white no-border"/>
+                  </dync:render>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+          </form:child>
+          <form:child xsi:type="form:Field" id="btn_edit" name="取消">
+            <form:control type="widget/button">
+              <form:attributes source="widget/button">
+                <dync:attribute default="" desc="按钮图标，Font Awesom 3.2.1中定义的所有图标都可用" group="HTML设置" hidden="false" id="icon" name="图标" required="false" value="fa-times">
+                  <dync:render colSpan="1" height="0" multi="false" name="selectIcon"/>
+                  <dync:children/>
+                </dync:attribute>
+                <dync:attribute default="" desc="按钮事件。&#xA;                $param $event AngularJS的[event](https://docs.angularjs.org/guide/expression#-event-)事件。" group="事件设置" hidden="false" id="click" name="点击事件" required="false" value="btn_edit_click($event)">
+                  <dync:render colSpan="1" height="0" multi="false" name="event">
+                    <dync:item name="params" value="$event"/>
+                  </dync:render>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+          </form:child>
+        </form:child>
+        <form:datasources>
+          <form:datasource xsi:type="form:EntityDataSource" id="entity" name="实体数据源" entity="entity:com.chinacreator.c2.project.doc.Doc"/>
+        </form:datasources>
+        <form:scripts>btn_add_click:function($event){
+    $model.entity.$save(function(){
+        Modal.instance.close();
+        Messenger.post({type:'success',message:'新增成功'});
+    });
+},
+btn_edit_click:function($event){
+   Modal.instance.close();
+}
+</form:scripts>
+      </docket:ui>
+    </docket:event>
+    <docket:event id="delete" name="删除">
+      <docket:logic>
+        <node xsi:type="RuleRef" id="delete" name="单记录删除" ruleId="rule:c2.dao.delete">
+          <inputs>
+            <input autoFrom="data" code="entity"/>
+          </inputs>
+        </node>
+      </docket:logic>
+      <docket:ui type="none"/>
+    </docket:event>
+    <docket:event id="edit" name="修改">
+      <docket:logic>
+        <node xsi:type="RuleRef" id="modify" name="更新" ruleId="rule:c2.dao.update">
+          <inputs>
+            <input autoFrom="data" code="entity"/>
+          </inputs>
+        </node>
+      </docket:logic>
+      <docket:ui>
+        <form:control type="page/modal">
+          <form:attributes source="page/modal">
+            <dync:attribute id="title" value="修改项目文档">
+              <dync:render/>
+              <dync:children/>
+            </dync:attribute>
+          </form:attributes>
+        </form:control>
+        <form:child xsi:type="form:Group" id="main" name="项目文档">
+          <form:control type="container/div">
+            <form:attributes source="container/div"/>
+          </form:control>
+          <form:child xsi:type="form:Field" binding="$model.entity.id" id="id" name="主键" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.name" id="name" name="文档名称" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.desc" id="desc" name="文档描述" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.project" id="project" name="项目" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.visitCount" id="visitCount" name="访问次数" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.publicStatic" id="publicStatic" name="是否发布" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.content" id="content" name="内容" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+        </form:child>
+        <form:child xsi:type="form:Group" id="toolbar" name="主按钮组">
+          <form:control type="container/toolbar_modal_footer">
+            <form:attributes source="container/toolbar_modal_footer"/>
+          </form:control>
+          <form:child xsi:type="form:Field" id="btn_add" name="新增">
+            <form:control type="widget/button">
+              <form:attributes source="widget/button">
+                <dync:attribute default="" desc="按钮图标，Font Awesom 3.2.1中定义的所有图标都可用" group="HTML设置" hidden="false" id="icon" name="图标" required="false" value="fa-check">
+                  <dync:render colSpan="1" height="0" multi="false" name="selectIcon"/>
+                  <dync:children/>
+                </dync:attribute>
+                <dync:attribute default="" desc="按钮事件。&#xA;                $param $event AngularJS的[event](https://docs.angularjs.org/guide/expression#-event-)事件。" group="事件设置" hidden="false" id="click" name="点击事件" required="false" value="btn_add_click($event)">
+                  <dync:render colSpan="1" height="0" multi="false" name="event">
+                    <dync:item name="params" value="$event"/>
+                  </dync:render>
+                  <dync:children/>
+                </dync:attribute>
+                <dync:attribute default="btn-primary" desc="按钮样式" group="HTML设置" hidden="false" id="style" name="样式" required="false" value="btn-success">
+                  <dync:render colSpan="1" height="0" multi="false" name="select">
+                    <dync:item name="默认" value="btn-default"/>
+                    <dync:item name="主要" value="btn-primary"/>
+                    <dync:item name="成功" value="btn-success"/>
+                    <dync:item name="信息" value="btn-info"/>
+                    <dync:item name="警告" value="btn-warning"/>
+                    <dync:item name="危险" value="btn-danger"/>
+                    <dync:item name="链接" value="btn-link"/>
+                    <dync:item name="通用" value="btn-white no-border"/>
+                  </dync:render>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+          </form:child>
+          <form:child xsi:type="form:Field" id="btn_edit" name="取消">
+            <form:control type="widget/button">
+              <form:attributes source="widget/button">
+                <dync:attribute default="" desc="按钮图标，Font Awesom 3.2.1中定义的所有图标都可用" group="HTML设置" hidden="false" id="icon" name="图标" required="false" value="fa-times">
+                  <dync:render colSpan="1" height="0" multi="false" name="selectIcon"/>
+                  <dync:children/>
+                </dync:attribute>
+                <dync:attribute default="" desc="按钮事件。&#xA;                $param $event AngularJS的[event](https://docs.angularjs.org/guide/expression#-event-)事件。" group="事件设置" hidden="false" id="click" name="点击事件" required="false" value="btn_edit_click($event)">
+                  <dync:render colSpan="1" height="0" multi="false" name="event">
+                    <dync:item name="params" value="$event"/>
+                  </dync:render>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+          </form:child>
+        </form:child>
+        <form:datasources>
+          <form:datasource xsi:type="form:EntityDataSource" id="entity" name="实体数据源" entity="entity:com.chinacreator.c2.project.doc.Doc"/>
+        </form:datasources>
+        <form:scripts>btn_add_click:function($event){
+    $model.entity.$save(function(){
+        Modal.instance.close();
+        Messenger.post({type:'success',message:'新增成功'});
+    });
+},
+btn_edit_click:function($event){
+   Modal.instance.close();
+}
+</form:scripts>
+      </docket:ui>
+    </docket:event>
+    <docket:event id="get" name="单记录查询">
+      <docket:logic>
+        <node xsi:type="RuleRef" id="get" name="单记录查询" ruleId="rule:c2.dao.selectOne">
+          <inputs>
+            <input autoFrom="data" code="entity"/>
+          </inputs>
+        </node>
+      </docket:logic>
+      <docket:ui type="none"/>
+    </docket:event>
+    <docket:event desc="" id="search" name="查询">
+      <docket:logic>
+        <node xsi:type="RuleRef" id="select" name="按条件查询" ruleId="rule:c2.dao.select">
+          <inputs>
+            <input code="condition" from="data"/>
+          </inputs>
+        </node>
+      </docket:logic>
+      <docket:ui name="查询" type="none">
+        <form:control type="page/normal">
+          <form:attributes source="page/normal"/>
+        </form:control>
+        <form:child xsi:type="form:Group" id="Doc" name="项目文档">
+          <form:control type="container/div">
+            <form:attributes source="container/div">
+              <dync:attribute default="false" desc="无任何属性和样式的div" group="HTML配置" hidden="false" id="pure" name="简单div" required="true" value="false">
+                <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+                <dync:children/>
+                <dync:onChange>
+                  <template:case value="true">
+                    <template:hide param="span" value="true"/>
+                    <template:hide param="offset" value="true"/>
+                    <template:hide param="collapse" value="true"/>
+                    <template:hide param="defaultCollapse" value="true"/>
+                    <template:hide param="autoHeight" value="true"/>
+                    <template:hide param="nopadding" value="true"/>
+                  </template:case>
+                  <template:case value="false">
+                    <template:hide param="span" value="false"/>
+                    <template:hide param="offset" value="false"/>
+                    <template:hide param="collapse" value="false"/>
+                    <template:hide param="defaultCollapse" value="false"/>
+                    <template:hide param="autoHeight" value="false"/>
+                    <template:hide param="nopadding" value="false"/>
+                  </template:case>
+                </dync:onChange>
+              </dync:attribute>
+              <dync:attribute default="12" desc="网格布局中占位数" group="HTML配置" hidden="false" id="span" name="占位数" required="true" value="12">
+                <dync:render colSpan="1" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="0" desc="网格布局中的偏移数" group="HTML配置" hidden="false" id="offset" name="偏移" required="false" value="0">
+                <dync:render colSpan="1" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="填写变量或者表达式，控制控件是否隐藏。变量和表达式的值必须为布尔类型。如果变量没有赋值，则默认为【隐藏默认值】。&#xA;                @attention 变量可以从数据源中直接拿，或者在页面的*载入事件*中进行初始化。" group="HTML配置" hidden="false" id="collapse" name="隐藏" required="false" value="">
+                <dync:render colSpan="2" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="false" desc="容器在页面初始化完成时是否隐藏。当你不需要通过变量来控制控件隐藏的话，只需要使用这个属性就够了。可以通过控件方法`show();hide();toggle()`控制容器的隐藏状态。&#xA;                `false`表示展开控件（默认）。&#xA;                `true`表示隐藏控件。" group="HTML配置" hidden="false" id="defaultCollapse" name="隐藏默认值" required="false" value="false">
+                <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="false" desc="该容器的高度自动适应当前页面的page-content高度" group="HTML配置" hidden="false" id="autoHeight" name="自动高度" required="false" value="false">
+                <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="false" desc="内部是否有边距(添加&quot;no-padding&quot;样式)" group="HTML配置" hidden="false" id="nopadding" name="无内边距" required="false" value="false">
+                <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="在容器内部直接嵌入自定义的HTML。当控件满足不了页面需求时，可以通过这个去嵌入一段自定义的HTML代码。&#xA;                点击属性框右边按钮，会自动跳转到*HTML片段*的页签，并在页签内生成一段包裹脚本。需要自定义的HTML代码写在脚本内。如果还需要脚本控制元素，也可在模版内部写自己的脚本。  &#xA;                @attention 如果定义了该属性，那么在容器中放置任何其他控件都会被忽略。&#xA;                @attention 自定义HTML其实是一个Angular的模版，模版内部的作用域（$scope)继承了Form表单的作用域。所以可以在js页面中通过$scope定义变量，然后在模版中获取。&#xA;                @attention 模版还能够支持Angular原生的指令，也能支持控件指令和自定义的指令。&#xA;                @code&#xA;                &lt;script type=&quot;text/ng-template&quot; id=&quot;newGroup1_html&quot;>&#xA;&#x9;&#x9;&#x9;&#x9;我的地盘我做主！  &#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;在表单$scope中定义的变量，都可以在这里通过双打括号{{}}获取。比如在页面js中定义了$scope.someThing = &quot;这里风景独好！&quot;;&#xA;&#x9;&#x9;&#x9;&#x9;{{someThing}} //这里显示&quot;这里风景独好！&quot;。  &#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;如果需要调用页面JS中的函数myClickFn，可以通过functions.myClickFn()调用：&#xA;&#x9;&#x9;&#x9;&#x9;&lt;button ng-click=&quot;functions.myClickFn()&quot;>按我！要温柔~&lt;/button>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/script>&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;//注意:页面JS定义的函数只能通过ng-click调用的，如果只习惯通过onClick调用，可以把函数单独写到新的&lt;script>标签里面，然后上面就能够onClick直接调用了：&#xA;&#x9;&#x9;&#x9;&#x9;&lt;script>&#xA;&#x9;&#x9;&#x9;&#x9;function myClickFn(){&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;XXOOXX&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/script>&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;如果需要循环输出数组，可以这样：&#xA;&#x9;&#x9;&#x9;&#x9;&lt;ul>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;li ng-repeat=&quot;one in some&quot;>{{one}}，欢迎来到Angular的世界！&lt;/li>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/ul>&#xA;                @code" group="高级自定义" hidden="false" id="html" name="自定义HTML" required="false" value="">
+                <dync:render colSpan="2" height="0" multi="false" name="html"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="可以添加任意class，多个class样式用空格分开" group="高级自定义" hidden="false" id="cssClass" name="自定义class" required="false" value="">
+                <dync:render colSpan="2" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="可以添加任意style样式,必须遵循style样式格式：&quot;color:red;backgroud-color:blue;&quot;。" group="高级自定义" hidden="false" id="style" name="自定义style" required="false" value="">
+                <dync:render colSpan="2" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+            </form:attributes>
+          </form:control>
+        </form:child>
+        <form:datasources>
+          <form:datasource xsi:type="form:Inputs">
+            <form:input id="id" name="实体数据id"/>
+          </form:datasource>
+          <form:datasource xsi:type="form:EntityDataSource" id="entity" name="实体数据" entity="entity:com.chinacreator.c2.project.doc.Doc"/>
+        </form:datasources>
+        <form:scripts>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;
+&lt;entity:Entity xmi:version=&quot;2.0&quot; xmlns:xmi=&quot;http://www.omg.org/XMI&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns=&quot;http://www.chinacreator.com/platform/mvc/rule&quot; xmlns:cdata=&quot;http://www.chinacreator.com/platform/mvc/cdata&quot; xmlns:docket=&quot;http://www.chinacreator.com/platform/mvc/docket&quot; xmlns:dync=&quot;http://www.chinacreator.com/platform/mvc/ui/dync&quot; xmlns:entity=&quot;http://www.chinacreator.com/platform/mvc/entity&quot; xmlns:form=&quot;http://www.chinacreator.com/platform/mvc/form&quot; sn=&quot;doc&quot;>&#xD;
+  &lt;docket:name>项目文档&lt;/docket:name>&#xD;
+  &lt;docket:createType>来自数据库&lt;/docket:createType>&#xD;
+  &lt;docket:primaryKey>&#xD;
+    &lt;docket:pkAttribute attribute=&quot;id&quot;/>&#xD;
+  &lt;/docket:primaryKey>&#xD;
+  &lt;docket:attributes>&#xD;
+    &lt;docket:attribute code=&quot;id&quot; name=&quot;主键&quot; nullable=&quot;false&quot; type=&quot;mediumint&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;name&quot; name=&quot;文档名称&quot; nullable=&quot;false&quot; type=&quot;string128&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;desc_&quot; name=&quot;文档描述&quot; nullable=&quot;true&quot; type=&quot;string1024&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;project&quot; name=&quot;项目&quot; nullable=&quot;false&quot; type=&quot;mediumint&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;visit_count&quot; name=&quot;访问次数&quot; nullable=&quot;true&quot; type=&quot;mediumdouble&quot; default=&quot;0&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;public_static&quot; name=&quot;是否发布&quot; nullable=&quot;true&quot; type=&quot;char20&quot; default=&quot;0&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;content&quot; name=&quot;内容&quot; nullable=&quot;true&quot; type=&quot;text&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+  &lt;/docket:attributes>&#xD;
+  &lt;docket:subDokcets/>&#xD;
+  &lt;docket:events>&#xD;
+    &lt;docket:event id=&quot;add&quot; name=&quot;新增&quot;>&#xD;
+      &lt;docket:logic>&#xD;
+        &lt;node xsi:type=&quot;RuleRef&quot; id=&quot;insert&quot; name=&quot;单记录插入&quot; ruleId=&quot;rule:c2.dao.insert&quot;>&#xD;
+          &lt;inputs>&#xD;
+            &lt;input autoFrom=&quot;data&quot; code=&quot;entity&quot;/>&#xD;
+          &lt;/inputs>&#xD;
+        &lt;/node>&#xD;
+      &lt;/docket:logic>&#xD;
+      &lt;docket:ui>&#xD;
+        &lt;form:control type=&quot;page/modal&quot;>&#xD;
+          &lt;form:attributes source=&quot;page/modal&quot;>&#xD;
+            &lt;dync:attribute id=&quot;title&quot; value=&quot;新增项目文档&quot;>&#xD;
+              &lt;dync:render/>&#xD;
+              &lt;dync:children/>&#xD;
+            &lt;/dync:attribute>&#xD;
+          &lt;/form:attributes>&#xD;
+        &lt;/form:control>&#xD;
+        &lt;form:child xsi:type=&quot;form:Group&quot; id=&quot;main&quot; name=&quot;项目文档&quot;>&#xD;
+          &lt;form:control type=&quot;container/div&quot;>&#xD;
+            &lt;form:attributes source=&quot;container/div&quot;/>&#xD;
+          &lt;/form:control>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.id&quot; id=&quot;id&quot; name=&quot;主键&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;>&#xD;
+                &lt;dync:attribute default=&quot;false&quot; desc=&quot;是否验证必填，可以为表达式和变量。&amp;#xA;                &amp;#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。&quot; group=&quot;数据校验&quot; hidden=&quot;false&quot; id=&quot;required&quot; name=&quot;必填项&quot; required=&quot;true&quot; value=&quot;true&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkboxAndExpr&quot;/>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+              &lt;/form:attributes>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.name&quot; id=&quot;name&quot; name=&quot;文档名称&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;>&#xD;
+                &lt;dync:attribute default=&quot;false&quot; desc=&quot;是否验证必填，可以为表达式和变量。&amp;#xA;                &amp;#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。&quot; group=&quot;数据校验&quot; hidden=&quot;false&quot; id=&quot;required&quot; name=&quot;必填项&quot; required=&quot;true&quot; value=&quot;true&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkboxAndExpr&quot;/>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+              &lt;/form:attributes>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.desc&quot; id=&quot;desc&quot; name=&quot;文档描述&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;/>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.project&quot; id=&quot;project&quot; name=&quot;项目&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;>&#xD;
+                &lt;dync:attribute default=&quot;false&quot; desc=&quot;是否验证必填，可以为表达式和变量。&amp;#xA;                &amp;#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。&quot; group=&quot;数据校验&quot; hidden=&quot;false&quot; id=&quot;required&quot; name=&quot;必填项&quot; required=&quot;true&quot; value=&quot;true&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkboxAndExpr&quot;/>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+              &lt;/form:attributes>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.visitCount&quot; id=&quot;visitCount&quot; name=&quot;访问次数&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;/>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.publicStatic&quot; id=&quot;publicStatic&quot; name=&quot;是否发布&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;/>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.content&quot; id=&quot;content&quot; name=&quot;内容&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;/>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+        &lt;/form:child>&#xD;
+        &lt;form:child xsi:type=&quot;form:Group&quot; id=&quot;toolbar&quot; name=&quot;主按钮组&quot;>&#xD;
+          &lt;form:control type=&quot;container/toolbar_modal_footer&quot;>&#xD;
+            &lt;form:attributes source=&quot;container/toolbar_modal_footer&quot;/>&#xD;
+          &lt;/form:control>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; id=&quot;btn_add&quot; name=&quot;新增&quot;>&#xD;
+            &lt;form:control type=&quot;widget/button&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/button&quot;>&#xD;
+                &lt;dync:attribute default=&quot;&quot; desc=&quot;按钮图标，Font Awesom 3.2.1中定义的所有图标都可用&quot; group=&quot;HTML设置&quot; hidden=&quot;false&quot; id=&quot;icon&quot; name=&quot;图标&quot; required=&quot;false&quot; value=&quot;fa-check&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;selectIcon&quot;/>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+                &lt;dync:attribute default=&quot;&quot; desc=&quot;按钮事件。&amp;#xA;                $param $event AngularJS的[event](https://docs.angularjs.org/guide/expression#-event-)事件。&quot; group=&quot;事件设置&quot; hidden=&quot;false&quot; id=&quot;click&quot; name=&quot;点击事件&quot; required=&quot;false&quot; value=&quot;btn_add_click($event)&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;event&quot;>&#xD;
+                    &lt;dync:item name=&quot;params&quot; value=&quot;$event&quot;/>&#xD;
+                  &lt;/dync:render>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+                &lt;dync:attribute default=&quot;btn-primary&quot; desc=&quot;按钮样式&quot; group=&quot;HTML设置&quot; hidden=&quot;false&quot; id=&quot;style&quot; name=&quot;样式&quot; required=&quot;false&quot; value=&quot;btn-success&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;select&quot;>&#xD;
+                    &lt;dync:item name=&quot;默认&quot; value=&quot;btn-default&quot;/>&#xD;
+                    &lt;dync:item name=&quot;主要&quot; value=&quot;btn-primary&quot;/>&#xD;
+                    &lt;dync:item name=&quot;成功&quot; value=&quot;btn-success&quot;/>&#xD;
+                    &lt;dync:item name=&quot;信息&quot; value=&quot;btn-info&quot;/>&#xD;
+                    &lt;dync:item name=&quot;警告&quot; value=&quot;btn-warning&quot;/>&#xD;
+                    &lt;dync:item name=&quot;危险&quot; value=&quot;btn-danger&quot;/>&#xD;
+                    &lt;dync:item name=&quot;链接&quot; value=&quot;btn-link&quot;/>&#xD;
+                    &lt;dync:item name=&quot;通用&quot; value=&quot;btn-white no-border&quot;/>&#xD;
+                  &lt;/dync:render>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+              &lt;/form:attributes>&#xD;
+            &lt;/form:control>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; id=&quot;btn_edit&quot; name=&quot;取消&quot;>&#xD;
+            &lt;form:control type=&quot;widget/button&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/button&quot;>&#xD;
+                &lt;dync:attribute default=&quot;&quot; desc=&quot;按钮图标，Font Awesom 3.2.1中定义的所有图标都可用&quot; group=&quot;HTML设置&quot; hidden=&quot;false&quot; id=&quot;icon&quot; name=&quot;图标&quot; required=&quot;false&quot; value=&quot;fa-times&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;selectIcon&quot;/>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+                &lt;dync:attribute default=&quot;&quot; desc=&quot;按钮事件。&amp;#xA;                $param $event AngularJS的[event](https://docs.angularjs.org/guide/expression#-event-)事件。&quot; group=&quot;事件设置&quot; hidden=&quot;false&quot; id=&quot;click&quot; name=&quot;点击事件&quot; required=&quot;false&quot; value=&quot;btn_edit_click($event)&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;event&quot;>&#xD;
+                    &lt;dync:item name=&quot;params&quot; value=&quot;$event&quot;/>&#xD;
+                  &lt;/dync:render>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+              &lt;/form:attributes>&#xD;
+            &lt;/form:control>&#xD;
+          &lt;/form:child>&#xD;
+        &lt;/form:child>&#xD;
+        &lt;form:datasources>&#xD;
+          &lt;form:datasource xsi:type=&quot;form:EntityDataSource&quot; id=&quot;entity&quot; name=&quot;实体数据源&quot; entity=&quot;entity:com.chinacreator.c2.project.doc.Doc&quot;/>&#xD;
+        &lt;/form:datasources>&#xD;
+        &lt;form:scripts>btn_add_click:function($event){&#xD;
+    $model.entity.$save(function(){&#xD;
+        Modal.instance.close();&#xD;
+        Messenger.post({type:'success',message:'新增成功'});&#xD;
+    });&#xD;
+},&#xD;
+btn_edit_click:function($event){&#xD;
+   Modal.instance.close();&#xD;
+}&#xD;
+&lt;/form:scripts>&#xD;
+      &lt;/docket:ui>&#xD;
+    &lt;/docket:event>&#xD;
+    &lt;docket:event id=&quot;delete&quot; name=&quot;删除&quot;>&#xD;
+      &lt;docket:logic>&#xD;
+        &lt;node xsi:type=&quot;RuleRef&quot; id=&quot;delete&quot; name=&quot;单记录删除&quot; ruleId=&quot;rule:c2.dao.delete&quot;>&#xD;
+          &lt;inputs>&#xD;
+            &lt;input autoFrom=&quot;data&quot; code=&quot;entity&quot;/>&#xD;
+          &lt;/inputs>&#xD;
+        &lt;/node>&#xD;
+      &lt;/docket:logic>&#xD;
+      &lt;docket:ui type=&quot;none&quot;/>&#xD;
+    &lt;/docket:event>&#xD;
+    &lt;docket:event id=&quot;edit&quot; name=&quot;修改&quot;>&#xD;
+      &lt;docket:logic>&#xD;
+        &lt;node xsi:type=&quot;RuleRef&quot; id=&quot;modify&quot; name=&quot;更新&quot; ruleId=&quot;rule:c2.dao.update&quot;>&#xD;
+          &lt;inputs>&#xD;
+            &lt;input autoFrom=&quot;data&quot; code=&quot;entity&quot;/>&#xD;
+          &lt;/inputs>&#xD;
+        &lt;/node>&#xD;
+      &lt;/docket:logic>&#xD;
+      &lt;docket:ui>&#xD;
+        &lt;form:control type=&quot;page/modal&quot;>&#xD;
+          &lt;form:attributes source=&quot;page/modal&quot;>&#xD;
+            &lt;dync:attribute id=&quot;title&quot; value=&quot;修改项目文档&quot;>&#xD;
+              &lt;dync:render/>&#xD;
+              &lt;dync:children/>&#xD;
+            &lt;/dync:attribute>&#xD;
+          &lt;/form:attributes>&#xD;
+        &lt;/form:control>&#xD;
+        &lt;form:child xsi:type=&quot;form:Group&quot; id=&quot;main&quot; name=&quot;项目文档&quot;>&#xD;
+          &lt;form:control type=&quot;container/div&quot;>&#xD;
+            &lt;form:attributes source=&quot;container/div&quot;/>&#xD;
+          &lt;/form:control>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.id&quot; id=&quot;id&quot; name=&quot;主键&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;>&#xD;
+                &lt;dync:attribute default=&quot;false&quot; desc=&quot;是否验证必填，可以为表达式和变量。&amp;#xA;                &amp;#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。&quot; group=&quot;数据校验&quot; hidden=&quot;false&quot; id=&quot;required&quot; name=&quot;必填项&quot; required=&quot;true&quot; value=&quot;true&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkboxAndExpr&quot;/>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+              &lt;/form:attributes>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.name&quot; id=&quot;name&quot; name=&quot;文档名称&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;>&#xD;
+                &lt;dync:attribute default=&quot;false&quot; desc=&quot;是否验证必填，可以为表达式和变量。&amp;#xA;                &amp;#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。&quot; group=&quot;数据校验&quot; hidden=&quot;false&quot; id=&quot;required&quot; name=&quot;必填项&quot; required=&quot;true&quot; value=&quot;true&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkboxAndExpr&quot;/>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+              &lt;/form:attributes>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.desc&quot; id=&quot;desc&quot; name=&quot;文档描述&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;/>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.project&quot; id=&quot;project&quot; name=&quot;项目&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;>&#xD;
+                &lt;dync:attribute default=&quot;false&quot; desc=&quot;是否验证必填，可以为表达式和变量。&amp;#xA;                &amp;#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。&quot; group=&quot;数据校验&quot; hidden=&quot;false&quot; id=&quot;required&quot; name=&quot;必填项&quot; required=&quot;true&quot; value=&quot;true&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkboxAndExpr&quot;/>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+              &lt;/form:attributes>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.visitCount&quot; id=&quot;visitCount&quot; name=&quot;访问次数&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;/>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.publicStatic&quot; id=&quot;publicStatic&quot; name=&quot;是否发布&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;/>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; binding=&quot;$model.entity.content&quot; id=&quot;content&quot; name=&quot;内容&quot; customize=&quot;true&quot;>&#xD;
+            &lt;form:control type=&quot;widget/text&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/text&quot;/>&#xD;
+            &lt;/form:control>&#xD;
+            &lt;form:validation/>&#xD;
+          &lt;/form:child>&#xD;
+        &lt;/form:child>&#xD;
+        &lt;form:child xsi:type=&quot;form:Group&quot; id=&quot;toolbar&quot; name=&quot;主按钮组&quot;>&#xD;
+          &lt;form:control type=&quot;container/toolbar_modal_footer&quot;>&#xD;
+            &lt;form:attributes source=&quot;container/toolbar_modal_footer&quot;/>&#xD;
+          &lt;/form:control>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; id=&quot;btn_add&quot; name=&quot;新增&quot;>&#xD;
+            &lt;form:control type=&quot;widget/button&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/button&quot;>&#xD;
+                &lt;dync:attribute default=&quot;&quot; desc=&quot;按钮图标，Font Awesom 3.2.1中定义的所有图标都可用&quot; group=&quot;HTML设置&quot; hidden=&quot;false&quot; id=&quot;icon&quot; name=&quot;图标&quot; required=&quot;false&quot; value=&quot;fa-check&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;selectIcon&quot;/>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+                &lt;dync:attribute default=&quot;&quot; desc=&quot;按钮事件。&amp;#xA;                $param $event AngularJS的[event](https://docs.angularjs.org/guide/expression#-event-)事件。&quot; group=&quot;事件设置&quot; hidden=&quot;false&quot; id=&quot;click&quot; name=&quot;点击事件&quot; required=&quot;false&quot; value=&quot;btn_add_click($event)&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;event&quot;>&#xD;
+                    &lt;dync:item name=&quot;params&quot; value=&quot;$event&quot;/>&#xD;
+                  &lt;/dync:render>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+                &lt;dync:attribute default=&quot;btn-primary&quot; desc=&quot;按钮样式&quot; group=&quot;HTML设置&quot; hidden=&quot;false&quot; id=&quot;style&quot; name=&quot;样式&quot; required=&quot;false&quot; value=&quot;btn-success&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;select&quot;>&#xD;
+                    &lt;dync:item name=&quot;默认&quot; value=&quot;btn-default&quot;/>&#xD;
+                    &lt;dync:item name=&quot;主要&quot; value=&quot;btn-primary&quot;/>&#xD;
+                    &lt;dync:item name=&quot;成功&quot; value=&quot;btn-success&quot;/>&#xD;
+                    &lt;dync:item name=&quot;信息&quot; value=&quot;btn-info&quot;/>&#xD;
+                    &lt;dync:item name=&quot;警告&quot; value=&quot;btn-warning&quot;/>&#xD;
+                    &lt;dync:item name=&quot;危险&quot; value=&quot;btn-danger&quot;/>&#xD;
+                    &lt;dync:item name=&quot;链接&quot; value=&quot;btn-link&quot;/>&#xD;
+                    &lt;dync:item name=&quot;通用&quot; value=&quot;btn-white no-border&quot;/>&#xD;
+                  &lt;/dync:render>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+              &lt;/form:attributes>&#xD;
+            &lt;/form:control>&#xD;
+          &lt;/form:child>&#xD;
+          &lt;form:child xsi:type=&quot;form:Field&quot; id=&quot;btn_edit&quot; name=&quot;取消&quot;>&#xD;
+            &lt;form:control type=&quot;widget/button&quot;>&#xD;
+              &lt;form:attributes source=&quot;widget/button&quot;>&#xD;
+                &lt;dync:attribute default=&quot;&quot; desc=&quot;按钮图标，Font Awesom 3.2.1中定义的所有图标都可用&quot; group=&quot;HTML设置&quot; hidden=&quot;false&quot; id=&quot;icon&quot; name=&quot;图标&quot; required=&quot;false&quot; value=&quot;fa-times&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;selectIcon&quot;/>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+                &lt;dync:attribute default=&quot;&quot; desc=&quot;按钮事件。&amp;#xA;                $param $event AngularJS的[event](https://docs.angularjs.org/guide/expression#-event-)事件。&quot; group=&quot;事件设置&quot; hidden=&quot;false&quot; id=&quot;click&quot; name=&quot;点击事件&quot; required=&quot;false&quot; value=&quot;btn_edit_click($event)&quot;>&#xD;
+                  &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;event&quot;>&#xD;
+                    &lt;dync:item name=&quot;params&quot; value=&quot;$event&quot;/>&#xD;
+                  &lt;/dync:render>&#xD;
+                  &lt;dync:children/>&#xD;
+                &lt;/dync:attribute>&#xD;
+              &lt;/form:attributes>&#xD;
+            &lt;/form:control>&#xD;
+          &lt;/form:child>&#xD;
+        &lt;/form:child>&#xD;
+        &lt;form:datasources>&#xD;
+          &lt;form:datasource xsi:type=&quot;form:EntityDataSource&quot; id=&quot;entity&quot; name=&quot;实体数据源&quot; entity=&quot;entity:com.chinacreator.c2.project.doc.Doc&quot;/>&#xD;
+        &lt;/form:datasources>&#xD;
+        &lt;form:scripts>btn_add_click:function($event){&#xD;
+    $model.entity.$save(function(){&#xD;
+        Modal.instance.close();&#xD;
+        Messenger.post({type:'success',message:'新增成功'});&#xD;
+    });&#xD;
+},&#xD;
+btn_edit_click:function($event){&#xD;
+   Modal.instance.close();&#xD;
+}&#xD;
+&lt;/form:scripts>&#xD;
+      &lt;/docket:ui>&#xD;
+    &lt;/docket:event>&#xD;
+    &lt;docket:event id=&quot;get&quot; name=&quot;单记录查询&quot;>&#xD;
+      &lt;docket:logic>&#xD;
+        &lt;node xsi:type=&quot;RuleRef&quot; id=&quot;get&quot; name=&quot;单记录查询&quot; ruleId=&quot;rule:c2.dao.selectOne&quot;>&#xD;
+          &lt;inputs>&#xD;
+            &lt;input autoFrom=&quot;data&quot; code=&quot;entity&quot;/>&#xD;
+          &lt;/inputs>&#xD;
+        &lt;/node>&#xD;
+      &lt;/docket:logic>&#xD;
+      &lt;docket:ui type=&quot;none&quot;/>&#xD;
+    &lt;/docket:event>&#xD;
+  &lt;/docket:events>&#xD;
+  &lt;docket:table ds=&quot;dev-center&quot; table=&quot;c2_comunity_doc&quot;/>&#xD;
+  &lt;docket:cache>false&lt;/docket:cache>&#xD;
+  &lt;entity:datas/>&#xD;
+  &lt;entity:views/>&#xD;
+&lt;/entity:Entity>&#xD;
+</form:scripts>
+        <form:htmls></form:htmls>
+      </docket:ui>
+    </docket:event>
+  </docket:events>
+  <docket:table ds="dev-center" table="c2_comunity_doc"/>
+  <docket:cache>false</docket:cache>
+  <entity:datas/>
+  <entity:views/>
+</entity:Entity>

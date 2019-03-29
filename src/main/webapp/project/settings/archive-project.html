@@ -1,0 +1,16 @@
+<h5>项目项目归档后，普通参与者将无法再看到当前项目，只有项目所有者能在“已归档项目”中对项目状况进行查看
+已归档项目内的所有数据都不允许编辑，请在下方文本框中输入当前项目的完整编号：</h5>
+<h3>{{project.code}}</h3>
+
+<div class="input-group">
+        <span class="input-group-addon"><i class="md md-wifi-tethering"></i></span>
+            <div class="fg-line">
+                <input type="text" class="form-control" ng-model="archiveProjectCode" placeholder="确认项目编号">
+            </div>
+        <span class="input-group-addon last"><i class="md md-wifi-tethering"></i></span>
+</div>
+
+<div class="modal-footer" data-ng-controller="archiveProjectCtrl">
+    <button type="button" class="btn btn-info waves-effect btn-icon-text" ng-disabled="archiveProjectCode!=project.code" ng-click="onArchive()"><i class="md md-archive"></i>确认</button>
+</div>
+

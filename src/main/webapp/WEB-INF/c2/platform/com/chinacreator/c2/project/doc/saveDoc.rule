@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="saveDoc" log="false" className="com.chinacreator.c2.project.doc.DocService" method="saveDoc">
+  <name>保存文档和附件</name>
+  <inputs>
+    <input collection="false" desc="" id="doc" required="true" type="com.chinacreator.c2.project.doc.Doc"/>
+    <input collection="false" desc="" id="fileList" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.doc" name="doc" signature="QDoc;" type="com.chinacreator.c2.project.doc.Doc"/>
+    <param autoValue="Input.fileList" name="fileList" signature="QList&lt;QDocFile;>;" type="java.util.List"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

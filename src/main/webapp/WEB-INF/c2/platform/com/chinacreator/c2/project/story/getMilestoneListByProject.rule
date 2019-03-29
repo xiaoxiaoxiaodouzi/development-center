@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getMilestoneListByProject" log="false" className="com.chinacreator.c2.project.story.StoryService" method="getMilestoneListByProject">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>查找项目的里程碑</name>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="java.lang.Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <res></res>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="QInteger;" type="java.lang.Integer"/>
+  </params>
+  <return signature="QList&lt;QMilestone;>;" type="java.util.List"/>
+</CustomRule>

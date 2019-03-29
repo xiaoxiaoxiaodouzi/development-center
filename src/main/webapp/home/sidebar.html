@@ -1,0 +1,64 @@
+<div class="sidebar-inner c-overflow">
+    <div class="profile-menu">
+        <a href="" toggle-submenu>
+            <div class="profile-pic">
+                <img ng-src="{{subject.remark1}}" alt="">
+            </div>
+
+            <div class="profile-info">
+                	{{subject.userRealname}}
+                <i class="md md-arrow-drop-down"></i>
+            </div>
+        </a>
+
+        <ul class="main-menu">
+            <li ui-sref-active="active">
+                <a ui-sref="home.profile"><i class="md md-person"></i> 个人信息</a>
+            </li>
+            <li>
+                <a href=""><i class="md md-settings-input-antenna"></i> 通知设置</a>
+            </li>
+            <li>
+                <a ui-sref="home.about"><i class="md md-info-outline"></i> 关于应用</a>
+            </li>
+            <li>
+                <a href="" data-ng-click="mactrl.logout()"><i class="md md-history"></i> 登出</a>
+            </li>
+        </ul>
+    </div>
+
+    <ul class="main-menu">
+        <!-- <li data-ui-sref-active="active">
+            <a data-ui-sref="home.tasks" ><i class="md md-format-list-bulleted"></i> 我的任务</a>
+        </li> -->
+        <li data-ui-sref-active="active">
+            <a data-ui-sref="home.workbench"><i class="md md-laptop"></i>工作台</a>
+        </li>
+        <li data-ui-sref-active="active">
+            <a data-ui-sref="home.projects" ><i class="md md-apps"></i> 我的项目</a>
+        </li>
+        <li data-ui-sref-active="active">
+            <a data-ui-sref="home.weeklyReports"><i class="md md-track-changes"></i> 项目周报</a>
+        </li>
+        <li data-ui-sref-active="active">
+            <a data-ui-sref="home.support"><i class="md md-description"></i> 支持单</a>
+        </li>
+        <li>
+            <a ng-href="http://docs.c2cloud.cn/#/" target="_blank"><i class="md md-my-library-books"></i> 文档中心</a>
+        </li>
+        <li data-ui-sref-active="active">
+            <a data-ui-sref="home.shares" ><i class="md md-share"></i> 公共资源</a>
+        </li>
+        <li class="sub-menu" data-ng-class="{ 'active toggled': $state.includes('home.settings') }"  perm-res="home_settings">
+            <a href="" toggle-submenu><i class="md md-settings"></i> 系统设置</a>
+            <ul>
+	            <li data-ui-sref-active="active">
+		            <a data-ui-sref="home.settings.assistants" style="padding-left:28%">助理配置</a>
+		        </li>
+		        
+            </ul>
+        </li>
+        
+    </ul>
+</div>
+

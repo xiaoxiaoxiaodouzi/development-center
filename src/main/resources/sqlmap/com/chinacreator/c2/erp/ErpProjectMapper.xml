@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.erp.ErpProjectMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  V_PROJECT.pid ,
+		  V_PROJECT.pcode ,
+		  V_PROJECT.pname 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="pid != null">and V_PROJECT.pid = #{pid}</if>
+	    <if test="pcode != null">and V_PROJECT.pcode = #{pcode}</if>
+	    <if test="pname != null">and V_PROJECT.pname = #{pname}</if>
+</sql>
+
+
+<!-- ElementID:ErpProjectResult,Generated=true -->
+<resultMap id="ErpProjectResult" type="com.chinacreator.c2.erp.ErpProject">
+	<id property="pid" column="pid"/>
+	<result property="pcode" column="pcode"/>
+	<result property="pname" column="pname"/>
+</resultMap>
+
+
+
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.erp.ErpProject">
+	insert into V_PROJECT(
+	         <if test="pid != null">pid</if>
+	         <if test="pcode != null">,pcode</if>
+	         <if test="pname != null">,pname</if>
+	 	 	 )
+	 values (
+	         <if test="pid != null">#{pid,jdbcType=VARCHAR}</if>
+	         <if test="pcode != null">,#{pcode,jdbcType=VARCHAR}</if>
+	         <if test="pname != null">,#{pname,jdbcType=VARCHAR}</if>
+	 	 	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.erp.ErpProject" resultType="int">
+	select count(*) from V_PROJECT 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.erp.ErpProject">
+	update V_PROJECT
+<set>
+	<if test="pcode != null">pcode=#{pcode,jdbcType=VARCHAR},</if>
+	<if test="pname != null">pname=#{pname,jdbcType=VARCHAR}</if>
+</set>
+<where>
+	<choose>
+        <when test="pid != null">and pid = #{pid}</when>
+        <otherwise>and pid = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:update,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update V_PROJECT
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="pcode==null">pcode = null,</if>
+		    <if test="pname==null">pname = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="pid != null">and pid = #{pid}</when>
+			<otherwise>and pid = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.erp.ErpProject">
+    delete from V_PROJECT where 1=1 and pid = #{pid}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.erp.ErpProject" resultMap="ErpProjectResult">
+	select 
+		<include refid="column_sql"/>
+	    from V_PROJECT 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list">
+	insert into V_PROJECT (pid,pcode,pname) 
+<foreach collection="list" item="entity" index="index" separator="union all">
+		select 
+		#{entity.pid,jdbcType = VARCHAR},
+				#{entity.pcode,jdbcType = VARCHAR},
+				#{entity.pname,jdbcType = VARCHAR}
+		from dual
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from V_PROJECT where pid in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.pid}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:updateBatch,Generated=true -->
+<update id="updateBatch" parameterType="list">
+	<foreach collection="list" item="entity" open="begin" close=";end;" separator=";">
+			update V_PROJECT
+	<set>
+	<if test="entity.pcode != null">pcode= #{entity.pcode,jdbcType=VARCHAR},</if>
+	<if test="entity.pname != null">pname= #{entity.pname,jdbcType=VARCHAR}</if>
+	</set>
+		<where>
+			<choose>
+				<when test="entity.pid != null">and pid = #{entity.pid}</when>
+				<otherwise>and pid = </otherwise>
+			</choose>
+		</where>
+	</foreach>
+</update>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="ErpProjectResult">
+	select 
+		<include refid="column_sql"/>
+	    from V_PROJECT 
+</select>
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="ErpProjectResult">
+select 
+	<include refid="column_sql"/> 
+	from V_PROJECT 
+	where V_PROJECT.pid in (
+<foreach collection="list" item="entity" separator="intersect">
+		select 
+		V_PROJECT.pid
+	    from V_PROJECT 
+		 <where>
+	        <if test="entity.pcode != null">V_PROJECT.pname like %#{entity.pname}% </if>
+		</where>
+</foreach>
+)
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.String" resultMap="ErpProjectResult">
+	select 
+		<include refid="column_sql"/>
+	    from V_PROJECT 
+		 where V_PROJECT.pid = #{pid,jdbcType=VARCHAR}
+</select>
+
+
+<!-- ElementID:selectByPage,Generated=false -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.erp.ErpProject" resultMap="ErpProjectResult">
+	select 
+		<include refid="column_sql"/>
+	    from V_PROJECT 
+		 <where>
+			  <if test="pcode != null">and V_PROJECT.pcode like #{pcode,jdbcType=VARCHAR} or V_PROJECT.pname like #{pcode,jdbcType=VARCHAR} </if>
+		</where>
+		order by pcode asc
+</select>
+
+<select id="selectMemberEmails" parameterType="string" resultType="string">
+		select EMAIL from sys_user 
+		where SYS_USER."NO" 
+		IN(
+			select ORG_USER.UCODE from v_org_user org_user where ORG_USER.AMBID 
+			IN(
+				SELECT AMBID FROM v_project_org org where ORG.PID 
+				IN(
+					select pro.PID from V_PROJECT pro where pro.pcode = #{_parameter})
+				)
+			)
+		and sys_user.EMAIL is not null 
+</select>
+
+<select id="selectMembers" parameterType="list" resultMap="userResult">
+	select * from td_sm_user 
+	where td_sm_user.user_name in 
+	<foreach collection="list" item="email" open="(" close=")" separator=",">
+			#{email}
+	</foreach>
+</select>
+
+<resultMap type="map" id="userResult">
+	<id property="id" column="id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="userId" column="user_id"/>
+	<result property="jobId" column="job_id"/>
+</resultMap>
+
+<select id="selectWorkLogUserOrgInfo" parameterType="map" resultType="map">
+	select 
+			SYS_USER.ID USER_ID,
+			SYS_USER.LOGIN_NAME USER_SN,
+			SYS_USER.NAME USER_REALNAME,
+			SYS_OFFICE.ID ORG_ID,
+			SYS_OFFICE.NAME ORG_NAME
+    from SYS_USER  
+    LEFT JOIN SYS_OFFICE ON SYS_USER.COMPANY_ID = SYS_OFFICE.ID
+    <where>
+		<if test="members != null">and SYS_USER.ID in
+				<foreach collection="members" item="member" open="(" close=")" separator=",">
+						#{member.remark10,jdbcType=VARCHAR}
+				</foreach>
+		</if>	 
+	</where> 
+</select>
+<select id="selectByCode" parameterType="java.lang.String" resultType="int">
+	select count(*) cnt from V_PROJECT where pcode = #{_parameter} 
+	<!-- select sum(cnt) from(
+		select count(*) cnt from T_ORDER where T_ORDER.SN = #{_parameter} 
+		UNION ALL
+		select count(*) cnt from T_CONTRACT where T_CONTRACT.SN = #{_parameter} ) -->
+</select>
+
+<select id="selectProject" parameterType="map" resultMap="ErpProjectResult">
+	select * from V_PROJECT where pcode like '${_parameter}%' 
+</select>
+
+</mapper>

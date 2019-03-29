@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="wl/synchronizeWorkLog" log="false" className="com.chinacreator.c2.project.service.WorkLogService" method="synchronizeWorkLog">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>同步工作日志</name>
+  <inputs>
+    <input collection="false" desc="" id="start" required="true" type="java.sql.Date"/>
+    <input collection="false" desc="" id="end" required="true" type="java.sql.Date"/>
+    <input collection="false" desc="" id="deptIds" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.start" name="start" signature="QDate;" type="java.sql.Date"/>
+    <param autoValue="Input.end" name="end" signature="QDate;" type="java.sql.Date"/>
+    <param autoValue="Input.deptIds" name="deptIds" signature="QList&lt;QString;>;" type="java.util.List"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

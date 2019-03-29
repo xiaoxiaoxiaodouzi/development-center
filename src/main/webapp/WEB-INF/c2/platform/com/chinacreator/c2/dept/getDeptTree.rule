@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="dept/getDeptTree" log="false" className="com.chinacreator.c2.dept.DepartmentService" method="getDepartMentTree">
+  <name>获取组织机构树</name>
+  <inputs>
+    <input collection="false" desc="" id="orgId" required="false" type="String"/>
+    <input collection="false" desc="" id="deepth" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.orgId" name="orgId" signature="QString;" type="String"/>
+    <param autoValue="Input.deepth" name="deepth" signature="I" type="int"/>
+  </params>
+  <return signature="QList&lt;QDynamicTreeNode;>;" type="java.util.List"/>
+</CustomRule>

@@ -1,0 +1,45 @@
+<div class="dd" id="treeList">
+	<ol class="dd-list" ng-if="items.length > 0">
+		<li class="dd-item" data-id="{{m.id}}" ng-repeat="m in items">
+			<div class="dd-add-input" ng-mousedown="$event.stopPropagation()" data-ng-if="m.id==undefined">
+				<input type="text" data-ng-model="m.name" focus-me="m.id==undefined" ng-keyup="events.onAddKeyup($event,m,items)" class="form-control"
+				 id="form-control-input" placeholder="请输入要添加的节点名称">
+				<i data-ng-click="events.cancelAddMod(m,items)" class="md md-clear right_delete_black" style="color:red"></i>
+				<i class="pull-right bigger-130 ace-icon fa fa-exclamation-triangle orange2"></i>
+				<i class="md md-check right_check" style="color:#009688" data-ng-click="events.saveAddMod(m,items)"></i>
+			</div>
+			<div class="dd-handle" data-ng-if="m.id!=undefined&&!m.showModInput">
+				<span class="orange" ng-mousedown="$event.stopPropagation()" data-ng-click="events.clickName($event)" style="cursor: pointer">{{m.name}} </span>
+				<span class="lighter grey"></span>
+				<i ng-mousedown="$event.stopPropagation()" data-ng-click="events.del(m,items)" class="md md-delete right_handle" data-ng-if="editable"></i>
+				<i data-ng-click="events.editMod(m)" ng-mousedown="$event.stopPropagation()" class="md md-edit right_handle" data-ng-if="editable">
+				</i>
+				<i data-ng-click="events.addMod(m,items)" ng-mousedown="$event.stopPropagation()" class="md md-playlist-add right_add"
+				 data-ng-if="editable"></i>
+
+				 <div class="progress" style="margin-bottom: 0px;float: right;width: 30%;margin-right: 20px">
+						<div class="progress-bar progress-bar-info" title='完成度:{{m.completeness}}' role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:{{m.completeness}}">
+						</div>
+				</div>
+				<div class="pull-right action-buttons">
+					<a class="blue" href="#" ng-mousedown="$event.stopPropagation()">
+						<i class="ace-icon fa fa-pencil bigger-130"></i>
+					</a>
+					<a class="red" href="#" ng-mousedown="$event.stopPropagation()">
+						<i class="ace-icon fa fa-trash-o bigger-130"></i>
+					</a>
+				</div>
+			</div>
+			<div class="dd-add-input" data-ng-if="m.id!=undefined&&m.showModInput" ng-mousedown="$event.stopPropagation()">
+				<input input-id="{{m.id}}" focus-me="m.showModInput" data-ng-model="m.name" type="text" ng-model-options="{updateOn:''}"
+				 class="form-control" id="form-control-input" ng-keydown="events.preventDef($event)" ng-keyup="events.onEditKeyup($event,m,items);"
+				 placeholder="编辑节点">
+				<i data-ng-click="events.editMod(m)" class="md md-clear right_delete_black" style="color:red"></i>
+				<i class="pull-right bigger-130 ace-icon fa fa-exclamation-triangle orange2"></i>
+				<i class="md md-check right_check" style="color:#009688" data-ng-click="events.saveMod(m,items)"></i>
+			</div>
+			<nest-children  events="events" items="m.storyList"  template-url="template/story.html"></nest-children>
+			<nest-children editable="editable" events="events" items="m.modules"  template-url="template/nest-list.html"></nest-children>
+		</li>
+	</ol>
+</div>

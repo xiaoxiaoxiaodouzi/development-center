@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity:Entity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.chinacreator.com/platform/mvc/rule" xmlns:cdata="http://www.chinacreator.com/platform/mvc/cdata" xmlns:docket="http://www.chinacreator.com/platform/mvc/docket" xmlns:dync="http://www.chinacreator.com/platform/mvc/ui/dync" xmlns:entity="http://www.chinacreator.com/platform/mvc/entity" xmlns:form="http://www.chinacreator.com/platform/mvc/form" xmlns:template="http://www.chinacreator.com/c2/ui/template" dbType="MySQL" sn="bug">
+  <docket:name>bug</docket:name>
+  <docket:createType>来自数据库</docket:createType>
+  <docket:primaryKey>
+    <docket:pkAttribute attribute="id"/>
+  </docket:primaryKey>
+  <docket:attributes>
+    <docket:attribute code="id" name="id" nullable="false" type="mediumint" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="no" name="bug编号" nullable="false" type="mediumint" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="project" length="10" name="关联项目" nullable="false" precision="" type="int" default="0">
+      <docket:valueRange xsi:type="cdata:BDValueRange" displayExpr="data.Project.id" id="entity:com.chinacreator.c2.project.info.Project"/>
+    </docket:attribute>
+    <docket:attribute code="module" length="10" name="关联模块" nullable="false" precision="" type="int" default="0">
+      <docket:valueRange xsi:type="cdata:BDValueRange" displayExpr="data.Module.id" id="entity:com.chinacreator.c2.project.info.Module"/>
+    </docket:attribute>
+    <docket:attribute code="milestone" length="" name="关联里程碑" nullable="true" precision="" type="bigint" default="">
+      <docket:valueRange xsi:type="cdata:BDValueRange" displayExpr="data.Milestone.id" id="entity:com.chinacreator.c2.project.milestone.Milestone"/>
+    </docket:attribute>
+    <docket:attribute code="title" name="标题" nullable="false" type="string256" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="bug_version" name="版本" nullable="true" type="string256" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="pri" name="优先级" nullable="false" type="mediumint" default="3">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="status_" name="0关闭、1创建，2打开、3完成、4延后" nullable="false" type="int" default="1">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="init_assigned_to" name="" nullable="false" type="string64" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="create_time" name="创建时间" nullable="true" type="timestamp" default="CURRENT_TIMESTAMP">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="create_by" name="创建人" nullable="false" type="string64" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="last_update_time" name="最后修改时间" nullable="true" type="timestamp" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="spec" name="问题描述" nullable="true" type="text" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="order_no" length="10" name="排序号" type="int">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="projectPlan" length="10" name="项目计划" precision="" type="int">
+      <docket:valueRange xsi:type="cdata:BDValueRange" displayExpr="data.ProjectPlan.id" id="entity:com.chinacreator.c2.project.info.ProjectPlan"/>
+    </docket:attribute>
+  </docket:attributes>
+  <docket:subDokcets/>
+  <docket:events>
+    <docket:event desc="" id="slelect" name="新操作">
+      <docket:logic>
+        <node xsi:type="RuleRef" id="select" name="按条件查询" ruleId="rule:c2.dao.select">
+          <inputs>
+            <input code="condition" from="data"/>
+          </inputs>
+        </node>
+      </docket:logic>
+      <docket:ui id="slelect" name="新操作" type="none">
+        <form:control type="page/normal">
+          <form:attributes source="page/normal"/>
+        </form:control>
+        <form:child xsi:type="form:Group" id="Bug" name="bug">
+          <form:control type="container/div">
+            <form:attributes source="container/div">
+              <dync:attribute default="false" desc="无任何属性和样式的div" group="HTML配置" hidden="false" id="pure" name="简单div" required="true" value="false">
+                <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+                <dync:children/>
+                <dync:onChange>
+                  <template:case value="true">
+                    <template:hide param="span" value="true"/>
+                    <template:hide param="offset" value="true"/>
+                    <template:hide param="collapse" value="true"/>
+                    <template:hide param="defaultCollapse" value="true"/>
+                    <template:hide param="autoHeight" value="true"/>
+                    <template:hide param="nopadding" value="true"/>
+                  </template:case>
+                  <template:case value="false">
+                    <template:hide param="span" value="false"/>
+                    <template:hide param="offset" value="false"/>
+                    <template:hide param="collapse" value="false"/>
+                    <template:hide param="defaultCollapse" value="false"/>
+                    <template:hide param="autoHeight" value="false"/>
+                    <template:hide param="nopadding" value="false"/>
+                  </template:case>
+                </dync:onChange>
+              </dync:attribute>
+              <dync:attribute default="12" desc="网格布局中占位数" group="HTML配置" hidden="false" id="span" name="占位数" required="true" value="12">
+                <dync:render colSpan="1" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="0" desc="网格布局中的偏移数" group="HTML配置" hidden="false" id="offset" name="偏移" required="false" value="0">
+                <dync:render colSpan="1" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="填写变量或者表达式，控制控件是否隐藏。变量和表达式的值必须为布尔类型。如果变量没有赋值，则默认为【隐藏默认值】。&#xA;                @attention 变量可以从数据源中直接拿，或者在页面的*载入事件*中进行初始化。" group="HTML配置" hidden="false" id="collapse" name="隐藏" required="false" value="">
+                <dync:render colSpan="2" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="false" desc="容器在页面初始化完成时是否隐藏。当你不需要通过变量来控制控件隐藏的话，只需要使用这个属性就够了。可以通过控件方法`show();hide();toggle()`控制容器的隐藏状态。&#xA;                `false`表示展开控件（默认）。&#xA;                `true`表示隐藏控件。" group="HTML配置" hidden="false" id="defaultCollapse" name="隐藏默认值" required="false" value="false">
+                <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="false" desc="该容器的高度自动适应当前页面的page-content高度" group="HTML配置" hidden="false" id="autoHeight" name="自动高度" required="false" value="false">
+                <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="false" desc="内部是否有边距(添加&quot;no-padding&quot;样式)" group="HTML配置" hidden="false" id="nopadding" name="无内边距" required="false" value="false">
+                <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="在容器内部直接嵌入自定义的HTML。当控件满足不了页面需求时，可以通过这个去嵌入一段自定义的HTML代码。&#xA;                点击属性框右边按钮，会自动跳转到*HTML片段*的页签，并在页签内生成一段包裹脚本。需要自定义的HTML代码写在脚本内。如果还需要脚本控制元素，也可在模版内部写自己的脚本。  &#xA;                @attention 如果定义了该属性，那么在容器中放置任何其他控件都会被忽略。&#xA;                @attention 自定义HTML其实是一个Angular的模版，模版内部的作用域（$scope)继承了Form表单的作用域。所以可以在js页面中通过$scope定义变量，然后在模版中获取。&#xA;                @attention 模版还能够支持Angular原生的指令，也能支持控件指令和自定义的指令。&#xA;                @code&#xA;                &lt;script type=&quot;text/ng-template&quot; id=&quot;newGroup1_html&quot;>&#xA;&#x9;&#x9;&#x9;&#x9;我的地盘我做主！  &#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;在表单$scope中定义的变量，都可以在这里通过双打括号{{}}获取。比如在页面js中定义了$scope.someThing = &quot;这里风景独好！&quot;;&#xA;&#x9;&#x9;&#x9;&#x9;{{someThing}} //这里显示&quot;这里风景独好！&quot;。  &#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;如果需要调用页面JS中的函数myClickFn，可以通过functions.myClickFn()调用：&#xA;&#x9;&#x9;&#x9;&#x9;&lt;button ng-click=&quot;functions.myClickFn()&quot;>按我！要温柔~&lt;/button>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/script>&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;//注意:页面JS定义的函数只能通过ng-click调用的，如果只习惯通过onClick调用，可以把函数单独写到新的&lt;script>标签里面，然后上面就能够onClick直接调用了：&#xA;&#x9;&#x9;&#x9;&#x9;&lt;script>&#xA;&#x9;&#x9;&#x9;&#x9;function myClickFn(){&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;XXOOXX&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/script>&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;如果需要循环输出数组，可以这样：&#xA;&#x9;&#x9;&#x9;&#x9;&lt;ul>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;li ng-repeat=&quot;one in some&quot;>{{one}}，欢迎来到Angular的世界！&lt;/li>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/ul>&#xA;                @code" group="高级自定义" hidden="false" id="html" name="自定义HTML" required="false" value="">
+                <dync:render colSpan="2" height="0" multi="false" name="html"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="可以添加任意class，多个class样式用空格分开" group="高级自定义" hidden="false" id="cssClass" name="自定义class" required="false" value="">
+                <dync:render colSpan="2" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="可以添加任意style样式,必须遵循style样式格式：&quot;color:red;backgroud-color:blue;&quot;。" group="高级自定义" hidden="false" id="style" name="自定义style" required="false" value="">
+                <dync:render colSpan="2" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+            </form:attributes>
+          </form:control>
+        </form:child>
+        <form:datasources>
+          <form:datasource xsi:type="form:Inputs">
+            <form:input id="id" name="实体数据id"/>
+          </form:datasource>
+          <form:datasource xsi:type="form:EntityDataSource" id="entity" name="实体数据" entity="entity:com.chinacreator.c2.project.bug.Bug"/>
+        </form:datasources>
+        <form:scripts>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;
+&lt;entity:Entity xmi:version=&quot;2.0&quot; xmlns:xmi=&quot;http://www.omg.org/XMI&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:cdata=&quot;http://www.chinacreator.com/platform/mvc/cdata&quot; xmlns:docket=&quot;http://www.chinacreator.com/platform/mvc/docket&quot; xmlns:entity=&quot;http://www.chinacreator.com/platform/mvc/entity&quot; sn=&quot;bug&quot;>&#xD;
+  &lt;docket:name>bug&lt;/docket:name>&#xD;
+  &lt;docket:createType>来自数据库&lt;/docket:createType>&#xD;
+  &lt;docket:primaryKey>&#xD;
+    &lt;docket:pkAttribute attribute=&quot;id&quot;/>&#xD;
+  &lt;/docket:primaryKey>&#xD;
+  &lt;docket:attributes>&#xD;
+    &lt;docket:attribute code=&quot;id&quot; name=&quot;id&quot; nullable=&quot;false&quot; type=&quot;mediumint&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;no&quot; length=&quot;8&quot; name=&quot;bug编号&quot; nullable=&quot;false&quot; type=&quot;mediumint&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;project&quot; length=&quot;10&quot; name=&quot;关联项目&quot; nullable=&quot;false&quot; precision=&quot;&quot; type=&quot;int&quot; default=&quot;0&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:BDValueRange&quot; displayExpr=&quot;data.Project.id&quot; id=&quot;entity:com.chinacreator.c2.project.info.Project&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;module&quot; length=&quot;10&quot; name=&quot;关联模块&quot; nullable=&quot;false&quot; precision=&quot;&quot; type=&quot;int&quot; default=&quot;0&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:BDValueRange&quot; displayExpr=&quot;data.Module.id&quot; id=&quot;entity:com.chinacreator.c2.project.info.Module&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;milestone&quot; length=&quot;&quot; name=&quot;关联里程碑&quot; nullable=&quot;true&quot; precision=&quot;&quot; type=&quot;bigint&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:BDValueRange&quot; displayExpr=&quot;data.Milestone.id&quot; id=&quot;entity:com.chinacreator.c2.project.milestone.Milestone&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;title&quot; name=&quot;标题&quot; nullable=&quot;false&quot; type=&quot;string256&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;pri&quot; name=&quot;优先级&quot; nullable=&quot;false&quot; type=&quot;mediumint&quot; default=&quot;3&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;status_&quot; name=&quot;0关闭、1创建，2打开、3完成、4延后&quot; nullable=&quot;false&quot; type=&quot;int&quot; default=&quot;1&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;create_by&quot; name=&quot;创建人&quot; nullable=&quot;false&quot; type=&quot;string64&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;create_time&quot; name=&quot;创建时间&quot; nullable=&quot;true&quot; type=&quot;timestamp&quot; default=&quot;CURRENT_TIMESTAMP&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;assign_to&quot; name=&quot;指派人&quot; nullable=&quot;true&quot; type=&quot;string64&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;last_update_time&quot; name=&quot;最后修改时间&quot; nullable=&quot;true&quot; type=&quot;timestamp&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;spec&quot; name=&quot;问题描述&quot; nullable=&quot;true&quot; type=&quot;text&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+  &lt;/docket:attributes>&#xD;
+  &lt;docket:subDokcets/>&#xD;
+  &lt;docket:events/>&#xD;
+  &lt;docket:table ds=&quot;dev-center&quot; table=&quot;c2_community_bug&quot;/>&#xD;
+  &lt;docket:cache>false&lt;/docket:cache>&#xD;
+  &lt;entity:datas/>&#xD;
+  &lt;entity:views/>&#xD;
+&lt;/entity:Entity>&#xD;
+</form:scripts>
+        <form:htmls></form:htmls>
+      </docket:ui>
+    </docket:event>
+    <docket:event desc="" id="delete" name="删除bug">
+      <docket:logic>
+        <node xsi:type="RuleRef" id="delete" name="单记录删除" ruleId="rule:c2.dao.delete">
+          <inputs>
+            <input code="entity" from="data"/>
+          </inputs>
+        </node>
+      </docket:logic>
+      <docket:ui name="删除bug" type="none">
+        <form:control type="page/normal">
+          <form:attributes source="page/normal"/>
+        </form:control>
+        <form:child xsi:type="form:Group" id="Bug" name="bug">
+          <form:control type="container/div">
+            <form:attributes source="container/div">
+              <dync:attribute default="false" desc="无任何属性和样式的div" group="HTML配置" hidden="false" id="pure" name="简单div" required="true" value="false">
+                <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+                <dync:children/>
+                <dync:onChange>
+                  <template:case value="true">
+                    <template:hide param="span" value="true"/>
+                    <template:hide param="offset" value="true"/>
+                    <template:hide param="collapse" value="true"/>
+                    <template:hide param="defaultCollapse" value="true"/>
+                    <template:hide param="autoHeight" value="true"/>
+                    <template:hide param="nopadding" value="true"/>
+                  </template:case>
+                  <template:case value="false">
+                    <template:hide param="span" value="false"/>
+                    <template:hide param="offset" value="false"/>
+                    <template:hide param="collapse" value="false"/>
+                    <template:hide param="defaultCollapse" value="false"/>
+                    <template:hide param="autoHeight" value="false"/>
+                    <template:hide param="nopadding" value="false"/>
+                  </template:case>
+                </dync:onChange>
+              </dync:attribute>
+              <dync:attribute default="12" desc="网格布局中占位数" group="HTML配置" hidden="false" id="span" name="占位数" required="true" value="12">
+                <dync:render colSpan="1" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="0" desc="网格布局中的偏移数" group="HTML配置" hidden="false" id="offset" name="偏移" required="false" value="0">
+                <dync:render colSpan="1" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="填写变量或者表达式，控制控件是否隐藏。变量和表达式的值必须为布尔类型。如果变量没有赋值，则默认为【隐藏默认值】。&#xA;                @attention 变量可以从数据源中直接拿，或者在页面的*载入事件*中进行初始化。" group="HTML配置" hidden="false" id="collapse" name="隐藏" required="false" value="">
+                <dync:render colSpan="2" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="false" desc="容器在页面初始化完成时是否隐藏。当你不需要通过变量来控制控件隐藏的话，只需要使用这个属性就够了。可以通过控件方法`show();hide();toggle()`控制容器的隐藏状态。&#xA;                `false`表示展开控件（默认）。&#xA;                `true`表示隐藏控件。" group="HTML配置" hidden="false" id="defaultCollapse" name="隐藏默认值" required="false" value="false">
+                <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="false" desc="该容器的高度自动适应当前页面的page-content高度" group="HTML配置" hidden="false" id="autoHeight" name="自动高度" required="false" value="false">
+                <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="false" desc="内部是否有边距(添加&quot;no-padding&quot;样式)" group="HTML配置" hidden="false" id="nopadding" name="无内边距" required="false" value="false">
+                <dync:render colSpan="2" height="0" multi="false" name="checkbox"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="在容器内部直接嵌入自定义的HTML。当控件满足不了页面需求时，可以通过这个去嵌入一段自定义的HTML代码。&#xA;                点击属性框右边按钮，会自动跳转到*HTML片段*的页签，并在页签内生成一段包裹脚本。需要自定义的HTML代码写在脚本内。如果还需要脚本控制元素，也可在模版内部写自己的脚本。  &#xA;                @attention 如果定义了该属性，那么在容器中放置任何其他控件都会被忽略。&#xA;                @attention 自定义HTML其实是一个Angular的模版，模版内部的作用域（$scope)继承了Form表单的作用域。所以可以在js页面中通过$scope定义变量，然后在模版中获取。&#xA;                @attention 模版还能够支持Angular原生的指令，也能支持控件指令和自定义的指令。&#xA;                @code&#xA;                &lt;script type=&quot;text/ng-template&quot; id=&quot;newGroup1_html&quot;>&#xA;&#x9;&#x9;&#x9;&#x9;我的地盘我做主！  &#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;在表单$scope中定义的变量，都可以在这里通过双打括号{{}}获取。比如在页面js中定义了$scope.someThing = &quot;这里风景独好！&quot;;&#xA;&#x9;&#x9;&#x9;&#x9;{{someThing}} //这里显示&quot;这里风景独好！&quot;。  &#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;如果需要调用页面JS中的函数myClickFn，可以通过functions.myClickFn()调用：&#xA;&#x9;&#x9;&#x9;&#x9;&lt;button ng-click=&quot;functions.myClickFn()&quot;>按我！要温柔~&lt;/button>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/script>&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;//注意:页面JS定义的函数只能通过ng-click调用的，如果只习惯通过onClick调用，可以把函数单独写到新的&lt;script>标签里面，然后上面就能够onClick直接调用了：&#xA;&#x9;&#x9;&#x9;&#x9;&lt;script>&#xA;&#x9;&#x9;&#x9;&#x9;function myClickFn(){&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;XXOOXX&#xA;&#x9;&#x9;&#x9;&#x9;}&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/script>&#xA;&#x9;&#x9;&#x9;&#x9;&#xA;&#x9;&#x9;&#x9;&#x9;如果需要循环输出数组，可以这样：&#xA;&#x9;&#x9;&#x9;&#x9;&lt;ul>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;li ng-repeat=&quot;one in some&quot;>{{one}}，欢迎来到Angular的世界！&lt;/li>&#xA;&#x9;&#x9;&#x9;&#x9;&lt;/ul>&#xA;                @code" group="高级自定义" hidden="false" id="html" name="自定义HTML" required="false" value="">
+                <dync:render colSpan="2" height="0" multi="false" name="html"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="可以添加任意class，多个class样式用空格分开" group="高级自定义" hidden="false" id="cssClass" name="自定义class" required="false" value="">
+                <dync:render colSpan="2" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+              <dync:attribute default="" desc="可以添加任意style样式,必须遵循style样式格式：&quot;color:red;backgroud-color:blue;&quot;。" group="高级自定义" hidden="false" id="style" name="自定义style" required="false" value="">
+                <dync:render colSpan="2" height="0" multi="false" name="text"/>
+                <dync:children/>
+              </dync:attribute>
+            </form:attributes>
+          </form:control>
+        </form:child>
+        <form:datasources>
+          <form:datasource xsi:type="form:Inputs">
+            <form:input id="id" name="实体数据id"/>
+          </form:datasource>
+          <form:datasource xsi:type="form:EntityDataSource" id="entity" name="实体数据" entity="entity:com.chinacreator.c2.project.bug.Bug"/>
+        </form:datasources>
+        <form:scripts>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?>&#xD;
+&lt;entity:Entity xmi:version=&quot;2.0&quot; xmlns:xmi=&quot;http://www.omg.org/XMI&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns=&quot;http://www.chinacreator.com/platform/mvc/rule&quot; xmlns:cdata=&quot;http://www.chinacreator.com/platform/mvc/cdata&quot; xmlns:docket=&quot;http://www.chinacreator.com/platform/mvc/docket&quot; xmlns:dync=&quot;http://www.chinacreator.com/platform/mvc/ui/dync&quot; xmlns:entity=&quot;http://www.chinacreator.com/platform/mvc/entity&quot; xmlns:form=&quot;http://www.chinacreator.com/platform/mvc/form&quot; xmlns:template=&quot;http://www.chinacreator.com/c2/ui/template&quot; sn=&quot;bug&quot;>&#xD;
+  &lt;docket:name>bug&lt;/docket:name>&#xD;
+  &lt;docket:createType>来自数据库&lt;/docket:createType>&#xD;
+  &lt;docket:primaryKey>&#xD;
+    &lt;docket:pkAttribute attribute=&quot;id&quot;/>&#xD;
+  &lt;/docket:primaryKey>&#xD;
+  &lt;docket:attributes>&#xD;
+    &lt;docket:attribute code=&quot;id&quot; name=&quot;id&quot; nullable=&quot;false&quot; type=&quot;mediumint&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;no&quot; name=&quot;bug编号&quot; nullable=&quot;false&quot; type=&quot;mediumint&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;project&quot; length=&quot;10&quot; name=&quot;关联项目&quot; nullable=&quot;false&quot; precision=&quot;&quot; type=&quot;int&quot; default=&quot;0&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:BDValueRange&quot; displayExpr=&quot;data.Project.id&quot; id=&quot;entity:com.chinacreator.c2.project.info.Project&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;module&quot; length=&quot;10&quot; name=&quot;关联模块&quot; nullable=&quot;false&quot; precision=&quot;&quot; type=&quot;int&quot; default=&quot;0&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:BDValueRange&quot; displayExpr=&quot;data.Module.id&quot; id=&quot;entity:com.chinacreator.c2.project.info.Module&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;milestone&quot; length=&quot;&quot; name=&quot;关联里程碑&quot; nullable=&quot;true&quot; precision=&quot;&quot; type=&quot;bigint&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:BDValueRange&quot; displayExpr=&quot;data.Milestone.id&quot; id=&quot;entity:com.chinacreator.c2.project.milestone.Milestone&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;title&quot; name=&quot;标题&quot; nullable=&quot;false&quot; type=&quot;string256&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;bug_version&quot; name=&quot;版本&quot; nullable=&quot;true&quot; type=&quot;string256&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;pri&quot; name=&quot;优先级&quot; nullable=&quot;false&quot; type=&quot;mediumint&quot; default=&quot;3&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;status_&quot; name=&quot;0关闭、1创建，2打开、3完成、4延后&quot; nullable=&quot;false&quot; type=&quot;int&quot; default=&quot;1&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;init_assigned_to&quot; name=&quot;&quot; nullable=&quot;false&quot; type=&quot;string64&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;create_time&quot; name=&quot;创建时间&quot; nullable=&quot;true&quot; type=&quot;timestamp&quot; default=&quot;CURRENT_TIMESTAMP&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;create_by&quot; name=&quot;创建人&quot; nullable=&quot;false&quot; type=&quot;string64&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;last_update_time&quot; name=&quot;最后修改时间&quot; nullable=&quot;true&quot; type=&quot;timestamp&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+    &lt;docket:attribute code=&quot;spec&quot; name=&quot;问题描述&quot; nullable=&quot;true&quot; type=&quot;text&quot; default=&quot;&quot;>&#xD;
+      &lt;docket:valueRange xsi:type=&quot;cdata:AllValueRange&quot;/>&#xD;
+    &lt;/docket:attribute>&#xD;
+  &lt;/docket:attributes>&#xD;
+  &lt;docket:subDokcets/>&#xD;
+  &lt;docket:events>&#xD;
+    &lt;docket:event desc=&quot;&quot; id=&quot;slelect&quot; name=&quot;新操作&quot;>&#xD;
+      &lt;docket:logic>&#xD;
+        &lt;node xsi:type=&quot;RuleRef&quot; id=&quot;select&quot; name=&quot;按条件查询&quot; ruleId=&quot;rule:c2.dao.select&quot;>&#xD;
+          &lt;inputs>&#xD;
+            &lt;input code=&quot;condition&quot; from=&quot;data&quot;/>&#xD;
+          &lt;/inputs>&#xD;
+        &lt;/node>&#xD;
+      &lt;/docket:logic>&#xD;
+      &lt;docket:ui id=&quot;slelect&quot; name=&quot;新操作&quot; type=&quot;none&quot;>&#xD;
+        &lt;form:control type=&quot;page/normal&quot;>&#xD;
+          &lt;form:attributes source=&quot;page/normal&quot;/>&#xD;
+        &lt;/form:control>&#xD;
+        &lt;form:child xsi:type=&quot;form:Group&quot; id=&quot;Bug&quot; name=&quot;bug&quot;>&#xD;
+          &lt;form:control type=&quot;container/div&quot;>&#xD;
+            &lt;form:attributes source=&quot;container/div&quot;>&#xD;
+              &lt;dync:attribute default=&quot;false&quot; desc=&quot;无任何属性和样式的div&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;pure&quot; name=&quot;简单div&quot; required=&quot;true&quot; value=&quot;false&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkbox&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+                &lt;dync:onChange>&#xD;
+                  &lt;template:case value=&quot;true&quot;>&#xD;
+                    &lt;template:hide param=&quot;span&quot; value=&quot;true&quot;/>&#xD;
+                    &lt;template:hide param=&quot;offset&quot; value=&quot;true&quot;/>&#xD;
+                    &lt;template:hide param=&quot;collapse&quot; value=&quot;true&quot;/>&#xD;
+                    &lt;template:hide param=&quot;defaultCollapse&quot; value=&quot;true&quot;/>&#xD;
+                    &lt;template:hide param=&quot;autoHeight&quot; value=&quot;true&quot;/>&#xD;
+                    &lt;template:hide param=&quot;nopadding&quot; value=&quot;true&quot;/>&#xD;
+                  &lt;/template:case>&#xD;
+                  &lt;template:case value=&quot;false&quot;>&#xD;
+                    &lt;template:hide param=&quot;span&quot; value=&quot;false&quot;/>&#xD;
+                    &lt;template:hide param=&quot;offset&quot; value=&quot;false&quot;/>&#xD;
+                    &lt;template:hide param=&quot;collapse&quot; value=&quot;false&quot;/>&#xD;
+                    &lt;template:hide param=&quot;defaultCollapse&quot; value=&quot;false&quot;/>&#xD;
+                    &lt;template:hide param=&quot;autoHeight&quot; value=&quot;false&quot;/>&#xD;
+                    &lt;template:hide param=&quot;nopadding&quot; value=&quot;false&quot;/>&#xD;
+                  &lt;/template:case>&#xD;
+                &lt;/dync:onChange>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;12&quot; desc=&quot;网格布局中占位数&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;span&quot; name=&quot;占位数&quot; required=&quot;true&quot; value=&quot;12&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;text&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;0&quot; desc=&quot;网格布局中的偏移数&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;offset&quot; name=&quot;偏移&quot; required=&quot;false&quot; value=&quot;0&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;text&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;&quot; desc=&quot;填写变量或者表达式，控制控件是否隐藏。变量和表达式的值必须为布尔类型。如果变量没有赋值，则默认为【隐藏默认值】。&amp;#xA;                @attention 变量可以从数据源中直接拿，或者在页面的*载入事件*中进行初始化。&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;collapse&quot; name=&quot;隐藏&quot; required=&quot;false&quot; value=&quot;&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;text&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;false&quot; desc=&quot;容器在页面初始化完成时是否隐藏。当你不需要通过变量来控制控件隐藏的话，只需要使用这个属性就够了。可以通过控件方法`show();hide();toggle()`控制容器的隐藏状态。&amp;#xA;                `false`表示展开控件（默认）。&amp;#xA;                `true`表示隐藏控件。&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;defaultCollapse&quot; name=&quot;隐藏默认值&quot; required=&quot;false&quot; value=&quot;false&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkbox&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;false&quot; desc=&quot;该容器的高度自动适应当前页面的page-content高度&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;autoHeight&quot; name=&quot;自动高度&quot; required=&quot;false&quot; value=&quot;false&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkbox&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;false&quot; desc=&quot;内部是否有边距(添加&amp;quot;no-padding&amp;quot;样式)&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;nopadding&quot; name=&quot;无内边距&quot; required=&quot;false&quot; value=&quot;false&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkbox&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;&quot; desc=&quot;在容器内部直接嵌入自定义的HTML。当控件满足不了页面需求时，可以通过这个去嵌入一段自定义的HTML代码。&amp;#xA;                点击属性框右边按钮，会自动跳转到*HTML片段*的页签，并在页签内生成一段包裹脚本。需要自定义的HTML代码写在脚本内。如果还需要脚本控制元素，也可在模版内部写自己的脚本。  &amp;#xA;                @attention 如果定义了该属性，那么在容器中放置任何其他控件都会被忽略。&amp;#xA;                @attention 自定义HTML其实是一个Angular的模版，模版内部的作用域（$scope)继承了Form表单的作用域。所以可以在js页面中通过$scope定义变量，然后在模版中获取。&amp;#xA;                @attention 模版还能够支持Angular原生的指令，也能支持控件指令和自定义的指令。&amp;#xA;                @code&amp;#xA;                &amp;lt;script type=&amp;quot;text/ng-template&amp;quot; id=&amp;quot;newGroup1_html&amp;quot;>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;我的地盘我做主！  &amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;在表单$scope中定义的变量，都可以在这里通过双打括号{{}}获取。比如在页面js中定义了$scope.someThing = &amp;quot;这里风景独好！&amp;quot;;&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;{{someThing}} //这里显示&amp;quot;这里风景独好！&amp;quot;。  &amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;如果需要调用页面JS中的函数myClickFn，可以通过functions.myClickFn()调用：&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;button ng-click=&amp;quot;functions.myClickFn()&amp;quot;>按我！要温柔~&amp;lt;/button>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;/script>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;//注意:页面JS定义的函数只能通过ng-click调用的，如果只习惯通过onClick调用，可以把函数单独写到新的&amp;lt;script>标签里面，然后上面就能够onClick直接调用了：&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;script>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;function myClickFn(){&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;XXOOXX&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;}&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;/script>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;如果需要循环输出数组，可以这样：&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;ul>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;li ng-repeat=&amp;quot;one in some&amp;quot;>{{one}}，欢迎来到Angular的世界！&amp;lt;/li>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;/ul>&amp;#xA;                @code&quot; group=&quot;高级自定义&quot; hidden=&quot;false&quot; id=&quot;html&quot; name=&quot;自定义HTML&quot; required=&quot;false&quot; value=&quot;&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;html&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;&quot; desc=&quot;可以添加任意class，多个class样式用空格分开&quot; group=&quot;高级自定义&quot; hidden=&quot;false&quot; id=&quot;cssClass&quot; name=&quot;自定义class&quot; required=&quot;false&quot; value=&quot;&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;text&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;&quot; desc=&quot;可以添加任意style样式,必须遵循style样式格式：&amp;quot;color:red;backgroud-color:blue;&amp;quot;。&quot; group=&quot;高级自定义&quot; hidden=&quot;false&quot; id=&quot;style&quot; name=&quot;自定义style&quot; required=&quot;false&quot; value=&quot;&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;text&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+            &lt;/form:attributes>&#xD;
+          &lt;/form:control>&#xD;
+        &lt;/form:child>&#xD;
+        &lt;form:datasources>&#xD;
+          &lt;form:datasource xsi:type=&quot;form:Inputs&quot;>&#xD;
+            &lt;form:input id=&quot;id&quot; name=&quot;实体数据id&quot;/>&#xD;
+          &lt;/form:datasource>&#xD;
+          &lt;form:datasource xsi:type=&quot;form:EntityDataSource&quot; id=&quot;entity&quot; name=&quot;实体数据&quot; entity=&quot;entity:com.chinacreator.c2.project.bug.Bug&quot;/>&#xD;
+        &lt;/form:datasources>&#xD;
+        &lt;form:scripts>&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?>&amp;#xD;&#xD;
+&amp;lt;entity:Entity xmi:version=&amp;quot;2.0&amp;quot; xmlns:xmi=&amp;quot;http://www.omg.org/XMI&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xmlns:cdata=&amp;quot;http://www.chinacreator.com/platform/mvc/cdata&amp;quot; xmlns:docket=&amp;quot;http://www.chinacreator.com/platform/mvc/docket&amp;quot; xmlns:entity=&amp;quot;http://www.chinacreator.com/platform/mvc/entity&amp;quot; sn=&amp;quot;bug&amp;quot;>&amp;#xD;&#xD;
+  &amp;lt;docket:name>bug&amp;lt;/docket:name>&amp;#xD;&#xD;
+  &amp;lt;docket:createType>来自数据库&amp;lt;/docket:createType>&amp;#xD;&#xD;
+  &amp;lt;docket:primaryKey>&amp;#xD;&#xD;
+    &amp;lt;docket:pkAttribute attribute=&amp;quot;id&amp;quot;/>&amp;#xD;&#xD;
+  &amp;lt;/docket:primaryKey>&amp;#xD;&#xD;
+  &amp;lt;docket:attributes>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;id&amp;quot; name=&amp;quot;id&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;mediumint&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;no&amp;quot; length=&amp;quot;8&amp;quot; name=&amp;quot;bug编号&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;mediumint&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;project&amp;quot; length=&amp;quot;10&amp;quot; name=&amp;quot;关联项目&amp;quot; nullable=&amp;quot;false&amp;quot; precision=&amp;quot;&amp;quot; type=&amp;quot;int&amp;quot; default=&amp;quot;0&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:BDValueRange&amp;quot; displayExpr=&amp;quot;data.Project.id&amp;quot; id=&amp;quot;entity:com.chinacreator.c2.project.info.Project&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;module&amp;quot; length=&amp;quot;10&amp;quot; name=&amp;quot;关联模块&amp;quot; nullable=&amp;quot;false&amp;quot; precision=&amp;quot;&amp;quot; type=&amp;quot;int&amp;quot; default=&amp;quot;0&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:BDValueRange&amp;quot; displayExpr=&amp;quot;data.Module.id&amp;quot; id=&amp;quot;entity:com.chinacreator.c2.project.info.Module&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;milestone&amp;quot; length=&amp;quot;&amp;quot; name=&amp;quot;关联里程碑&amp;quot; nullable=&amp;quot;true&amp;quot; precision=&amp;quot;&amp;quot; type=&amp;quot;bigint&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:BDValueRange&amp;quot; displayExpr=&amp;quot;data.Milestone.id&amp;quot; id=&amp;quot;entity:com.chinacreator.c2.project.milestone.Milestone&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;title&amp;quot; name=&amp;quot;标题&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;string256&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;pri&amp;quot; name=&amp;quot;优先级&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;mediumint&amp;quot; default=&amp;quot;3&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;status_&amp;quot; name=&amp;quot;0关闭、1创建，2打开、3完成、4延后&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;int&amp;quot; default=&amp;quot;1&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;create_by&amp;quot; name=&amp;quot;创建人&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;string64&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;create_time&amp;quot; name=&amp;quot;创建时间&amp;quot; nullable=&amp;quot;true&amp;quot; type=&amp;quot;timestamp&amp;quot; default=&amp;quot;CURRENT_TIMESTAMP&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;assign_to&amp;quot; name=&amp;quot;指派人&amp;quot; nullable=&amp;quot;true&amp;quot; type=&amp;quot;string64&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;last_update_time&amp;quot; name=&amp;quot;最后修改时间&amp;quot; nullable=&amp;quot;true&amp;quot; type=&amp;quot;timestamp&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;spec&amp;quot; name=&amp;quot;问题描述&amp;quot; nullable=&amp;quot;true&amp;quot; type=&amp;quot;text&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+  &amp;lt;/docket:attributes>&amp;#xD;&#xD;
+  &amp;lt;docket:subDokcets/>&amp;#xD;&#xD;
+  &amp;lt;docket:events/>&amp;#xD;&#xD;
+  &amp;lt;docket:table ds=&amp;quot;dev-center&amp;quot; table=&amp;quot;c2_community_bug&amp;quot;/>&amp;#xD;&#xD;
+  &amp;lt;docket:cache>false&amp;lt;/docket:cache>&amp;#xD;&#xD;
+  &amp;lt;entity:datas/>&amp;#xD;&#xD;
+  &amp;lt;entity:views/>&amp;#xD;&#xD;
+&amp;lt;/entity:Entity>&amp;#xD;&#xD;
+&lt;/form:scripts>&#xD;
+        &lt;form:htmls>&lt;/form:htmls>&#xD;
+      &lt;/docket:ui>&#xD;
+    &lt;/docket:event>&#xD;
+    &lt;docket:event desc=&quot;&quot; id=&quot;delete&quot; name=&quot;删除bug&quot;>&#xD;
+      &lt;docket:logic>&#xD;
+        &lt;node xsi:type=&quot;RuleRef&quot; id=&quot;insert&quot; name=&quot;单记录插入&quot; ruleId=&quot;rule:c2.dao.insert&quot;>&#xD;
+          &lt;inputs>&#xD;
+            &lt;input code=&quot;entity&quot; from=&quot;data&quot;/>&#xD;
+          &lt;/inputs>&#xD;
+        &lt;/node>&#xD;
+      &lt;/docket:logic>&#xD;
+      &lt;docket:ui id=&quot;delete&quot; name=&quot;删除bug&quot; type=&quot;none&quot;>&#xD;
+        &lt;form:control type=&quot;page/normal&quot;>&#xD;
+          &lt;form:attributes source=&quot;page/normal&quot;/>&#xD;
+        &lt;/form:control>&#xD;
+        &lt;form:child xsi:type=&quot;form:Group&quot; id=&quot;Bug&quot; name=&quot;bug&quot;>&#xD;
+          &lt;form:control type=&quot;container/div&quot;>&#xD;
+            &lt;form:attributes source=&quot;container/div&quot;>&#xD;
+              &lt;dync:attribute default=&quot;false&quot; desc=&quot;无任何属性和样式的div&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;pure&quot; name=&quot;简单div&quot; required=&quot;true&quot; value=&quot;false&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkbox&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+                &lt;dync:onChange>&#xD;
+                  &lt;template:case value=&quot;true&quot;>&#xD;
+                    &lt;template:hide param=&quot;span&quot; value=&quot;true&quot;/>&#xD;
+                    &lt;template:hide param=&quot;offset&quot; value=&quot;true&quot;/>&#xD;
+                    &lt;template:hide param=&quot;collapse&quot; value=&quot;true&quot;/>&#xD;
+                    &lt;template:hide param=&quot;defaultCollapse&quot; value=&quot;true&quot;/>&#xD;
+                    &lt;template:hide param=&quot;autoHeight&quot; value=&quot;true&quot;/>&#xD;
+                    &lt;template:hide param=&quot;nopadding&quot; value=&quot;true&quot;/>&#xD;
+                  &lt;/template:case>&#xD;
+                  &lt;template:case value=&quot;false&quot;>&#xD;
+                    &lt;template:hide param=&quot;span&quot; value=&quot;false&quot;/>&#xD;
+                    &lt;template:hide param=&quot;offset&quot; value=&quot;false&quot;/>&#xD;
+                    &lt;template:hide param=&quot;collapse&quot; value=&quot;false&quot;/>&#xD;
+                    &lt;template:hide param=&quot;defaultCollapse&quot; value=&quot;false&quot;/>&#xD;
+                    &lt;template:hide param=&quot;autoHeight&quot; value=&quot;false&quot;/>&#xD;
+                    &lt;template:hide param=&quot;nopadding&quot; value=&quot;false&quot;/>&#xD;
+                  &lt;/template:case>&#xD;
+                &lt;/dync:onChange>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;12&quot; desc=&quot;网格布局中占位数&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;span&quot; name=&quot;占位数&quot; required=&quot;true&quot; value=&quot;12&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;text&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;0&quot; desc=&quot;网格布局中的偏移数&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;offset&quot; name=&quot;偏移&quot; required=&quot;false&quot; value=&quot;0&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;1&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;text&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;&quot; desc=&quot;填写变量或者表达式，控制控件是否隐藏。变量和表达式的值必须为布尔类型。如果变量没有赋值，则默认为【隐藏默认值】。&amp;#xA;                @attention 变量可以从数据源中直接拿，或者在页面的*载入事件*中进行初始化。&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;collapse&quot; name=&quot;隐藏&quot; required=&quot;false&quot; value=&quot;&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;text&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;false&quot; desc=&quot;容器在页面初始化完成时是否隐藏。当你不需要通过变量来控制控件隐藏的话，只需要使用这个属性就够了。可以通过控件方法`show();hide();toggle()`控制容器的隐藏状态。&amp;#xA;                `false`表示展开控件（默认）。&amp;#xA;                `true`表示隐藏控件。&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;defaultCollapse&quot; name=&quot;隐藏默认值&quot; required=&quot;false&quot; value=&quot;false&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkbox&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;false&quot; desc=&quot;该容器的高度自动适应当前页面的page-content高度&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;autoHeight&quot; name=&quot;自动高度&quot; required=&quot;false&quot; value=&quot;false&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkbox&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;false&quot; desc=&quot;内部是否有边距(添加&amp;quot;no-padding&amp;quot;样式)&quot; group=&quot;HTML配置&quot; hidden=&quot;false&quot; id=&quot;nopadding&quot; name=&quot;无内边距&quot; required=&quot;false&quot; value=&quot;false&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;checkbox&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;&quot; desc=&quot;在容器内部直接嵌入自定义的HTML。当控件满足不了页面需求时，可以通过这个去嵌入一段自定义的HTML代码。&amp;#xA;                点击属性框右边按钮，会自动跳转到*HTML片段*的页签，并在页签内生成一段包裹脚本。需要自定义的HTML代码写在脚本内。如果还需要脚本控制元素，也可在模版内部写自己的脚本。  &amp;#xA;                @attention 如果定义了该属性，那么在容器中放置任何其他控件都会被忽略。&amp;#xA;                @attention 自定义HTML其实是一个Angular的模版，模版内部的作用域（$scope)继承了Form表单的作用域。所以可以在js页面中通过$scope定义变量，然后在模版中获取。&amp;#xA;                @attention 模版还能够支持Angular原生的指令，也能支持控件指令和自定义的指令。&amp;#xA;                @code&amp;#xA;                &amp;lt;script type=&amp;quot;text/ng-template&amp;quot; id=&amp;quot;newGroup1_html&amp;quot;>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;我的地盘我做主！  &amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;在表单$scope中定义的变量，都可以在这里通过双打括号{{}}获取。比如在页面js中定义了$scope.someThing = &amp;quot;这里风景独好！&amp;quot;;&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;{{someThing}} //这里显示&amp;quot;这里风景独好！&amp;quot;。  &amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;如果需要调用页面JS中的函数myClickFn，可以通过functions.myClickFn()调用：&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;button ng-click=&amp;quot;functions.myClickFn()&amp;quot;>按我！要温柔~&amp;lt;/button>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;/script>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;//注意:页面JS定义的函数只能通过ng-click调用的，如果只习惯通过onClick调用，可以把函数单独写到新的&amp;lt;script>标签里面，然后上面就能够onClick直接调用了：&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;script>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;function myClickFn(){&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;XXOOXX&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;}&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;/script>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;如果需要循环输出数组，可以这样：&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;ul>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;li ng-repeat=&amp;quot;one in some&amp;quot;>{{one}}，欢迎来到Angular的世界！&amp;lt;/li>&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;&amp;#x9;&amp;lt;/ul>&amp;#xA;                @code&quot; group=&quot;高级自定义&quot; hidden=&quot;false&quot; id=&quot;html&quot; name=&quot;自定义HTML&quot; required=&quot;false&quot; value=&quot;&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;html&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;&quot; desc=&quot;可以添加任意class，多个class样式用空格分开&quot; group=&quot;高级自定义&quot; hidden=&quot;false&quot; id=&quot;cssClass&quot; name=&quot;自定义class&quot; required=&quot;false&quot; value=&quot;&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;text&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+              &lt;dync:attribute default=&quot;&quot; desc=&quot;可以添加任意style样式,必须遵循style样式格式：&amp;quot;color:red;backgroud-color:blue;&amp;quot;。&quot; group=&quot;高级自定义&quot; hidden=&quot;false&quot; id=&quot;style&quot; name=&quot;自定义style&quot; required=&quot;false&quot; value=&quot;&quot;>&#xD;
+                &lt;dync:render colSpan=&quot;2&quot; height=&quot;0&quot; multi=&quot;false&quot; name=&quot;text&quot;/>&#xD;
+                &lt;dync:children/>&#xD;
+              &lt;/dync:attribute>&#xD;
+            &lt;/form:attributes>&#xD;
+          &lt;/form:control>&#xD;
+        &lt;/form:child>&#xD;
+        &lt;form:datasources>&#xD;
+          &lt;form:datasource xsi:type=&quot;form:Inputs&quot;>&#xD;
+            &lt;form:input id=&quot;id&quot; name=&quot;实体数据id&quot;/>&#xD;
+          &lt;/form:datasource>&#xD;
+          &lt;form:datasource xsi:type=&quot;form:EntityDataSource&quot; id=&quot;entity&quot; name=&quot;实体数据&quot; entity=&quot;entity:com.chinacreator.c2.project.bug.Bug&quot;/>&#xD;
+        &lt;/form:datasources>&#xD;
+        &lt;form:scripts>&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?>&amp;#xD;&#xD;
+&amp;lt;entity:Entity xmi:version=&amp;quot;2.0&amp;quot; xmlns:xmi=&amp;quot;http://www.omg.org/XMI&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xmlns=&amp;quot;http://www.chinacreator.com/platform/mvc/rule&amp;quot; xmlns:cdata=&amp;quot;http://www.chinacreator.com/platform/mvc/cdata&amp;quot; xmlns:docket=&amp;quot;http://www.chinacreator.com/platform/mvc/docket&amp;quot; xmlns:dync=&amp;quot;http://www.chinacreator.com/platform/mvc/ui/dync&amp;quot; xmlns:entity=&amp;quot;http://www.chinacreator.com/platform/mvc/entity&amp;quot; xmlns:form=&amp;quot;http://www.chinacreator.com/platform/mvc/form&amp;quot; xmlns:template=&amp;quot;http://www.chinacreator.com/c2/ui/template&amp;quot; sn=&amp;quot;bug&amp;quot;>&amp;#xD;&#xD;
+  &amp;lt;docket:name>bug&amp;lt;/docket:name>&amp;#xD;&#xD;
+  &amp;lt;docket:createType>来自数据库&amp;lt;/docket:createType>&amp;#xD;&#xD;
+  &amp;lt;docket:primaryKey>&amp;#xD;&#xD;
+    &amp;lt;docket:pkAttribute attribute=&amp;quot;id&amp;quot;/>&amp;#xD;&#xD;
+  &amp;lt;/docket:primaryKey>&amp;#xD;&#xD;
+  &amp;lt;docket:attributes>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;id&amp;quot; name=&amp;quot;id&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;mediumint&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;no&amp;quot; name=&amp;quot;bug编号&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;mediumint&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;project&amp;quot; length=&amp;quot;10&amp;quot; name=&amp;quot;关联项目&amp;quot; nullable=&amp;quot;false&amp;quot; precision=&amp;quot;&amp;quot; type=&amp;quot;int&amp;quot; default=&amp;quot;0&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:BDValueRange&amp;quot; displayExpr=&amp;quot;data.Project.id&amp;quot; id=&amp;quot;entity:com.chinacreator.c2.project.info.Project&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;module&amp;quot; length=&amp;quot;10&amp;quot; name=&amp;quot;关联模块&amp;quot; nullable=&amp;quot;false&amp;quot; precision=&amp;quot;&amp;quot; type=&amp;quot;int&amp;quot; default=&amp;quot;0&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:BDValueRange&amp;quot; displayExpr=&amp;quot;data.Module.id&amp;quot; id=&amp;quot;entity:com.chinacreator.c2.project.info.Module&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;milestone&amp;quot; length=&amp;quot;&amp;quot; name=&amp;quot;关联里程碑&amp;quot; nullable=&amp;quot;true&amp;quot; precision=&amp;quot;&amp;quot; type=&amp;quot;bigint&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:BDValueRange&amp;quot; displayExpr=&amp;quot;data.Milestone.id&amp;quot; id=&amp;quot;entity:com.chinacreator.c2.project.milestone.Milestone&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;title&amp;quot; name=&amp;quot;标题&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;string256&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;bug_version&amp;quot; name=&amp;quot;版本&amp;quot; nullable=&amp;quot;true&amp;quot; type=&amp;quot;string256&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;pri&amp;quot; name=&amp;quot;优先级&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;mediumint&amp;quot; default=&amp;quot;3&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;status_&amp;quot; name=&amp;quot;0关闭、1创建，2打开、3完成、4延后&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;int&amp;quot; default=&amp;quot;1&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;init_assigned_to&amp;quot; name=&amp;quot;&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;string64&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;create_time&amp;quot; name=&amp;quot;创建时间&amp;quot; nullable=&amp;quot;true&amp;quot; type=&amp;quot;timestamp&amp;quot; default=&amp;quot;CURRENT_TIMESTAMP&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;create_by&amp;quot; name=&amp;quot;创建人&amp;quot; nullable=&amp;quot;false&amp;quot; type=&amp;quot;string64&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;last_update_time&amp;quot; name=&amp;quot;最后修改时间&amp;quot; nullable=&amp;quot;true&amp;quot; type=&amp;quot;timestamp&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+    &amp;lt;docket:attribute code=&amp;quot;spec&amp;quot; name=&amp;quot;问题描述&amp;quot; nullable=&amp;quot;true&amp;quot; type=&amp;quot;text&amp;quot; default=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:valueRange xsi:type=&amp;quot;cdata:AllValueRange&amp;quot;/>&amp;#xD;&#xD;
+    &amp;lt;/docket:attribute>&amp;#xD;&#xD;
+  &amp;lt;/docket:attributes>&amp;#xD;&#xD;
+  &amp;lt;docket:subDokcets/>&amp;#xD;&#xD;
+  &amp;lt;docket:events>&amp;#xD;&#xD;
+    &amp;lt;docket:event desc=&amp;quot;&amp;quot; id=&amp;quot;slelect&amp;quot; name=&amp;quot;新操作&amp;quot;>&amp;#xD;&#xD;
+      &amp;lt;docket:logic>&amp;#xD;&#xD;
+        &amp;lt;node xsi:type=&amp;quot;RuleRef&amp;quot; id=&amp;quot;select&amp;quot; name=&amp;quot;按条件查询&amp;quot; ruleId=&amp;quot;rule:c2.dao.select&amp;quot;>&amp;#xD;&#xD;
+          &amp;lt;inputs>&amp;#xD;&#xD;
+            &amp;lt;input code=&amp;quot;condition&amp;quot; from=&amp;quot;data&amp;quot;/>&amp;#xD;&#xD;
+          &amp;lt;/inputs>&amp;#xD;&#xD;
+        &amp;lt;/node>&amp;#xD;&#xD;
+      &amp;lt;/docket:logic>&amp;#xD;&#xD;
+      &amp;lt;docket:ui name=&amp;quot;新操作&amp;quot; type=&amp;quot;none&amp;quot;>&amp;#xD;&#xD;
+        &amp;lt;form:control type=&amp;quot;page/normal&amp;quot;>&amp;#xD;&#xD;
+          &amp;lt;form:attributes source=&amp;quot;page/normal&amp;quot;/>&amp;#xD;&#xD;
+        &amp;lt;/form:control>&amp;#xD;&#xD;
+        &amp;lt;form:child xsi:type=&amp;quot;form:Group&amp;quot; id=&amp;quot;Bug&amp;quot; name=&amp;quot;bug&amp;quot;>&amp;#xD;&#xD;
+          &amp;lt;form:control type=&amp;quot;container/div&amp;quot;>&amp;#xD;&#xD;
+            &amp;lt;form:attributes source=&amp;quot;container/div&amp;quot;>&amp;#xD;&#xD;
+              &amp;lt;dync:attribute default=&amp;quot;false&amp;quot; desc=&amp;quot;无任何属性和样式的div&amp;quot; group=&amp;quot;HTML配置&amp;quot; hidden=&amp;quot;false&amp;quot; id=&amp;quot;pure&amp;quot; name=&amp;quot;简单div&amp;quot; required=&amp;quot;true&amp;quot; value=&amp;quot;false&amp;quot;>&amp;#xD;&#xD;
+                &amp;lt;dync:render colSpan=&amp;quot;2&amp;quot; height=&amp;quot;0&amp;quot; multi=&amp;quot;false&amp;quot; name=&amp;quot;checkbox&amp;quot;/>&amp;#xD;&#xD;
+                &amp;lt;dync:children/>&amp;#xD;&#xD;
+                &amp;lt;dync:onChange>&amp;#xD;&#xD;
+                  &amp;lt;template:case value=&amp;quot;true&amp;quot;>&amp;#xD;&#xD;
+                    &amp;lt;template:hide param=&amp;quot;span&amp;quot; value=&amp;quot;true&amp;quot;/>&amp;#xD;&#xD;
+                    &amp;lt;template:hide param=&amp;quot;offset&amp;quot; value=&amp;quot;true&amp;quot;/>&amp;#xD;&#xD;
+                    &amp;lt;template:hide param=&amp;quot;collapse&amp;quot; value=&amp;quot;true&amp;quot;/>&amp;#xD;&#xD;
+                    &amp;lt;template:hide param=&amp;quot;defaultCollapse&amp;quot; value=&amp;quot;true&amp;quot;/>&amp;#xD;&#xD;
+                    &amp;lt;template:hide param=&amp;quot;autoHeight&amp;quot; value=&amp;quot;true&amp;quot;/>&amp;#xD;&#xD;
+                    &amp;lt;template:hide param=&amp;quot;nopadding&amp;quot; value=&amp;quot;true&amp;quot;/>&amp;#xD;&#xD;
+                  &amp;lt;/template:case>&amp;#xD;&#xD;
+                  &amp;lt;template:case value=&amp;quot;false&amp;quot;>&amp;#xD;&#xD;
+                    &amp;lt;template:hide param=&amp;quot;span&amp;quot; value=&amp;quot;false&amp;quot;/>&amp;#xD;&#xD;
+                    &amp;lt;template:hide param=&amp;quot;offset&amp;quot; value=&amp;quot;false&amp;quot;/>&amp;#xD;&#xD;
+                    &amp;lt;template:hide param=&amp;quot;collapse&amp;quot; value=&amp;quot;false&amp;quot;/>&amp;#xD;&#xD;
+                    &amp;lt;template:hide param=&amp;quot;defaultCollapse&amp;quot; value=&amp;quot;false&amp;quot;/>&amp;#xD;&#xD;
+                    &amp;lt;template:hide param=&amp;quot;autoHeight&amp;quot; value=&amp;quot;false&amp;quot;/>&amp;#xD;&#xD;
+                    &amp;lt;template:hide param=&amp;quot;nopadding&amp;quot; value=&amp;quot;false&amp;quot;/>&amp;#xD;&#xD;
+                  &amp;lt;/template:case>&amp;#xD;&#xD;
+                &amp;lt;/dync:onChange>&amp;#xD;&#xD;
+              &amp;lt;/dync:attribute>&amp;#xD;&#xD;
+              &amp;lt;dync:attribute default=&amp;quot;12&amp;quot; desc=&amp;quot;网格布局中占位数&amp;quot; group=&amp;quot;HTML配置&amp;quot; hidden=&amp;quot;false&amp;quot; id=&amp;quot;span&amp;quot; name=&amp;quot;占位数&amp;quot; required=&amp;quot;true&amp;quot; value=&amp;quot;12&amp;quot;>&amp;#xD;&#xD;
+                &amp;lt;dync:render colSpan=&amp;quot;1&amp;quot; height=&amp;quot;0&amp;quot; multi=&amp;quot;false&amp;quot; name=&amp;quot;text&amp;quot;/>&amp;#xD;&#xD;
+                &amp;lt;dync:children/>&amp;#xD;&#xD;
+              &amp;lt;/dync:attribute>&amp;#xD;&#xD;
+              &amp;lt;dync:attribute default=&amp;quot;0&amp;quot; desc=&amp;quot;网格布局中的偏移数&amp;quot; group=&amp;quot;HTML配置&amp;quot; hidden=&amp;quot;false&amp;quot; id=&amp;quot;offset&amp;quot; name=&amp;quot;偏移&amp;quot; required=&amp;quot;false&amp;quot; value=&amp;quot;0&amp;quot;>&amp;#xD;&#xD;
+                &amp;lt;dync:render colSpan=&amp;quot;1&amp;quot; height=&amp;quot;0&amp;quot; multi=&amp;quot;false&amp;quot; name=&amp;quot;text&amp;quot;/>&amp;#xD;&#xD;
+                &amp;lt;dync:children/>&amp;#xD;&#xD;
+              &amp;lt;/dync:attribute>&amp;#xD;&#xD;
+              &amp;lt;dync:attribute default=&amp;quot;&amp;quot; desc=&amp;quot;填写变量或者表达式，控制控件是否隐藏。变量和表达式的值必须为布尔类型。如果变量没有赋值，则默认为【隐藏默认值】。&amp;amp;#xA;                @attention 变量可以从数据源中直接拿，或者在页面的*载入事件*中进行初始化。&amp;quot; group=&amp;quot;HTML配置&amp;quot; hidden=&amp;quot;false&amp;quot; id=&amp;quot;collapse&amp;quot; name=&amp;quot;隐藏&amp;quot; required=&amp;quot;false&amp;quot; value=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+                &amp;lt;dync:render colSpan=&amp;quot;2&amp;quot; height=&amp;quot;0&amp;quot; multi=&amp;quot;false&amp;quot; name=&amp;quot;text&amp;quot;/>&amp;#xD;&#xD;
+                &amp;lt;dync:children/>&amp;#xD;&#xD;
+              &amp;lt;/dync:attribute>&amp;#xD;&#xD;
+              &amp;lt;dync:attribute default=&amp;quot;false&amp;quot; desc=&amp;quot;容器在页面初始化完成时是否隐藏。当你不需要通过变量来控制控件隐藏的话，只需要使用这个属性就够了。可以通过控件方法`show();hide();toggle()`控制容器的隐藏状态。&amp;amp;#xA;                `false`表示展开控件（默认）。&amp;amp;#xA;                `true`表示隐藏控件。&amp;quot; group=&amp;quot;HTML配置&amp;quot; hidden=&amp;quot;false&amp;quot; id=&amp;quot;defaultCollapse&amp;quot; name=&amp;quot;隐藏默认值&amp;quot; required=&amp;quot;false&amp;quot; value=&amp;quot;false&amp;quot;>&amp;#xD;&#xD;
+                &amp;lt;dync:render colSpan=&amp;quot;2&amp;quot; height=&amp;quot;0&amp;quot; multi=&amp;quot;false&amp;quot; name=&amp;quot;checkbox&amp;quot;/>&amp;#xD;&#xD;
+                &amp;lt;dync:children/>&amp;#xD;&#xD;
+              &amp;lt;/dync:attribute>&amp;#xD;&#xD;
+              &amp;lt;dync:attribute default=&amp;quot;false&amp;quot; desc=&amp;quot;该容器的高度自动适应当前页面的page-content高度&amp;quot; group=&amp;quot;HTML配置&amp;quot; hidden=&amp;quot;false&amp;quot; id=&amp;quot;autoHeight&amp;quot; name=&amp;quot;自动高度&amp;quot; required=&amp;quot;false&amp;quot; value=&amp;quot;false&amp;quot;>&amp;#xD;&#xD;
+                &amp;lt;dync:render colSpan=&amp;quot;2&amp;quot; height=&amp;quot;0&amp;quot; multi=&amp;quot;false&amp;quot; name=&amp;quot;checkbox&amp;quot;/>&amp;#xD;&#xD;
+                &amp;lt;dync:children/>&amp;#xD;&#xD;
+              &amp;lt;/dync:attribute>&amp;#xD;&#xD;
+              &amp;lt;dync:attribute default=&amp;quot;false&amp;quot; desc=&amp;quot;内部是否有边距(添加&amp;amp;quot;no-padding&amp;amp;quot;样式)&amp;quot; group=&amp;quot;HTML配置&amp;quot; hidden=&amp;quot;false&amp;quot; id=&amp;quot;nopadding&amp;quot; name=&amp;quot;无内边距&amp;quot; required=&amp;quot;false&amp;quot; value=&amp;quot;false&amp;quot;>&amp;#xD;&#xD;
+                &amp;lt;dync:render colSpan=&amp;quot;2&amp;quot; height=&amp;quot;0&amp;quot; multi=&amp;quot;false&amp;quot; name=&amp;quot;checkbox&amp;quot;/>&amp;#xD;&#xD;
+                &amp;lt;dync:children/>&amp;#xD;&#xD;
+              &amp;lt;/dync:attribute>&amp;#xD;&#xD;
+              &amp;lt;dync:attribute default=&amp;quot;&amp;quot; desc=&amp;quot;在容器内部直接嵌入自定义的HTML。当控件满足不了页面需求时，可以通过这个去嵌入一段自定义的HTML代码。&amp;amp;#xA;                点击属性框右边按钮，会自动跳转到*HTML片段*的页签，并在页签内生成一段包裹脚本。需要自定义的HTML代码写在脚本内。如果还需要脚本控制元素，也可在模版内部写自己的脚本。  &amp;amp;#xA;                @attention 如果定义了该属性，那么在容器中放置任何其他控件都会被忽略。&amp;amp;#xA;                @attention 自定义HTML其实是一个Angular的模版，模版内部的作用域（$scope)继承了Form表单的作用域。所以可以在js页面中通过$scope定义变量，然后在模版中获取。&amp;amp;#xA;                @attention 模版还能够支持Angular原生的指令，也能支持控件指令和自定义的指令。&amp;amp;#xA;                @code&amp;amp;#xA;                &amp;amp;lt;script type=&amp;amp;quot;text/ng-template&amp;amp;quot; id=&amp;amp;quot;newGroup1_html&amp;amp;quot;>&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;我的地盘我做主！  &amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;在表单$scope中定义的变量，都可以在这里通过双打括号{{}}获取。比如在页面js中定义了$scope.someThing = &amp;amp;quot;这里风景独好！&amp;amp;quot;;&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;{{someThing}} //这里显示&amp;amp;quot;这里风景独好！&amp;amp;quot;。  &amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;如果需要调用页面JS中的函数myClickFn，可以通过functions.myClickFn()调用：&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;lt;button ng-click=&amp;amp;quot;functions.myClickFn()&amp;amp;quot;>按我！要温柔~&amp;amp;lt;/button>&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;lt;/script>&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;//注意:页面JS定义的函数只能通过ng-click调用的，如果只习惯通过onClick调用，可以把函数单独写到新的&amp;amp;lt;script>标签里面，然后上面就能够onClick直接调用了：&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;lt;script>&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;function myClickFn(){&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;XXOOXX&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;}&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;lt;/script>&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;如果需要循环输出数组，可以这样：&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;lt;ul>&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;lt;li ng-repeat=&amp;amp;quot;one in some&amp;amp;quot;>{{one}}，欢迎来到Angular的世界！&amp;amp;lt;/li>&amp;amp;#xA;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;#x9;&amp;amp;lt;/ul>&amp;amp;#xA;                @code&amp;quot; group=&amp;quot;高级自定义&amp;quot; hidden=&amp;quot;false&amp;quot; id=&amp;quot;html&amp;quot; name=&amp;quot;自定义HTML&amp;quot; required=&amp;quot;false&amp;quot; value=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+                &amp;lt;dync:render colSpan=&amp;quot;2&amp;quot; height=&amp;quot;0&amp;quot; multi=&amp;quot;false&amp;quot; name=&amp;quot;html&amp;quot;/>&amp;#xD;&#xD;
+                &amp;lt;dync:children/>&amp;#xD;&#xD;
+              &amp;lt;/dync:attribute>&amp;#xD;&#xD;
+              &amp;lt;dync:attribute default=&amp;quot;&amp;quot; desc=&amp;quot;可以添加任意class，多个class样式用空格分开&amp;quot; group=&amp;quot;高级自定义&amp;quot; hidden=&amp;quot;false&amp;quot; id=&amp;quot;cssClass&amp;quot; name=&amp;quot;自定义class&amp;quot; required=&amp;quot;false&amp;quot; value=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+                &amp;lt;dync:render colSpan=&amp;quot;2&amp;quot; height=&amp;quot;0&amp;quot; multi=&amp;quot;false&amp;quot; name=&amp;quot;text&amp;quot;/>&amp;#xD;&#xD;
+                &amp;lt;dync:children/>&amp;#xD;&#xD;
+              &amp;lt;/dync:attribute>&amp;#xD;&#xD;
+              &amp;lt;dync:attribute default=&amp;quot;&amp;quot; desc=&amp;quot;可以添加任意style样式,必须遵循style样式格式：&amp;amp;quot;color:red;backgroud-color:blue;&amp;amp;quot;。&amp;quot; group=&amp;quot;高级自定义&amp;quot; hidden=&amp;quot;false&amp;quot; id=&amp;quot;style&amp;quot; name=&amp;quot;自定义style&amp;quot; required=&amp;quot;false&amp;quot; value=&amp;quot;&amp;quot;>&amp;#xD;&#xD;
+                &amp;lt;dync:render colSpan=&amp;quot;2&amp;quot; height=&amp;quot;0&amp;quot; multi=&amp;quot;false&amp;quot; name=&amp;quot;text&amp;quot;/>&amp;#xD;&#xD;
+                &amp;lt;dync:children/>&amp;#xD;&#xD;
+              &amp;lt;/dync:attribute>&amp;#xD;&#xD;
+            &amp;lt;/form:attributes>&amp;#xD;&#xD;
+          &amp;lt;/form:control>&amp;#xD;&#xD;
+        &amp;lt;/form:child>&amp;#xD;&#xD;
+        &amp;lt;form:datasources>&amp;#xD;&#xD;
+          &amp;lt;form:datasource xsi:type=&amp;quot;form:Inputs&amp;quot;>&amp;#xD;&#xD;
+            &amp;lt;form:input id=&amp;quot;id&amp;quot; name=&amp;quot;实体数据id&amp;quot;/>&amp;#xD;&#xD;
+          &amp;lt;/form:datasource>&amp;#xD;&#xD;
+          &amp;lt;form:datasource xsi:type=&amp;quot;form:EntityDataSource&amp;quot; id=&amp;quot;entity&amp;quot; name=&amp;quot;实体数据&amp;quot; entity=&amp;quot;entity:com.chinacreator.c2.project.bug.Bug&amp;quot;/>&amp;#xD;&#xD;
+        &amp;lt;/form:datasources>&amp;#xD;&#xD;
+        &amp;lt;form:scripts>&amp;amp;lt;?xml version=&amp;amp;quot;1.0&amp;amp;quot; encoding=&amp;amp;quot;UTF-8&amp;amp;quot;?>&amp;amp;#xD;&amp;#xD;&#xD;
+&amp;amp;lt;entity:Entity xmi:version=&amp;amp;quot;2.0&amp;amp;quot; xmlns:xmi=&amp;amp;quot;http://www.omg.org/XMI&amp;amp;quot; xmlns:xsi=&amp;amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;amp;quot; xmlns:cdata=&amp;amp;quot;http://www.chinacreator.com/platform/mvc/cdata&amp;amp;quot; xmlns:docket=&amp;amp;quot;http://www.chinacreator.com/platform/mvc/docket&amp;amp;quot; xmlns:entity=&amp;amp;quot;http://www.chinacreator.com/platform/mvc/entity&amp;amp;quot; sn=&amp;amp;quot;bug&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+  &amp;amp;lt;docket:name>bug&amp;amp;lt;/docket:name>&amp;amp;#xD;&amp;#xD;&#xD;
+  &amp;amp;lt;docket:createType>来自数据库&amp;amp;lt;/docket:createType>&amp;amp;#xD;&amp;#xD;&#xD;
+  &amp;amp;lt;docket:primaryKey>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:pkAttribute attribute=&amp;amp;quot;id&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+  &amp;amp;lt;/docket:primaryKey>&amp;amp;#xD;&amp;#xD;&#xD;
+  &amp;amp;lt;docket:attributes>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;id&amp;amp;quot; name=&amp;amp;quot;id&amp;amp;quot; nullable=&amp;amp;quot;false&amp;amp;quot; type=&amp;amp;quot;mediumint&amp;amp;quot; default=&amp;amp;quot;&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:AllValueRange&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;no&amp;amp;quot; length=&amp;amp;quot;8&amp;amp;quot; name=&amp;amp;quot;bug编号&amp;amp;quot; nullable=&amp;amp;quot;false&amp;amp;quot; type=&amp;amp;quot;mediumint&amp;amp;quot; default=&amp;amp;quot;&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:AllValueRange&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;project&amp;amp;quot; length=&amp;amp;quot;10&amp;amp;quot; name=&amp;amp;quot;关联项目&amp;amp;quot; nullable=&amp;amp;quot;false&amp;amp;quot; precision=&amp;amp;quot;&amp;amp;quot; type=&amp;amp;quot;int&amp;amp;quot; default=&amp;amp;quot;0&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:BDValueRange&amp;amp;quot; displayExpr=&amp;amp;quot;data.Project.id&amp;amp;quot; id=&amp;amp;quot;entity:com.chinacreator.c2.project.info.Project&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;module&amp;amp;quot; length=&amp;amp;quot;10&amp;amp;quot; name=&amp;amp;quot;关联模块&amp;amp;quot; nullable=&amp;amp;quot;false&amp;amp;quot; precision=&amp;amp;quot;&amp;amp;quot; type=&amp;amp;quot;int&amp;amp;quot; default=&amp;amp;quot;0&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:BDValueRange&amp;amp;quot; displayExpr=&amp;amp;quot;data.Module.id&amp;amp;quot; id=&amp;amp;quot;entity:com.chinacreator.c2.project.info.Module&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;milestone&amp;amp;quot; length=&amp;amp;quot;&amp;amp;quot; name=&amp;amp;quot;关联里程碑&amp;amp;quot; nullable=&amp;amp;quot;true&amp;amp;quot; precision=&amp;amp;quot;&amp;amp;quot; type=&amp;amp;quot;bigint&amp;amp;quot; default=&amp;amp;quot;&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:BDValueRange&amp;amp;quot; displayExpr=&amp;amp;quot;data.Milestone.id&amp;amp;quot; id=&amp;amp;quot;entity:com.chinacreator.c2.project.milestone.Milestone&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;title&amp;amp;quot; name=&amp;amp;quot;标题&amp;amp;quot; nullable=&amp;amp;quot;false&amp;amp;quot; type=&amp;amp;quot;string256&amp;amp;quot; default=&amp;amp;quot;&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:AllValueRange&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;pri&amp;amp;quot; name=&amp;amp;quot;优先级&amp;amp;quot; nullable=&amp;amp;quot;false&amp;amp;quot; type=&amp;amp;quot;mediumint&amp;amp;quot; default=&amp;amp;quot;3&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:AllValueRange&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;status_&amp;amp;quot; name=&amp;amp;quot;0关闭、1创建，2打开、3完成、4延后&amp;amp;quot; nullable=&amp;amp;quot;false&amp;amp;quot; type=&amp;amp;quot;int&amp;amp;quot; default=&amp;amp;quot;1&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:AllValueRange&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;create_by&amp;amp;quot; name=&amp;amp;quot;创建人&amp;amp;quot; nullable=&amp;amp;quot;false&amp;amp;quot; type=&amp;amp;quot;string64&amp;amp;quot; default=&amp;amp;quot;&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:AllValueRange&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;create_time&amp;amp;quot; name=&amp;amp;quot;创建时间&amp;amp;quot; nullable=&amp;amp;quot;true&amp;amp;quot; type=&amp;amp;quot;timestamp&amp;amp;quot; default=&amp;amp;quot;CURRENT_TIMESTAMP&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:AllValueRange&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;assign_to&amp;amp;quot; name=&amp;amp;quot;指派人&amp;amp;quot; nullable=&amp;amp;quot;true&amp;amp;quot; type=&amp;amp;quot;string64&amp;amp;quot; default=&amp;amp;quot;&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:AllValueRange&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;last_update_time&amp;amp;quot; name=&amp;amp;quot;最后修改时间&amp;amp;quot; nullable=&amp;amp;quot;true&amp;amp;quot; type=&amp;amp;quot;timestamp&amp;amp;quot; default=&amp;amp;quot;&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:AllValueRange&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;docket:attribute code=&amp;amp;quot;spec&amp;amp;quot; name=&amp;amp;quot;问题描述&amp;amp;quot; nullable=&amp;amp;quot;true&amp;amp;quot; type=&amp;amp;quot;text&amp;amp;quot; default=&amp;amp;quot;&amp;amp;quot;>&amp;amp;#xD;&amp;#xD;&#xD;
+      &amp;amp;lt;docket:valueRange xsi:type=&amp;amp;quot;cdata:AllValueRange&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+    &amp;amp;lt;/docket:attribute>&amp;amp;#xD;&amp;#xD;&#xD;
+  &amp;amp;lt;/docket:attributes>&amp;amp;#xD;&amp;#xD;&#xD;
+  &amp;amp;lt;docket:subDokcets/>&amp;amp;#xD;&amp;#xD;&#xD;
+  &amp;amp;lt;docket:events/>&amp;amp;#xD;&amp;#xD;&#xD;
+  &amp;amp;lt;docket:table ds=&amp;amp;quot;dev-center&amp;amp;quot; table=&amp;amp;quot;c2_community_bug&amp;amp;quot;/>&amp;amp;#xD;&amp;#xD;&#xD;
+  &amp;amp;lt;docket:cache>false&amp;amp;lt;/docket:cache>&amp;amp;#xD;&amp;#xD;&#xD;
+  &amp;amp;lt;entity:datas/>&amp;amp;#xD;&amp;#xD;&#xD;
+  &amp;amp;lt;entity:views/>&amp;amp;#xD;&amp;#xD;&#xD;
+&amp;amp;lt;/entity:Entity>&amp;amp;#xD;&amp;#xD;&#xD;
+&amp;lt;/form:scripts>&amp;#xD;&#xD;
+        &amp;lt;form:htmls>&amp;lt;/form:htmls>&amp;#xD;&#xD;
+      &amp;lt;/docket:ui>&amp;#xD;&#xD;
+    &amp;lt;/docket:event>&amp;#xD;&#xD;
+  &amp;lt;/docket:events>&amp;#xD;&#xD;
+  &amp;lt;docket:table ds=&amp;quot;dev-center&amp;quot; table=&amp;quot;c2_community_bug&amp;quot;/>&amp;#xD;&#xD;
+  &amp;lt;docket:cache>false&amp;lt;/docket:cache>&amp;#xD;&#xD;
+  &amp;lt;entity:datas/>&amp;#xD;&#xD;
+  &amp;lt;entity:views/>&amp;#xD;&#xD;
+&amp;lt;/entity:Entity>&amp;#xD;&#xD;
+&lt;/form:scripts>&#xD;
+        &lt;form:htmls>&lt;/form:htmls>&#xD;
+      &lt;/docket:ui>&#xD;
+    &lt;/docket:event>&#xD;
+  &lt;/docket:events>&#xD;
+  &lt;docket:table ds=&quot;dev-center&quot; table=&quot;c2_community_bug&quot;/>&#xD;
+  &lt;docket:cache>false&lt;/docket:cache>&#xD;
+  &lt;entity:datas/>&#xD;
+  &lt;entity:views/>&#xD;
+&lt;/entity:Entity>&#xD;
+</form:scripts>
+        <form:htmls></form:htmls>
+      </docket:ui>
+    </docket:event>
+  </docket:events>
+  <docket:table ds="dev-center" table="c2_community_bug"/>
+  <docket:cache>false</docket:cache>
+  <entity:datas/>
+  <entity:views/>
+</entity:Entity>

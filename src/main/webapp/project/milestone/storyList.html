@@ -1,0 +1,35 @@
+<style>
+<!--
+#detail-panel .container {
+    width: calc(100%);
+}
+-->
+</style>
+<div class="pmb-block" style="padding-top: 20px; margin-left:-40px; margin-right:-40px;">
+				<div class="pmbb-body">
+					<div class="pmbb-view h-l-2">
+						<div class="listview lv-bordered" style="border:1px solid #F0F0F0;">
+							<div class="lv-body">
+								<div ng-if="sList.length==0" class="lv-item list-show-animate text-center p-20">里程碑没有任何关联的需求!</div>
+								<div class="lv-item media" ng-repeat='s in sList'>
+									<div class="media-body">
+										<div class="lv-title">
+											<div style="width: 50px;display: inline-block;padding: 1px 2px;font-weight: bold;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #6cc644;margin-right: 5px;" ng-if="s.status=='1'" >已打开</div>
+											<div style="width: 50px;display: inline-block;padding: 1px 2px;font-weight: bold;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #999;margin-right: 5px;" ng-if="s.status=='0'" >已关闭</div>
+											<a data-ui-sref="project.milestoneDetail.storyList.storyDetail({storyid:{{s.id}},edit:0})">{{s.title}}</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<c2-pagination total="story.page.total" page-size="20"
+				on-page-change="refreshStoryList(pageIndex)"></c2-pagination>
+		</div>
+	</div>
+</div>
+<aside id="detail-panel" state-aside-container class="cOverflow">
+	<ui-view name="sideUIView" onload="stateOnload()"></ui-view>
+</aside>

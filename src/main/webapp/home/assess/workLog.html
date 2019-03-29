@@ -1,0 +1,425 @@
+<link href="home/workbench/teamGroup/teamGroup.css" rel="stylesheet">
+<style>
+	.card-header {
+		position: relative;
+	}
+
+	#whiteListBtn {
+		position: absolute;
+		right: 3%;
+		top: 30%;
+	}
+
+	#whiteListBtn ul li a {
+		text-align: left;
+	}
+
+	#whiteListBtn ul li a i {
+		margin-right: 3px;
+	}
+
+	#detail-panel {
+		height: calc(100% - 113px);
+	}
+</style>
+<div class="container m-t-10" ng-controller="workLogCtrl" style="width: 680px">
+	<div id="teamGroupLogPage" class="card wr-open">
+		<div class="card-header">
+			<h2>日志统计</h2>
+			<div id="whiteListBtn" class="lv-actions actions dropdown" ng-show="roleAssist || logAdmin">
+				<a href="" data-toggle="dropdown" aria-expanded="true">
+					<i class="md md-more-vert"></i>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li>
+						<a ng-click="openManageWhiteModal();">
+							<i class="md md-person-outline"></i>白名单管理
+						</a>
+					</li>
+					<li data-ng-if="roleAssist">
+						<a ng-click="downLoadWorkLog()">
+							<i class="md md-get-app"></i>工作量日志
+						</a>
+					</li>
+					<li>
+						<a ng-click="downLoadLackLog()">
+							<i class="md md-get-app"></i>部门缺失清单
+						</a>
+					</li>
+					<li data-ng-if="roleAssist">
+						<a ng-click="downLoadOverLog()">
+							<i class="md md-get-app"></i>加班日志
+						</a>
+					</li>
+					<li>
+						<a ng-click="downLoadProjectsLog() ">
+							<i class="md md-get-app"></i>工作日志
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div id="whiteListBtn" class="lv-actions actions dropdown" ng-show="!(roleAssist || logAdmin)">
+				<a href="" data-toggle="dropdown" aria-expanded="true">
+					<i class="md md-more-vert"></i>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li data-ng-if="roleAssist">
+						<a ng-click="downLoadOverLog()">
+							<i class="md md-get-app"></i>加班日志
+						</a>
+					</li>
+					<li>
+						<a ng-click="downLoadProjectsLog() ">
+							<i class="md md-get-app"></i>工作日志
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="card-body p-b-40">
+			<div class="wr-view">
+				<div class="wkr-tasklist clearfix">
+
+					<c2-date-range-dropdown id="dateRangeDropDown" date-range="dateRange" >
+						<div class="picker picker-white">
+							<i class="md md-today" title="日期选择"></i> {{dateRange.show}}
+							<span class="caret"></span>
+						</div>
+					</c2-date-range-dropdown>
+
+					<c2-dropdown class="animate" bind-data="search.projects" items="projectOptions" item-name="name" multiple="true" max-height="200"
+					 clean-button="true" filter="true">
+						<!-- <div class="picker"><i class="md md-apps" title="项目选择"></i> {{search.projects.length>0?'项目数:'+search.projects.length:'选择项目'}}<span class="caret"></span></div> -->
+						<button class="btn btn-default btn-icon-text picker-shadow" id="projectDisabled">
+							<i class="md md-apps" title="项目选择"></i>{{search.projects.length>0?'项目数:'+search.projects.length:'选择项目'}}
+							<span class="caret"></span>
+						</button>
+					</c2-dropdown>
+
+					<label class="checkbox checkbox-inline m-l-20">
+						<input type="checkbox" ng-model="search.task" />
+						<i class="input-helper"></i> 任务日志
+					</label>
+					<label class="checkbox checkbox-inline m-l-10">
+						<input type="checkbox" ng-model="search.lack" />
+						<i class="input-helper"></i> 缺失日志
+					</label>
+					<label class="checkbox checkbox-inline m-l-10">
+						<input type="checkbox" ng-model="search.overtime" />
+						<i class="input-helper"></i> 加班日志
+					</label>
+
+					<table class="table table-hover m-b-0" id="teamLog">
+						<thead>
+							<tr style="border-bottom: 2px solid #f0f0f0;border-top: 1px solid #eee;">
+								<th style="width: 110px;text-align: center;">日期</th>
+								<th style="text-align: center;">任务描述</th>
+								<th style="width: 120px; text-align: center;">所属项目</th>
+								<th id="overTitle" style="width: 85px; text-align: center;">工时</th>
+							</tr>
+						</thead>
+						<tbody ng-repeat="logsGroup in teamLogs" ng-show="!search.overtime">
+							<tr>
+								<td colspan="4" class="w-title p-l-10">
+									<strong class="f-14 m-r-15 pull-left w-width">{{logsGroup.userRealname}}
+										<span ng-if="logsGroup.userIsvalid!=1" title="离职日期：{{logsGroup.leaveDate | date:'yyyy-MM-dd'}}">(离职)</span>
+									</strong>
+									<span ng-if="search.task">使用工时
+										<span class="num c-teal">{{logsGroup.consumed}}</span>
+									</span>
+									<span ng-if="search.lack">缺失工时
+										<span class="num c-red">{{logsGroup.lackEstimate}}</span>
+									</span>
+								</td>
+							</tr>
+							<tr ng-repeat="estimateLog in logsGroup.logs" ng-class="{'miss-tr':estimateLog.lackEstimate}">
+								<td class="column">{{estimateLog.workDate | date:"yyyy-MM-dd"}}</td>
+								<td class="column text-left">
+									<a class="text-line-hidden" data-ui-sref="home.assesdetail.taskList.taskDetail({taskId:'{{estimateLog.taskId}}'})" ng-if='estimateLog.taskId'
+									 title="{{estimateLog.description}}">{{estimateLog.description}}</a>
+									<span ng-if='!estimateLog.taskId'>{{estimateLog.description}}</span>
+								</td>
+								<td class="column">
+									<span class="text-line-hidden">{{estimateLog.projectName}}</span>
+								</td>
+								<td class="column">
+									<span ng-if="estimateLog.lackEstimate" )>{{estimateLog.lackEstimate}}</span>
+									<span ng-if='estimateLog.consumed'>{{estimateLog.consumed}}</span>
+								</td>
+							</tr>
+							<tr ng-show="logsGroup.lacklogs.length>0">
+								<td class="column text-left p-l-20" colspan="3">
+									<div ng-repeat="lackInfo in logsGroup.lacklogs" width="120" style="color:#555;" class="pull-left m-r-10 m-t-5" title="{{lackInfo.workDate | date:'yyyy-MM-dd'}}">{{lackInfo.workDate | date:"MM-dd"}}（
+										<span class="c-red ">{{lackInfo.lackEstimate}}</span>）</div>
+								</td>
+							</tr>
+						</tbody>
+						<tbody ng-repeat="logsGroup in teamLogs" ng-show="search.overtime">
+							<tr>
+								<td colspan="4" class="w-title p-l-10">
+									<strong class="f-14 m-r-15 pull-left w-width">{{logsGroup.userRealname}}
+										<span ng-if="logsGroup.userIsvalid!=1" title="离职日期：{{logsGroup.leaveDate | date:'yyyy-MM-dd'}}">(离职)</span>
+									</strong>
+									<span ng-if="search.overtime">总加班工时
+										<span class="num c-red">{{logsGroup.overestimate}}</span>
+									</span>
+								</td>
+							</tr>
+							<tr ng-repeat="estimateLog in logsGroup.logs" ng-class="{'miss-tr':estimateLog.lackEstimate}">
+								<td class="column" ng-show="estimateLog.flag" rowspan="{{estimateLog.count}}">{{estimateLog.workDate | date:"yyyy-MM-dd"}}</td>
+								<td class="column text-left">
+									<a class="text-line-hidden" data-ui-sref="home.workbench.teamLog.detail({taskId:'{{estimateLog.taskId}}'})" ng-if='estimateLog.taskId'
+									 title="{{estimateLog.description}}">{{estimateLog.description}}</a>
+									<span ng-if='!estimateLog.taskId'>{{estimateLog.description}}</span>
+								</td>
+								<td class="column">
+									<span class="text-line-hidden">{{estimateLog.projectName}}</span>
+								</td>
+								<td class="column" ng-show="estimateLog.flag" rowspan="{{estimateLog.count}}">
+									<span class="c-red">{{estimateLog.overestimate}}</span>（
+									<span>{{estimateLog.GZSC}}</span>）</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;top:113px">
+		<ui-view onload="stateOnload()"></ui-view>
+	</aside>
+</div>
+
+
+<script>
+	angular.module("developmentCenter")
+		.registerCtrl(
+			'workLogCtrl',
+			function (Modal, $rootScope, $scope, $http, Messenger, debounce, $stateParams) {
+				/* $scope.dateButtons = ['thisWeek', 'preWeek', 'thisMonth', 'preMonth', 'thisYear'];
+				$scope.defaultButton = "thisWeek"; */
+				$scope.search = { task: true, lack: false, week: { name: "choose" }, overtime: false };
+				var timeStr = $scope.$parent.assess?($scope.$parent.assess.year+"-"+$scope.$parent.assess.month):($rootScope.assess.year+"-"+$rootScope.assess.month);
+				$scope.dateRange = { 
+					start: moment(timeStr,'YYYY-MM').startOf('month').valueOf(),
+					end:moment(timeStr,'YYYY-MM').endOf('month').valueOf() 
+				};
+				$scope.isTouchUser = false;
+				$scope.userId = "";
+				function isRoleAssist() {
+					//		$scope.roleAssist = false;
+					$http.post("ws/isRoleAssistant", { userName: $rootScope.subject.userName }).success(function (data) {
+						$scope.roleAssist = data.result;
+					});
+				}
+
+				isRoleAssist();
+
+				initCurrentUserTree();
+
+				function initCurrentUserTree() {
+					
+					$http.post("ws/dept/getCurrentUserDeptTree", { deepth: -1 }).success(function (currentDept) {
+						var currentGroupDept = currentDept.result[0];
+						$scope.selectedDeptNode = currentGroupDept;
+						$http.post("ws/hasLogAdminJob", {}).success(function (adminJob) {
+							$scope.logAdmin = adminJob.result;
+							if (adminJob.result) {
+								$http.post("ws/dept/getDeptTree", { deepth: -1 }).success(function (allDept) {
+									$scope.deptTree = allDept.result;
+								});
+							} else {
+								$scope.deptTree = currentDept.result;
+							}
+						});
+
+						$scope.$watch("dateRange", function (v) {
+							if (angular.isUndefined(v)) return;
+							teamGroupUsers($scope.selectedDeptNode.id, v.start, v.end);
+							$scope.search.week.st = v.start;
+							$scope.search.week.et = v.end;
+						}, true);
+					});
+				}
+
+				//部门用户，过滤白名单，过滤离职日期在选择日期之前的用户
+				function teamGroupUsers(orgId, startDate, endDate) {
+					$http.post("ws/dept/getTeamGroupUsers", { orgId: orgId, startDate: startDate, endDate: endDate }).success(function (data) {
+						$scope.deptUsers = data.result;
+						$http.get('projects/v1/appraisals/' + $stateParams.assessId).success(function (datas) {
+							data.result.forEach(function (item) {
+								//因为现在开发环境跟测试环境用户ID不一样，所以先写死以后来改
+								if (item.id == datas.userId) {
+									$scope.search.users = [item]
+								}
+							})
+							
+							$http.post("ws/workbench/teamGroupProjects", { search: { users: $scope.search.users } }).success(function (data) {
+								$scope.projectOptions = data.result;
+							});
+						})
+						/* if (!$scope.isTouchUser) {
+							$scope.search.users = data.result;
+						} */
+					});
+				}
+
+				$scope.initUserTree = function () {
+					initCurrentUserTree();
+				}
+
+				$scope.selectUser = function (item) {
+					$scope.isTouchUser = true;
+				}
+				$scope.cleanUsers = function () {
+					$scope.isTouchUser = true;
+				}
+
+				$scope.deptTreeOptions = {
+					check: {
+						enable: false,
+						chkStyle: "radio",
+						chkboxType: { "Y": "s", "N": "s" }
+					},
+					data: {
+						simpleData: {
+							enable: true,
+							idKey: "id",
+							pIdKey: "pId",
+							rootPId: 0
+						}
+					},
+					callback: {
+						onClick: zTreeOnClick
+					}
+				};
+
+				function zTreeOnClick(event, treeId, treeNode) {
+					$scope.selectedDeptNode = treeNode;
+					teamGroupUsers(treeNode.id, $scope.dateRange.start, $scope.dateRange.end);
+				}
+
+				var debounceSearch = debounce(function (searchCondition) {
+					var search = angular.copy(searchCondition);
+					search.week.et = search.week.et-24*3600*1000;
+					$http.post("ws/workbench/teamLogList", { search: search }).success(function (data) {
+						var teamLogsGroupByUser = [];
+						angular.forEach($scope.search.users, function (user) {
+							var group = { userRealname: user.userRealname, userIsvalid: user.state, leaveDate: user.pasttime, logs: [], lacklogs: [], lackEstimate: 0, consumed: 0, overestimate: 0 };
+							angular.forEach(data.result, function (v) {
+								if (v.account == user.userName) {
+									if ($scope.search.overtime) {
+										group.logs.push(v);
+										if (v.flag) {
+											group.overestimate += v.overestimate;
+										}
+									} else {
+										if (v.taskId) {
+											group.logs.push(v);
+											group.consumed += v.consumed;
+										} else {
+											group.lacklogs.push(v);
+											group.lackEstimate += v.lackEstimate;
+										}
+									}
+								}
+							});
+							group.consumed = group.consumed > 0 ? (parseInt(group.consumed) == group.consumed ? group.consumed : group.consumed.toFixed(1)) : 0;
+							group.lackEstimate = group.lackEstimate > 0 ? (parseInt(group.lackEstimate) == group.lackEstimate ? group.lackEstimate : group.lackEstimate.toFixed(1)) : 0;
+							group.overestimate = group.overestimate > 0 ? (parseInt(group.overestimate) == group.overestimate ? group.overestimate : group.overestimate.toFixed(1)) : 0;
+							if ($scope.search.lack && !$scope.search.task) {
+								group.lacklogs.length > 0 ? teamLogsGroupByUser.unshift(group) : teamLogsGroupByUser.push(group);
+							} else {
+								group.logs.length > 0 ? teamLogsGroupByUser.unshift(group) : teamLogsGroupByUser.push(group);
+							}
+						});
+						$scope.teamLogs = teamLogsGroupByUser;
+					});
+				}, 400);
+
+				$scope.$watch("search.task", function (v) {
+					if (v) {
+						$('#projectDisabled').removeAttr('disabled');
+						$scope.search.overtime = false;
+						$('#overTitle').html("工时");
+						$('#overTitle').css('width', '85px');
+					}
+				});
+				$scope.$watch("search.lack", function (v) {
+					if (v) {
+						$('#projectDisabled').removeAttr('disabled');
+						$scope.search.overtime = false;
+						$('#overTitle').html("工时");
+						$('#overTitle').css('width', '85px');
+					}
+				});
+				$scope.$watch("search.overtime", function (v) {//加班工时不能按项目过滤，无法界定加班时长
+					if (v) {
+						$('#projectDisabled').attr('disabled', true);
+						$scope.search.projects = [];
+						$scope.search.lack = false;
+						$scope.search.task = false;
+						$('#overTitle').html("<span class='c-red'>加班工时</span>(总工时)");
+						$('#overTitle').css('width', '115px');
+					}
+				});
+				$scope.$watch("search", function (v) {
+					debounceSearch(v);
+				}, true);
+
+				$scope.downLoadLackLog = function () {
+					if (angular.isDefined($scope.search) && angular.isDefined($scope.search.week)) {
+						window.location.href = 'report/workLog/lack/' + $scope.search.week.st + "/" + $scope.search.week.et + "/" + JSON.stringify(angular.fromJson("[\"" + $scope.selectedDeptNode.id + "\"]"));
+					} else {
+						Messenger.error("请选择补全查询条件");
+					}
+				}
+
+				$scope.downLoadWorkLog = function () {
+					var options = {
+						title: '工作量日志导出',
+						size: "middle",
+						animation: true,
+						onDismiss: function (params) {
+
+						}
+					};
+					Modal.open("home/workbench/teamGroup/worklogdownload.html", {}, options);
+				}
+
+				$scope.downLoadOverLog = function () {
+					var options = {
+						title: '加班日志导出',
+						size: "middle",
+						animation: true,
+						onDismiss: function (params) {
+
+						}
+					};
+					Modal.open("home/workbench/teamGroup/overlogdownload.html", {}, options);
+				}
+
+				$scope.downLoadProjectsLog = function () {
+					var options = {
+						title: '工作日志导出',
+						size: "middle",
+						animation: true,
+						onDismiss: function (params) {
+
+						}
+					};
+					Modal.open("home/workbench/teamGroup/ProjectLogDownload.html", {}, options);
+				}
+
+
+
+				$scope.openManageWhiteModal = function () {
+					var url = "home/workbench/teamGroup/whiteListEdit.html";
+					Modal.open(url, {}, {
+						title: "名单管理",
+						animation: true,
+						size: 'big'
+					});
+				}
+			})
+</script>

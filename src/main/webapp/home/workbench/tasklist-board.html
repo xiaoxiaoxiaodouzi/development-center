@@ -1,0 +1,948 @@
+<link href="css/task/list.css" rel="stylesheet">
+<link href="css/task/board.css" rel="stylesheet">
+<style>
+.board-view {
+    background-color: #fff;
+}
+.board-group{
+    background-color: #fff;
+    overflow-y: hidden;
+}
+#chat {
+    position: fixed;
+    background: #fff;
+    padding: 20px 0;
+    width: 500px;
+    box-shadow: 0 0 10px rgba(51, 51, 51, 0.38);
+    height: calc(100% - 65px);
+    right: -600px;
+    top: 65px;
+    -webkit-transition: all;
+    -o-transition: all;
+    transition: all;
+    -webkit-transition-duration: 300ms;
+    transition-duration: 300ms;
+    z-index: 5;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+#chat.toggled{
+	opacity: 1;
+	right: 0px;
+}
+.task-content{
+	text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 50%;
+    overflow: hidden;
+}
+.checkbox .input-helper:after{
+	width:15px;
+}
+.ico-place {
+    position: relative;
+    top: 2px;
+    margin-right: 5px;
+}
+#detail-panel {
+    height: calc(100% - 113px);
+}
+</style>
+
+<div class="panel-tab-location">
+	<div class="panel-tab">
+		<ul class="panel-tab-list p-0 m-0">
+			<li class="select-vertical-nav" data-ui-sref="home.workbench.myTasks"><a href="">任务</a></li>
+			<li data-ui-sref="home.workbench.myBugs"><a href="">缺陷</a></li>
+			<!-- <li data-ui-sref="project.board.plan"><a href="">测试计划</a></li> -->
+		</ul>
+	</div>
+</div>
+
+<ul class="board-scrum-stages" ng-model="stageList">
+			    <li class="scrum-group scrum-height" ng-class="{'disabled':(s.stage.name=='需求列表'||s.stage.name=='已完成'),'require-panel':s.stage.name=='需求列表'}" ng-repeat="s in stageList" when-scrolled load-more="loadTaskMore(name)">
+			   	  <div class="scrum-stages-header f-700 dropdown">
+			   	  	 <div class="stage-name">{{s.stage.name}}
+			   	  	 	<span class="task-count" ng-show="s.totalSize>0"> · {{s.totalSize}}</span>
+			   	  	 </div>
+			   	  	 <!-- <a class="function-menu" ng-show="(s.stage.name=='已完成' && s.taskList.length>0)" data-toggle="dropdown" aria-expanded="true"><i class="md md-keyboard-arrow-down f-20"></i></a>
+			   	  	 <ul class="dropdown-menu dm-icon pull-right">
+	                	<li ng-show="s.stage.name!='已完成'">
+			                <a data-ng-click="editStage(s.stage)" href=""><i class="md md-mode-edit"></i>编辑列表</a>
+			            </li>
+			            <li ng-show="s.stage.name!='已完成'">
+			                <a href="" data-ng-click="delStage(s)"><i class="md md-delete"></i>删除列表</a>
+			            </li>
+			            <li ng-show="s.stage.name=='已完成'">
+			                <a href="" data-ng-click="closeStage(s)"><i class="md md-assignment-returned"></i>归档列表所有任务</a>
+			            </li>
+	                </ul> -->
+			   	  </div>
+			   	  <ul class="group-task-list p-0" ui-sortable="sortableStoryOptions" ng-model="s.taskList" ng-if="s.stage.name=='需求列表'">
+			   	  	<li class="group-require-card storyCard" ng-class="{'story-timeOut':task.status=='2'}" ng-repeat="task in s.taskList"  data-ng-click="openStoryComment($event,task)">
+			   	  		<div style="display:none">{{task.id}}</div>
+			   	  		<div class="group-task-content" ng-class="{'demand-close':task.status=='0'}">
+			   	  		  <div class="task-content-wrapper"> 
+			   	  			<div class="flex-content require-panel-title">
+			   	  			<i ng-show="task.status=='0'" class="md md-check require-open"></i>
+			   	  			<span class="black-color m-r-10">
+			   	  				<span ng-class="{'font-gray':task.status=='0','c-green':(task.status=='1'||task.status=='3'),'c-red':task.status=='2'}" style="font-weight: bold" title="已完成任务">{{task.doneNum}}</span>
+			   	  				<span>|</span>
+			   	  				<span ng-class="{'font-gray':task.status=='0'}" style="font-weight: bold; color: black" title="总计任务">{{task.totalNum}}</span>
+							</span>
+			   	  			{{task.title}}</div>
+			   	  			<span class="flex-img-head group-user-head m-l-5"><img class="lv-img-sm" title="提出人:{{task.proposer.userRealname}}" ng-src="{{task.proposer.userIcon}}"></span>  
+			   	  		  </div>
+			   	  		</div>
+			   	  		<div class="panel-require-detail limit-5" ng-hide="task.status=='0'">
+			   	  			{{task.spec}}
+			   	  			<!-- <span ng-hide="!task.mainStory" class="p-r-15">{{task.mainStory}}</span>
+			   	  			<span ng-hide="!task.storyEffect" class="p-r-15">{{task.storyEffect}}</span>
+			   	  			<span ng-hide="!task.storyFunction" class="p-r-15">{{task.storyFunction}}</span> -->
+			   	  		</div>
+			   	  		<div class="require-panel-handle" ng-show="task.status!='0'">
+			   	  			<a href=""  ng-click="addNewTaskStory(task)"><i class="md md-add m-r-5 f-20"></i> 新建任务</a>
+			   	  		</div>
+			   	  	</li>
+			   	  </ul>
+			   	  <div ng-show="{{s.stage.name=='需求列表'}}" class="group-task-add"> <a href="" ng-click="openNewStory()"><i class="md md-add m-r-5 f-20"></i> 新建需求</a></div>
+			   	  <ul class="group-task-list p-0 connectedSortable" ui-sortable="sortableTaskOptions" ng-model="s.taskList" ng-if="s.stage.name!='需求列表'">
+			   	  	<li class="group-task-card" ng-repeat="task in s.taskList" data-ng-click="taskDetail($event,task)">
+			   	  		<div id="task{{task.id}}"></div>
+			   	  		<div style="width:100%;">
+		                    <div class="group-task-content">
+				   	  		  <div class="task-content-wrapper">
+				   	  		  	<i id="taskSquare" ng-show="task.isDone" class="md md-check require-open"></i>
+				   	  			<div id="taskSquare" ng-show="!task.isDone" style="width: 15px;height: 15px;
+				   	  				border: 1px solid grey;border-radius: 2px;margin-top: 4px;"></div>
+				   	  			<div class="flex-content" ng-class="{'c-gray':task.isDone,'text-del':task.isDone}">
+				   	  			<span><i ng-if="!task.bugId && task.isConfirm=='1'" class="md md-brightness-1 task-ensure"></i>{{task.name}}</span>
+				   	  			</div>
+				   	  		  </div>
+				   	  		</div>
+		                    <div>
+		                        <ul class="lv-attrs" ng-class="{'task-time':!task.isTimeOut}">
+		                        	<li ng-if="!task.isDone" ng-class="{'task-timeout':task.isTimeOut}">
+		                        	<span ng-if="!task.deadline" title="截止日期"><i class="md md-today"></i>未分配</span> 
+		                        	<span ng-if="task.deadline" title="截止日期"><i class="md md-today"></i>{{task.deadline | date:"yyyy-MM-dd"}}</span>
+		                        	</li>
+		                            <li ng-if="task.isDone"><span title="完成日期"><i class="md md-today"></i> {{task.finishedDate | date:"yyyy-MM-dd"}}</span> </li>
+		                            <li ng-if="task.bugId"><span id="bugdetail" class="c-purple" title="bug编号">#{{task.bugNo}}</span></li>
+		                            <li ng-if="task.description"><i class="md md-view-headline" title="描述"></i></li>
+		                            <li id="taskEstimate"><span title="工时"><i class="md md-history m-f-w m-r-5"></i>{{task.consumed}}</span></li>
+		                        </ul>
+		                    </div>
+	                    </div>
+	                    
+			   	  	</li>
+			   	  <!-- <div ng-if="s.stage.name=='已完成' && !aa.isAllCom" class="group-task-show"> <a href="" ng-click="aa.isAllCom = !aa.isAllCom">
+			   	  <i class="md md-expand-more f-18 ico-place"></i>
+			   	   	显示全部</a></div>
+			   	  <div ng-if="s.stage.name=='已完成' && aa.isAllCom" class="group-task-show"> <a href="" ng-click="aa.isAllCom = !aa.isAllCom">
+			   	 	<i class="md md-expand-less f-18 ico-place"></i> 
+			   	          收起</a></div> -->
+			   	  </ul>
+			   	  <div ng-show="{{s.stage.name=='未开始'}}" class="group-task-add"> <a href="" ng-click="openNewStageTask(s.stage)"><i class="md md-add m-r-5 f-20"></i> 新建任务</a></div>
+			   </li>
+			  <!-- <li class="scrum-group disabled">
+			  	<div class="scrum-stages-header" ng-show="addStageShow" ng-init="addStageShow=true">
+			   	  	 <a href="" ng-click="addStageShow=!addStageShow"><i class="md md-add m-r-5"></i> <span>新建任务列表</span></a>
+			   	</div>
+			   	<div class="creator-wrap tasklist-creator" ng-show="!addStageShow"> 
+			   		<form class="tasklist-create-form"> 
+			   			<div class="tab-content m-b-10"> 
+			   				<div class="tab-pane active" id="tasklist-create-new"> 
+			   					<div class="tasklist-create-new"> 
+			   						<input type="text" ng-model="stageName" placeholder="新建任务列表..." class="form-control stage-name">  
+			   					</div> 
+			   				</div> 
+			   			</div> 
+			   			<div class="buttons"> 
+					   		<a class="btn btn-link contract-creator-handler" ng-click="stageName='';addStageShow=!addStageShow">取消</a> 
+					   		<a class="btn btn-primary submit-add-stage" ng-click="addStage()">保存</a> 
+				   		</div>
+					</form>
+			   	</div>
+			  </li> -->
+			</ul>
+	
+<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;top:113px">
+    <ui-view onload="stateOnload()"></ui-view>
+</aside>
+
+<aside id="chat" class="chat c-overflow" data-ng-include="" src="'home/workbench/tasklist-search.html'" data-ng-class="{ 'toggled': showView === true }" style="background-color: #fafafa;">
+</aside>
+
+<script>
+$("[data-toggle]").tooltip();
+
+developmentCenter.registerCtrl('MyTaskListController',
+		function($scope,Modal,$http,$stateParams,$timeout,debounce,$state,$rootScope,$ocLazyLoad,socketio,Messenger,$templateCache,$compile){
+	var currentUser = {id:$rootScope.subject.userId,name:$rootScope.subject.userRealname,icon:$rootScope.subject.remark1,userName:$rootScope.subject.userName};
+	$scope.pageIndex = $scope.storyPage = $scope.dqrPage = $scope.wksPage = $scope.jxzPage = $scope.dshPage = $scope.ywcPage = 1;
+	$scope.search = {userName:currentUser.userName,projects:[],orderWay:"my_task_order",comShow:true,bug:false,creator:null,page:$scope.pageIndex,rows:10};
+	/* $scope.aa={};
+	$scope.aa.isAllCom = false;//默认只查询当前半个月已完成任务 */
+	
+	//我所在的项目的角色判断
+	$http.post("ws/workbench/getProjectPermitedMap",{}).success(function(data){
+		$scope.projectCreators = data.result;
+	})
+	
+	$scope.taskDetail = function(e,task){
+		if(e.target.id === "taskSquare"){
+			if(!task.bugId && task.taskConfirm=='true'&&task.isConfirm=='0'){
+				Messenger.error("任务需确认后才可录工时，请联系项目其他成员！");
+			}else{
+				$scope.taskDone(task);
+			}
+		}else if(e.target.id === "taskEstimate" ||e.target.parentElement.id === "taskEstimate" ||e.target.parentElement.parentElement.id === "taskEstimate"){
+			if(!task.bugId && task.taskConfirm=='true'&&task.isConfirm=='0'){
+				Messenger.error("任务需确认后才可录工时，请联系项目其他成员！");
+			}else{
+				$scope.openEstimateEditModal(task);
+			}
+		}else if(e.target.id === "bugdetail"){
+			$state.go("home.workbench.myTasks.bug",{project:task.projectId,bugNo:task.bugNo});	
+		} else{
+			$state.go("home.workbench.myTasks.detail",{taskId:task.id});	
+		}
+	}
+	
+	
+	/* $scope.$watch("aa",function(v,ov){
+		if(v!=ov){
+			var condition = angular.copy($scope.search);
+			condition.isAllCom = v.isAllCom;
+			$http.post("ws/workbench/getCompleteTaskList",{condition:condition}).success(function(data){
+				$scope.stageList[$scope.stageList.length-1].taskList = data.result;
+			})
+		}
+	},true) */
+	
+	//getStageList($scope.search);
+	
+	//查询任务所有阶段信息
+			function getStageList(search){
+				$http.post("ws/workbench/getTaskStageList",{search:search}).success(function(data){
+					$scope.stageList = data.result;
+					if(!search.comShow){
+						for(var i=1;i<$scope.stageList.length;i++){
+							if($scope.stageList[i].stage.name=='已完成'){
+								$scope.stageList.splice(i,1);
+							}
+						}
+					}
+					//判断截止日期是否超时
+					for(var i=1;i<$scope.stageList.length;i++){
+						var taskList = $scope.stageList[i].taskList;
+						for(var j=0;j<taskList.length;j++){
+							taskList[j].isTimeOut = false;
+							if(taskList[j].deadline && taskList[j].deadline<moment(moment().format('YYYY-MM-DD')).toDate().getTime()){
+								taskList[j].isTimeOut = true;
+							}
+						}
+					}
+					$scope.originalOrderList = angular.copy($scope.stageList);
+					stageConnection();
+		        });
+			}
+	
+			//查询更多任务
+			$scope.loadTaskMore = function(name){
+				var totalSize = 0,index,page;//获取需加载的需求状态和总数
+				if(name.contains("需求列表")){
+					page = ++$scope.storyPage;
+					totalSize = $scope.stageList[0].totalSize;
+					var search = angular.copy($scope.search);
+					search.page = page;
+					if(page>=(totalSize/10+1))return;//超出总数不请求数据
+					
+					$http.post("ws/workbench/getMoreStoryList",{search:search}).success(function(data){
+						$scope.stageList[0].taskList = $scope.stageList[0].taskList.concat(data.result);
+					});
+					return;
+				}
+				if(name.contains("待确认")){
+					nameStr = "待确认";
+					index = 1;
+					page = ++$scope.dqrPage;
+				}else if(name.contains("未开始")){
+					nameStr = "未开始";
+					index = 2;
+					page = ++$scope.wksPage;
+				}else if(name.contains("进行中")){
+					nameStr = "进行中";
+					index = 3;
+					page = ++$scope.jxzPage;
+				}else if(name.contains("待审核")){
+					nameStr = "待审核";
+					index = 4;
+					page = ++$scope.dshPage;
+				}else{
+					nameStr = "已完成";
+					index = 5;
+					page = ++$scope.ywcPage;
+				}
+				totalSize = $scope.stageList[index].totalSize;
+				var search = angular.copy($scope.search);
+				search.page = page;
+				if(page>=(totalSize/10+1))return;//超出总数不请求数据
+				
+				$http.post("ws/workbench/getMoreTaskStageList",{stageName:nameStr,search:search}).success(function(data){
+					$scope.stageList[index].taskList = $scope.stageList[index].taskList.concat(data.result);
+				});
+			}
+	
+	var stageConnection = function(){
+		$timeout(function(){
+			$(".storyCard").mouseover(function(){
+				var storyId = $(this).children().first()[0].innerHTML;
+				for(var i=1;i<$scope.stageList.length;i++){
+					var taskList =$scope.stageList[i].taskList; 
+					for(var j=0;j<taskList.length;j++){
+						if(taskList[j].storyId==storyId){
+							$('#task'+taskList[j].id).parent().css({"border-left":"6px solid #a6a6a6","transition-duration":"300ms"})
+						}
+					}
+				}
+			});
+			$(".storyCard").mouseout(function(){
+				var storyId = $(this).children().first()[0].innerHTML;
+				for(var i=1;i<$scope.stageList.length;i++){
+					var taskList =$scope.stageList[i].taskList; 
+					for(var j=0;j<taskList.length;j++){
+						if(taskList[j].storyId==storyId){
+							$('#task'+taskList[j].id).parent().removeAttr("style");
+						}
+					}
+				}
+			});
+		},200) 
+	};
+			
+			$scope.$on("stageSearchBo",function(event,msg){
+				if(msg.search.creat){
+					msg.search.creator = $rootScope.subject.userName;
+				}
+				$scope.search = msg.search;
+				$scope.pageIndex = $scope.storyPage = $scope.dqrPage = $scope.wksPage = $scope.jxzPage = $scope.dshPage = $scope.ywcPage = 1;
+				getStageList($scope.search);
+			});
+			
+			$scope.debounce = {comShow:true,creat:false,bug:false};
+			$scope.search.week = {name:"all"};
+			
+			$scope.dateButtons = ['thisWeek','nextWeek','preWeek','thisMonth','preMonth','thisYear'];
+			//$scope.defaultButton = "thisWeek";
+			
+			$scope.dateRange = {show:"时间段",start:moment().startOf('week').toDate().getTime()};
+			
+			//新增任务
+			$scope.openNewStageTask = function(stage){
+				Modal.open("home/addTask.html",{source:"taskListNewTask",stage:null},{onClose:function(data){
+					//getStageList($scope.search);
+				}});
+			}
+			
+			$scope.$on("topCreateNewTask",function(event,data){
+				var stageList = $scope.stageList;
+				data.task.consumed = 0;
+				data.task.isTimeOut = false;
+				data.task.isDone = false;
+				if(data.task.deadline && data.task.deadline<moment(moment().format('YYYY-MM-DD')).toDate().getTime()){
+					data.task.isTimeOut = true;
+				}
+				if(angular.isDefined(data.task.storyId)){//需求完成任务数+1
+	    			for(var j=0;j<stageList[0].taskList.length;j++){
+		    			if(stageList[0].taskList[j].id == data.task.storyId){
+		    				stageList[0].taskList[j].totalNum = stageList[0].taskList[j].totalNum + 1;
+		    				break;
+		    			}
+		    		}
+	    		}
+				if(data.task.isConfirm=='0'){//待确认任务
+					data.task.taskConfirm = "true";
+					stageList[1].taskList.unshift(data.task);
+					stageList[1].totalSize++;
+					$http.post("ws/workbench/orderMyTaskStage",{stage:$scope.stageList[1]});
+				}else{
+					stageList[2].taskList.unshift(data.task);
+					stageList[2].totalSize++;
+					$http.post("ws/workbench/orderMyTaskStage",{stage:$scope.stageList[2]});
+				}
+				$scope.originalOrderList = angular.copy(stageList);
+				stageConnection();
+			});
+			
+	    	$scope.openEstimateEditModal=function(task){
+	    		if(task.arcStatus=='0'){
+	    			Messenger.error("项目【"+task.projectName+"】合同编号在ERP不存在或已过时，请更改为最新编号后重试！");
+	    			return ;
+	    		}
+	    		var statusStr = task.isDone?"已完成":"未完成" ;
+	    		var options = {
+	    				title:'<span class="est-header-name">任务: '+task.name+'--</span><span class="est-header-status"> (状态 :'+statusStr+')</span>',
+	    				size:"big",
+	    				animation:true,
+	    				onDismiss:function(params){
+	    					if(params.isDone){
+	    						task.isDone = params.isDone;
+	    						$scope.$emit("taskEstimateUpdateBo", {task:task});
+	    						$http.post("message/$all/taskDetailUpdate",{id:task.id,to:task.userId,type:"updateAdd",p:"done",socketId:$rootScope.socketId}) ;
+	    					}else if(params.isChange){
+	    						$scope.$emit("taskEstimateUpdateBo", {task:task});
+	    						$http.post("message/$all/taskDetailUpdate",{id:task.id,to:task.userId,type:"update",socketId:$rootScope.socketId}) ;
+	    					}
+	    				}
+				} ;
+	    		Modal.open("project/task/estimate.html",{taskId:task.id,assignedToRealname:task.userRealname},options) ;
+	    	} 
+	    	
+	    	$scope.$on("taskEstimateUpdateBo",function(event,msg){
+	    		$http.post("ws/projectTask",{id:msg.task.id}).success(function(data){
+	    			msg.task.consumed = data.result.consumed;
+	    			if(msg.task.isDone){//从其他看板修改为已完成
+						var stageList = $scope.stageList;
+	    				var comTaskList = [],uncomTaskList=[],stage={};
+	    				for(var i=1;i<stageList.length;i++){
+	    					if(stageList[i].stage.name == '已完成'){
+	    						msg.task.finishedDate = moment().toDate().getTime();
+	    						stageList[i].taskList.unshift(msg.task);//任务添加至已完成面板
+	    						stageList[i].totalSize++;
+	    						$http.post("ws/workbench/orderMyTaskStage",{stage:$scope.stageList[i]});
+	    					}else{
+	    						for(var j=0;j<stageList[i].taskList.length;j++){
+	    							if(stageList[i].taskList[j].id == msg.task.id){
+	    								stageList[i].taskList.splice(j,1);
+	    								stageList[i].totalSize--;
+	    							}
+	    						}
+	    					}
+	    				}
+	    				if(angular.isDefined(msg.task.storyId)){//需求完成任务数+1
+	    					for(var i=0;i<stageList[0].taskList.length;i++){
+		    					if(stageList[0].taskList[i].id == msg.task.storyId){
+		    						stageList[0].taskList[i].doneNum = stageList[0].taskList[i].doneNum + 1;
+		    						break;
+		    					}
+		    				}
+	    				}
+					}else{
+						var stageList = $scope.stageList;
+	    				for(var i=1;i<stageList.length;i++){
+	    					for(var j=0;j<stageList[i].taskList.length;j++){
+	    						if(stageList[i].taskList[j].id == msg.task.id){
+	    							stageList[i].taskList[j] = msg.task;
+	    							break;
+	    						}
+	    					}
+	    				}
+	    			}
+    				$scope.originalOrderList = angular.copy($scope.stageList);
+				}) ;
+	    	});
+	    	
+	    	$scope.taskDone=function(task){
+	    		task.isDone = !task.isDone;
+	    		if(task.isDone){
+	    			task.isDone = false;
+	    			$scope.openEstimateEditModal(task);
+	    		}else{
+	    			if(task.bugId){
+	    				task.isDone = true;
+	    				Messenger.post("BUG关联任务完成后不能开启！");
+	    				return ;
+	    			}
+	    			//已完成的任务重新开始
+	    			$http.post("ws/changeTaskStatus",{task:{id:task.id,isDone:task.isDone}}).success(function(data){
+	    				//getStageList($scope.search);
+	    				var stageList = $scope.stageList;
+	    				var comTaskList = [],uncomTaskList=[];
+	    				for(var i=1;i<stageList.length;i++){
+	    					if(stageList[i].stage.name == '已完成'){
+	    						comTaskList = stageList[i].taskList;
+	    					}
+	    					if(stageList[i].stage.name == '未开始'){
+	    						uncomTaskList = stageList[i].taskList;
+	    					}
+	    				}
+	    				uncomTaskList.unshift(task);//任务添加至未开始面板
+	    				for(var i=0;i<comTaskList.length;i++){
+	    					if(comTaskList[i].id == task.id){
+	    						comTaskList.splice(i,1);
+	    						break;
+	    					}
+	    				}
+	    				for(var i=1;i<stageList.length;i++){
+	    					if(stageList[i].stage.name == '已完成'){
+	    						stageList[i].taskList = comTaskList;
+	    						stageList[i].totalSize--;
+	    					}
+	    					if(stageList[i].stage.name == '未开始'){
+	    						stageList[i].taskList = uncomTaskList;
+	    						stageList[i].totalSize++;
+	    						$http.post("ws/workbench/orderMyTaskStage",{stage:$scope.stageList[i]});
+	    					}
+	    				}
+	    				if(angular.isDefined(task.storyId)){//需求完成任务数-1
+	    					for(var i=0;i<stageList[0].taskList.length;i++){
+		    					if(stageList[0].taskList[i].id == task.storyId){
+		    						stageList[0].taskList[i].doneNum = stageList[0].taskList[i].doneNum - 1;
+		    						break;
+		    					}
+		    				}
+	    				}
+	    				$scope.originalOrderList = angular.copy($scope.stageList);
+	    			}) ;
+	    			$http.post("message/$all/taskDetailUpdate",{id:task.id,to:task.userId,type:"updateAdd",p:"done",socketId:$rootScope.socketId}) ;
+	    		}
+	    	}
+	    	
+			$scope.$on("taskUpdateBo",function(event,msg){
+				for(var i=1;i<$scope.stageList.length;i++){
+    				for(var j=0;j<$scope.stageList[i].taskList.length;j++){
+    					if($scope.stageList[i].taskList[j].id == msg.task.id){
+    						if(msg.task.isDone != $scope.stageList[i].taskList[j].isDone){//任务完成状态有变化
+    							$scope.stageList[i].taskList.splice(j,1);
+    							$scope.stageList[i].totalSize--;
+    							if(msg.task.isDone){
+    								msg.task.finishedDate = moment().toDate().getTime();
+        							$scope.stageList[$scope.stageList.length-1].taskList.unshift(msg.task);
+        							scope.stageList[$scope.stageList.length-1].totalSize++;
+        							if(angular.isDefined(msg.task.storyId)){//需求完成任务数+1
+        		    					for(var k=0;k<$scope.stageList[0].taskList.length;k++){
+        			    					if($scope.stageList[0].taskList[k].id == msg.task.storyId){
+        			    						$scope.stageList[0].taskList[k].doneNum = $scope.stageList[0].taskList[k].doneNum + 1;
+        			    						break;
+        			    					}
+        			    				}
+        		    				}
+    								$http.post("ws/orderProjectTaskStage",{stage:$scope.stageList[$scope.stageList.length-1]});
+    							}else{
+    								if(angular.isDefined(msg.task.storyId)){//需求完成任务数-1
+    			    					for(var k=0;k<$scope.stageList[0].taskList.length;k++){
+    				    					if($scope.stageList[0].taskList[k].id == msg.task.storyId){
+    				    						$scope.stageList[0].taskList[k].doneNum = $scope.stageList[0].taskList[k].doneNum - 1;
+    				    						break;
+    				    					}
+    				    				}
+    			    				}
+    								if(msg.task.isConfirm=='1'){
+    									$scope.stageList[2].taskList.unshift(msg.task);
+    									$scope.stageList[2].totalSize++;
+        								$http.post("ws/orderProjectTaskStage",{stage:$scope.stageList[2]});
+    								}else{
+    									$scope.stageList[1].taskList.unshift(msg.task);
+    									$scope.stageList[1].totalSize++;
+        								$http.post("ws/orderProjectTaskStage",{stage:$scope.stageList[1]});
+    								}
+    							}
+    						}else{
+    							msg.task.isTimeOut = false;
+        						if(msg.task.deadline && msg.task.deadline<moment(moment().format('YYYY-MM-DD')).toDate().getTime()){
+        							msg.task.isTimeOut = true;
+        						}
+        						//任务确认后进入未开始看板
+        						if(msg.task.isConfirm != $scope.stageList[i].taskList[j].isConfirm){
+        							if(msg.task.isConfirm=='0'){
+            							$scope.stageList[i].taskList.splice(j,1);
+            							$scope.stageList[i].totalSize--;
+            							$scope.stageList[1].taskList.unshift(msg.task);
+            							$scope.stageList[1].totalSize++;
+            							$http.post("ws/orderProjectTaskStage",{stage:$scope.stageList[1]});
+    								}
+            						if(msg.task.isConfirm=='1'){
+            							$scope.stageList[i].taskList.splice(j,1);
+            							$scope.stageList[i].totalSize--;
+            							$scope.stageList[2].taskList.unshift(msg.task);
+            							$scope.stageList[2].totalSize++;
+            							$http.post("ws/orderProjectTaskStage",{stage:$scope.stageList[2]});
+            						}
+        						}else if((!$scope.stageList[i].taskList[j].storyId && msg.task.storyId) || 
+        								($scope.stageList[i].taskList[j].storyId && msg.task.storyId && msg.task.storyId != $scope.stageList[i].taskList[j].storyId)){//同一里程碑下需求变化
+        		    				for(var k=0;k<$scope.stageList[0].taskList.length;k++){
+        		    					if(msg.task.storyId && !$scope.stageList[i].taskList[j].storyId && $scope.stageList[0].taskList[k].id == msg.task.storyId){//任务添加需求
+        			    					$scope.stageList[i].taskList[j].storyId = msg.task.storyId;
+        			    					if(msg.task.isDone){
+        			    						$scope.stageList[0].taskList[k].doneNum = $scope.stageList[0].taskList[k].doneNum + 1;
+        			    					}
+        			    					$scope.stageList[0].taskList[k].totalNum = $scope.stageList[0].taskList[k].totalNum + 1;
+        			    				}else if($scope.stageList[i].taskList[j].storyId && $scope.stageList[0].taskList[k].id == $scope.stageList[i].taskList[j].storyId
+        			    						&& $scope.stageList[i].taskList[j].storyId!=msg.task.storyId){//任务修改关联的需求
+        			    					//原需求的任务总数减1
+        			    					if(msg.task.isDone){
+        			    						$scope.stageList[0].taskList[k].doneNum = $scope.stageList[0].taskList[k].doneNum - 1;
+        			    					}
+        			    					$scope.stageList[0].taskList[k].totalNum = $scope.stageList[0].taskList[k].totalNum - 1;
+        			    					//新需求的任务总数加1
+        			    					for(var l=0;l<$scope.stageList[0].taskList.length;l++){
+        			    						if(msg.task.storyId == $scope.stageList[0].taskList[l].id){
+        			    							if(msg.task.isDone){
+                			    						$scope.stageList[0].taskList[l].doneNum = $scope.stageList[0].taskList[l].doneNum + 1;
+                			    					}
+                			    					$scope.stageList[0].taskList[l].totalNum = $scope.stageList[0].taskList[l].totalNum + 1;
+                			    					break;
+        			    						}
+        			    					}
+        			    					$scope.stageList[i].taskList[j].storyId = msg.task.storyId;
+        			    				}
+        			    			}
+        						}else{
+        							msg.task.taskConfirm = $scope.stageList[i].taskList[j].taskConfirm;
+        							$scope.stageList[i].taskList[j] = msg.task;
+        						}
+    						}
+    						break;
+    					}
+    				}
+    			}
+    			$scope.originalOrderList = angular.copy($scope.stageList);
+    			stageConnection();
+			});
+			$scope.$on("taskDeleteBo",function(event,msg){//删除任务
+				var stageList = $scope.stageList;
+				for(var i=1;i<stageList.length;i++){
+					for(var j=0;j<stageList[i].taskList.length;j++){
+						if(stageList[i].taskList[j].id == msg.task.id){
+							stageList[i].taskList.splice(j,1);
+							stageList[i].totalSize--;
+							if(angular.isDefined(msg.task.storyId)){//需求任务总数-1
+		    					for(var k=0;k<stageList[0].taskList.length;k++){
+			    					if(stageList[0].taskList[k].id == msg.task.storyId){
+			    						stageList[0].taskList[k].totalNum = stageList[0].taskList[k].totalNum - 1;
+			    						if(msg.task.isDone) stageList[0].taskList[k].doneNum = stageList[0].taskList[k].doneNum - 1;
+			    						break;
+			    					}
+			    				}
+		    				}
+							break;
+						}
+					}
+				}
+				$scope.originalOrderList = angular.copy($scope.stageList);
+			});
+			
+			$scope.$on("taskUpdateAddBo",function(event,msg){//修改分配人
+				var stageList = $scope.stageList;
+				for(var i=1;i<stageList.length;i++){
+					for(var j=0;j<stageList[i].taskList.length;j++){
+						if(stageList[i].taskList[j].id == msg.task.id){
+							stageList[i].taskList.splice(j,1);
+							stageList[i].totalSize--;
+							break;
+						}
+					}
+				}
+				$scope.originalOrderList = angular.copy($scope.stageList);
+			});
+			//需求详情
+			$scope.openStoryComment = function(e,story){
+				Modal.open("project/story/detail.html",{params:{projectId:story.project.id,storyId:story.id}},{size:"big"},{onClose:function(data){
+					//getStageList($scope.search);
+					var stageList = $scope.stageList;
+					for(var i=0;i<stageList[0].taskList.length;i++){
+						if(stageList[0].taskList[i].id == data.story.id){
+							data.story.totalNum = stageList[0].taskList[i].totalNum;
+							data.story.doneNum = stageList[0].taskList[i].doneNum;
+							if(data.type=='del'){
+								stageList[0].taskList.splice(i,1);
+								stageList[0].totalSize--;
+							}
+							if(data.type=='open'){
+								stageList[0].taskList.splice(i,1);
+								stageList[0].taskList.unshift(data.story);
+							}
+							if(data.type=='close'){
+								stageList[0].taskList.splice(i,1);
+								stageList[0].taskList.push(data.story);
+							}
+							if(data.type=='confirm'){
+								stageList[0].taskList[i] = data.story;
+							}
+							if(data.type=='update'){
+								if(data.story.assignedTo!=currentUser.userName && data.story.openedby!=currentUser.userName &&
+										data.story.proposer.userName!=currentUser.userName){
+									stageList[0].taskList.splice(i,1);
+									stageList[0].totalSize--;
+								}else{
+									stageList[0].taskList[i] = data.story;
+								}
+							}
+							break;
+						}
+					}
+    				$scope.originalOrderList = angular.copy($scope.stageList);
+    				$http.post("ws/orderStory",{storyList:$scope.stageList[0].taskList});
+    				stageConnection();
+				}});
+			}
+			//创建需求
+			$scope.openNewStory = function() {
+				Modal.open("project/addStory.html",{
+	      			title:'',
+	      			animation:true,
+	      			size:"big"},{onClose:function(data){
+	      			}});      	
+			};
+			
+			$scope.$on("createNewStory",function(event,data){
+				if(data.assignedTo.user_name == $rootScope.subject.userName || data.openedby == $rootScope.subject.userName ||
+						data.proposer.user_name == $rootScope.subject.userName){
+					data.totalNum = 0;
+					data.doneNum = 0;
+					data.proposer.userIcon = data.proposer.remark1;
+					data.proposer.userId = data.proposer.user_id;
+					data.proposer.userName = data.proposer.user_name;
+					data.proposer.userRealname = data.proposer.user_realname;
+					$scope.stageList[0].taskList.unshift(data);
+					$scope.stageList[0].totalSize++;
+					$scope.originalOrderList = angular.copy($scope.stageList);
+					$http.post("ws/orderStory",{storyList:$scope.stageList[0].taskList});
+					stageConnection();
+				}
+			});
+			
+			//在需求中创建任务
+			$scope.addNewTaskStory = function(taskStory){
+				Modal.open("home/addTask.html",{source:"taskListNewTask",taskStory:taskStory,project:taskStory.project},{onClose:function(data){
+					//getStageList($scope.search);
+				}});
+			}
+			
+			/**
+			 * 任务看板
+			 */
+			//新增看板
+			$scope.addStage=function(){
+				if(angular.isUndefined($scope.stageName)||$scope.stageName==''){
+					Messenger.error("列表名不能为空！");
+					return ;
+				}
+				$http.post("ws/addStage",{stage:{name:$scope.stageName,projectId:$stateParams.project,milestoneId:$scope.search.milestone.id==0?null:$scope.search.milestone.id}}).success(function(data){
+					getStageList($scope.search);
+					$scope.stageName = undefined;
+				})
+				/* }else{
+					var str = $('.temp-stages').find('span')[$scope.temps-1].innerHTML;
+					$http.post("ws/addBatchStage",{name:str,projectId:$stateParams.project}).success(function(data){
+						getStageList($scope.search);
+					})
+				} */
+				
+			};
+			//编辑看板
+			$scope.editStage=function(stage){
+				Modal.open("project/board/editStage.html",{stage:stage},{title : '编辑列表',animation : true,size : "small"});
+			};
+			//删除看板
+			$scope.delStage=function(s){
+				if(s.taskList.length>0){
+					Messenger.error("请先清空此列表上的任务，然后再删除这个列表.");
+					return;
+				}else{
+					$http.post("ws/delStage",{id:s.stage.id}).success(function(data){
+						getStageList($scope.search);
+					})
+				}
+			};
+			//归档任务
+			/* $scope.closeStage=function(s){
+				$http.post("ws/closeStage",{taskList:s.taskList}).success(function(data){
+					getStageList($scope.search);
+				})
+			} */
+			
+			var option = {flag:true,task:{},updateOrder:false,updateStage:false};
+			
+			function stageSortOpration(originalOrderList,stageList){
+				option = {flag:true,task:{},updateOrder:false,updateStage:false};
+				for(var i=1;i<stageList.length;i++){
+					var taskList = stageList[i].taskList;
+					if(taskList.length!=originalOrderList[i].taskList.length){
+						option.updateStage=true;
+					}
+				}
+				var flag = true;
+				for(var i=1;i<stageList.length;i++){
+					var taskList = stageList[i].taskList;
+					if(taskList.length==originalOrderList[i].taskList.length){
+						for(var j=0;j<taskList.length;j++){
+							if(taskList[j].id!=originalOrderList[i].taskList[j].id){
+								flag = false;
+							}
+						}
+					}else{
+						flag = false;
+					}
+				}
+				if(flag){
+					option.updateOrder=true;
+				}else{
+					option.updateOrder=false;
+				}
+				
+			}
+			
+			//阶段排序
+			$scope.sortableStageOptions = {
+				revert:200,
+				items:".scrum-group:not(.disabled)",
+				cursor: "-webkit-grabbing",
+				cancel: "a,input,[ng-click]",
+				placeholder:"stage-ph",
+				update:function(e, ui){
+						$scope.originalOrderList = angular.copy($scope.stageList);
+						$http.post("ws/orderStageTask",{stageList:$scope.stageList}).success(function(){
+							Messenger.success("操作成功！");
+						});
+				},
+				helper:function(e, ui){
+					ui.children().each(function() {  
+						$(this).width($(this).width());  //在拖动时，拖动行的cell（单元格）宽度会发生改变。在这里做了处理就没问题了   
+					});  
+					return ui;
+				}
+			};
+			
+			//任务排序
+			$scope.sortableTaskOptions = {
+				revert:200,
+				items:".group-task-card",
+				cursor: "-webkit-grabbing",
+				cancel: "a,input,[ng-click]",
+				connectWith: ".connectedSortable",
+				placeholder:"task-ph",
+				update:function(e, ui){
+					var status = $(e.target).parent().find(".stage-name")[0].innerText;
+					var index = 0;
+					if(status.contains("待确认")){
+						index = 1;
+					}
+					if(status.contains("未开始")){
+						index = 2;
+					}
+					if(status.contains("进行中")){
+						index = 3;
+					}
+					if(status.contains("待审核")){
+						index = 4;
+					}
+					if(status.contains("已完成")){
+						index = 5;
+					}
+					$timeout(function(){
+						for(var i=1;i<$scope.stageList.length;i++){
+							var taskList = $scope.stageList[i].taskList;
+							if(taskList.length>$scope.originalOrderList[i].taskList.length){
+								$scope.stageList[i].totalSize++;
+								//原看板数据减1
+								$scope.stageList[index].totalSize--;
+								//如果别的任务移动至带确认看板中，则isConfirm应设为0
+								if($scope.stageList[i].stage.name=='待确认'){
+									for(var j=0;j<$scope.stageList[i].taskList.length;j++){
+										if(!$scope.stageList[i].taskList[j].isConfirm || $scope.stageList[i].taskList[j].isConfirm=='1'){
+											$scope.stageList[i].taskList[j].isConfirm = "0";
+										}
+									}
+								}
+								$scope.originalOrderList = angular.copy($scope.stageList);
+								$http.post("ws/workbench/orderMyTaskStage",{stage:$scope.stageList[i]}).success(function(){
+									Messenger.success("操作成功！");
+								});
+							}
+						}
+						for(var i=1;i<$scope.stageList.length;i++){
+							var taskList = $scope.stageList[i].taskList;
+							if(taskList.length==$scope.originalOrderList[i].taskList.length){
+								for(var j=0;j<taskList.length;j++){
+									if(taskList[j].id!=$scope.originalOrderList[i].taskList[j].id){
+										$scope.originalOrderList = angular.copy($scope.stageList);
+										$http.post("ws/workbench/orderMyTaskStage",{stage:$scope.stageList[i]}).success(function(){
+											Messenger.success("操作成功！");
+										});
+									}
+								}
+							}
+						}
+					})
+					
+				},
+				helper:'clone',
+				beforeStop:function(e,ui){
+					//未确认的任务不允许移动
+					var ss = $('.task-ph').parent().prev().prev().find(".stage-name")[0].innerText;
+					if(ss.contains("待确认")){//拖入待确认看板中
+						if(!ui.item.sortable.model.taskConfirm || ui.item.sortable.model.taskConfirm=='false'){
+							ui.item.sortable.cancel();//取消排序
+							Messenger.error("此任务所在的项目未配置任务强制确认，操作无效！");
+						}else{
+							if(ui.item.sortable.model.bugId){
+								ui.item.sortable.cancel();//取消排序
+								Messenger.error("bug关联的任务无需确认！");
+							}
+							if(ui.item.sortable.model.isConfirm=='1'){
+								ui.item.sortable.cancel();//取消排序
+								Messenger.error("您暂无权限将此任务修改为待确认状态！");
+							}
+						}
+						
+					}else{
+						if(ss.contains("已完成")){
+							if(!ui.item.sortable.model.bugId && ui.item.sortable.model.isConfirm=='0'){
+								ui.item.sortable.cancel();//取消排序
+								Messenger.error("操作无效，请先确认此任务！");
+							}else if(!ui.item.sortable.model.isDone){
+								ui.item.sortable.cancel();//取消排序
+								$scope.openEstimateEditModal(ui.item.sortable.model);
+							}
+						}else{
+							if(!ui.item.sortable.model.bugId && ui.item.sortable.model.isConfirm=='0'){
+								ui.item.sortable.cancel();//取消排序
+								Messenger.error("操作无效，请先联系项目其他成员确认此任务！");
+							}
+							if(ui.item.sortable.model.isDone){
+								ui.item.sortable.model.isDone = false;
+								ui.item.sortable.model.finishedDate = null;
+							}
+						}
+					}
+				}
+			};
+			
+			//需求排序
+			$scope.sortableStoryOptions = {
+				revert:200,
+				items:".group-require-card",
+				cursor: "-webkit-grabbing",
+				cancel: "a,input,[ng-click]",
+				placeholder:"story-ph",
+				update:function(e, ui){
+					$timeout(function(){
+						$scope.originalOrderList = angular.copy($scope.stageList);
+						$http.post("ws/orderStory",{storyList:$scope.stageList[0].taskList}).success(function(){
+							Messenger.success("操作成功！");
+						});
+					})
+				},
+				helper:'clone'
+			};
+			
+		
+			$( document ).bind("click", function( e ) {
+			    if($(e.target ).closest("#chat").length==0){
+			    	if($('aside.chat').hasClass('toggled')){
+			    		$scope.$apply(function(){
+				    		$scope.$parent.showView = false;
+				    		$scope.$parent.$parent.showView = false;
+				    	});
+						$('aside.chat').removeClass('toggled') ;
+			    	}
+			    	
+			    }else{
+			    	return;
+			    }
+			 });
+		
+	});
+</script>

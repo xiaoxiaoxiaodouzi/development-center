@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="erp/createProjects" log="false" className="com.chinacreator.c2.erp.ERPProjectService" method="createProjects">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>创建ERP中的项目</name>
+  <inputs>
+    <input collection="false" desc="" id="projects" required="true" type="[Lcom.chinacreator.c2.erp.ErpProject;"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.projects" name="projects" signature="[QErpProject;" type="[Lcom.chinacreator.c2.erp.ErpProject;"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

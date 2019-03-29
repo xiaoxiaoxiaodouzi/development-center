@@ -1,0 +1,263 @@
+<link href="css/task/addTask.css" rel="stylesheet">
+<style>
+	span.num {
+		padding: 0 12px;
+		font-weight: bold;
+		vertical-align: baseline;
+	}
+</style>
+<div data-ng-controller="editModuleCtrl" class="base-body">
+	<div class="task-new-header">
+		<!-- <button style="float: right" type="button" class="close btn-close-new" ng-click="modalOptions.X()">
+					<span aria-hidden="true">&times;</span>
+				</button> -->
+		<!-- 控制编辑状态的显示 -->
+		<!-- data-ng-show="(subject.userName==module.assignedTo || angular.isUndefined(module.assignedTo) || subject.userName==module.assignedTo.userName)&&!edit" -->
+		<ul style="float: right" class="actions m-r-10" ng-show="!edit">
+			<li class="dropdown action-show">
+				<a href="" data-toggle="dropdown" aria-expanded="false">
+					<i class="md md-more-vert"></i>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li>
+						<a ng-click="moduleEditFun()">编辑</i>
+						</a>
+					</li>
+					<li>
+						<a data-ng-click="delModule()" href="javascript:void(0);">删除</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<ng-form name="aform">
+			<div class="task" data-ng-if="edit">
+				<input id="module-name" name="moduleName" type="text" ng-model="module.name"
+					ng-required="addType=='module'?true:false" class="form-control"
+					data-ng-class="{'has-error-border':!module.name&&taskNameRed}" ng-model-options="{updateOn:'blur'}"
+					ng-keypress="blurIfEnterKeyWasPressed($event)" />
+			</div>
+			<div data-ng-if="!edit" style="margin-left:20px">
+				<h3>
+					<span>{{module.title}}</span>
+				</h3>
+			</div>
+		</ng-form>
+	</div>
+	<div class="new-white-card task-new-handler-warp" data-ng-show="edit"
+		style="border: 1px solid #eee;border-radius: 3px;">
+		<div class="task-new-handler-set">
+			<div class="task-new-handler middle" style="width:33%">
+				<h6 class="task-info-title">负责人</h6>
+				<div class="task-new-line">
+					<c2-dropdown class="animate" bind-data="module.assigned" item-click="userClick(module.assigned)"
+						items="projectUsers" item-name="userRealname" multiple=false max-height="200" filter="true"
+						filter-pinyin="true">
+						<a class="dropdown-toggle" ng-class="{'have-value':module.assigned}">
+							<img class="lv-img-sm" ng-if="module.assigned" ng-src="{{module.assigned.icon}}"
+								style="width: 28px;border-radius: 50%;margin-right: 4px;">
+							<span ng-if="module.assigned==undefined">待分配</span>
+							<span ng-if="module.assigned!=undefined">{{module.assigned.userRealname}} </span>
+						</a>
+					</c2-dropdown>
+				</div>
+			</div>
+			<div class="task-new-handler middle" style="width:33%">
+				<h6 class="task-info-title">启动时间</h6>
+				<div class="task-new-line">
+					<span class="md md-event" ng-click="showDeadline()" ng-class="{'have-value':module.startDate}"></span>
+					<input id="deadline" show-clear="true" name="deadline" type="text" class="form-control"
+						ng-class="{'have-value':module.startDate}" date-time-picker clear-icon="md md-delete"
+						ng-model="module.startDate" placeholder="选择启动时间" format="YYYY-MM-DD">
+					</input>
+				</div>
+			</div>
+
+			<div class="task-new-handler middle" style="width:34%">
+				<h6 class="task-info-title">预计完成时间</h6>
+				<div class="task-new-line">
+					<span class="md md-event" ng-click="showDeadline()" ng-class="{'have-value':module.endDate}"></span>
+					<input id="deadline" show-clear="true" name="deadline" type="text" class="form-control"
+						ng-class="{'have-value':module.endDate}" date-time-picker clear-icon="md md-delete"
+						ng-model="module.endDate" placeholder="选择完成时间" format="YYYY-MM-DD">
+					</input>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="new-white-card task-new-handler-warp" data-ng-show="!edit"
+		style="border: 1px solid #eee;padding: 14px 0 12px 15px;border-radius: 3px;">
+		<div class="row f-14 p-t-3">
+			<div class="col-sm-4">
+				<span style="color: #777" class="m-r-10">负责人：{{module.assigned.userRealname}}</span>
+			</div>
+			<div class="col-sm-4">
+				<span style="color: #777">启动时间：{{module.startDate | date:'yyyy-MM-dd' }}</span>
+			</div>
+			<div class="col-sm-4">
+				<span style="color: #777">预计完成时间：{{module.endDate | date:'yyyy-MM-dd' }}</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="card-body clearfix pro-center">
+		<div class="listview lv-bordered lv-lg">
+			<div style="margin: 20px">
+				<label class="m-r-5 m-t-10 f-13 clickable" title="工时总数">
+					<i class="md md-av-timer pro-ico"></i>
+					<span class="pro-st">
+						<span class="c-green m-r-5">
+							{{totalConsumed}}
+						</span>
+					</span>
+				</label>
+				<label class="m-r-5 m-t-10 f-13 clickable" title="需求(已完成/总数)"
+					data-ui-sref="project.boardstory({moduleId:module.id})">
+					<i class="md md-content-paste pro-ico"></i>
+					<span class="pro-st">
+						<span class="m-l-5">
+							{{module.storyNum?module.storyNum:0}}
+						</span>
+					</span>
+				</label>
+				<label class="m-r-5 m-t-10 f-13 clickable" title="任务(已完成/总数)"
+					data-ui-sref="project.boardtask({moduleId:module.id})">
+					<i class="md md-format-list-bulleted pro-ico"></i>
+					<span class="pro-st">
+						<span class="m-l-5">
+							{{module.taskNum?module.taskNum:0}}
+						</span>
+					</span>
+				</label>
+				<label class="m-r-5 m-t-10 f-13 clickable" title="BUG(已关闭/总数)"
+					data-ui-sref="project.boardbug({moduleId:module.id})">
+					<i class="md md-bug-report pro-ico"></i>
+					<span class="pro-st">
+						<span class="m-l-5">
+							{{module.bugNum?module.bugNum:0}}
+						</span>
+					</span>
+				</label>
+				<!-- <label class="m-r-5 m-t-10 f-13 clickable" title="成员" data-ui-sref="project.boardbug({moduleId:module.id})">
+						<i class="md md-group pro-ico"></i><span class="pro-st">{{$params.statistics.memberNum?$params.statistics.memberNum:'0'}}</span>
+					</label> -->
+			</div>
+		</div>
+	</div>
+
+	<div style="margin-left: 20px;margin-right: 20px">
+		<div id="teamGroupLogPage" class="card wr-open">
+			<div class="card-header">
+				<h2>项目日志统计</h2>
+				<!-- 隐藏 -->
+				<!-- perm-res="{{project.id}}##milestone_cud" -->
+				<div id="whiteListBtn" class="lv-actions actions dropdown">
+					<a href="" data-toggle="dropdown" aria-expanded="true"><i class="md md-more-vert"></i></a>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li>
+							<a ng-click="downLoadWorkLog()">
+								<i class="md md-get-app"></i>工作日志
+							</a>
+						</li>
+						<!-- <li>
+								<a ng-click="downLoadOverLog()" >
+									<i class="md md-get-app"></i>加班日志
+								</a>
+							</li> -->
+					</ul>
+				</div>
+			</div>
+			<div class="card-body p-b-40">
+				<div class="wr-view">
+					<div class="wkr-tasklist clearfix">
+						<c2-date-range-dropdown date-range="dateRange" date-buttons="dateButtons" default-button="thisWeek"
+							buttom-message="未完成的任务按计划结束时间过滤，已完成的按完成时间过滤；入职时间在结束时间之后或者离职时间在开始时间之前的人会自动过滤。">
+							<div class="picker picker-white">
+								<i class="md md-today" title="日期选择"></i> {{dateRange.show}}<span class="caret"></span>
+							</div>
+						</c2-date-range-dropdown>
+						<c2-dropdown class="animate" bind-data="dept" items="depts" item-name="name" item-id="id"
+							item-click="selectDept(item)" max-height="200" clean-button="true" after-clean-event="cleanDept()"
+							filter="true">
+							<div class="picker"><i class="md md md-account-balance" title="部门选择"></i> {{dept?dept.name:'选择部门'}}<span
+									class="caret"></span></div>
+						</c2-dropdown>
+						<c2-dropdown class="animate" bind-data="search.users" items="projectUsers" item-name="userRealname"
+							item-id="userName" item-click="selectUser(item)" multiple="true" max-height="200" clean-button="true"
+							after-clean-event="cleanUsers()" filter="true">
+							<div class="picker"><i class="md md-account-child" title="成员选择"></i>
+								{{search.users.length>0?'人员数:'+search.users.length:'选择人员'}}<span class="caret"></span></div>
+						</c2-dropdown>
+
+						<button ng-click="orderup()">上移</button>
+						<button ng-click="orderDown()">下移</button>
+
+						<!-- <label class="checkbox checkbox-inline m-l-20">
+										<input type="checkbox" ng-model="search.task"/>
+										<i class="input-helper"></i> 任务日志
+								</label>
+								<label class="checkbox checkbox-inline m-l-10">
+										<input type="checkbox" ng-model="search.lack"/>
+										<i class="input-helper"></i> 缺失日志
+								</label>
+								<label class="checkbox checkbox-inline m-l-10">
+										<input type="checkbox" ng-model="search.overtime"/>
+										<i class="input-helper"></i> 加班日志
+								</label> -->
+
+						<table class="table table-hover m-b-0" id="teamLog">
+							<thead>
+								<tr style="border-bottom: 2px solid #f0f0f0;border-top: 1px solid #eee;">
+									<th style="width: 110px;text-align: center;">日期</th>
+									<th style="text-align: center;">任务描述</th>
+									<th style="width: 120px; text-align: center;">所属项目</th>
+									<th id="overTitle" style="width: 85px; text-align: center;">工时</th>
+								</tr>
+							</thead>
+							<tbody ng-repeat="logsGroup in teamLogs">
+								<tr>
+									<td colspan="4" class="w-title p-l-10"><strong
+											class="f-14 m-r-15 pull-left w-width">{{logsGroup.userRealname}}<span
+												ng-if="logsGroup.userIsvalid!=1"
+												title="离职日期：{{logsGroup.leaveDate | date:'yyyy-MM-dd'}}">(离职)</span></strong>
+										<span ng-if="search.task">使用工时<span class="num c-teal">{{logsGroup.consumed}}</span></span> <span
+											ng-if="search.lack">缺失工时<span class="num c-red">{{logsGroup.lackEstimate}}</span></span></td>
+								</tr>
+								<tr ng-repeat="estimateLog in logsGroup.logs" ng-class="{'miss-tr':estimateLog.lackEstimate}">
+									<td class="column">{{estimateLog.workDate | date:"yyyy-MM-dd"}}</td>
+									<td class="column text-left"><a class="text-line-hidden"
+											data-ui-sref="project.teamLog.detail({taskId:'{{estimateLog.taskId}}'})"
+											ng-if='estimateLog.taskId'
+											title="{{estimateLog.description}}">{{estimateLog.description}}</a><span
+											ng-if='!estimateLog.taskId'>{{estimateLog.description}}</span></td>
+									<td class="column"><span class="text-line-hidden">{{estimateLog.projectName}}</span></td>
+									<td class="column"><span ng-if="estimateLog.lackEstimate" )>{{estimateLog.lackEstimate}}</span><span
+											ng-if='estimateLog.consumed'>{{estimateLog.consumed}}</span></td>
+								</tr>
+								<tr ng-show="logsGroup.lacklogs.length>0">
+									<td class="column text-left p-l-20" colspan="3">
+										<div ng-repeat="lackInfo in logsGroup.lacklogs" width="120" style="color:#555;"
+											class="pull-left m-r-10 m-t-5" title="{{lackInfo.workDate | date:'yyyy-MM-dd'}}">
+											{{lackInfo.workDate | date:"MM-dd"}}（<span class="c-red ">{{lackInfo.lackEstimate}}</span>）</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="task-new-infos-wrap">
+		<div class="task-new-footer">
+			<hr />
+			<form id="new-task-save">
+				<div style="margin:0 20px 10px 0; float:right;">
+					<span id="addTaskErrorMsg" class="c-red pull-left m-r-10 m-t-10">请完善模块</span>
+					<button class="btn btn-link" data-ng-if="edit" data-ng-click="canCelModule()">取消</button>
+					<button class="btn btn-primary btn-save-task" data-ng-if="edit" data-ng-click="saveModule()">保存</button>
+				</div>
+				<div style="clear:both; float:none; height:0; overflow:hidden"></div>
+			</form>
+		</div>
+	</div>
+</div>

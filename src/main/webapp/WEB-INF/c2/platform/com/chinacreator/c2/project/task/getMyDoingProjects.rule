@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="task/getMyDoingProjects" log="false" className="com.chinacreator.c2.project.task.TaskService" method="getMyDoingProjects">
+  <name>得到用户还在进行中的项目</name>
+  <inputs/>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params/>
+  <return signature="QList&lt;QProject;>;" type="java.util.List"/>
+</CustomRule>

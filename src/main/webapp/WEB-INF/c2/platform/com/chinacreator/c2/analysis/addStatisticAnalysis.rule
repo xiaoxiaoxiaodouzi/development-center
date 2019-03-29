@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="workbench/addStatisticAnalysis" log="false" className="com.chinacreator.c2.analysis.StatisticAnalysisService" method="addStatisticAnalysis">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>新增统计列表视图</name>
+  <inputs>
+    <input collection="false" desc="" id="stat" required="true" type="com.chinacreator.c2.analysis.StatisticAnalysis"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.stat" name="stat" signature="QStatisticAnalysis;" type="com.chinacreator.c2.analysis.StatisticAnalysis"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="updateCommentContent" log="false" className="com.chinacreator.c2.project.story.StoryService" method="updateCommentContent">
+  <name>修改评论内容</name>
+  <desc>修改评论</desc>
+  <inputs>
+    <input collection="false" desc="" id="commentId" required="true" type="java.lang.Integer"/>
+    <input collection="false" desc="" id="content" required="true"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.commentId" name="commentId" signature="QInteger;" type="java.lang.Integer"/>
+    <param autoValue="Input.content" name="content" signature="QString;" type="java.lang.String"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

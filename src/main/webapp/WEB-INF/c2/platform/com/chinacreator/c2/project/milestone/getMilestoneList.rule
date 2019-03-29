@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getMilestoneList" log="false" className="com.chinacreator.c2.project.milestone.MilestoneService" method="getMilestoneList">
+  <name>获取里程碑列表</name>
+  <desc>查询未关闭的里程碑</desc>
+  <inputs>
+    <input collection="false" desc="" id="milestone" required="true" type="com.chinacreator.c2.project.milestone.Milestone"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.milestone" name="milestone" signature="QMilestone;" type="com.chinacreator.c2.project.milestone.Milestone"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

@@ -1,0 +1,351 @@
+<reference-template type="milestone">
+	<span class="ref-milestone">
+		<a href="">里程碑[{{data.title}}]</a>
+	</span>
+</reference-template>
+
+<reference-template type="module">
+	<span class="ref-module">
+		<a href="">模块[{{data.name}}]</a>
+	</span>
+</reference-template>
+
+<reference-template type="task">
+	<span class="ref-task">
+		<a href="">任务[{{data.name}}]</a>
+	</span>
+</reference-template>
+
+<reference-template type="String">
+		<a href="">{{data|limitTo:60}}</a>
+</reference-template>
+<reference-template type="Integer">
+		<a href="">{{data}}</a>
+</reference-template>
+<reference-template type="Timestamp">
+		<a href="">{{data| date: 'yyyy-MM-dd'}}</a>
+</reference-template>
+
+<reference-template type="label">
+	<span class="ref-label">
+		<a href=""><span class='p-l-5 p-r-5 m-l-5 label-show' style='background-color:{{data.color}};color:{{data.color|fmtTextColor}}'>{{data.name}}</span></a>
+	</span>
+</reference-template>
+
+<reference-template type="pri">
+	<span class="ref-pri">
+		<a href="">优先级[{{data}}]</a>
+	</span>
+</reference-template>
+
+<reference-template type="title">
+	<span class="ref-pri">
+		<a href="">标题[{{data}}]</a>
+	</span>
+</reference-template>
+
+<reference-template type="changeReason">
+		<span ng-if="data">变更理由[{{data}}]</span>
+</reference-template>
+
+
+<reference-template type="content">
+		<a class="text-overflow" style="cursor: pointer;max-width:80%;display: inline-block;text-align: center;vertical-align: sub;">内容[{{data}}]</a>
+</reference-template>
+
+<timeline-template for="item.type == -1">
+	<div class="timeline-comment-wrapper" for="item.type==-1" style="z-index: 1;">
+		<a href=""><img class="timeline-comment-avatar" height="48" ng-src="{{item.userIcon}}" width="48"></a>
+		<div class="item previewable-edit timeline-comment">
+			<div class="timeline-comment-header ">
+				<div class="timeline-comment-header-text">
+					<strong> <a href="" class="author">{{item.userRealname}}</a>
+							</strong> 评论 <a href="" class="timestamp"> 
+												{{ item.createTime | howLongTime: 'yyyy-MM-dd HH:mm:ss' }}
+											</a>
+				</div>
+			</div>
+			<div class="comment-content">
+				<div style="display: block;word-wrap: break-word;" class="pmbb-view h-l-2 m-t-10 c2lightbox" ng-bind-html="item.content | markdown"></div>
+			</div>
+		</div>
+	</div>
+</timeline-template>
+
+<timeline-template for="item.type!=-1">
+	<div class="discussion-item discussion-item-labeled" style="z-index: 1;">
+		<div class="discussion-item-header">
+			<i class="{{statusIconClass(item.type)}}"> </i>
+			<img class="avatar" height="16" ng-src="{{item.userIcon}}" width="16">
+			<a class="author m-r-5">{{item.userRealname}}</a>将此bug
+			<div ng-if="item.type<=6" class="bug-block bug-{{fomatBugType(item)}}">{{fomatBugType(item)}}</div>
+			<a ng-if="item.type>6">{{fomatBugType(item)}}</a>
+			<span ng-if="item.bugVersion">版本号:<a>{{item.bugVersion}}</a></span> {{ item.createTime | howLongTime: 'yyyy-MM-dd HH:mm:ss'
+			}}
+			<div ng-if="item.type!=10" class="pmbb-view h-l-2 m-t-10 c2lightbox" ng-bind-html="item.content | markdown"></div>
+		</div>
+	</div>
+</timeline-template>
+
+<timeline-template for="item.type =='story_comment'">
+	<div class="timeline-comment-wrapper" for="item.type==-1" style="z-index: 1;">
+		<a href=""><img class="timeline-comment-avatar" height="48" ng-src="{{item.user_icon}}" width="48"></a>
+		<div class="item previewable-edit timeline-comment">
+			<div class="timeline-comment-header ">
+				<div class="timeline-comment-header-text">
+					<strong> <a href="" class="author">{{item.user_realname}}</a>
+							</strong> 评论 <a href="" class="timestamp"> 
+												{{ item.create_time | howLongTime: 'yyyy-MM-dd HH:mm:ss' }}
+											</a>
+					<div class="pull-right" ng-if="item.user_id==subject.userName">
+					  <a ng-click="commentUpdateShow(item);"><i class="md-mode-edit"></i></a>
+					</div>
+				</div>
+			</div>
+			<div class="comment-content">
+				<div ng-if="item.update">
+						<textarea ng-model="item.updateContent" c2-markdown-editor	
+							class="form-control" rows="5" rows="5" height="200"
+							placeholder="需求描述"></textarea>
+						<div>
+						<button style="margin-top: -40px;margin-left:5px;"
+							class="btn btn-primary btn-sm" type="button"
+							data-ng-click="submitCommnetUpdate(item)">保存</button>
+							
+						<button style="margin-top: -40px;margin-left:5px;"
+							class="btn btn-link btn-sm" type="button"
+							data-ng-click="commentUpdateShow(item);">取消</button>
+							
+						</div>
+				</div>
+							
+				<div  ng-if="!item.update" style="display: block;word-wrap: break-word;" class="pmbb-view h-l-2 m-t-10 c2lightbox" ng-bind-html="item.content | markdown"></div>
+			</div>
+		</div>
+	</div>
+</timeline-template>
+
+<timeline-template for="item.type=='story_opened'">
+	<div class="discussion-item discussion-item-labeled" style="z-index: 1;">
+		<div class="discussion-item-header">
+			<i class="discussion-item-icon md md-lock-open"> </i>
+			<img class="avatar" height="16" ng-src="{{item.user_icon}}" width="16">
+			<a class="author">{{item.user_realname}}</a>将此需求
+			<span class="{{item.type}}">打开</span>
+			{{ item.create_time | howLongTime: 'yyyy-MM-dd HH:mm:ss'}}
+		</div>
+	</div>
+</timeline-template>
+
+
+<timeline-template for="item.type=='story_closed'">
+	<div class="discussion-item discussion-item-labeled" style="z-index: 1;">
+		<div class="discussion-item-header">
+			<i class="discussion-item-icon md md-lock"> </i>
+			<img class="avatar" height="16" ng-src="{{item.user_icon}}" width="16">
+			<a class="author">{{item.user_realname}}</a>将此需求
+			<span class="{{item.type}}">关闭</span>
+			{{ item.create_time | howLongTime: 'yyyy-MM-dd HH:mm:ss'}}
+		</div>
+	</div>
+</timeline-template>
+
+<timeline-template for="item.type=='story_confirm'">
+	<div class="discussion-item discussion-item-labeled" style="z-index: 1;">
+		<div class="discussion-item-header">
+			<i class="discussion-item-icon md md-lock"> </i>
+			<img class="avatar" height="16" ng-src="{{item.user_icon}}" width="16">
+			<a class="author">{{item.user_realname}}</a>将此需求
+			<span class="story_opened">确认</span>
+			{{ item.create_time | howLongTime: 'yyyy-MM-dd HH:mm:ss'}}
+		</div>
+	</div>
+</timeline-template>
+
+
+<timeline-template for="item.type=='story_update'">
+	<div class="discussion-item discussion-item-labeled" style="z-index: 1;">
+		<div class="discussion-item-header">
+			<i class="discussion-item-icon md-mode-edit"></i>
+			<img class="avatar" height="16" ng-src="{{item.user_icon}}" width="16">
+			<a class="author">{{item.user_realname}}</a>将此需求
+			<a>内容修改</a> <reference type="'changeReason'" data="item.content"/>
+			{{ item.create_time | howLongTime: 'yyyy-MM-dd HH:mm:ss'}}
+			<span ng-repeat="change in item.attr_val"> 
+				<div style="padding-left: 20px;" ng-if="change.name=='标签'" class="text-overflow">
+					调整了<strong>标签：</strong>
+					<span ng-if="change.newVal.length>0">新增了
+						<span ng-repeat="newLabe in change.newVal">
+							<reference type="'label'" data="newLabe" />
+						</span>
+					</span> 
+					<span ng-if="change.oldVal.length>0">移除了
+						<span ng-repeat="removedLabel in change.oldVal">
+							<reference type="'label'" data="removedLabel" />
+						</span>
+					</span>
+				</div>
+			
+				<div  style="padding-left: 20px;" ng-if="change.name!='标签'" ng-init="textDiff(change);" ng-click="change.showDiff=!change.showDiff">
+					 修改了<reference type="change.type" data="change.newVal"/>
+					 <div  class="text-diff" ng-if="change.name=='内容'" style="display: inline;">
+						 <i ng-class="{'md md-remove-circle-outline':change.showDiff==true,'md md-add-circle-outline':change.showDiff==false}"><sup class="f-s">{{change.times}}</sup></i>
+						 <div class="timeline" style="padding-left: 20px; padding-top: 0px; padding-right: 20px;" ng-show="change.showDiff">
+							<div class="tv-body" style="padding-top: 0px; padding-left: 0px; padding-right: 0px;">
+								<div style="display: block" class="pmbb-view h-l-2 m-t-10"
+									ng-bind-html="change.diffVal | markdown"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</span>
+	</div>
+	</div>
+</timeline-template>
+<timeline-template for="item.type=='milestone_update'">
+	<div class="discussion-item discussion-item-labeled" style="z-index: 1;">
+		<div class="discussion-item-header">
+			<i class="discussion-item-icon md-mode-edit"></i>
+			<img class="avatar" height="16" ng-src="{{item.userIcon}}" width="16">
+			<a class="author">{{item.userName}}</a>将此里程碑
+			<a>修改</a> <reference type="'changeReason'" data="item.content"/>
+			{{ item.createTime | howLongTime: 'yyyy-MM-dd HH:mm:ss'}}
+			<span ng-repeat="change in item.attrVal"> 
+				<div ng-if="change.name!='标签'" ng-init="textDiff(change);" ng-click="change.showDiff=!change.showDiff">
+					 修改了 {{change.name}} 为 <reference type="change.type" data="change.newVal" />
+						 <div  class="text-diff" ng-if="change.name=='描述'" style="display: inline;">
+							 <i ng-class="{'md md-remove-circle-outline':change.showDiff==true,'md md-add-circle-outline':change.showDiff==false}"><sup class="f-s">{{change.times}}</sup></i>
+							 <div class="timeline" style="padding-left: 20px; padding-top: 0px; padding-right: 20px;" ng-show="change.showDiff">
+								<div class="tv-body" style="padding-top: 0px; padding-left: 0px; padding-right: 0px;">
+									<div style="display: block" class="pmbb-view h-l-2 m-t-10"
+										ng-bind-html="change.diffVal | markdown"></div>
+								</div>
+							</div>
+						</div>
+				</div>
+				
+			</span>
+	</div>
+	</div>
+</timeline-template>
+<timeline-template for="item.type=='milestone_update_status'">
+<div class="discussion-item discussion-item-labeled" style="z-index: 1;">
+		<div class="discussion-item-header">
+			<i class="discussion-item-icon md-mode-edit"></i>
+			<img class="avatar" height="16" ng-src="{{item.userIcon}}" width="16">
+			<a class="author">{{item.userName}}</a>将此里程碑
+			<a>状态修改</a> <reference type="'changeReason'" data="item.content"/>
+			<span ng-repeat="change in item.attrVal"> 
+					为 <reference type="change.type" data="change.newVal" />
+			</span>
+			 {{ item.createTime | howLongTime: 'yyyy-MM-dd HH:mm:ss'}}
+	</div>
+	</div>
+</timeline-template>
+<timeline-template for="item.type=='milestone_story_update'">
+	<div class="discussion-item discussion-item-labeled" style="z-index: 1;">
+		<div class="discussion-item-header">
+			<i class="discussion-item-icon md-content-paste"></i>
+			<img class="avatar" height="16" ng-src="{{item.userIcon}}" width="16">
+			<a class="author">{{item.userName}}</a>将里程碑关联的需求 <a href="" data-ui-sref="project.milestoneDetail.changeList.storyDetail({storyid:{{item.targetId}}})">{{item.targetName}}</a>
+			内容修改 <reference type="'changeReason'" data="item.content"/>
+			{{ item.createTime | howLongTime: 'yyyy-MM-dd HH:mm:ss'}}
+			<span ng-repeat="change in item.attrVal"> 
+				<div ng-if="change.name!='标签'">
+					 修改了<reference type="change.type" data="change.newVal" />
+				</div>
+				
+			</span>
+	</div>
+	</div>
+</timeline-template>
+<timeline-template for="item.type=='milestone_story_delete'">
+	<div class="discussion-item discussion-item-labeled" style="z-index: 1;">
+		<div class="discussion-item-header">
+			<i class="discussion-item-icon md-content-paste"></i>
+			<img class="avatar" height="16" ng-src="{{item.userIcon}}" width="16">
+			<a class="author">{{item.userName}}</a>将里程碑关联的需求 <a href="">{{item.targetName}}</a>
+			删除 <reference type="'changeReason'" data="item.content"/>
+			{{ item.createTime | howLongTime: 'yyyy-MM-dd HH:mm:ss'}}
+	</div>
+	</div>
+</timeline-template>
+<timeline-template for="item.type=='milestone_story_opened'">
+	<div class="discussion-item discussion-item-labeled" style="z-index: 1;">
+		<div class="discussion-item-header">
+			<i class="discussion-item-icon md md-lock-open"> </i>
+			<img class="avatar" height="16" ng-src="{{item.user_icon}}" width="16">
+			<a class="author">{{item.userName}}</a>将里程碑关联的需求 <a data-ui-sref="project.milestoneDetail.changeList.storyDetail({storyid:{{item.targetId}}})">{{item.targetName}}</a>
+			<span class="{{item.type}}">打开</span>
+			{{ item.createTime | howLongTime: 'yyyy-MM-dd HH:mm:ss'}}
+		</div>
+	</div>
+</timeline-template>
+<timeline-template for="item.type=='milestone_story_closed'">
+	<div class="discussion-item discussion-item-labeled" style="z-index: 1;">
+		<div class="discussion-item-header">
+			<i class="discussion-item-icon md md-lock"> </i>
+			<img class="avatar" height="16" ng-src="{{item.user_icon}}" width="16">
+			<a class="author">{{item.userName}}</a>将里程碑关联的需求 <a data-ui-sref="project.milestoneDetail.changeList.storyDetail({storyid:{{item.targetId}}})">{{item.targetName}}</a>
+			<span class="{{item.type}}">关闭</span>
+			{{ item.createTime | howLongTime: 'yyyy-MM-dd HH:mm:ss'}}
+		</div>
+	</div>
+</timeline-template>
+
+<timeline-template for="item.type=='milesone_story_confirmed'">
+	<div class="discussion-item discussion-item-labeled" style="z-index: 1;">
+		<div class="discussion-item-header">
+			<i class="discussion-item-icon md md-lock"> </i>
+			<img class="avatar" height="16" ng-src="{{item.user_icon}}" width="16">
+			<a class="author">{{item.userName}}</a>将里程碑关联的需求 <a data-ui-sref="project.milestoneDetail.changeList.storyDetail({storyid:{{item.targetId}}})">{{item.targetName}}</a>
+			<span class="{{item.type}}">确认</span>
+			{{ item.createTime | howLongTime: 'yyyy-MM-dd HH:mm:ss'}}
+		</div>
+	</div>
+</timeline-template>
+
+<listview-template>
+<div class="listview lv-bordered lv-lg">
+    <div class="lv-body">
+        <div class="lv-item media"></div>
+    </div>
+</div>
+</listview-template>
+
+<listview-row-template type="task">
+<div class="checkbox pull-left">
+    <label>
+        <input ng-model="task.isDone" type="checkbox" ng-change="taskDone(task)" title="是否完成" />
+        <i class="input-helper"></i>
+    </label>
+</div>
+<div class="pull-left user-head">
+    <img class="lv-img-sm" ng-src="{{task.userIcon}}">
+    <div>{{task.userRealname}}</div>
+</div>
+<div class="media-body">
+    <div class="lv-title pull-left">
+     <i ng-show="task.bugId" class="md md-bug-report c-indigo"></i>
+     <a ng-class="{'c-gray':task.isDone,'text-del':task.isDone}" ng-click="rowClick(task)">{{task.name}}</a>
+     <span class="p-l-10 p-r-10 m-r-5 label-show" style="cursor:pointer;" ng-style="label.backgroundStyle" ng-repeat="label in task.labels" ng-click="search.labels=[label]">{{label.name}}</span>  
+    </div>
+    <div title="工时" class="pull-right c-darkgrey f-16" style="width:104px;cursor: pointer;margin-bottom: 3px;" ng-click="openEstimateEditModal(task)"><i class="md md-history m-f-w m-r-5"></i> <span class="f-14 l-s-2">{{task.consumed}}/{{task.estimate}}</span></div>
+    <div class="clearfix"></div>
+    <ul class="lv-attrs">
+        <li ng-show="!task.isDone"><i class="md md-today" title="截止日期"></i> <span ng-show="task.estStartDate" title="{{task.residueDate}}">{{task.deadline | date:"yyyy-MM-dd"}}</span><span ng-show="!task.estStartDate" title="任务结束时间">未分配</span></li>
+        <li title="完成时间" ng-show="task.isDone"><i class="md md-today"></i> {{task.finishedDate | date:"yyyy-MM-dd"}} </li>
+        <li title="项目"><i class="md md-apps"></i> {{task.projectName}}</li>
+        <li title="模块" ng-show="task.moduleName"><i class="md md-extension"></i> {{task.moduleName}}</li>
+        <li title="里程碑" ng-show="task.milestoneTitle"><i class="md md-av-timer"></i> {{task.milestoneTitle}}</li>
+        <li title="bug编号" ng-show="task.bugId">
+        	<a class="c-purple">#{{task.bugNo}}</a>
+        </li>
+        <li id="close-task" ng-show="task.isDone&&!task.closed&&taskClose&&!task.bugId" ng-click="closeTask(task)"><i class="md md-settings-power"></i> 关闭任务</li>
+        <li title="关闭状态" ng-show="task.isDone&&task.closed"><i class="md md-settings-power"></i> 已关闭</li>
+        <li ng-show="task.description" ng-click="task.exDesc=!task.exDesc;task.expandText=task.exDesc?'收起':'展开'" ng-init="task.expandText='展开'" style="cursor: pointer;"><i class="md md-view-headline"></i> {{task.expandText}}描述</li>
+    </ul>
+    <small ng-show="task.description&&task.exDesc" class="lv-small lv-text-normal" ng-bind-html="task.description | markdown"></small>
+</div>
+</task-row-template>

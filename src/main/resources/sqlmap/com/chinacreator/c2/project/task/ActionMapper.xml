@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.task.ActionMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_comunity_action.id ,
+		  c2_comunity_action.target_type ,
+		  c2_comunity_action.target_id ,
+		  c2_comunity_action.project_id ,
+		  c2_comunity_action.actor ,
+		  c2_comunity_action.type_ ,
+		  c2_comunity_action.date_ ,
+		  c2_comunity_action.comment ,
+		  c2_comunity_action.extra ,
+		  c2_comunity_action.extra1 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_comunity_action.id = #{id}</if>
+	    <if test="targetType != null">and c2_comunity_action.target_type = #{targetType}</if>
+	    <if test="targetId != null">and c2_comunity_action.target_id = #{targetId}</if>
+	    <if test="projectId != null">and c2_comunity_action.project_id = #{projectId}</if>
+	    <if test="actor != null">and c2_comunity_action.actor = #{actor}</if>
+	    <if test="type != null">and c2_comunity_action.type_ = #{type}</if>
+	    <if test="date != null">and c2_comunity_action.date_ = #{date}</if>
+</sql>
+
+
+<!-- ElementID:ActionResult,Generated=true -->
+<resultMap id="ActionResult" type="com.chinacreator.c2.project.task.Action">
+	<id property="id" column="id"/>
+	<result property="targetType" column="target_type"/>
+	<result property="targetId" column="target_id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="actor" column="actor"/>
+	<result property="type" column="type_"/>
+	<result property="date" column="date_"/>
+	<result property="comment" column="comment"/>
+	<result property="extra" column="extra"/>
+	<result property="extra1" column="extra1"/>
+</resultMap>
+
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.task.Action" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_comunity_action(
+		<trim prefixOverrides=",">
+		    <if test="targetType != null">target_type</if>
+		    <if test="targetId != null">,target_id</if>
+		    <if test="projectId != null">,project_id</if>
+		    <if test="actor != null">,actor</if>
+		    <if test="type != null">,type_</if>
+		    <if test="date != null">,date_</if>
+		    <if test="comment != null">,comment</if>
+		    <if test="extra != null">,extra</if>
+		    <if test="extra1 != null">,extra1</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="targetType != null">#{targetType,jdbcType=VARCHAR}</if>
+		    <if test="targetId != null">,#{targetId,jdbcType=NUMERIC}</if>
+		    <if test="projectId != null">,#{projectId,jdbcType=NUMERIC}</if>
+		    <if test="actor != null">,#{actor,jdbcType=VARCHAR}</if>
+		    <if test="type != null">,#{type,jdbcType=VARCHAR}</if>
+		    <if test="date != null">,#{date,jdbcType=TIMESTAMP}</if>
+		    <if test="comment != null">,#{comment,jdbcType=CLOB}</if>
+		    <if test="extra != null">,#{extra,jdbcType=CLOB}</if>
+		    <if test="extra1 != null">,#{extra1,jdbcType=CLOB}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.task.Action" resultType="int">
+	select count(*) from c2_comunity_action 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.task.Action">
+	update c2_comunity_action
+<set>
+	<if test="targetType != null">target_type=#{targetType,jdbcType=VARCHAR},</if>
+	<if test="targetId != null">target_id=#{targetId,jdbcType=NUMERIC},</if>
+	<if test="projectId != null">project_id=#{projectId,jdbcType=NUMERIC},</if>
+	<if test="actor != null">actor=#{actor,jdbcType=VARCHAR},</if>
+	<if test="type != null">type_=#{type,jdbcType=VARCHAR},</if>
+	<if test="date != null">date_=#{date,jdbcType=TIMESTAMP},</if>
+	<if test="comment != null">comment=#{comment,jdbcType=CLOB},</if>
+	<if test="extra != null">extra=#{extra,jdbcType=CLOB},</if>
+	<if test="extra1 != null">extra1=#{extra1,jdbcType=CLOB}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:update,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_comunity_task_actions
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="targetType==null">target_type = null,</if>
+		    <if test="targetId==null">target_id = null,</if>
+		    <if test="project==null">project = null,</if>
+		    <if test="actor==null">actor = null,</if>
+		    <if test="type==null">type_ = null,</if>
+		    <if test="date==null">date_ = null,</if>
+		    <if test="comment==null">comment = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.task.Action">
+    delete from c2_comunity_action where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.task.Action" resultMap="ActionResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_action 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_comunity_action (target_type,target_id,project_id,actor,type_,date_,comment,extra,extra1)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.targetType,jdbcType = VARCHAR},
+		         #{entity.targetId,jdbcType = NUMERIC},
+		         #{entity.projectId,jdbcType = NUMERIC},
+		         #{entity.actor,jdbcType = VARCHAR},
+		         #{entity.type,jdbcType = VARCHAR},
+		         #{entity.date,jdbcType = TIMESTAMP},
+		         #{entity.comment,jdbcType = CLOB},
+		         #{entity.extra,jdbcType = CLOB},
+		         #{entity.extra1,jdbcType = CLOB}
+				)
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_comunity_action where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="ActionResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_action 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="ActionResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_action 
+		 where c2_comunity_action.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.task.Action" resultMap="ActionResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_action 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="ActionResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_action 
+	where c2_comunity_action.id in (
+		select distinct id from c2_comunity_action inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_comunity_action 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_action.id = #{entity.id}</if>
+	        <if test="entity.targetType != null">and c2_comunity_action.target_type = #{entity.targetType}</if>
+	        <if test="entity.targetId != null">and c2_comunity_action.target_id = #{entity.targetId}</if>
+	        <if test="entity.projectId != null">and c2_comunity_action.project_id = #{entity.projectId}</if>
+	        <if test="entity.actor != null">and c2_comunity_action.actor = #{entity.actor}</if>
+	        <if test="entity.type != null">and c2_comunity_action.type_ = #{entity.type}</if>
+	        <if test="entity.date != null">and c2_comunity_action.date_ = #{entity.date}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<select id="selectActionHistory" parameterType="int" resultMap="ActionHistoryResult">
+	select t.id,t.type_ type,t.date_ date,t.comment,t.extra,t.extra1,u.user_realname actor
+	from c2_comunity_action t
+	left join td_sm_user u on t.actor = u.user_name
+	where t.target_id = #{_parameter}
+	order by t.date_ desc
+	
+</select>
+
+<resultMap type="com.chinacreator.c2.project.task.Action" id="ActionHistoryResult">
+	<id property="id" column="id"/>
+	<result property="actor" column="actor"/>
+	<result property="type" column="type"/>
+	<result property="date" column="date"/>
+	<result property="comment" column="comment"/>
+	<result property="extra" column="extra"/>
+	<result property="extra1" column="extra1"/>
+	<collection property="history" column="id" select="selectActionHistory2" ofType="com.chinacreator.c2.project.task.History"/>
+</resultMap>
+
+<select id="selectActionHistory2" parameterType="int" resultMap="selectActionHistory2Result">
+	select * from c2_comunity_history where c2_comunity_history.action_id = #{_parameter}
+</select>
+
+<resultMap id="selectActionHistory2Result" type="com.chinacreator.c2.project.task.History">
+	<id property="id" column="id"/>
+	<result property="actionId" column="action_id"/>
+	<result property="field" column="field"/>
+	<result property="oldVal" column="old"/>
+	<result property="newVal" column="new"/>
+	<result property="diff" column="diff"/>
+</resultMap>
+
+<delete id="deleteActionByTaskId" parameterType="int">
+	delete from c2_comunity_action  
+		where c2_comunity_action.target_type = 'task' and c2_comunity_action.target_id = #{_parameter}
+</delete>
+
+</mapper>

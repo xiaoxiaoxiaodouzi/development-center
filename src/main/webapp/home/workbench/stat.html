@@ -1,0 +1,30 @@
+<div class="card-header">
+			<h2>
+				统计信息<small>成员:10 项目:5</small>
+			</h2>
+		</div>
+		<div class="card-body clearfix">
+			<div class="project-view-content" data-ng-click="addChart();">
+				<div class="col-sm-6 col-md-6 add-project-view">
+					<div class="md-add-ico">
+					<i class="md md-add md-add-ico"></i></div>
+					<div style="color: #333333;">添加你的项目、任务、成员等统计视图吧</div>
+				</div>
+			</div>
+		
+			<div class="sub-nav">
+				<ul class="nav-underscore"> 
+					<li data-ui-sref-active="active">
+						<a data-ui-sref="home.team.member" class="team-content-handler" >成员</a> 
+					</li> 
+					<li data-ui-sref-active="active"> 
+						<a data-ui-sref="home.team.task" class="team-content-handler">任务</a> 
+					</li> 
+					<li data-ui-sref-active="active">
+					 	<a data-ui-sref="home.team.report" class="team-content-handler">报表</a>
+				   </li> 
+				 </ul>
+			</div>
+			<div class="team-content" ui-view></div>
+			
+		</div>

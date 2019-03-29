@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="updateTypeNoByPrev" log="false" className="com.chinacreator.c2.project.testcase.TypeService" method="updateTypeNoByPrev">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>分类被拖拽至另一分类的前后排序</name>
+  <desc>某分类被拖拽至另一分类前或后时</desc>
+  <inputs>
+    <input collection="false" desc="" id="ids" required="true" type="String"/>
+    <input collection="false" desc="" id="nos" required="true" type="String"/>
+    <input collection="false" desc="@param" id="pid" required="true" type="int"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.ids" name="ids" signature="QString;" type="String"/>
+    <param autoValue="Input.nos" name="nos" signature="QString;" type="String"/>
+    <param autoValue="Input.pid" name="pid" signature="I" type="int"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

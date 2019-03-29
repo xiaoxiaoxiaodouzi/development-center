@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="orderModule" log="false" className="com.chinacreator.c2.project.info.ModuleService" method="orderModule">
+  <name>模块排序</name>
+  <inputs>
+    <input collection="false" desc="" id="list" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.list" name="list" signature="QList&lt;QModule;>;" type="java.util.List"/>
+  </params>
+  <return signature="QList&lt;QModule;>;" type="java.util.List"/>
+</CustomRule>

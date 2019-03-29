@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="editStage" log="false" className="com.chinacreator.c2.project.stage.TaskStageService" method="editStage">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>更新任务阶段</name>
+  <desc>更新某任务阶段名称</desc>
+  <inputs>
+    <input collection="false" desc="" id="stage" required="true" type="com.chinacreator.c2.project.stage.Stage"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.stage" name="stage" signature="QStage;" type="com.chinacreator.c2.project.stage.Stage"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

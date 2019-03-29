@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="simpleSelectOne" log="false" className="com.chinacreator.c2.project.service.SelectService" method="selectOne">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>查询一个</name>
+  <inputs>
+    <input collection="false" desc="" id="statement" required="true" type="String"/>
+    <input collection="false" desc="" id="parameter" required="true" type="java.util.Map"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="Object"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.statement" name="statement" signature="QString;" type="String"/>
+    <param autoValue="Input.parameter" name="parameter" signature="QMap;" type="java.util.Map"/>
+  </params>
+  <return signature="QObject;" type="Object"/>
+</CustomRule>

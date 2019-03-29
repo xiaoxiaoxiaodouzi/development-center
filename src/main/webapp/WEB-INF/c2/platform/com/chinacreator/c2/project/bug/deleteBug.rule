@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="bug/deleteBug" log="false" className="com.chinacreator.c2.project.bug.BugService" method="deleteBug">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>删除bug</name>
+  <desc>删除bug</desc>
+  <inputs>
+    <input collection="false" desc="" id="bug" required="true" type="com.chinacreator.c2.project.bug.Bug"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.bug" name="bug" signature="QBug;" type="com.chinacreator.c2.project.bug.Bug"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="wr/getSingleWeeklyReportTask" log="false" className="com.chinacreator.c2.project.weeklyReport.WeeklyReportService" method="getSingleWeeklyReportTask">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取周报任务</name>
+  <inputs>
+    <input collection="false" desc="" id="taskId" required="true" type="java.lang.Integer"/>
+    <input collection="false" desc="" id="start" required="true" type="java.sql.Date"/>
+    <input collection="false" desc="" id="end" required="true" type="java.sql.Date"/>
+    <input collection="false" desc="" id="reportId" required="true" type="java.lang.Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.taskId" name="taskId" signature="QInteger;" type="java.lang.Integer"/>
+    <param autoValue="Input.reportId" name="reportId" signature="QInteger;" type="java.lang.Integer"/>
+    <param autoValue="Input.start" name="start" signature="QDate;" type="java.sql.Date"/>
+    <param autoValue="Input.end" name="end" signature="QDate;" type="java.sql.Date"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

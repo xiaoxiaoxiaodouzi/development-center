@@ -1,0 +1,108 @@
+<style>
+.modal-body{
+	padding:0px !important;
+}
+.stat-add-modal .nav-tabs .nav-item {
+	-webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    text-align: center;
+    border-right: 1px solid #dbdddf;
+}
+.stat-add-modal .nav-tabs {
+    padding: 17px 0 15px;
+    background-color: #f7f8fb;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.stat-add-modal .tab-content {
+    padding: 10px 10px 0 30px;
+}
+
+.stat-add-modal .widget-pro-view .widget-item {
+    border: 1px solid #ececec;
+    width: 98%;
+    border-radius: 10px;
+    margin-top: 12px;
+    padding: 3px 10px;
+    cursor: pointer;
+    position: relative;
+    font-size: 18px;
+    font-weight: 500;
+}
+.foot-btn{
+	padding: 20px 20px 0 0;
+    height: 74px;
+}
+.widget-active{
+	color: #2196f3;
+    position: absolute;
+    right: 20px;
+    top: 35px;
+}
+.nav-link{
+	font-size:18px;
+	padding:0px;
+	color:black;
+}
+.stat-add-modal .nav-tabs li.active >a {
+    color: #2196f3;
+    border: none;
+    padding:0px;
+}
+.stat-add-modal .nav-tabs .nav-item .disabled {
+    color: #DAD9D9;
+}
+</style>
+<ul class="nav nav-tabs">
+	<li class="uib-tab nav-item" heading="团队级视图" ng-class="{'active':activeTab=='team'}">
+  		<a class="nav-link">团队级视图</a>
+	</li>
+	<li class="uib-tab nav-item" heading="项目级视图" ng-class="{'active':activeTab=='project'}">
+  		<div style="font-size: 18px;"><a class="nav-link disabled">项目级视图</a></div>
+	</li>
+	<li class="uib-tab nav-item" heading="成员级视图" ng-class="{'active':activeTab=='member'}">
+  		<div style="font-size: 18px;"><a class="nav-link disabled">成员级视图</a></div>
+	</li>
+</ul>
+<div class="tab-content">
+	<c2-dropdown id="deptDropdown" tree-options="deptTreeOptions" tree-nodes="deptTree" max-height="300" style="width:98%">
+			<input type="text" class="form-control dropdown-toggle" ng-model="$params.selectedDeptNode.name" placeholder="请选择机构,机构下的所有人员即团队成员"/>
+	</c2-dropdown>
+    <div class="tab-pane" ng-class="{active: activeTab === 'team'}">
+	    <div class="widget-pro-view">
+	    	<div class="widget-item" ng-repeat="widget in statWidgets | filter:{category:1}" ng-click="widgetSelect(widget)" ng-class="{'widget-box-active':widget.selected}">
+	    		<span class="widget-img">
+	    			<img ng-src="assets/img/statistics/team-members.png" >
+	    		</span>{{widget.displayName}}
+	    		<span class="md widget-active" ng-class="{'md-panorama-fisheye':!widget.selected,'md-lens':widget.selected}"></span>
+	    	</div>
+	    </div>
+  	</div>
+    <div class="tab-pane" ng-class="{active: activeTab === 'project'}">
+	    <div class="widget-pro-view">
+	    	<div class="widget-item" ng-repeat="widget in statWidgets | filter:{category:2}" ng-click="widgetSelect(widget)" ng-class="{'widget-box-active':widget.selected}">
+	    		<span class="widget-img">
+	    			<img ng-src="assets/img/statistics/team-members.png" >
+	    		</span>{{widget.displayName}}
+	    		<i class="md widget-active" ng-class="{'md-panorama-fisheye':!widget.selected,'md-lens':widget.selected}" ></i>
+	    	</div>
+	    </div>
+  	</div>
+    <div class="tab-pane" ng-class="{active: activeTab === 'member'}">
+	    <div class="widget-pro-view">
+	    	<div class="widget-item" ng-repeat="widget in statWidgets | filter:{category:3}" ng-click="widgetSelect(widget)" ng-class="{'widget-box-active':widget.selected}">
+	    		<span class="widget-img">
+	    			<img ng-src="assets/img/statistics/team-members.png" >
+	    		</span>{{widget.displayName}}
+	    		<i class="md widget-active" ng-class="{'md-panorama-fisheye':!widget.selected,'md-lens':widget.selected}" ></i>
+	    	</div>
+	    </div>
+  	</div>
+</div>
+<div class="m-t-30 right_btn foot-btn">
+		<button class="btn btn-primary btn-sm" data-ng-click="addStat()">添加</button>
+		<button class="btn btn-link btn-sm" data-ng-click="dismiss();">取消</button>
+</div>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.team.TeamMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_comunity_team.id ,
+		  c2_comunity_team.name_ ,
+		  c2_comunity_team.owner ,
+		  c2_comunity_team.create_time 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_comunity_team.id = #{id}</if>
+	    <if test="name != null">and c2_comunity_team.name_ = #{name}</if>
+	    <if test="owner != null">and c2_comunity_team.owner = #{owner}</if>
+	    <if test="createTime != null">and c2_comunity_team.create_time = #{createTime}</if>
+</sql>
+
+
+<!-- ElementID:TeamResult,Generated=true -->
+<resultMap id="TeamResult" type="com.chinacreator.c2.team.Team">
+	<id property="id" column="id"/>
+	<result property="name" column="name_"/>
+	<result property="owner" column="owner"/>
+	<result property="createTime" column="create_time"/>
+</resultMap>
+
+<resultMap id="teamListResult" type="map">
+	<id property="id" column="id"/>
+	<result property="name" column="name_"/>
+	<result property="ownerRealname" column="user_realname"/>
+	<result property="owner" column="owner"/>
+	<result property="createTime" column="create_time"/>
+	<collection property="users" column="id" select="teamUsers"/>
+</resultMap>
+
+<select id="teamUsers" parameterType="int" resultType="com.chinacreator.c2.team.TeamUser">
+ select * from c2_comunity_teamuser where team_id=#{id}
+</select>
+
+<!-- ElementID:one2one_sql,Generated=true -->
+<sql id="one2many_sql">
+</sql>
+
+<select id="getTeamByPage" parameterType="string" resultMap="teamListResult">
+	select 
+	<include refid="column_sql"/>
+	from c2_comunity_team where owner=#{owner}
+</select>
+
+<!-- ElementName:cache,Generated=true -->
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.team.Team" resultType="int">
+	select count(*) from c2_comunity_team 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.team.Team">
+	update c2_comunity_team
+<set>
+	<if test="name != null">name_=#{name,jdbcType=VARCHAR},</if>
+	<if test="owner != null">owner=#{owner,jdbcType=VARCHAR},</if>
+	<if test="createTime != null">create_time=#{createTime,jdbcType=TIMESTAMP}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_comunity_team
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="name==null">name_ = null,</if>
+		    <if test="owner==null">owner = null,</if>
+		    <if test="createTime==null">create_time = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.team.Team">
+    delete from c2_comunity_team where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.team.Team" resultMap="TeamResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_team 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<select id="getTeamList" parameterType="map" resultMap="teamListResult">
+	select 
+		td_sm_user.user_realname,
+		<include refid="column_sql"/>
+	    from c2_comunity_team,td_sm_user 
+		where c2_comunity_team.owner=td_sm_user.user_name
+		and id in (
+			select id from c2_comunity_team where owner=#{owner}
+			union
+			select c2_comunity_team.id id from c2_comunity_team left join c2_comunity_teamuser on c2_comunity_team.id=c2_comunity_teamuser.team_id
+			where c2_comunity_teamuser.user_name=#{owner}
+		)
+		order by c2_comunity_team.create_time desc
+</select>
+
+<select id="getTeamProject" parameterType="int" resultType="com.chinacreator.c2.project.info.Project">
+	select distinct zt_project.* 
+		from c2_comunity_team_task_snapshot 
+	    left join c2_comunity_task on c2_comunity_task.id=c2_comunity_team_task_snapshot.task_id
+	    left join zt_project on zt_project.id=c2_comunity_task.project_id
+		where c2_comunity_team_task_snapshot.report_id = #{reportId}
+		<if test="!belongToNextWeek">and c2_comunity_team_task_snapshot.belong_to_next_week = '0'</if>
+		<if test="belongToNextWeek">and c2_comunity_team_task_snapshot.belong_to_next_week = '1'</if>
+</select>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_comunity_team where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	<choose>
+		<when test="@com.chinacreator.c2.dao.util.EntityBeanUtil@isEntityObj(entity)">#{entity.id}</when>
+		<otherwise>#{entity}</otherwise>
+	</choose>
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="TeamResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_team 
+</select>
+
+<!-- ElementID:selectUnion,Generated=true -->
+<select id="selectUnion" parameterType="list" resultMap="TeamResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_team 
+	 INNER JOIN
+<foreach collection="list" item="entity" separator="UNION" open="(" close=")">
+		SELECT 
+			 id
+		FROM c2_comunity_team 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_team.id = #{entity.id}</if>
+	        <if test="entity.name != null">and c2_comunity_team.name_ = #{entity.name}</if>
+	        <if test="entity.owner != null">and c2_comunity_team.owner = #{entity.owner}</if>
+	        <if test="entity.createTime != null">and c2_comunity_team.create_time = #{entity.createTime}</if>
+			</where>
+</foreach>
+	c2_temp_table ON c2_comunity_team.id = c2_temp_table.id
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="TeamResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_team 
+		 where c2_comunity_team.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.team.Team" resultMap="TeamResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_team 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="TeamResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_team 
+	where c2_comunity_team.id in (
+		select distinct id from c2_comunity_team inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_comunity_team 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_team.id = #{entity.id}</if>
+	        <if test="entity.name != null">and c2_comunity_team.name_ = #{entity.name}</if>
+	        <if test="entity.owner != null">and c2_comunity_team.owner = #{entity.owner}</if>
+	        <if test="entity.createTime != null">and c2_comunity_team.create_time = #{entity.createTime}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.team.Team" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_comunity_team(
+		<trim prefixOverrides=",">
+		    <if test="name != null">name_</if>
+		    <if test="owner != null">,owner</if>
+		    <if test="createTime != null">,create_time</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="name != null">#{name,jdbcType=VARCHAR}</if>
+		    <if test="owner != null">,#{owner,jdbcType=VARCHAR}</if>
+		    <if test="createTime != null">,#{createTime,jdbcType=TIMESTAMP}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_comunity_team (name_,owner,create_time)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.name,jdbcType = VARCHAR},
+		         #{entity.owner,jdbcType = VARCHAR},
+		         #{entity.createTime,jdbcType = TIMESTAMP}
+				)
+</foreach>
+</insert>
+</mapper>

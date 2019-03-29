@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="reImportInstanceInfo" log="false" className="com.chinacreator.c2.project.plan.InstanceService" method="reImportInstanceInfo">
+  <name>重新导入实例信息（单一）</name>
+  <desc>重新导入实例信息  将用例信息同步至实例</desc>
+  <inputs>
+    <input collection="false" desc="" id="caseId" required="true" type="int"/>
+    <input collection="false" desc="" id="instanceId" required="true" type="int"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.caseId" name="caseId" signature="I" type="int"/>
+    <param autoValue="Input.instanceId" name="instanceId" signature="I" type="int"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

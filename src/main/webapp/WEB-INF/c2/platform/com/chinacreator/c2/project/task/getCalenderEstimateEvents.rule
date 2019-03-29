@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getCalenderEstimateEvents" log="false" className="com.chinacreator.c2.project.task.TaskService" method="getCalenderEstimateEvents">
+  <name>获取任务工时日历事件</name>
+  <inputs>
+    <input collection="false" desc="" id="conditions" required="true" type="java.util.Map"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.conditions" name="conditions" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

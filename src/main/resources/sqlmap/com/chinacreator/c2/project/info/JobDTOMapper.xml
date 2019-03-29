@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.info.JobDTOMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  td_sm_job.job_id ,
+		  td_sm_job.job_name ,
+		  td_sm_job.job_desc ,
+		  td_sm_job.job_scope ,
+		  td_sm_job.job_function ,
+		  td_sm_job.job_amount ,
+		  td_sm_job.job_number ,
+		  td_sm_job.job_condition ,
+		  td_sm_job.job_rank ,
+		  td_sm_job.owner_id 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="jobId != null">and td_sm_job.job_id = #{jobId}</if>
+	    <if test="jobName != null">and td_sm_job.job_name = #{jobName}</if>
+	    <if test="jobDesc != null">and td_sm_job.job_desc = #{jobDesc}</if>
+	    <if test="jobScope != null">and td_sm_job.job_scope = #{jobScope}</if>
+	    <if test="jobFunction != null">and td_sm_job.job_function = #{jobFunction}</if>
+	    <if test="jobAmount != null">and td_sm_job.job_amount = #{jobAmount}</if>
+	    <if test="jobNumber != null">and td_sm_job.job_number = #{jobNumber}</if>
+	    <if test="jobCondition != null">and td_sm_job.job_condition = #{jobCondition}</if>
+	    <if test="jobRank != null">and td_sm_job.job_rank = #{jobRank}</if>
+	    <if test="ownerId != null">and td_sm_job.owner_id = #{ownerId}</if>
+</sql>
+
+
+<!-- ElementID:JobDTOResult,Generated=true -->
+<resultMap id="JobDTOResult" type="com.chinacreator.c2.project.info.JobDTO">
+	<id property="jobId" column="job_id"/>
+	<result property="jobName" column="job_name"/>
+	<result property="jobDesc" column="job_desc"/>
+	<result property="jobScope" column="job_scope"/>
+	<result property="jobFunction" column="job_function"/>
+	<result property="jobAmount" column="job_amount"/>
+	<result property="jobNumber" column="job_number"/>
+	<result property="jobCondition" column="job_condition"/>
+	<result property="jobRank" column="job_rank"/>
+	<result property="ownerId" column="owner_id"/>
+</resultMap>
+
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.info.JobDTO">
+	insert into td_sm_job(
+	         <if test="jobId != null">job_id</if>
+	         <if test="jobName != null">,job_name</if>
+	         <if test="jobDesc != null">,job_desc</if>
+	         <if test="jobScope != null">,job_scope</if>
+	         <if test="jobFunction != null">,job_function</if>
+	         <if test="jobAmount != null">,job_amount</if>
+	         <if test="jobNumber != null">,job_number</if>
+	         <if test="jobCondition != null">,job_condition</if>
+	         <if test="jobRank != null">,job_rank</if>
+	         <if test="ownerId != null">,owner_id</if>
+	 	 	 )
+	 values (
+	         <if test="jobId != null">#{jobId,jdbcType=VARCHAR}</if>
+	         <if test="jobName != null">,#{jobName,jdbcType=VARCHAR}</if>
+	         <if test="jobDesc != null">,#{jobDesc,jdbcType=VARCHAR}</if>
+	         <if test="jobScope != null">,#{jobScope,jdbcType=CHAR}</if>
+	         <if test="jobFunction != null">,#{jobFunction,jdbcType=VARCHAR}</if>
+	         <if test="jobAmount != null">,#{jobAmount,jdbcType=VARCHAR}</if>
+	         <if test="jobNumber != null">,#{jobNumber,jdbcType=VARCHAR}</if>
+	         <if test="jobCondition != null">,#{jobCondition,jdbcType=VARCHAR}</if>
+	         <if test="jobRank != null">,#{jobRank,jdbcType=VARCHAR}</if>
+	         <if test="ownerId != null">,#{ownerId,jdbcType=VARCHAR}</if>
+	 	 	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.info.JobDTO" resultType="int">
+	select count(*) from td_sm_job 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.info.JobDTO">
+	update td_sm_job
+<set>
+	<if test="jobName != null">job_name=#{jobName,jdbcType=VARCHAR},</if>
+	<if test="jobDesc != null">job_desc=#{jobDesc,jdbcType=VARCHAR},</if>
+	<if test="jobScope != null">job_scope=#{jobScope,jdbcType=CHAR},</if>
+	<if test="jobFunction != null">job_function=#{jobFunction,jdbcType=VARCHAR},</if>
+	<if test="jobAmount != null">job_amount=#{jobAmount,jdbcType=VARCHAR},</if>
+	<if test="jobNumber != null">job_number=#{jobNumber,jdbcType=VARCHAR},</if>
+	<if test="jobCondition != null">job_condition=#{jobCondition,jdbcType=VARCHAR},</if>
+	<if test="jobRank != null">job_rank=#{jobRank,jdbcType=VARCHAR},</if>
+	<if test="ownerId != null">owner_id=#{ownerId,jdbcType=VARCHAR}</if>
+</set>
+<where>
+	<choose>
+        <when test="jobId != null">and job_id = #{jobId}</when>
+        <otherwise>and job_id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update td_sm_job
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="jobName==null">job_name = null,</if>
+		    <if test="jobDesc==null">job_desc = null,</if>
+		    <if test="jobScope==null">job_scope = null,</if>
+		    <if test="jobFunction==null">job_function = null,</if>
+		    <if test="jobAmount==null">job_amount = null,</if>
+		    <if test="jobNumber==null">job_number = null,</if>
+		    <if test="jobCondition==null">job_condition = null,</if>
+		    <if test="jobRank==null">job_rank = null,</if>
+		    <if test="ownerId==null">owner_id = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="jobId != null">and job_id = #{jobId}</when>
+			<otherwise>and job_id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.info.JobDTO">
+    delete from td_sm_job where 1=1 and job_id = #{jobId}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.info.JobDTO" resultMap="JobDTOResult">
+	select 
+		<include refid="column_sql"/>
+	    from td_sm_job 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list">
+	insert into td_sm_job (job_id,job_name,job_desc,job_scope,job_function,job_amount,job_number,job_condition,job_rank,owner_id) 
+<foreach collection="list" item="entity" index="index" separator="union all">
+		select 
+		#{entity.jobId,jdbcType = VARCHAR},
+				#{entity.jobName,jdbcType = VARCHAR},
+				#{entity.jobDesc,jdbcType = VARCHAR},
+				#{entity.jobScope,jdbcType = CHAR},
+				#{entity.jobFunction,jdbcType = VARCHAR},
+				#{entity.jobAmount,jdbcType = VARCHAR},
+				#{entity.jobNumber,jdbcType = VARCHAR},
+				#{entity.jobCondition,jdbcType = VARCHAR},
+				#{entity.jobRank,jdbcType = VARCHAR},
+				#{entity.ownerId,jdbcType = VARCHAR}
+		from dual
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from td_sm_job where job_id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	<choose>
+		<when test="@com.chinacreator.c2.dao.util.EntityBeanUtil@isEntityObj(entity)">#{entity.jobId}</when>
+		<otherwise>#{entity}</otherwise>
+	</choose>
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="JobDTOResult">
+	select 
+		<include refid="column_sql"/>
+	    from td_sm_job 
+</select>
+
+<!-- ElementID:selectUnion,Generated=true -->
+<select id="selectUnion" parameterType="list" resultMap="JobDTOResult">
+select 
+	<include refid="column_sql"/> 
+	from td_sm_job 
+	 INNER JOIN
+<foreach collection="list" item="entity" separator="UNION" open="(" close=")">
+		SELECT 
+			 job_id
+		FROM td_sm_job 
+			<where>
+	        <if test="entity.jobId != null">and td_sm_job.job_id = #{entity.jobId}</if>
+	        <if test="entity.jobName != null">and td_sm_job.job_name = #{entity.jobName}</if>
+	        <if test="entity.jobDesc != null">and td_sm_job.job_desc = #{entity.jobDesc}</if>
+	        <if test="entity.jobScope != null">and td_sm_job.job_scope = #{entity.jobScope}</if>
+	        <if test="entity.jobFunction != null">and td_sm_job.job_function = #{entity.jobFunction}</if>
+	        <if test="entity.jobAmount != null">and td_sm_job.job_amount = #{entity.jobAmount}</if>
+	        <if test="entity.jobNumber != null">and td_sm_job.job_number = #{entity.jobNumber}</if>
+	        <if test="entity.jobCondition != null">and td_sm_job.job_condition = #{entity.jobCondition}</if>
+	        <if test="entity.jobRank != null">and td_sm_job.job_rank = #{entity.jobRank}</if>
+	        <if test="entity.ownerId != null">and td_sm_job.owner_id = #{entity.ownerId}</if>
+			</where>
+</foreach>
+	c2_temp_table ON td_sm_job.job_id = c2_temp_table.job_id
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.String" resultMap="JobDTOResult">
+	select 
+		<include refid="column_sql"/>
+	    from td_sm_job 
+		 where td_sm_job.job_id = #{jobId,jdbcType=VARCHAR}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.info.JobDTO" resultMap="JobDTOResult">
+	select 
+		<include refid="column_sql"/>
+	    from td_sm_job 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="JobDTOResult">
+select 
+	<include refid="column_sql"/> 
+	from td_sm_job 
+	where td_sm_job.job_id in (
+		select distinct job_id from td_sm_job inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct job_id
+			from td_sm_job 
+			<where>
+	        <if test="entity.jobId != null">and td_sm_job.job_id = #{entity.jobId}</if>
+	        <if test="entity.jobName != null">and td_sm_job.job_name = #{entity.jobName}</if>
+	        <if test="entity.jobDesc != null">and td_sm_job.job_desc = #{entity.jobDesc}</if>
+	        <if test="entity.jobScope != null">and td_sm_job.job_scope = #{entity.jobScope}</if>
+	        <if test="entity.jobFunction != null">and td_sm_job.job_function = #{entity.jobFunction}</if>
+	        <if test="entity.jobAmount != null">and td_sm_job.job_amount = #{entity.jobAmount}</if>
+	        <if test="entity.jobNumber != null">and td_sm_job.job_number = #{entity.jobNumber}</if>
+	        <if test="entity.jobCondition != null">and td_sm_job.job_condition = #{entity.jobCondition}</if>
+	        <if test="entity.jobRank != null">and td_sm_job.job_rank = #{entity.jobRank}</if>
+	        <if test="entity.ownerId != null">and td_sm_job.owner_id = #{entity.ownerId}</if>
+			</where>
+		) ${entity.tableAlias} using (job_id)
+</foreach>
+)
+</select>
+</mapper>

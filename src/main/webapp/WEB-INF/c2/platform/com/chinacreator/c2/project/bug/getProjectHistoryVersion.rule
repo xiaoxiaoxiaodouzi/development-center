@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="bug/getProjectHistoryVersion" log="false" className="com.chinacreator.c2.project.bug.BugService" method="getProjectHistoryVersion">
+  <name>获取项目历史版本</name>
+  <desc>获取项目历史版本</desc>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="java.lang.Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="QInteger;" type="java.lang.Integer"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

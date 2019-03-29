@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.workbench.MyBugBoardMapper">	
+
+<resultMap id="BugTaskResult" type="java.util.HashMap">
+	<id property="id" column="id" javaType="java.lang.Integer"/>
+	<result property="no" column="no"/>
+	<result property="title" column="title"/>
+	<result property="pri" column="pri"/>
+	<result property="status" column="status_" javaType="java.lang.Integer"/>
+	<result property="bugVersion" column="bug_version"/>
+	<result property="assignedTo" column="assigned_to"/>
+	<result property="assignedToRealname" column="assigned_to_realname"/>
+	<result property="createBy" column="create_by"/>
+	<result property="createByRealname" column="create_by_realname"/>
+	<result property="userIcon" column="user_icon"/>
+	<result property="createTime" column="create_time"/>
+	<result property="lastUpdateTime" column="last_update_time"/>
+	<result property="spec" column="spec"/>
+	<result property="orderNo" column="order_no"/>
+	<association property="project" column="T1_id" javaType="java.lang.Integer" resultMap="ProjectResult" columnPrefix="T1_"/>	
+	<association property="module" column="T2_id" javaType="java.lang.Integer" resultMap="ModuleResult" columnPrefix="T2_"/>	
+	<association property="milestone" column="T3_id" javaType="java.lang.Integer" resultMap="MilestoneResult" columnPrefix="T3_"/>	
+</resultMap>
+
+<!--Generated=true-->
+<resultMap id="ProjectResult" type="com.chinacreator.c2.project.info.Project">
+	<id property="id" column="id"/>
+	<result property="name" column="name_"/>
+	<result property="code" column="code"/>
+	<result property="status" column="status_"/>
+	<result property="description" column="description"/>
+	<result property="createDate" column="create_date"/>
+	<result property="arcStatus" column="arc_status"/>
+	<result property="brief" column="brief"/>
+	<result property="pic" column="pic"/>
+	<result property="icon" column="icon"/>
+	<result property="link" column="link"/>
+	<result property="cloudLink" column="cloud_link"/>
+	<result property="publish" column="publish"/>
+	<result property="cloudPublish" column="cloud_publish"/>
+	<result property="owner" column="owner"/>
+</resultMap>
+<!--Generated=true-->
+<resultMap id="ModuleResult" type="com.chinacreator.c2.project.info.Module">
+	<id property="id" column="id"/>
+	<result property="name" column="name_"/>
+	<result property="parent" column="parent"/>
+	<result property="order" column="order_"/>
+</resultMap>
+<!--Generated=true-->
+<resultMap id="MilestoneResult" type="com.chinacreator.c2.project.milestone.Milestone">
+	<id property="id" column="id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="title" column="title"/>
+	<result property="description" column="description"/>
+	<result property="status" column="status"/>
+	<result property="opendate" column="opendate"/>
+	<result property="closedate" column="closedate"/>
+	<result property="enddate" column="enddate"/>
+</resultMap>
+
+<select id="getMyBugStageList" parameterType="map" resultMap="BugTaskResult">
+	select
+		  c2_community_bug.id ,
+		  c2_community_bug.no ,
+		  c2_community_bug.title ,
+		  c2_community_bug.pri ,
+		  c2_community_bug.status_ ,
+		  c2_community_bug.bug_version,
+		  c2_community_bug.create_by ,
+		  cuser.user_realname create_by_realname,
+		  cuser.remark1 user_icon,
+		  c2_community_bug.create_time ,
+		  c2_community_bug.last_update_time ,
+		  c2_community_bug.spec ,
+		  c2_community_bug.order_no ,
+		  c2_community_bug.init_assigned_to assigned_to,
+		  tuser.user_realname assigned_to_realname,
+		  zt_project.id T1_id ,
+		  zt_project.name_ T1_name_ ,
+		  zt_project.code T1_code ,
+		  zt_project.status_ T1_status_ ,
+		  zt_project.description T1_description ,
+		  zt_project.create_date T1_create_date ,
+		  zt_project.arc_status T1_arc_status ,
+		  zt_project.brief T1_brief ,
+		  zt_project.pic T1_pic ,
+		  zt_project.icon T1_icon ,
+		  zt_project.link T1_link ,
+		  zt_project.cloud_link T1_cloud_link ,
+		  zt_project.publish T1_publish ,
+		  zt_project.cloud_publish T1_cloud_publish ,
+		  zt_project.owner T1_owner ,
+		  zt_module.id T2_id ,
+		  zt_module.name_ T2_name_ ,
+		  zt_module.parent T2_parent ,
+		  zt_module.order_ T2_order_ ,
+		  c2_comunity_milestone.id T3_id ,
+		  c2_comunity_milestone.project_id T3_project_id ,
+		  c2_comunity_milestone.title T3_title ,
+		  c2_comunity_milestone.description T3_description ,
+		  c2_comunity_milestone.enddate T3_enddate 
+		  
+	    from c2_community_bug
+	     left outer join zt_project on c2_community_bug.project=zt_project.id
+	     left outer join zt_module on c2_community_bug.module=zt_module.id
+	     left outer join c2_comunity_milestone on c2_community_bug.milestone=c2_comunity_milestone.id 
+	     left outer join td_sm_user cuser on cuser.user_name=c2_community_bug.create_by
+	     left outer join td_sm_user tuser on tuser.user_name=c2_community_bug.init_assigned_to
+	     <where>
+
+			  <if test="title != null and title!=''">and c2_community_bug.title like '%${title}%'</if> 
+			  <if test="userName != null and userName!=''">
+				  and (create_by=#{userName} or init_assigned_to=#{userName})
+			  </if>
+			 <if test="id != null">
+				  and c2_community_bug.status_ = #{id}
+			  </if>
+			  <!-- <if test="id==6 and !isAllFix">
+			  	and c2_community_bug.last_update_time between date_sub(now(),interval 15 day) and now()
+			  </if>
+			  <if test="id==0 and !isAllClose">
+			  	and c2_community_bug.last_update_time between date_sub(now(),interval 15 day) and now()
+			  </if> -->
+			  <if test="projects != null and projects.size()&gt;0">and c2_community_bug.project in 
+				<foreach item="p" collection="projects" open="(" separator="," close=")">
+			        '${p.id}'
+			    </foreach>
+		      </if>
+			  <if test="labels != null and labels.size()&gt;0">
+				  and c2_community_bug.id in ( select bug_id from c2_community_label_bug where label_id in 
+				  <foreach item="l" collection="labels" open="(" separator="," close=")">'${l.id}'</foreach> 
+			  	  ) 
+			  </if>
+		</where>
+		order by <!-- c2_community_bug.order_no desc, -->c2_community_bug.last_update_time desc
+</select>
+
+<select id="getLabelByProjects" parameterType="list" resultType="map">
+	select distinct l.*,p.name_ projectName from c2_community_bug b,c2_community_label_bug lb,c2_comunity_label l,zt_project p
+	where b.id=lb.bug_id and l.id=lb.label_id and b.project=p.id and b.project in
+	<foreach item="s" collection="list" open="(" separator="," close=")">#{s.id}</foreach>
+</select>
+
+<select id="getLabelByProject" parameterType="list" resultType="map">
+	select distinct l.* from c2_community_bug b,c2_community_label_bug lb,c2_comunity_label l
+	where b.id=lb.bug_id and l.id=lb.label_id and b.project in 
+	<foreach item="s" collection="list" open="(" separator="," close=")">#{s.id}</foreach>
+</select>
+
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getProjectCreator" log="false" className="com.chinacreator.c2.project.info.MembersMgt" method="getProjectCreator">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取项目创建者</name>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.asp.comp.sys.core.user.dto.UserDTO"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+  </params>
+  <return signature="QUserDTO;" type="com.chinacreator.asp.comp.sys.core.user.dto.UserDTO"/>
+</CustomRule>

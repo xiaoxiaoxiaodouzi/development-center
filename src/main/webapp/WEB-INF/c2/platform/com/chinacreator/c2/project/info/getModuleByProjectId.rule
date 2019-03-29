@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getModuleByprojectId" log="false" className="com.chinacreator.c2.project.info.ModuleService" method="getModuleByprojectId">
+  <name>根据项目ID查找所有模块（简单模式）</name>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="Integer"/>
+    <input collection="false" desc="" id="parent" required="false" type="Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="QInteger;" type="Integer"/>
+    <param autoValue="Input.parent" name="parent" signature="QInteger;" type="Integer"/>
+  </params>
+  <return signature="QList&lt;QModule;>;" type="java.util.List"/>
+</CustomRule>

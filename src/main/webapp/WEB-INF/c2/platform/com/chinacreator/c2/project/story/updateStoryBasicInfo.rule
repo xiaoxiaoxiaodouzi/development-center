@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="updateStoryBasicInfo" log="false" className="com.chinacreator.c2.project.story.StoryService" method="updateStoryBasicInfo">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>修改需求基本信息</name>
+  <desc>修改需求</desc>
+  <inputs>
+    <input collection="false" desc="" id="story" required="true" type="com.chinacreator.c2.project.story.Story"/>
+    <input collection="false" desc="" id="labelList" required="true" type="java.util.List"/>
+    <input collection="false" desc="" id="changeReason" required="false" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="@param story  @param labelList  @param changeReason" id="result" name="方法返回值" type="Integer"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.story" name="story" signature="QStory;" type="com.chinacreator.c2.project.story.Story"/>
+    <param autoValue="Input.labelList" name="labelList" signature="QList&lt;QLabel;>;" type="java.util.List"/>
+    <param autoValue="Input.changeReason" name="changeReason" signature="QString;" type="String"/>
+  </params>
+  <return signature="QInteger;" type="Integer"/>
+</CustomRule>

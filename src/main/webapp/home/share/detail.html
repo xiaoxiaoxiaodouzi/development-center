@@ -1,0 +1,200 @@
+<style>
+.affix{
+	top:80px;
+}
+.bs-docs-sidebar .nav>li>a,.bs-docs-sidebar .nav>li>a:FOCUS {
+  display: block;
+  padding: 4px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #767676;
+  background-color: transparent;
+}
+.bs-docs-sidebar .nav>li>a:hover {
+  padding-left: 19px;
+  color: #563d7c;
+  text-decoration: none;
+  background-color: transparent;
+  border-left: 1px solid #563d7c;
+}
+.bs-docs-sidebar .nav>.active:hover>a, .bs-docs-sidebar .nav>.active>a {
+  padding-left: 18px;
+  font-weight: 700;
+  color: #563d7c;
+  background-color: transparent;
+  border-left: 2px solid #563d7c;
+}
+.bs-docs-sidebar .nav .nav {
+  display: none;
+  padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav>.active>ul {
+  display: block;
+}
+.bs-docs-sidebar .nav .nav>li>a {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 30px;
+  font-size: 12px;
+  font-weight: 400;
+}
+.bs-docs-sidebar .nav .nav>.active:hover>a, .bs-docs-sidebar .nav .nav>.active>a {
+  padding-left: 28px;
+  font-weight: 500;
+}
+.doc-file-ul{
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
+.doc-file-ul ul{
+  margin-top: 10px;
+  list-style: none;
+  padding: 0px;
+}
+.doc-file-ul li{
+	padding: 5px 10px 0 0 ;
+	float: left;
+	cursor: pointer;
+}
+.doc-file-ul li a{
+	color: black;
+}
+.doc-file-ul li a:HOVER{
+	color: #2196f3;
+}
+.doc-author{
+	 margin: 15px 0;
+	 line-height: 2em;
+}
+.doc-author img{
+	 vertical-align: middle;
+     border-radius: 50%;
+     height: 35px;
+}
+.doc-author span {
+  height: 35px;
+  line-height: 30px;
+  vertical-align: middle;
+  margin-left: 15px;
+  color: rgb(78, 78, 78);
+}
+.doc-files{
+  /*padding: 5px 0 0 0;*/
+}
+.doc-files ul{
+  list-style: none;
+  padding: 0px;
+  display: inline-block;
+  margin-bottom: 0px;
+}
+.doc-files li{
+	padding: 5px 10px 0 0 ;
+	float: left;
+	cursor: context-menu;
+}
+.doc-files li .md-close{
+	cursor:pointer;
+	opacity: 0;
+	transition-duration: 300ms;
+}
+.doc-files li:HOVER .md-close{
+	opacity: 1;
+}
+.doc-files.download li a{
+	color: black;
+}
+.doc-files.download li a:HOVER{
+	cursor: pointer;
+	color: #2196f3;
+}
+.editor-toolbar {
+    margin-top: 5px;
+}
+@media (min-width: 992px){
+.col-md-offset-1 {
+    margin-left: 0px;
+}
+@media (min-width: 992px){
+.col-md-10 {
+    width: 100%;
+}
+@media screen and (min-width: 768px){
+.card .card-header:not(.ch-alt) {
+    padding: 23px 26px 5px 26px;
+}
+.l-h-zw{
+	line-height: 1.8em;
+}
+
+</style>
+<div class="container">
+<div class="card m-t-20">
+    <div class="card-header" ng-show="!docEditState">
+        <h1>{{doc.name}} </h1>
+        <div class="c-gray text-left doc-author">
+        	<img class="lv-img-sm" ng-src="{{doc.userIcon}}">
+        	<span>{{doc.userName}}&nbsp;&nbsp;-&nbsp;&nbsp; {{doc.createtime | date:"yyyy-MM-dd"}} </span>
+        	<div class="doc-file-ul">
+        	  <ul>
+        		<li ng-repeat="file in docFiles"><i class="md md-attach-file c-blue"></i><a ng-href="{{file.path}}" target="_blank" class="c-blue">{{file.name}}</a></li>
+              </ul>
+            <div class="clearfix"></div>
+         </div>
+        </div>
+        <ul class="actions" data-ng-if="docManager">
+            <li class="dropdown action-show" >
+                <a href="" data-toggle="dropdown">
+                    <i class="md md-more-vert"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" >
+                    <li>
+                        <a ng-click="editDocView(doc)">编辑</a>
+                    </li>
+                    <li >
+                        <a href="" ng-click="delDoc(doc)">删除</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-body card-padding p-t-0" ng-show="!docEditState">
+    <div class="row">
+		<div ng-class="{'col-md-9':menuShow,'col-md-offset-1':!menuShow,'col-md-10':!menuShow}" class="l-h-zw f-14">
+			<div ng-bind-html="doc.content | markdown"></div>
+		</div>
+		<div class="col-md-3" id="docMenus" ng-if="menuShow">
+			<nav id="docNav" class="bs-docs-sidebar">
+			<ul class="nav">
+		        <li ng-repeat="menu in docMenus" repeat-done="spy()">
+					<a href="javascript:void(0)" ng-click="scrollTo(menu)" data-target="#{{menu.id}}">{{menu.t}}</a>
+					<ul class="nav" ng-if="menu.c">
+						 <li ng-repeat="child in menu.c">
+							<a href="javascript:void(0)" ng-click="scrollTo(child)" data-target="#{{child.id}}">{{child.t}}</a>
+						 </li>
+					</ul>
+				</li>
+		 	</ul>
+          </nav>
+		</div>
+	</div>
+    
+    </div>
+    
+    <div class="card-header" ng-show="docEditState">
+    	<div class="fg-line" ng-class="{'has-error':!editDoc.name}"><input type="text" class="form-control" ng-model="editDoc.name"></div>
+        <div class="doc-files c-blue">
+        	<ul>
+        		<li ng-repeat="file in editDoc.files"><i class="md md-attach-file c-blue"></i> {{file.name}} <i class="md md-close c-red" ng-click="delFile(editDoc.files,file)"></i></li>
+        		<li class="c-blue" style="cursor: pointer;" ngf-select="true" ngf-max-size="524288000" ngf-change="fileSelected($files, $file, $event, $rejectedFiles,editDoc,editDoc.files)"><i class="md-file-upload"></i>上传附件</li>
+        	</ul>
+        	<div class="clearfix"></div>
+		</div>
+    	<textarea height="400" ng-model="editDoc.content" c2-markdown-editor></textarea>
+        <div class="add-tl-actions text-right">
+            <button class="btn btn-primary btn-sm" type="button" data-ng-click="submit(editDoc,editDoc.files)"> 保 存 </button>
+			<button type="button" class="btn btn-link btn-sm" data-ng-click="docEditState = false;refreshList()"> 取 消 </button>
+        </div>
+    </div>
+</div>
+</div>

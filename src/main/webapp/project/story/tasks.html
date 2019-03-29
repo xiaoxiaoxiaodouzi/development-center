@@ -1,0 +1,296 @@
+<style>
+<!--
+
+#storyTaskList p {
+	margin-bottom: 0px;
+}
+
+
+#storyTaskList .btn {
+	padding: 6px 6px
+}
+
+#storyTaskList .form-group {
+	margin-bottom: 15px;
+}
+
+#storyTaskList .media>.pull-left {
+	padding-right: 5px;
+}
+
+#add-task-button.x i {
+	transform: rotate(315deg);
+}
+
+#add-task-button {
+	top: 5px;
+	right: 70px;
+	z-Index: 22;
+	height: 40px;
+	width: 40px;
+}
+
+#storyTaskList .btn-float i {
+	font-size: 22px;
+}
+
+#storyTaskList #taskErrorMsg {
+	opacity: 0;
+	transition-duration: 800ms;
+}
+
+#storyTaskList #taskErrorMsg.see {
+	opacity: 1;
+}
+
+#storyTaskList .user-head {
+	width: 68px;
+	text-align: center;
+}
+
+#storyTaskList .rotate.md-expand-more {
+	transform: none;
+	transition: transform 500ms;
+}
+
+#storyTaskList .rotate.md-expand-more.turn {
+	transform: rotate(180deg);
+}
+
+#storyTaskList .lv-item .lv-small{
+	width: 87%;
+}
+#storyTaskList .lv-item .lv-small.ng-enter{
+	max-height: 0px;
+	overflow: hidden;
+	transition: 500ms cubic-bezier(0.5,0, 1, 1 ) all;
+}
+#storyTaskList .lv-item .lv-small.ng-enter.ng-enter-active{
+	max-height: 500px;
+}
+#storyTaskList .lv-item .lv-small.ng-leave{
+	max-height: 500px;
+	overflow: hidden;
+	transition: 500ms cubic-bezier(0,1,0,1) all;
+}
+#storyTaskList .lv-item .lv-small.ng-leave.ng-leave-active{
+	max-height: 0px;
+}
+#storyTaskList .lv-item .lv-small p img{
+	max-width: 100%;
+}
+
+#storyTaskList.listview .lv-item {
+    transition-duration: 0ms;
+}
+
+@media (min-width: 480px)
+#storyTaskList .listview.lv-lg .lv-item {
+    padding: 17px 40px 17px 40px;
+}
+-->
+</style>
+<div class="listview lv-bordered lv-lg" ng-controller="storyTaskCtrl" id="storyTaskList" ng-if="isDetailPage">
+	<div class="lv-header-alt">
+		<small class="m-t-10" style="display: inline-block;">
+			123123该需求下一共有{{taskTotalNum}}个任务，其中已完成任务{{taskDoneNum}}个</small>
+		<button class="btn btn-primary btn-icon-text picker-shadow pull-right"
+			data-ng-click="openNewTask()">
+			<i class="md md-add"></i> 添加任务
+		</button>
+	</div>
+	<div class="lv-body">
+		<div ng-if="taskList.length==0" class="lv-item no-animate text-center p-20 ng-scope">没有查到任何任务。</div>
+		
+		<!-- 任务列表 -->
+        <div class="lv-item media p-l-10 p-r-15" ui-sref-active="active-shadow" ng-repeat="task in taskList">
+            <div class="pull-left user-head">
+                <img class="lv-img-sm" ng-src="{{task.userIcon}}">
+                <div>{{task.userRealname}}</div>
+            </div>
+            <div class="media-body">
+                <div class="lv-title pull-left">
+                 <a ng-class="{'c-gray':task.isDone,'text-del':task.isDone}" data-ui-sref="project.storyComment.detail({taskId:'{{task.id}}'})">{{task.name}}</a>
+                 <i class="md md-expand-more rotate f-14" ng-if="task.description" ng-class="{turn:task.exDesc}" title="展开描述" data-ng-click="task.exDesc=!task.exDesc"></i>
+                 <span class="p-l-10 p-r-10 m-r-5 label-show" style="cursor:pointer;" ng-style="label.backgroundStyle" ng-repeat="label in task.labels" ng-click="search.labels=[label]">{{label.name}}</span>  
+                </div>
+                <div title="工时" class="pull-right c-darkgrey f-16" style="cursor: pointer;margin-bottom: 3px;" ng-click="openEstimateEditModal(task)"><i class="md md-history m-f-w m-r-5"></i> <span class="f-14 l-s-2">{{task.consumed}}/{{task.estimate}}</span></div>
+                <div class="clearfix"></div>
+                <small ng-if="task.description&&task.exDesc" class="lv-small lv-text-normal" ng-bind-html="task.description | markdown"></small>
+                <ul class="lv-attrs">
+                    <li ng-if="!task.isDone"><i class="md md-today" title="截止日期"></i> <span ng-if="task.deadline">{{task.deadline | date:"yyyy-MM-dd"}}</span><span ng-if="!task.deadline">未分配</span></li>
+                    <li title="完成时间" ng-if="task.isDone"><i class="md md-today"></i> {{task.finishedDate | date:"yyyy-MM-dd"}} </li>
+                    <li style=" border: 0;" title="模块" ng-if="task.moduleName"><i class="md md-extension"></i> {{task.moduleName}}</li>
+                    <li style=" border: 0;" title="里程碑" ng-if="task.milestoneTitle"><i class="md md-av-timer"></i> {{task.milestoneTitle}}</li>
+                    <li style=" border: 0;" id="close-task" ng-if="task.isDone&&!task.closed&&taskClose" ng-click="closeTask(task)"><i class="md md-settings-power"></i> 关闭任务</li>
+                    <li style=" border: 0;" title="关闭状态" ng-if="task.isDone&&task.closed"><i class="md md-settings-power"></i> 已关闭</li>
+                </ul>
+            </div>
+        </div>
+	</div>
+</div>
+
+<div class="listview lv-bordered lv-lg" ng-controller="storyTaskCtrl" id="storyTaskList" ng-if="!isDetailPage">
+	<div class="lv-header-alt">
+		<small class="m-t-10" style="display: inline-block;">
+			该需求下一共有{{taskTotalNum}}个任务，其中已完成任务{{taskDoneNum}}个</small>
+	</div>
+	<div class="lv-body">
+		<div ng-if="taskList.length==0" class="lv-item no-animate text-center p-20 ng-scope">没有查到任何任务。</div>
+		
+		<!-- 任务列表 -->
+        <div class="lv-item media p-l-10 p-r-15" ui-sref-active="active-shadow" ng-repeat="task in taskList">
+            <div class="pull-left user-head">
+                <img class="lv-img-sm" ng-src="{{task.userIcon}}">
+                <div>{{task.userRealname}}</div>
+            </div>
+            <div class="media-body">
+                <div class="lv-title pull-left">
+                 <a ng-class="{'c-gray':task.isDone,'text-del':task.isDone}">{{task.name}}</a>
+                 <i class="md md-expand-more rotate f-14" ng-if="task.description" ng-class="{turn:task.exDesc}" title="展开描述" data-ng-click="task.exDesc=!task.exDesc"></i>
+                 <span class="p-l-10 p-r-10 m-r-5 label-show" style="cursor:pointer;" ng-style="label.backgroundStyle" ng-repeat="label in task.labels" ng-click="search.labels=[label]">{{label.name}}</span>  
+                </div>
+                <div title="工时" class="pull-right c-darkgrey f-16" style="cursor: pointer;margin-bottom: 3px;"><i class="md md-history m-f-w m-r-5"></i> <span class="f-14 l-s-2">{{task.consumed}}/{{task.estimate}}</span></div>
+                <div class="clearfix"></div>
+                <ul class="lv-attrs">
+                    <li ng-if="!task.isDone"><i class="md md-today" title="截止日期"></i> <span ng-if="task.deadline">{{task.deadline | date:"yyyy-MM-dd"}}</span><span ng-if="!task.deadline">未分配</span></li>
+                    <li title="完成时间" ng-if="task.isDone"><i class="md md-today"></i> {{task.finishedDate | date:"yyyy-MM-dd"}} </li>
+                    <li style=" border: 0;" title="模块" ng-if="task.moduleName"><i class="md md-extension"></i> {{task.moduleName}}</li>
+                    <li style=" border: 0;" title="里程碑" ng-if="task.milestoneTitle"><i class="md md-av-timer"></i> {{task.milestoneTitle}}</li>
+                    <!-- <li style=" border: 0;" id="close-task" ng-if="task.isDone&&!task.closed&&taskClose" ng-click="closeTask(task)"><i class="md md-settings-power"></i> 关闭任务</li>
+                    <li style=" border: 0;" title="关闭状态" ng-if="task.isDone&&task.closed"><i class="md md-settings-power"></i> 已关闭</li> -->
+                </ul>
+            </div>
+        </div>
+	</div>
+</div>
+
+<!-- <aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;">
+    <ui-view onload="stateOnload()"></ui-view>
+</aside> -->
+
+<script>
+developmentCenter.registerCtrl(
+			'storyTaskCtrl',
+			function($scope,$rootScope,Modal, $http, $stateParams,Messenger,$state, $timeout, debounce) {
+				
+				$scope.isDetailPage = $state.current.name == 'project.storyComment';
+				//任务列表
+// 				var storyid = $stateParams.storyid;
+				var storyid = angular.isDefined($scope.params)?$scope.params.storyId:$stateParams.storyid;
+				$http.post("ws/getStoryById", {
+					storyid : storyid
+				}).success(function(data) {
+					$scope.entity = data.result;
+				});
+				
+		    	//检查任务是否在当前列表存在
+		    	function checkTaskExistCurrentPage(taskId){
+					var selectIndex = -1;
+					angular.forEach($scope.taskList,function(t,i){
+						if(t.id == taskId){
+							selectIndex = i;
+						}
+					});
+					return selectIndex;
+				}
+		    	
+				//获取需要更新的任务
+				function dealProjectTask(taskId,callback){
+					$http.post("ws/projectTask",{id:taskId}).success(function(latestTask){
+						if(angular.isUndefined(latestTask.result)) return ;
+						angular.forEach(latestTask.result.labels,function(label){
+							label.backgroundStyle = {"background-color":label.color,"border-radius":"2px","color":getTextColorByBackColor(label.color)};
+						});
+						callback(latestTask.result);
+					});
+				}
+
+				//更新列表单个任务
+				function updateTaskListSingle(taskId){
+					var selectIndex = checkTaskExistCurrentPage(taskId);
+					if(selectIndex!=-1){
+						dealProjectTask(taskId,function(latestTask){
+							$timeout(function(){
+								$scope.taskList[selectIndex] = latestTask;
+							},100);
+						});
+					}
+				}
+				
+				$scope.$on("storyTaskrefresh",function(event,msg){
+					updateTaskListSingle(msg.id);
+				});
+
+		    	$scope.openEstimateEditModal=function(task){
+		    		if(task.arcStatus=='0'){
+		    			Messenger.error("项目【"+task.projectName+"】合同编号在ERP不存在或已过时，请更改为最新编号后重试！");
+		    			return ;
+		    		}
+		    		var statusStr = task.isDone?"已完成":"未完成" ;
+		    		var options = {
+		    				title:'<span class="est-header-name">任务: '+task.name+'--</span><span class="est-header-status"> (状态 :'+statusStr+')</span>',
+		    				size:"big",
+		    				animation:true,
+		    				onDismiss:function(params){
+		    					if(params.isDone){
+		    						$scope.$emit("storyTaskrefresh", {id:task.id});
+// 		    						$http.post("message/$all/taskDetailUpdate",{id:task.id,to:task.userId,type:"updateAdd",p:"done",socketId:$rootScope.socketId}) ;
+		    					}else if(params.isChange){
+		    						$scope.$emit("storyTaskrefresh", {id:task.id});
+// 		    						$http.post("message/$all/taskDetailUpdate",{id:task.id,to:task.userId,type:"update",socketId:$rootScope.socketId}) ;
+		    					}
+		    				}
+					} ;
+		    		Modal.open("project/task/estimate.html",{taskId:task.id,assignedToRealname:task.userRealname},options) ;
+		    	}
+		    	
+				function getTaskList() {
+					$http.post("ws/simpleSelectList",{statement:"selectTask",parameter:{storyId:storyid}}
+					).success(
+
+					function(data) {
+						angular.forEach(data.result, function(task) {
+							angular.forEach(task.labels, function(label) {
+								label.backgroundStyle = {
+									"background-color" : label.color,
+									"border-radius" : "2px",
+									"color" : getTextColorByBackColor(label.color)
+								};
+							});
+						});
+						$scope.taskList = data.result;
+						$scope.taskTotalNum = 0;
+						$scope.taskDoneNum = 0;
+						$($scope.taskList).each(function(i, o) {
+							$scope.taskTotalNum++;
+							if (o.isDone == true) {
+								$scope.taskDoneNum++;
+							}
+						});
+						$scope.$parent.$parent.$parent.$parent.taskTotalNum = $scope.taskTotalNum;
+						$scope.$parent.$parent.$parent.$parent.taskDoneNum = $scope.taskDoneNum;
+					});
+				}
+				
+				$scope.$on("taskUpdateSubBo", function(event,msg){
+					getTaskList();
+				});
+				
+				$scope.$on("taskUpdateAddSubBo", function(event,msg){
+					getTaskList();
+				});
+				
+				$scope.$on("taskDeleteSubBo", function(event,msg){
+					getTaskList();
+				});
+				
+				getTaskList();
+				
+				$scope.openNewTask = function() {
+					Modal.open("home/addTask.html",{source:"story",story:$scope.entity},{title:'新建任务',onClose:function(task){
+						getTaskList();
+					}});
+				}
+			});
+</script>

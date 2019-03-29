@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="bug/getBugList" log="false" className="com.chinacreator.c2.project.bug.BugService" method="getBugList">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取bug列表</name>
+  <desc>分页获取bug列表</desc>
+  <inputs>
+    <input collection="false" desc="" id="condition" required="true" type="java.util.Map"/>
+    <input collection="false" desc="" id="pageable" required="true" type="com.chinacreator.c2.dao.mybatis.enhance.Pageable"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.condition" name="condition" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+    <param autoValue="Input.pageable" name="pageable" signature="QPageable;" type="com.chinacreator.c2.dao.mybatis.enhance.Pageable"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

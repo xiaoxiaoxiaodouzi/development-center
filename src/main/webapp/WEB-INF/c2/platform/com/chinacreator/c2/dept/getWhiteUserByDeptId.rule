@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="user/getOrgUsersFilterByWhiteList" log="false" className="com.chinacreator.c2.dept.UserService" method="getOrgUsersFilterByWhiteList">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取组织机构下已白名单筛选后的用户</name>
+  <desc>获取机构下除白名单之外的所有用户信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="orgId" required="true" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.orgId" name="orgId" signature="QString;" type="String"/>
+  </params>
+  <return signature="QList&lt;QUserDTO;>;" type="java.util.List"/>
+</CustomRule>

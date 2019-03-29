@@ -1,0 +1,142 @@
+<style type="text/css">
+#messages-main .ms-menu .lv-item.lactive {
+    background: #E0DCDC;
+}
+</style>
+<div class="container"  ng-controller="msgListCtrl">
+    <div class="block-header">
+        <h2>消息</h2>
+    </div>
+    
+    <div class="card m-b-0" id="messages-main">
+
+
+        <div class="ms-menu">
+			<div class="ms-block">
+                <div class="ms-user">
+                    <img src="{{currentUser.remark1}}" class="lv-avatar" alt="">
+                    <div>{{currentUser.userRealname}}</div>
+                </div>
+            </div>
+            
+			<div class="ms-block">
+    			<div class="btn btn-primary btn-block waves-effect" ng-click="selectUser();">新建聊天会话</div>
+            </div>
+            
+            <div class="listview lv-user c-overflow m-t-20" style="height: 464px;overflow: auto;">
+                <a  data-ui-sref="home.messages.chat({user_id:'$broadcast',user_realname:'通知'})" class="lv-item media" data-ui-sref-active="lactive">
+                    <div class="lv-avatar bgm-red pull-left">通知</div>
+                    <div class="media-body">
+                        <div class="lv-title">通知</div>
+                    </div>
+                </a>
+
+                <a style="transition-duration: 0ms;" data-ui-sref="home.messages.chat({'user_id':msgFrom.user_id,'user_realname':msgFrom.user_realname,icon_url:msgFrom.icon_url})" data-ui-sref-active="lactive" class="lv-item media" ng-repeat="msgFrom in msgFromUserList ">
+                	<div class="lv-avatar bgm-red pull-left" ng-if="msgFrom.user_id=='$system'">系统</div>
+                    <div class="lv-avatar pull-left" ng-if="msgFrom.user_id!='$system'">
+                        <img src="{{msgFrom.icon_url}}" alt="">
+                    </div>
+                    
+                    <div class="media-body" >
+                        <div class="lv-title">{{msgFrom.user_realname}}</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+		<div ui-view></div>
+    </div>
+</div>
+<script type="text/javascript">
+angular.module("developmentCenter").registerCtrl('msgListCtrl',function($scope,$rootScope,$http, $state, $stateParams, $timeout, Messenger,Modal,socketio) {
+	
+	socketio.on($scope,'pushSystem',function(data){
+    	var message=JSON.parse(data);
+    	$scope.loadMsgFromUserList();
+    });
+	
+	$scope.getUserInUserList=function(userId){
+		for(i in $scope.msgFromUserList){
+			var user=$scope.msgFromUserList[i];
+			if(user.user_id==userId){
+				return user;
+			}
+		}
+		return undefined;
+	}
+	
+	$scope.initMessageList=function(){
+		
+		$scope.msgFromUserList=undefined;
+		
+		if(!$stateParams.user_id){
+			$state.go("home.messages.chat",{user_id:'$broadcast'});
+			return;	
+		}
+		
+		$scope.currentUser=$rootScope.subject;
+		//加载发消息用户
+		$scope.loadMsgFromUserList();
+	}
+	
+	$scope.loadMsgFromUserList=function(){
+		
+		$http.post("ws/getAllMsgFromUserList", {
+			"condition":{}
+			}).success(function(data) {
+				
+				$scope.msgFromUserList=data.result;
+				
+				if("$broadcast"==$stateParams.user_id){
+					$scope.currentFromUser={user_id:'$broadcast',user_realname:'通知'};
+				}else if($stateParams.user_id&&""!=$stateParams.user_id){
+					
+					var user=$scope.getUserInUserList($stateParams.user_id);
+					if(!user){
+						$http.post("ws/message/getUserInfo",{
+							userId:$stateParams.user_id
+						}).success(function(data){
+							$scope.msgFromUserList.push(data.result);
+							$scope.currentFromUser=data.result;
+						});
+					}
+					
+					$scope.currentFromUser=user;
+				}
+			});
+	}
+	
+	$scope.selectUser=function(){
+        Modal.open('home/message/selectUser.html',{},{
+        	size:"big",
+  			title:'请选择用户',
+  			animation:true,
+            onClose:function(data){
+            	
+            	$state.go("home.messages.chat",{user_id:data.user_id});
+            	
+            	var user=$scope.getUserInUserList(data.userId);
+            	
+				if(!user){
+					user={
+							user_id:data.user_id,
+							icon_url:data.remark1,
+							user_realname:data.user_realname,
+							user_name:data.user_name
+					}
+					$scope.msgFromUserList.push(user);
+				}
+				
+				$scope.currentFromUser=user;
+				
+            }
+        });
+	}
+	
+	$scope.setCurrentFromUser=function(currUser){
+		$scope.currentFromUser=currUser;
+	}
+	
+	$scope.initMessageList();
+});
+</script>

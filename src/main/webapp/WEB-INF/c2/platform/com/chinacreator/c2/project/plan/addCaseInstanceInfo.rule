@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="addCaseInstanceInfo" log="false" className="com.chinacreator.c2.project.plan.InstanceService" method="addCaseInstanceInfo">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>新增实例信息</name>
+  <desc>根据选择的用例添加实例信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="planId" required="true" type="int"/>
+    <input collection="false" desc="" id="caseIdList" required="true" type="String"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.caseIdList" name="caseIdList" signature="QString;" type="String"/>
+    <param autoValue="Input.planId" name="planId" signature="I" type="int"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

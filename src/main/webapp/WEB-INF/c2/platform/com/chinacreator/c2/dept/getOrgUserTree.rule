@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="dept/getOrgUserTree" log="false" className="com.chinacreator.c2.dept.DepartmentService" method="getOrgUserTree">
+  <name>获取组织机构用户树</name>
+  <desc>得到组织机构用户树</desc>
+  <inputs>
+    <input collection="false" desc="用户名" id="userName" required="true" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.userName" name="userName" signature="QString;" type="String"/>
+  </params>
+  <return signature="QList&lt;QDynamicTreeNode;>;" type="java.util.List"/>
+</CustomRule>

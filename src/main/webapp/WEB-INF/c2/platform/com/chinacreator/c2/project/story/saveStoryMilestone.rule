@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="saveStoryMilestone" log="false" className="com.chinacreator.c2.project.story.StoryService" method="saveStoryMilesone">
+  <name>保存需求里程碑</name>
+  <desc>保存需里程碑</desc>
+  <inputs>
+    <input collection="false" desc="" id="storyId" required="true" type="int"/>
+    <input collection="false" desc="" id="milestoneId" required="true" type="int"/>
+    <input collection="false" desc="" id="selected" required="true" type="boolean"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.storyId" name="storyId" signature="I" type="int"/>
+    <param autoValue="Input.milestoneId" name="milestoneId" signature="I" type="int"/>
+    <param autoValue="Input.selected" name="selected" signature="Z" type="boolean"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="wr/getSubmmittedWeeks" log="false" className="com.chinacreator.c2.project.weeklyReport.WeeklyReportService" method="getSubmittedWeeks">
+  <name>获取已提交周报编号</name>
+  <inputs>
+    <input collection="false" desc="" id="project" required="true" type="int"/>
+    <input collection="false" desc="" id="year" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="[Lint;"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.project" name="project" signature="I" type="int"/>
+    <param autoValue="Input.year" name="year" signature="I" type="int"/>
+  </params>
+  <return signature="[I" type="[Lint;"/>
+</CustomRule>

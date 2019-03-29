@@ -1,0 +1,216 @@
+<link href="css/task/addTask.css" rel="stylesheet">
+
+<div data-ng-controller="addStoryCtrl" class="base-body">
+	<div class="task-new-header">
+
+		<div class="task-tasklist-stage-wrap">
+			<button type="button" class="close btn-close-new" ng-click="modalOptions.X()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<h4 class="title-top-module">创建需求至
+				<!-- <a style="color:#474747;" ng-class="{'have-value':project.name}">{{project.name?project.name:"待分配"}}</a> -->
+				<c2-dropdown class="animate" bind-data="project" items="projects" item-name="name" item-click="projectClick(project)" filter="true"
+				 filter-pinyin="false" filter-property="name,code" max-height="300" class="tasklist-title">
+					<a class="dropdown-toggle c-blue" data-ng-class="{'have-value':project.name,'has-error':taskProjectRed}">
+						{{ project.name ? project.name : "待分配项目" }}
+						<span class="caret"></span>
+					</a>
+				</c2-dropdown>
+				<!--             <span style="color:#a6a6a6">,</span> -->
+				<!--         	<c2-dropdown id="newModuleDropdown" tree-options="treeOptions" tree-nodes="moduleNodes" max-height="300" -->
+				<!--                          class="tasklist-title"> -->
+				<!--                 <a class="dropdown-toggle" ng-class="{'have-value':taskModule.name}"> -->
+				<!--                     {{ taskModule.name ? taskModule.name : "待分配模块" }} -->
+				<!--                 </a> -->
+				<!--             </c2-dropdown> -->
+			</h4>
+
+		</div>
+		<ng-form name="aform">
+			<div class="task">
+				<input id="story-title" name="storyTitle" type="text" ng-model="story.title" ng-required="true" class="form-control" data-ng-class="{'has-error-border':!story.title&&taskNameRed}"
+				 ng-model-options="{updateOn:'blur'}" ng-keypress="blurIfEnterKeyWasPressed($event)" />
+			</div>
+		</ng-form>
+	</div>
+	<div class="new-white-card task-new-handler-warp">
+		<div class="task-new-handler-set">
+			<div class="task-new-handler middle">
+				<h6 class="task-info-title">提出时间</h6>
+
+				<div class="task-new-line">
+					<span class="md md-event" ng-click="showDeadline()" ng-class="{'have-value':story.openedDate}"></span>
+					<input ignore-readonly="true" readonly id="deadline" show-clear="true" name="deadline" type="text" class="form-control" ng-class="{'have-value':story.openedDate}"
+					 date-time-picker clear-icon="md md-delete" ng-model="story.openedDate" placeholder="选择提出时间" format="YYYY-MM-DD">
+					</input>
+				</div>
+			</div>
+			<div class="task-new-handler middle">
+				<h6 class="task-info-title">启动时间</h6>
+
+				<div class="task-new-line">
+					<span class="md md-event" ng-click="showDeadline()" ng-class="{'have-value':story.startDate}"></span>
+					<input disabled="disbaled" id="deadline" show-clear="true" name="deadline" type="text" class="form-control" ng-class="{'have-value':story.startDate}"
+					 date-time-picker clear-icon="md md-delete" ng-model="story.startDate" placeholder="选择启动时间" format="YYYY-MM-DD">
+					</input>
+				</div>
+			</div>
+			<div class="task-new-handler middle">
+				<h6 class="task-info-title">预计完成时间</h6>
+
+				<div class="task-new-line">
+					<span class="md md-event" ng-click="showDeadline()" ng-class="{'have-value':story.endDate}"></span>
+					<input disabled="disbaled" id="deadline" show-clear="true" name="deadline" type="text" class="form-control" ng-class="{'have-value':story.endDate}"
+					 date-time-picker clear-icon="md md-delete" ng-model="story.endDate" placeholder="选择完成时间" format="YYYY-MM-DD">
+					</input>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="m-t-20 m-l-25">
+		<c2-dropdown class="animate" bind-data="proposer" item-click="proposerClick(proposer)" items="projectUsers" item-name="userRealname"
+		 multiple=false max-height="200" filter="true" filter-pinyin="true">
+			<div class="picker picker-white text-overflow" style="max-width:160px;padding-left:0px;" ng-class="{'have-value':proposer,'has-error':!proposer&&formCheck}">
+				<i class="md md-account-child"></i>
+				<span ng-if="proposer==undefined">提出人</span>
+				<span ng-if="proposer!=undefined">{{proposer.userRealname}} </span>
+				<span class="caret"></span>
+			</div>
+		</c2-dropdown>
+		<c2-dropdown class="animate" bind-data="assignTo" item-click="userClick(assignTo)" items="projectUsers" item-name="userRealname"
+		 multiple=false max-height="200" filter="true" filter-pinyin="true">
+			<div class="picker picker-white text-overflow" style="max-width:160px;padding-left:0px;" ng-class="{'have-value':assignTo,'has-error':!assignTo&&formCheck}">
+				<i class="md md-account-child"></i>
+				<span ng-if="assignTo==undefined">负责人</span>
+				<span ng-if="assignTo!=undefined">{{assignTo.userRealname}} </span>
+				<span class="caret"></span>
+			</div>
+		</c2-dropdown>
+		<c2-dropdown title="优先级" bind-data="story.selectPrioritys" item-click="prioritysClick(story.selectPrioritys)" items="allPriorityList"
+		 multiple=false item-name="title" max-height="200" clean-button="true">
+			<div class="picker picker-white">
+				<i class="md md-sort"> </i>
+				<span ng-if="story.selectPrioritys==undefined">优先级&nbsp;</span>
+				<span ng-if="story.selectPrioritys!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{story.selectPrioritys.title}}</span>
+				<span class="caret"></span>
+			</div>
+		</c2-dropdown>
+
+		<c2-dropdown title="模块" bind-data="taskModule" style="margin-top: 3px;" tree-options="treeOptions" id="modTree" tree-nodes="moduleNodes">
+			<div class="picker picker-white" ng-class="{'have-value':story.module,'has-error':!taskModule&&formCheck}">
+				<i class="md md-view-module"> </i>
+				<span ng-if="taskModule==undefined">模块&nbsp;</span>
+				<span ng-if="taskModule!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{taskModule.name}}</span>
+				<span class="caret"></span>
+			</div>
+		</c2-dropdown>
+
+		<c2-dropdown title="里程碑" bind-data="story.milestone" item-click="mileStoneMenuClick(story.milestone)" items="milestones" multiple=false
+		 item-name="title" max-height="200" clean-button="true">
+			<div class="picker picker-white">
+				<i class="md md-av-timer"> </i>
+				<span ng-if="story.milestone==undefined">里程碑&nbsp;</span>
+				<span ng-if="story.milestone!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{story.milestone.title}}</span>
+				<span class="caret"></span>
+			</div>
+		</c2-dropdown>
+
+		<c2-dropdown title="需求类型" bind-data="story.selectType" item-click="selectTypeClick(story.selectType)" items="allSelectType"
+		 multiple=false item-name="title" max-height="200" clean-button="true">
+			<div class="picker picker-white">
+				<i class="md md-sort"> </i>
+				<span ng-if="story.selectType==undefined">需求类型&nbsp;</span>
+				<span ng-if="story.selectType!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{story.selectType.title}}</span>
+				<span class="caret"></span>
+			</div>
+		</c2-dropdown>
+
+		<c2-dropdown class="animate" id="addTaskTagDropdown" bind-data="story.selectLabels" items="allLabels" multiple=true item-name="name"
+		 max-height="200" filter="true">
+			<div class="picker text-overflow" style="max-width:500px;">
+				<i class="md md-bookmark-outline"></i>
+				<span ng-if="story.selectLabels.length==0">标签 &nbsp;
+					<i class="caret"></i>
+				</span>
+				<span class="p-l-5 p-r-5 m-l-5 label-show" ng-style="tag.backgroundStyle" ng-repeat="tag in story.selectLabels">{{tag.name}}</span>
+			</div>
+			<dropdown-item-template>
+				<div>
+					<span class="label-color" style="background-color: {{item.color}};">&nbsp;</span>
+					<span class="text">{{item.name}}</span>
+					<span class="md md-check check-mark"></span>
+				</div>
+			</dropdown-item-template>
+		</c2-dropdown>
+
+		<c2-dropdown title="完成度" bind-data="story.selectCompletes" item-click="completesClick(story.selectCompletes)" items="allCompletes"
+		 multiple=false item-name="title" max-height="200" clean-button="true">
+			<div class="picker picker-white">
+				<i class="md md-track-changes"> </i>
+				<span ng-if="story.selectCompletes==undefined">完成度&nbsp;</span>
+				<span ng-if="story.selectCompletes!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{story.selectCompletes.title}}</span>
+				<span class="caret"></span>
+			</div>
+		</c2-dropdown>
+
+		</div>
+		<div class="task-new-infos-wrap">
+			<div class="new-infos-view">
+               <div>
+                <textarea ng-model="story.spec" c2-markdown-editor class="form-control has-error" rows="5" rows="5" height="200"  placeholder="需求描述"></textarea>
+                	<div style="margin-left:82%;"></div>	
+            	</div>
+        	</div>
+				<!-- <div class="new-infos-note-view on-top">
+					<div class="note-adder-set" title="点击编辑" ng-class="{'note-input-hide':hideMainStory==false}">
+						<span class="md md-description new-infos-icon" ng-class="{'have-value':mainStory}"></span>
+
+						<div class="add-note-handler c2lightbox">
+							<div id="markdowntext" ng-show="story.mainStory" ng-click="hideMainStory=false" ng-bind-html="story.mainStory | markdown"></div>
+							<div id="markdowntext" ng-show="!story.mainStory" ng-click="hideMainStory=false">作为</div>
+						</div>
+					</div>
+					<form id="task-desc-editor" data-ng-show="!hideMainStory">
+						<textarea c2-markdown-editor height="150" id="story-mainStory" ng-model="mainStory"></textarea>
+					</form>
+				</div>
+				<div class="new-infos-note-view">
+					<div class="note-adder-set" title="点击编辑" ng-class="{'note-input-hide':hideStoryEffect==false}">
+						<span class="md md-description new-infos-icon" ng-class="{'have-value':storyEffect}"></span>
+
+						<div class="add-note-handler c2lightbox">
+							<div id="markdowntext" ng-show="story.storyEffect" ng-click="hideStoryEffect=false" ng-bind-html="story.storyEffect | markdown"></div>
+							<div id="markdowntext" ng-class="{'has-error':!story.storyEffect&&formCheck}" ng-show="!story.storyEffect" ng-click="hideStoryEffect=false">我想要</div>
+						</div>
+					</div>
+					<form id="task-desc-editor" data-ng-show="!hideStoryEffect">
+						<textarea c2-markdown-editor height="150" id="story-effect" ng-model="storyEffect"></textarea>
+					</form>
+				</div>
+				<div class="new-infos-note-view on-bottom">
+					<div class="note-adder-set" title="点击编辑" ng-class="{'note-input-hide':hideStoryFunction==false}">
+						<span class="md md-description new-infos-icon" ng-class="{'have-value':storyFunction}"></span>
+
+						<div class="add-note-handler c2lightbox">
+							<div id="markdowntext" ng-show="story.storyFunction" ng-click="hideStoryFunction=false" ng-bind-html="story.storyFunction | markdown"></div>
+							<div id="markdowntext" ng-show="!story.storyFunction" ng-click="hideStoryFunction=false">以便于</div>
+						</div>
+					</div>
+					<form id="task-desc-editor" data-ng-show="!hideStoryFunction">
+						<textarea c2-markdown-editor height="150" id="story-function" ng-model="storyFunction"></textarea>
+					</form>
+				</div> -->
+				
+		</div>
+		<div class="task-new-footer">
+			<hr />
+			<form id="new-task-save">
+				<div style="margin:0 20px 10px 0; float:right;">
+					<span id="addTaskErrorMsg" class="c-red pull-left m-r-10 m-t-10">请完善需求(描述必填)</span>
+					<button class="btn btn-link btn-sm" data-ng-click="continueStory()">创建并继续</button>
+					<button class="btn btn-primary btn-save-task" data-ng-click="createNewStory()">创建</button>
+				</div>
+				<div style="clear:both; float:none; height:0; overflow:hidden"></div>
+			</form>
+		</div>
+	</div>

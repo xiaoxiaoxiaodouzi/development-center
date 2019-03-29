@@ -1,0 +1,80 @@
+<style>
+.issue-label .xbutton{
+	display:none;
+    position: absolute;
+    right: -8px;
+    top: -8px;
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    color: black;
+    border: 1px solid #eee;
+}
+.issue-label:HOVER .xbutton{
+	display: block;
+}
+.issue-label .xbutton i.md-close{
+	font-size: 12px;
+}
+</style>
+<div ng-controller="LabelsImportController">
+<div class="issue-label pull-left" ng-repeat="label in labelList" ng-style="label.style" style="position: relative;margin:0 23px 15px 0;">
+ <i class="md md-label-outline"></i>
+  <span>{{label.name}}</span>
+  <button class="btn btn-icon xbutton" ng-click="delSelectLabel($index)"><i class="md md-close"></i></button>
+</div>
+<div class="text-center f-16" ng-if="labelList.length==0">选择的标签全都已存在于当前项目中，请<a class="text-click-link" ng-click="chooseProject()">重新选择标签模版或项目</a>。</div>
+<div class="modal-footer">
+		<button class="btn btn-default btn-icon-text" ng-click="chooseProject()"><i class="md md-arrow-back"></i> 重新选择</button>
+		<button class="btn btn-primary btn-icon-text" ng-click="importLabels()"><i class="md md-check"></i> 确定</button>
+	</div>
+</div>
+
+<script>
+developmentCenter.registerCtrl("LabelsImportController",function($scope,$http,Modal,$stateParams,$q,Messenger){
+//     var p1 = $http.post("e/label/op/selectLabel",{project:$scope.projectId});
+//     var p2 = $http.post("e/label/op/selectLabel",{project:$stateParams.project});
+//     $q.all([p1,p2]).then(function(data){
+    $http.post("e/label/op/selectLabel",{project:$stateParams.project}).success(function(data){
+//     	var selectLabels = data[0].data.result;
+//     	var currentLabels = data[1].data.result;
+    	var selectLabels = $scope.labels;
+    	var currentLabels = data.result;
+    	var deleteArra = [];
+    	angular.forEach(selectLabels,function(sl,i){
+    		angular.forEach(currentLabels,function(cl){
+    			if(sl.name.trim()==cl.name.trim())deleteArra.push(i);
+    		});
+    		sl.project = $stateParams.project;
+    		sl.style={"background-color":sl.color,"color":getTextColorByBackColor(sl.color)};
+    	});
+    	//数组删除不容易啊！求简单数组删除元素方法。
+    	var n =0;
+    	angular.forEach(deleteArra,function(i){
+    		selectLabels.splice(i-n,1);
+    		n++;
+    	});
+		$scope.labelList = selectLabels;
+    });
+	
+	$scope.delSelectLabel = function(index){
+		$scope.labels.splice(index,1);
+	}
+	$scope.chooseProject = function(){
+		Modal.close({state:false});
+	}
+	$scope.importLabels = function(){
+		$http.post("e/label/op/insertBatch",{labels:$scope.labels.reverse()}).success(function(data){
+			if(data.result>0){
+				Modal.close({state:true,message:"成功导入了"+data.result+"个标签。"});
+			}else{
+				Messenger.error("导入标签失败。");
+			}
+		}).error(function(){
+			Messenger.error("导入标签失败。");
+		});
+	}
+	
+	
+});
+</script>

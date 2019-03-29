@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.team.TeamWeekReportMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_comunity_team_weekreport.id ,
+		  c2_comunity_team_weekreport.team_id ,
+		  c2_comunity_team_weekreport.year ,
+		  c2_comunity_team_weekreport.week ,
+		  c2_comunity_team_weekreport.summary ,
+		  c2_comunity_team_weekreport.status_ ,
+		  c2_comunity_team_weekreport.next_summary ,
+		  c2_comunity_team_weekreport.exist_problems ,
+		  c2_comunity_team_weekreport.visible_range ,
+		  c2_comunity_team_weekreport_statistics_T1.id T1_id ,
+		  c2_comunity_team_weekreport_statistics_T1.estimate T1_estimate ,
+		  c2_comunity_team_weekreport_statistics_T1.consumed T1_consumed ,
+		  c2_comunity_team_weekreport_statistics_T1.total T1_total ,
+		  c2_comunity_team_weekreport_statistics_T1.completed T1_completed ,
+		  c2_comunity_team_weekreport_statistics_T1.canceled T1_canceled ,
+		  c2_comunity_team_weekreport_statistics_T1.member T1_member ,
+		  c2_comunity_team_weekreport_statistics_T1.worked T1_worked ,
+		  c2_comunity_team_weekreport_statistics_T1.cross_week T1_cross_week ,
+		  c2_comunity_team_weekreport_statistics_T1.delayed_ T1_delayed_ 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_comunity_team_weekreport.id = #{id}</if>
+	    <if test="teamId != null">and c2_comunity_team_weekreport.team_id = #{teamId}</if>
+	    <if test="year != null">and c2_comunity_team_weekreport.year = #{year}</if>
+	    <if test="week != null">and c2_comunity_team_weekreport.week = #{week}</if>
+	    <if test="status != null">and c2_comunity_team_weekreport.status_ = #{status}</if>
+	    <if test="visibleRange != null">and c2_comunity_team_weekreport.visible_range = #{visibleRange}</if>
+		<if test="statistics != null and statistics.id !=null">and c2_comunity_team_weekreport.statistics = #{statistics.id}</if>
+</sql>
+
+<sql id="one2one_sql">
+	left outer join c2_comunity_team_weekreport_statistics c2_comunity_team_weekreport_statistics_T1 on c2_comunity_team_weekreport.statistics=c2_comunity_team_weekreport_statistics_T1.id
+</sql>
+
+
+<!-- ElementID:TeamWeekReportResult,Generated=true -->
+<resultMap id="TeamWeekReportResult" type="com.chinacreator.c2.team.TeamWeekReport">
+	<id property="id" column="id"/>
+	<result property="teamId" column="team_id"/>
+	<result property="year" column="year"/>
+	<result property="week" column="week"/>
+	<result property="summary" column="summary"/>
+	<result property="status" column="status_"/>
+	<result property="nextSummary" column="next_summary"/>
+	<result property="existProblems" column="exist_problems"/>
+	<result property="visibleRange" column="visible_range"/>
+	<association property="statistics" column="T1_id" javaType="com.chinacreator.c2.team.TeamWeekreportStatistics" resultMap="TeamWeekreportStatisticsResult" columnPrefix="T1_"/>	
+</resultMap>
+
+
+
+
+
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.team.TeamWeekReport">
+	insert into c2_comunity_team_weekreport(
+	         <if test="id != null">id</if>
+	         <if test="teamId != null">,team_id</if>
+	         <if test="year != null">,year</if>
+	         <if test="week != null">,week</if>
+	         <if test="summary != null">,summary</if>
+	         <if test="status != null">,status_</if>
+	         <if test="nextSummary != null">,next_summary</if>
+	         <if test="existProblems != null">,exist_problems</if>
+	         <if test="visibleRange != null">,visible_range</if>
+	 	 	 <if test="statistics != null and statistics.id !=null">,statistics</if>
+	 	 )
+	 values (
+	         <if test="id != null">#{id,jdbcType=NUMERIC}</if>
+	         <if test="teamId != null">,#{teamId,jdbcType=NUMERIC}</if>
+	         <if test="year != null">,#{year,jdbcType=NUMERIC}</if>
+	         <if test="week != null">,#{week,jdbcType=NUMERIC}</if>
+	         <if test="summary != null">,#{summary,jdbcType=CLOB}</if>
+	         <if test="status != null">,#{status,jdbcType=VARCHAR}</if>
+	         <if test="nextSummary != null">,#{nextSummary,jdbcType=CLOB}</if>
+	         <if test="existProblems != null">,#{existProblems,jdbcType=CLOB}</if>
+	         <if test="visibleRange != null">,#{visibleRange,jdbcType=VARCHAR}</if>
+	 	 	 <if test="statistics != null and statistics.id !=null">,#{statistics.id,jdbcType=NUMERIC}</if>
+	 	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.team.TeamWeekReport" resultType="int">
+	select count(*) from c2_comunity_team_weekreport 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.team.TeamWeekReport">
+	update c2_comunity_team_weekreport
+<set>
+	<if test="teamId != null">team_id=#{teamId,jdbcType=NUMERIC},</if>
+	<if test="year != null">year=#{year,jdbcType=NUMERIC},</if>
+	<if test="week != null">week=#{week,jdbcType=NUMERIC},</if>
+	<if test="summary != null">summary=#{summary,jdbcType=CLOB},</if>
+	<if test="status != null">status_=#{status,jdbcType=VARCHAR},</if>
+	<if test="nextSummary != null">next_summary=#{nextSummary,jdbcType=CLOB},</if>
+	<if test="existProblems != null">exist_problems=#{existProblems,jdbcType=CLOB},</if>
+	<if test="visibleRange != null">visible_range=#{visibleRange,jdbcType=VARCHAR},</if>
+	<if test="statistics != null and statistics.id !=null">statistics=#{statistics.id,jdbcType=NUMERIC}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_comunity_team_weekreport
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="teamId==null">team_id = null,</if>
+		    <if test="year==null">year = null,</if>
+		    <if test="week==null">week = null,</if>
+		    <if test="summary==null">summary = null,</if>
+		    <if test="status==null">status_ = null,</if>
+		    <if test="nextSummary==null">next_summary = null,</if>
+		    <if test="existProblems==null">exist_problems = null,</if>
+		    <if test="visibleRange==null">visible_range = null,</if>
+		    <if test="statistics==null">statistics = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.team.TeamWeekReport">
+    delete from c2_comunity_team_weekreport where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.team.TeamWeekReport" resultMap="TeamWeekReportResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_team_weekreport 
+		<include refid="one2one_sql"/>
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list">
+	insert into c2_comunity_team_weekreport (id,team_id,year,week,summary,status_,next_summary,exist_problems,visible_range,statistics) 
+<foreach collection="list" item="entity" index="index" separator="union all">
+		select 
+		#{entity.id,jdbcType = NUMERIC},
+				#{entity.teamId,jdbcType = NUMERIC},
+				#{entity.year,jdbcType = NUMERIC},
+				#{entity.week,jdbcType = NUMERIC},
+				#{entity.summary,jdbcType = CLOB},
+				#{entity.status,jdbcType = VARCHAR},
+				#{entity.nextSummary,jdbcType = CLOB},
+				#{entity.existProblems,jdbcType = CLOB},
+				#{entity.visibleRange,jdbcType = VARCHAR},
+						 #{entity.statistics.id,jdbcType=NUMERIC}
+		from dual
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_comunity_team_weekreport where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	<choose>
+		<when test="@com.chinacreator.c2.dao.util.EntityBeanUtil@isEntityObj(entity)">#{entity.id}</when>
+		<otherwise>#{entity}</otherwise>
+	</choose>
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="TeamWeekReportResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_team_weekreport 
+		<include refid="one2one_sql"/>
+</select>
+
+<!-- ElementID:selectUnion,Generated=true -->
+<select id="selectUnion" parameterType="list" resultMap="TeamWeekReportResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_team_weekreport 
+	<include refid="one2one_sql"/>
+	 INNER JOIN
+<foreach collection="list" item="entity" separator="UNION" open="(" close=")">
+		SELECT 
+			 id
+		FROM c2_comunity_team_weekreport 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_team_weekreport.id = #{entity.id}</if>
+	        <if test="entity.teamId != null">and c2_comunity_team_weekreport.team_id = #{entity.teamId}</if>
+	        <if test="entity.year != null">and c2_comunity_team_weekreport.year = #{entity.year}</if>
+	        <if test="entity.week != null">and c2_comunity_team_weekreport.week = #{entity.week}</if>
+	        <if test="entity.status != null">and c2_comunity_team_weekreport.status_ = #{entity.status}</if>
+	        <if test="entity.visibleRange != null">and c2_comunity_team_weekreport.visible_range = #{entity.visibleRange}</if>
+			</where>
+</foreach>
+	c2_temp_table ON c2_comunity_team_weekreport.id = c2_temp_table.id
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="TeamWeekReportResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_team_weekreport 
+		<include refid="one2one_sql"/>
+		 where c2_comunity_team_weekreport.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.team.TeamWeekReport" resultMap="TeamWeekReportResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_team_weekreport 
+		<include refid="one2one_sql"/>
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="TeamWeekReportResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_team_weekreport 
+	<include refid="one2one_sql"/>
+	where c2_comunity_team_weekreport.id in (
+		select distinct id from c2_comunity_team_weekreport inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_comunity_team_weekreport 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_team_weekreport.id = #{entity.id}</if>
+	        <if test="entity.teamId != null">and c2_comunity_team_weekreport.team_id = #{entity.teamId}</if>
+	        <if test="entity.year != null">and c2_comunity_team_weekreport.year = #{entity.year}</if>
+	        <if test="entity.week != null">and c2_comunity_team_weekreport.week = #{entity.week}</if>
+	        <if test="entity.status != null">and c2_comunity_team_weekreport.status_ = #{entity.status}</if>
+	        <if test="entity.visibleRange != null">and c2_comunity_team_weekreport.visible_range = #{entity.visibleRange}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<select id="selectMaxWeekNum" parameterType="int" resultMap="TeamWeekReportResult">
+	select year,week
+	from c2_comunity_team_weekreport
+	where c2_comunity_team_weekreport.team_id = #{_parameter} order by id desc LIMIT 1
+</select>
+
+<select id="getCurrtentMemberWRTeamInfos" parameterType="map" resultMap="ReportFormTeamsResult" useCache="false">
+select t.* from 
+(
+	select DISTINCT(c2_comunity_team_weekreport.team_id) id ,c2_comunity_team.name_ ,
+		(select 'submit2' from dual) userTeamRelationship
+		from c2_comunity_team_weekreport 
+		left join c2_comunity_team on c2_comunity_team_weekreport.team_id = c2_comunity_team.id 
+		where 
+		c2_comunity_team_weekreport.team_id in (
+			select  c2_comunity_team.id from c2_comunity_team 
+				LEFT JOIN c2_comunity_team_weekreport_submit2 sub on sub.team_id = c2_comunity_team.id 
+				where sub.submit_to = #{currentUserName,jdbcType=VARCHAR}
+		) 
+		<if test="teamId!=null">
+			and c2_comunity_team_weekreport.team_id = #{teamId,jdbcType=NUMERIC}
+		</if>
+	UNION ALL
+	select DISTINCT(c2_comunity_team_weekreport.team_id) id ,c2_comunity_team.name_ ,
+		(select 'manager' from dual) userTeamRelationship
+		from c2_comunity_team_weekreport 
+		left join c2_comunity_team on c2_comunity_team_weekreport.team_id = c2_comunity_team.id 
+		where 
+		c2_comunity_team_weekreport.team_id in (
+			select c2_comunity_team.id from c2_comunity_team 
+				LEFT JOIN c2_comunity_team_weekreport_submit2 sub on sub.team_id = c2_comunity_team.id 
+				where  c2_comunity_team.owner = #{currentUserName,jdbcType=VARCHAR} 
+		) 
+		<if test="teamId!=null">
+			and c2_comunity_team_weekreport.team_id = #{teamId,jdbcType=NUMERIC}
+		</if>
+	UNION ALL
+		select DISTINCT(c2_comunity_team_weekreport.team_id) id ,c2_comunity_team.name_ ,
+		(select 'member' from dual) userTeamRelationship
+		from c2_comunity_team_weekreport 
+		left join c2_comunity_team on c2_comunity_team_weekreport.team_id = c2_comunity_team.id 
+		where 
+		c2_comunity_team_weekreport.team_id in (
+			select c2_comunity_teamuser.team_id id
+			from c2_comunity_teamuser 
+			where c2_comunity_teamuser.user_name = #{currentUserName,jdbcType=VARCHAR} 
+		) 
+		<if test="teamId!=null">
+			and c2_comunity_team_weekreport.team_id = #{teamId,jdbcType=NUMERIC}
+		</if>
+) t	group by t.id
+</select>
+
+<resultMap type="map" id="ReportFormTeamsResult">
+	<id property="id" column="id"/>
+	<result property="name" column="name_"/>
+	<result property="reportId" column="reportId"/>
+	<result property="userTeamRelationship" column="userTeamRelationship"/>
+</resultMap>
+
+<select id="selectWeeklyReport" parameterType="map" resultMap="selectWeeklyReportResult">
+select * from (
+<choose>
+	<when test="teamAuthorInfos!=null and teamAuthorInfos.size() != 0">
+			<trim prefixOverrides="UNION ALL">
+			<foreach collection="teamAuthorInfos" item="teamAuthorInfo" separator="UNION ALL">
+				select 
+				<include refid="column_sql"/>,
+				c2_comunity_team.name_ teamName
+			    from c2_comunity_team_weekreport 
+			    inner join c2_comunity_team on c2_comunity_team_weekreport.team_id = c2_comunity_team.id 
+				<include refid="one2one_sql"/>
+				 <where>
+				    c2_comunity_team_weekreport.team_id = #{projectAuthorInfo.id}
+					<if test="statusFilter != null">and c2_comunity_team_weekreport.status_ != #{statusFilter}</if>
+					<if test="teamAuthorInfo.userTeamRelationship==&quot;member&quot;">
+						and (c2_comunity_team_weekreport.visible_range is null or c2_comunity_team_weekreport.visible_range = 'member')
+					</if>
+				</where>
+			</foreach>
+		</trim>
+	</when>
+	<otherwise>
+				select 
+			<include refid="column_sql"/>,
+			c2_comunity_team.name_ teamName
+		    from c2_comunity_team_weekreport 
+		    inner join c2_comunity_team on c2_comunity_team_weekreport.team_id = c2_comunity_team.id 
+			<include refid="one2one_sql"/>
+			 <where>
+				<if test="id != null">and c2_comunity_team_weekreport.id = #{id}</if>
+			    <if test="teamId != null">
+			    	and c2_comunity_team_weekreport.team_id = #{teamId}
+			    </if>
+			    <if test="statusFilter != null">and c2_comunity_team_weekreport.status_ != #{statusFilter}</if>
+			    <if test="userTeamRelationship==&quot;member&quot;">
+			    	and (c2_comunity_team_weekreport.visible_range is null or c2_comunity_team_weekreport.visible_range = 'member')
+			    </if>
+			</where>
+	</otherwise>
+</choose>
+) t order by t.year desc,t.week desc
+</select>
+
+<resultMap type="map" id="selectWeeklyReportResult">
+	<id property="id" column="id"/>
+	<result property="teamId" column="team_id"/>
+	<result property="year" column="year"/>
+	<result property="week" column="week"/>
+	<result property="summary" column="summary"/>
+	<result property="status" column="status_"/>
+	<result property="teamName" column="teamName"/>
+	<association property="statistics" column="T1_id" resultMap="TeamWeekreportStatisticsResult" columnPrefix="T1_"/>	
+</resultMap>
+
+<!-- ElementID:TeamWeekreportStatisticsResult,Generated=true -->
+<resultMap id="TeamWeekreportStatisticsResult" type="com.chinacreator.c2.team.TeamWeekreportStatistics">
+	<id property="id" column="id"/>
+	<result property="estimate" column="estimate"/>
+	<result property="consumed" column="consumed"/>
+	<result property="total" column="total"/>
+	<result property="completed" column="completed"/>
+	<result property="canceled" column="canceled"/>
+	<result property="member" column="member"/>
+	<result property="worked" column="worked"/>
+	<result property="crossWeek" column="cross_week"/>
+	<result property="delayed" column="delayed_"/>
+</resultMap>
+
+</mapper>

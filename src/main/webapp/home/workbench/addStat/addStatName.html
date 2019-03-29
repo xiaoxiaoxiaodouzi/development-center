@@ -1,0 +1,10 @@
+<input id="task-name" name="taskName" type="text" ng-required ="true" 
+	   class="form-control stat-name" ng-model="$params.statName" placeholder="我的统计视图"/>
+
+<div class="m-b-20" style="color:#aaa;">任务统计视图主要是帮助部门、项目管理者了解所关心的团队、项目、个人概况。通过添加你所关心的 团队任务统计、 项目统计、成员任务统计报表，完全自定义所关心任务统计视图。部门、项目管理者可以通过创建多个统计视图来实时从团队、项目、成员三个维度来了解状况,通过多维度的任务统计，随时掌握全局情况， 合理的进行趋势判断与决策分析。</div>
+
+<div class="m-t-30 right_btn">
+		<span class="c-red m-r-10" ng-show="!check.statName">视图名称不能为空!</span>
+		<button class="btn btn-primary btn-sm" data-ng-click="switch2StatDetailPage()">下一步</button>
+		<button class="btn btn-link btn-sm" data-ng-click="dismiss();">关闭</button>
+</div>

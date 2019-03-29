@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="workbench/getProjectPermitedMap" log="false" className="com.chinacreator.c2.workbench.MyTaskBoardService" method="getProjectPermitedMap">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取登陆者所在项目的负责人角色集合</name>
+  <desc>获取用户所在的项目的负责人角色</desc>
+  <inputs/>
+  <outputs>
+    <output autoValue="Result" desc="@throws Exception" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params/>
+  <return signature="QMap&lt;QString;QBoolean;>;" type="java.util.Map"/>
+</CustomRule>

@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity:Entity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.chinacreator.com/platform/mvc/rule" xmlns:cdata="http://www.chinacreator.com/platform/mvc/cdata" xmlns:docket="http://www.chinacreator.com/platform/mvc/docket" xmlns:dync="http://www.chinacreator.com/platform/mvc/ui/dync" xmlns:entity="http://www.chinacreator.com/platform/mvc/entity" xmlns:form="http://www.chinacreator.com/platform/mvc/form" sn="support">
+  <docket:name>任务支持单</docket:name>
+  <docket:createType>来自数据库</docket:createType>
+  <docket:primaryKey>
+    <docket:pkAttribute attribute="id"/>
+  </docket:primaryKey>
+  <docket:attributes>
+    <docket:attribute code="id" length="0" name="主键" nullable="false" type="int" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="title" length="255" name="标题" nullable="false" type="string256" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="user" length="255" name="申请人" nullable="true" type="string256" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="org_id" length="255" name="申请机构外键" nullable="true" type="string256" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="check_user" length="255" name="验收负责人" nullable="true" type="string256" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="ask_start_time" length="0" name="要求开始时间" nullable="true" type="timestamp" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="ask_end_time" length="0" name="要求结束时间" nullable="true" type="timestamp" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="creat_time" length="0" name="提交申请时间" nullable="true" type="timestamp" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="project_id" length="0" name="项目外键" nullable="false" type="int" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="do_org_id" length="255" name="执行机构外键" nullable="true" type="string256" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="manage_user" length="255" name="执行负责人" nullable="true" type="string256" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="do_user" length="255" name="处理人" nullable="true" type="string256" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="accept_time" length="0" name="接受申请时间" nullable="true" type="timestamp" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="plan_start_time" length="0" name="计划开始时间" nullable="true" type="timestamp" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="plan_end_time" length="0" name="计划结束时间" nullable="true" type="timestamp" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="description" length="65535" name="任务描述" nullable="true" type="text" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="info" length="65535" name="执行情况" nullable="true" type="text" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="plan_workload" length="0" name="承包工作量" nullable="true" type="int" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="risk_workload" length="0" name="风险工作量" nullable="true" type="int" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="actual_workload" length="18" name="实际工作量" nullable="true" type="double" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="account_workload" length="12" name="结算工作量" nullable="true" type="double" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="actual_start_time" length="0" name="实际开始时间" nullable="true" type="timestamp" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="actual_end_time" length="0" name="实际结束时间" nullable="true" type="timestamp" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="success" length="0" name="是否执行成功" nullable="true" type="tinyint" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="state" length="0" name="状态：0New；1Accept；2Done；3Close" nullable="true" type="int" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+  </docket:attributes>
+  <docket:subDokcets/>
+  <docket:events>
+    <docket:event id="add" name="新增">
+      <docket:logic>
+        <node xsi:type="RuleRef" id="insert" name="单记录插入" ruleId="rule:c2.dao.insert">
+          <inputs>
+            <input autoFrom="data" code="entity"/>
+          </inputs>
+        </node>
+      </docket:logic>
+      <docket:ui name="新增">
+        <form:control type="page/modal">
+          <form:attributes source="page/modal">
+            <dync:attribute id="title" value="新增任务支持单">
+              <dync:render/>
+              <dync:children/>
+            </dync:attribute>
+          </form:attributes>
+        </form:control>
+        <form:child xsi:type="form:Group" id="main" name="任务支持单">
+          <form:control type="container/div">
+            <form:attributes source="container/div"/>
+          </form:control>
+          <form:child xsi:type="form:Field" binding="$model.entity.id" id="id" name="主键" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.title" id="title" name="标题" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.user" id="user" name="申请人" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.orgId" id="orgId" name="申请机构外键" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.checkUser" id="checkUser" name="验收负责人" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.askStartTime" id="askStartTime" name="要求开始时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.askEndTime" id="askEndTime" name="要求结束时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.creatTime" id="creatTime" name="提交申请时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.projectId" id="projectId" name="项目外键" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.doOrgId" id="doOrgId" name="执行机构外键" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.manageUser" id="manageUser" name="执行负责人" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.doUser" id="doUser" name="处理人" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.acceptTime" id="acceptTime" name="接受申请时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.planStartTime" id="planStartTime" name="计划开始时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.planEndTime" id="planEndTime" name="计划结束时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.description" id="description" name="任务描述" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.info" id="info" name="执行情况" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.planWorkload" id="planWorkload" name="承包工作量" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.riskWorkload" id="riskWorkload" name="风险工作量" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.actualWorkload" id="actualWorkload" name="实际工作量" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.accountWorkload" id="accountWorkload" name="结算工作量" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.actualStartTime" id="actualStartTime" name="实际开始时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.actualEndTime" id="actualEndTime" name="实际结束时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.success" id="success" name="是否执行成功" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.state" id="state" name="状态：0New；1Accept；2Done；3Close" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+        </form:child>
+        <form:child xsi:type="form:Group" id="toolbar" name="主按钮组">
+          <form:control type="container/toolbar_modal_footer">
+            <form:attributes source="container/toolbar_modal_footer"/>
+          </form:control>
+          <form:child xsi:type="form:Field" id="btn_add" name="新增">
+            <form:control type="widget/button">
+              <form:attributes source="widget/button">
+                <dync:attribute default="" desc="按钮图标，Font Awesom 3.2.1中定义的所有图标都可用" group="HTML设置" hidden="false" id="icon" name="图标" required="false" value="fa-check">
+                  <dync:render colSpan="1" height="0" multi="false" name="selectIcon"/>
+                  <dync:children/>
+                </dync:attribute>
+                <dync:attribute default="" desc="按钮事件。&#xA;                $param $event AngularJS的[event](https://docs.angularjs.org/guide/expression#-event-)事件。" group="事件设置" hidden="false" id="click" name="点击事件" required="false" value="btn_add_click($event)">
+                  <dync:render colSpan="1" height="0" multi="false" name="event">
+                    <dync:item name="params" value="$event"/>
+                  </dync:render>
+                  <dync:children/>
+                </dync:attribute>
+                <dync:attribute default="btn-primary" desc="按钮样式" group="HTML设置" hidden="false" id="style" name="样式" required="false" value="btn-success">
+                  <dync:render colSpan="1" height="0" multi="false" name="select">
+                    <dync:item name="默认" value="btn-default"/>
+                    <dync:item name="主要" value="btn-primary"/>
+                    <dync:item name="成功" value="btn-success"/>
+                    <dync:item name="信息" value="btn-info"/>
+                    <dync:item name="警告" value="btn-warning"/>
+                    <dync:item name="危险" value="btn-danger"/>
+                    <dync:item name="链接" value="btn-link"/>
+                    <dync:item name="通用" value="btn-white no-border"/>
+                  </dync:render>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+          </form:child>
+          <form:child xsi:type="form:Field" id="btn_edit" name="取消">
+            <form:control type="widget/button">
+              <form:attributes source="widget/button">
+                <dync:attribute default="" desc="按钮图标，Font Awesom 3.2.1中定义的所有图标都可用" group="HTML设置" hidden="false" id="icon" name="图标" required="false" value="fa-times">
+                  <dync:render colSpan="1" height="0" multi="false" name="selectIcon"/>
+                  <dync:children/>
+                </dync:attribute>
+                <dync:attribute default="" desc="按钮事件。&#xA;                $param $event AngularJS的[event](https://docs.angularjs.org/guide/expression#-event-)事件。" group="事件设置" hidden="false" id="click" name="点击事件" required="false" value="btn_edit_click($event)">
+                  <dync:render colSpan="1" height="0" multi="false" name="event">
+                    <dync:item name="params" value="$event"/>
+                  </dync:render>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+          </form:child>
+        </form:child>
+        <form:datasources>
+          <form:datasource xsi:type="form:EntityDataSource" id="entity" name="实体数据源" entity="entity:com.chinacreator.c2.support.support"/>
+        </form:datasources>
+        <form:scripts>btn_add_click:function($event){
+    $model.entity.$save(function(){
+        Modal.instance.close();
+        Messenger.post({type:'success',message:'新增成功'});
+    });
+},
+btn_edit_click:function($event){
+   Modal.instance.close();
+}
+</form:scripts>
+      </docket:ui>
+    </docket:event>
+    <docket:event id="delete" name="删除">
+      <docket:logic>
+        <node xsi:type="RuleRef" id="delete" name="单记录删除" ruleId="rule:c2.dao.delete">
+          <inputs>
+            <input autoFrom="data" code="entity"/>
+          </inputs>
+        </node>
+      </docket:logic>
+      <docket:ui type="none"/>
+    </docket:event>
+    <docket:event id="edit" name="修改">
+      <docket:logic>
+        <node xsi:type="RuleRef" id="modify" name="更新" ruleId="rule:c2.dao.update">
+          <inputs>
+            <input autoFrom="data" code="entity"/>
+          </inputs>
+        </node>
+      </docket:logic>
+      <docket:ui>
+        <form:control type="page/modal">
+          <form:attributes source="page/modal">
+            <dync:attribute id="title" value="修改任务支持单">
+              <dync:render/>
+              <dync:children/>
+            </dync:attribute>
+          </form:attributes>
+        </form:control>
+        <form:child xsi:type="form:Group" id="main" name="任务支持单">
+          <form:control type="container/div">
+            <form:attributes source="container/div"/>
+          </form:control>
+          <form:child xsi:type="form:Field" binding="$model.entity.id" id="id" name="主键" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.title" id="title" name="标题" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.user" id="user" name="申请人" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.orgId" id="orgId" name="申请机构外键" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.checkUser" id="checkUser" name="验收负责人" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.askStartTime" id="askStartTime" name="要求开始时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.askEndTime" id="askEndTime" name="要求结束时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.creatTime" id="creatTime" name="提交申请时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.projectId" id="projectId" name="项目外键" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.doOrgId" id="doOrgId" name="执行机构外键" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.manageUser" id="manageUser" name="执行负责人" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.doUser" id="doUser" name="处理人" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text">
+                <dync:attribute default="false" desc="是否验证必填，可以为表达式和变量。&#xA;                &#x9;只有当焦点离开文本框时才开始验证，验证失败会有验证失败的样式和提示。也有单独触发验证的方法：`check()`。" group="数据校验" hidden="false" id="required" name="必填项" required="true" value="true">
+                  <dync:render colSpan="1" height="0" multi="false" name="checkboxAndExpr"/>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.acceptTime" id="acceptTime" name="接受申请时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.planStartTime" id="planStartTime" name="计划开始时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.planEndTime" id="planEndTime" name="计划结束时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.description" id="description" name="任务描述" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.info" id="info" name="执行情况" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.planWorkload" id="planWorkload" name="承包工作量" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.riskWorkload" id="riskWorkload" name="风险工作量" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.actualWorkload" id="actualWorkload" name="实际工作量" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.accountWorkload" id="accountWorkload" name="结算工作量" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.actualStartTime" id="actualStartTime" name="实际开始时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.actualEndTime" id="actualEndTime" name="实际结束时间" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.success" id="success" name="是否执行成功" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+          <form:child xsi:type="form:Field" binding="$model.entity.state" id="state" name="状态：0New；1Accept；2Done；3Close" customize="true">
+            <form:control type="widget/text">
+              <form:attributes source="widget/text"/>
+            </form:control>
+            <form:validation/>
+          </form:child>
+        </form:child>
+        <form:child xsi:type="form:Group" id="toolbar" name="主按钮组">
+          <form:control type="container/toolbar_modal_footer">
+            <form:attributes source="container/toolbar_modal_footer"/>
+          </form:control>
+          <form:child xsi:type="form:Field" id="btn_add" name="新增">
+            <form:control type="widget/button">
+              <form:attributes source="widget/button">
+                <dync:attribute default="" desc="按钮图标，Font Awesom 3.2.1中定义的所有图标都可用" group="HTML设置" hidden="false" id="icon" name="图标" required="false" value="fa-check">
+                  <dync:render colSpan="1" height="0" multi="false" name="selectIcon"/>
+                  <dync:children/>
+                </dync:attribute>
+                <dync:attribute default="" desc="按钮事件。&#xA;                $param $event AngularJS的[event](https://docs.angularjs.org/guide/expression#-event-)事件。" group="事件设置" hidden="false" id="click" name="点击事件" required="false" value="btn_add_click($event)">
+                  <dync:render colSpan="1" height="0" multi="false" name="event">
+                    <dync:item name="params" value="$event"/>
+                  </dync:render>
+                  <dync:children/>
+                </dync:attribute>
+                <dync:attribute default="btn-primary" desc="按钮样式" group="HTML设置" hidden="false" id="style" name="样式" required="false" value="btn-success">
+                  <dync:render colSpan="1" height="0" multi="false" name="select">
+                    <dync:item name="默认" value="btn-default"/>
+                    <dync:item name="主要" value="btn-primary"/>
+                    <dync:item name="成功" value="btn-success"/>
+                    <dync:item name="信息" value="btn-info"/>
+                    <dync:item name="警告" value="btn-warning"/>
+                    <dync:item name="危险" value="btn-danger"/>
+                    <dync:item name="链接" value="btn-link"/>
+                    <dync:item name="通用" value="btn-white no-border"/>
+                  </dync:render>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+          </form:child>
+          <form:child xsi:type="form:Field" id="btn_edit" name="取消">
+            <form:control type="widget/button">
+              <form:attributes source="widget/button">
+                <dync:attribute default="" desc="按钮图标，Font Awesom 3.2.1中定义的所有图标都可用" group="HTML设置" hidden="false" id="icon" name="图标" required="false" value="fa-times">
+                  <dync:render colSpan="1" height="0" multi="false" name="selectIcon"/>
+                  <dync:children/>
+                </dync:attribute>
+                <dync:attribute default="" desc="按钮事件。&#xA;                $param $event AngularJS的[event](https://docs.angularjs.org/guide/expression#-event-)事件。" group="事件设置" hidden="false" id="click" name="点击事件" required="false" value="btn_edit_click($event)">
+                  <dync:render colSpan="1" height="0" multi="false" name="event">
+                    <dync:item name="params" value="$event"/>
+                  </dync:render>
+                  <dync:children/>
+                </dync:attribute>
+              </form:attributes>
+            </form:control>
+          </form:child>
+        </form:child>
+        <form:datasources>
+          <form:datasource xsi:type="form:EntityDataSource" id="entity" name="实体数据源" entity="entity:com.chinacreator.c2.support.support"/>
+        </form:datasources>
+        <form:scripts>btn_add_click:function($event){
+    $model.entity.$save(function(){
+        Modal.instance.close();
+        Messenger.post({type:'success',message:'新增成功'});
+    });
+},
+btn_edit_click:function($event){
+   Modal.instance.close();
+}
+</form:scripts>
+      </docket:ui>
+    </docket:event>
+    <docket:event id="get" name="单记录查询">
+      <docket:logic>
+        <node xsi:type="RuleRef" id="get" name="单记录查询" ruleId="rule:c2.dao.selectOne">
+          <inputs>
+            <input autoFrom="data" code="entity"/>
+          </inputs>
+        </node>
+      </docket:logic>
+      <docket:ui name="单记录查询" type="none">
+        <form:scripts>btn_add_click:function($event){
+    $model.entity.$save(function(){
+        Modal.instance.close();
+        Messenger.post({type:'success',message:'新增成功'});
+    });
+},
+btn_edit_click:function($event){
+   Modal.instance.close();
+}
+</form:scripts>
+        <form:htmls></form:htmls>
+      </docket:ui>
+    </docket:event>
+  </docket:events>
+  <docket:table ds="dev-center" table="c2_community_support"/>
+  <entity:datas/>
+  <entity:views/>
+</entity:Entity>

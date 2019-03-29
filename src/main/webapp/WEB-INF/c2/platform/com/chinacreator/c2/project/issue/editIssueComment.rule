@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="editIssueComment" log="false" className="com.chinacreator.c2.project.issue.IssueService" method="editIssueComment">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>编辑问题回复</name>
+  <desc>编辑问题回复</desc>
+  <inputs>
+    <input collection="false" desc="" id="issueComment" required="true" type="com.chinacreator.c2.issue.IssueComment"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.issueComment" name="issueComment" signature="QIssueComment;" type="com.chinacreator.c2.issue.IssueComment"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

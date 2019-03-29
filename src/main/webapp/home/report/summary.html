@@ -1,0 +1,114 @@
+<style>
+@media (min-width: 1200px){
+#profile-main .pm-body {
+    padding-left: 0;
+}}
+.listview .lv-header-alt{
+	height: 62px;
+}
+.pro-center{
+	text-align: center;
+}
+.pro-header-alt {
+	margin-left: 40px;
+    margin-right: 40px;
+    background: white;
+    padding: 12px;
+    border-bottom: 1px solid #EEE;
+    border-top: 1px solid #EEE;
+}
+.img-title{
+	border-radius: 50% !important;
+	width: 120px !important;
+	height: 120px !important;
+	display: inline;
+}
+.pro-ico{
+	border: 1px solid #ddd;
+    padding: 8px 20px;
+    border-top-left-radius:3px;
+    border-top-right-radius:0;
+    border-bottom-left-radius:3px;
+    border-bottom-right-radius:0;
+    background: #DEDEDE;
+    float: left;
+}
+.pro-st{
+    border: 1px solid #DEDEDE;
+    padding: 8px 20px;
+    border-top-left-radius:0;
+    border-top-right-radius:3px;
+    border-bottom-left-radius:0;
+    border-bottom-right-radius:3px;
+    vertical-align: middle;
+    float: left;
+}
+
+</style>
+
+<div class="container">
+  <div class="card m-t-20" id="profile-main">
+		<div class="card-header pro-center">
+		    <div class="p-relative pro-center" style="">
+			 <div class="pmo-pic">
+        		<div class="p-relative">
+         			 <a href="">
+            		<img alt="" class="img-title" ng-src="{{project.pic}}">
+          			</a>
+               </div>
+             </div>
+           </div>
+		   <h2>应用支撑平台 <small>持续完善应用支撑平台，满足公司需要</small></h2>
+			
+		</div>
+
+		<div class="card-body clearfix pro-center">
+			<div class="listview lv-bordered lv-lg">
+				<div class="pro-header-alt">
+					<label class="m-r-5 m-t-10 f-13">
+		                <i class="md md-group pro-ico"></i><span class="pro-st">8</span>
+		            </label>           
+					<label class="m-r-5 m-t-10 f-13">
+		                <i class="md md-view-list pro-ico"></i><span class="pro-st"><span class="c-green m-r-5">123</span>/<span class="m-l-5">78</span></span>
+		            </label>
+		            <label class="m-r-5 m-t-10 f-13">
+		                <i class="md md-history pro-ico"></i><span class="pro-st"><span class="c-green m-r-5">20</span>/<span class="m-l-5">80</span></span>
+		            </label>
+		            <label class="m-r-5 m-t-10 f-13">
+		                <i class="md md-av-timer pro-ico"></i><span class="pro-st">7</span>
+		            </label>
+				</div>
+			</div>
+	    </div>
+  
+      <div class="pm-body clearfix">
+            <div class="lv-header-alt">
+        	   <div class="lv-body">
+					<div c2-echarts-line style="height:500px;" bind-data="taskBugStatusData" title="任务、BUG燃尽图" 
+			        	 yaxis-position="left" legend-orient="horizontal" xaxis-interval="0" yaxis-max="taskBugStatusMaxY"
+			        	 xaxis-boundary-gap ="true" title-x="center" title-y="70" datazoom-show="true" 
+			        	 datazoom-start="10" datazoom-end="70" datazoom-height="20" 
+			        	 theme ="macarons">
+			        </div>
+	            </div>
+	            <div class="lv-body">
+					<div c2-echarts-line style="height:500px;" bind-data="allEstimateData" title="项目工时统计图" 
+			        	 yaxis-position="left" legend-orient="horizontal" xaxis-interval="0" yaxis-max="estiamteMaxY"
+			        	 xaxis-boundary-gap ="true" datazoom-show="true" 
+			        	 datazoom-start="10" datazoom-end="70" datazoom-height="20" 
+			        	 title-x="center" title-y="70" theme ="macarons">
+			        </div>
+	            </div>
+	            <div class="lv-body">
+					<div c2-echarts-line style="height:500px;" bind-data="weekEstimateData" title="周工时统计图" 
+			        	 yaxis-position="left" legend-orient="horizontal" xaxis-interval="0" yaxis-max="weekEstimateMaxY"
+			        	 xaxis-boundary-gap ="false" datazoom-show="true" 
+			        	 datazoom-start="10" datazoom-end="70" datazoom-height="20" 
+			        	 title-x="center" title-y="70" theme ="macarons">
+			        </div>
+	            </div>
+      </div>
+      
+    </div>
+  </div>
+

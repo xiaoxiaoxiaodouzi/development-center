@@ -1,0 +1,199 @@
+<style>
+.container {
+	padding:20px 5px 0 5px;
+}
+.form-search {
+    height: 30px;
+    background: #eeeeee;
+    border: none;
+    margin-left: -10px;
+    border-radius: 3px;
+    width: 225px;
+    padding-left: 25px;
+    margin-right: 10px;
+    font-size: 12px;
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 10px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 0px;
+}
+</style>
+<div class="container" style="width: 100%"
+	data-ng-controller="setAssessmentCtrl">	
+	<div class="card">
+		<div class="card-header">
+			<h2>
+				考核人设置
+			</h2>
+			
+		</div>
+		<div class="card-body">
+			<div class="listview lv-bordered lv-lg" style="padding: 0px 23px 0px 20px;">
+				<div class="lv-header-alt">
+					<c2-dropdown id="deptDrop" tree-options="deptTreeOptions" tree-nodes="deptTree" max-height="200">
+						<div class="picker picker-white text-overflow" style="max-width:500px;">
+							<i class="md md-account-balance" title="部门选择"></i> {{selectedDeptNode?"":"指定部门  "}}{{selectedDeptNode.name}}<span class="caret"></span>
+						</div>
+					</c2-dropdown>	
+					
+					<i class="md md-search" style="font-size: 18px;color: #A9A9A9;position: relative;left: 18px;top:-4px"></i>
+	            	<input type="text" ng-model="name" class="form-search" placeholder="姓名">
+					
+					<div style="float:right;cursor: pointer;margin-top:10px" ng-click="setManagers()">
+						机构考核负责人：<span ng-repeat="ma in orgManagers">
+							{{ma.userRealname}}
+						</span>
+					</div>
+				</div>
+	
+				<div class="lv-body">				
+					<div class="media-body">
+						<table class="table table-hover m-b-0">
+							<thead>
+								<tr>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">姓名</th>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">考核人</th>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">复核人</th>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="user in assessors">
+									<td class="column" style="text-align: center;">{{user.userRealname}}</td>
+									<td class="column" style="text-align: center;">
+									  	<span ng-if="user.assessorName">{{user.assessorRealname}}</span>
+									  	<span ng-if="!user.assessorName">--</span>
+									</td>
+									<td class="column" style="text-align: center;">
+										<span ng-if="user.reviewerName">{{user.reviewerRealname}}</span>
+									  	<span ng-if="!user.reviewerName">--</span>
+									</td>
+									<td class="column" style="text-align: center;">
+										<a style="cursor: pointer" ng-click="setAssessment(user)">设置</a>
+									</td>
+									
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<c2-pagination id="pageEle" total="total" page-size="10"
+					on-page-change="refreshList(pageIndex)"></c2-pagination>
+				</div>
+			</div>
+		</div>
+		
+		<div class="text-center p-b-20" ng-if="!assessors || assessors.length==0">暂无记录</div>
+		
+	</div>
+</div>
+
+<script>
+angular.module("developmentCenter").registerCtrl('setAssessmentCtrl',
+	function($scope,$http,Modal,debounce){
+	
+	$scope.pageIndex=0;
+	$scope.name="";
+	
+	$scope.deptTreeOptions = {
+			data: {
+				simpleData: {
+					enable: true,
+					idKey: "id",
+					pIdKey: "pid",
+					rootPId: 0
+				}
+			},
+			callback: {
+				onClick: zTreeOnClick
+			}
+	} ;
+	
+	//选择某机构
+	function zTreeOnClick(event, treeId, treeNode){
+		$scope.selectedDeptNode = treeNode;
+		$scope.refreshList(1);
+		$scope.getManagers();
+	}
+	
+	//获取所有部门树
+	$http.get("projects/v1/appraisalsOrgs").success(function(allDept){
+		$scope.deptTree = allDept ;
+		
+		//$http.post("ws/dept/getCurrentUserDeptTree",{deepth:-1}).success(function(currentDept){//当前用户所在的部门
+			var currentGroupDept = allDept[0];
+			$scope.selectedDeptNode = currentGroupDept;
+			
+			getAssessors(1,$scope.name);
+			$scope.getManagers();
+			
+		//}) ;
+	});
+	
+	//获取机构考核负责人数据
+	$scope.getManagers = function(){
+		//var cond = {filters:{groupOp:'AND',rules:[{field:'managedOrgId',op:'eq',data:$scope.selectedDeptNode.id}]}};
+		$http.get("project/v1/orgassessormanagers?page=1&rows=999").success(function(data){
+			$scope.managers = data.contents;
+			$scope.orgManagers = $scope.managers.filter(ma=>ma.managedOrgId==$scope.selectedDeptNode.id);
+			
+		})
+	}
+	
+	//获取考核人设置数据
+	var getAssessors = debounce(function(pageIndex,name){
+		$scope.assessors = [];
+		$scope.total = 0;
+		$http.get("project/v1/assessors?page="+pageIndex+"&rows=10&name="+name+"&orgId="+$scope.selectedDeptNode.id).success(function(data){
+			$scope.assessors = data.contents;
+			$scope.total = data.total;
+			$timeout(function () {
+				$("#pageEle").controller("c2Pagination").goPage(pageIndex);
+			}, 0);
+		})
+	},600);
+	
+	//搜索用户
+	$scope.$watch("name",function(v){
+		getAssessors(1,v);
+	})	
+	
+	$scope.refreshList = function(pageIndex){
+		getAssessors(pageIndex,$scope.name);
+	}
+	
+	//为当前用户设置考核人和复核人
+	$scope.setAssessment = function(user){
+		var options = {
+				title:'考核人设置',
+				size:"middle",
+				animation:true,
+				onClose:function(params){
+					for(var i=0;i<$scope.assessors.length;i++){
+						if($scope.assessors[i].userId == params.userId){
+							$scope.assessors[i] = params;
+						}
+					}
+				}
+		} ;
+		Modal.open("home/assess/setAssessor.html",{user:user,deptId:$scope.deptTree[0].id,managers:$scope.managers,deptTree:$scope.deptTree},options) ;
+	}
+	
+	//机构考核负责人设置
+	$scope.setManagers = function(){
+		var options = {
+				title:'考核负责人设置',
+				size:"middle",
+				animation:true,
+				onClose:function(params){
+					$scope.orgManagers = params;
+					getAssessors(1,$scope.name);
+					
+				}
+		} ;
+		Modal.open("home/assess/setManagers.html",{dept:$scope.selectedDeptNode,managers:$scope.orgManagers,deptTree:$scope.deptTree},options) ;
+	}
+});
+</script>

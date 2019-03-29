@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="message/updateMsgOpened" log="false" className="com.chinacreator.c2.project.message.MessageService" method="updateMsgOpened">
+  <name>修改消息已读</name>
+  <desc>修改消息已读</desc>
+  <inputs>
+    <input collection="false" desc="" id="umId" required="true"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.umId" name="umId" signature="QString;" type="java.lang.String"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

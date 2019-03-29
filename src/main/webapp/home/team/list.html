@@ -1,0 +1,55 @@
+<div class="container">
+	<div class="card m-t-20">
+		<div class="card-header">
+			<h2>
+				团队任务<small>统计</small>
+			</h2>
+		</div>
+
+		<div class="card-body clearfix">
+			<div  class="listview lv-bordered lv-lg ">
+				<!-- 搜索 -->
+				<div></div>
+				<div class="lv-header-alt">
+					<div id="timeSearch" ng-class="{open:timeSearchOpen}" class="dropdown" style="display: inline-block;position: relative;">
+						<div class="picker picker-white" ng-click="dateChoose()">
+							<i class="md md-bookmark-outline"></i> {{chooseTimeName}}
+						</div>
+		                <div class="dropdown-menu p-5" style="width:460px;">
+		                <div class="timeSearchButtonBar p-5">
+		                <button ng-repeat="db in dateChooseButtons" ng-click="buttonDate(db)" ng-class="{'btn-primary':db.active}" class="btn btn-default picker-shadow">{{db.name}}</button>
+		                </div>
+		                <div class="row">
+		                	<div class="col-sm-6"><div id="datetimepickerFrom"></div></div>
+		                	<div class="col-sm-6"><div id="datetimepickerTo"></div></div>
+		                </div>
+		                <div class="buttom-message c-white"><i class="md md-error m-r-5"></i>未完成的任务按计划结束时间过滤，已完成的按完成时间过滤。</div>
+		                </div>
+	                </div>
+	            
+		            <label class="checkbox checkbox-inline m-l-20 m-t-10" title="显示未完成的任务">
+		                <input type="checkbox" ng-model="search.NotDone"/>
+		                <i class="input-helper"></i> 未完成
+		            </label>
+		            <label class="checkbox checkbox-inline m-l-10 m-t-10" title="显示已完成未关闭的任务">
+		                <input type="checkbox" ng-model="search.Done"/>
+		                <i class="input-helper"></i> 已完成
+		            </label>
+		            <label class="checkbox checkbox-inline m-l-10 m-t-10" title="显示已完成关闭了的任务">
+		                <input type="checkbox" ng-model="search.Closed"/>
+		                <i class="input-helper"></i> 已关闭
+		            </label>
+		            
+		            
+		            <c2-dropdown bind-data="d1" items="dateChooseButtons" item-click="menuClick(item)">
+					         <div class="picker picker-white">
+								<i class="md md-bookmark-outline"></i> 本周
+							</div>
+					</c2-dropdown>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</div>

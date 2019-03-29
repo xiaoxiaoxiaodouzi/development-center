@@ -1,0 +1,736 @@
+<link href="css/task/list.css" rel="stylesheet">
+<link href="css/task/board.css" rel="stylesheet">
+<style>
+	.board-view {
+		background-color: #fff;
+	}
+
+	.board-group {
+		background-color: #fff;
+		overflow-y: hidden;
+	}
+
+	#chat {
+		position: fixed;
+		background: #fff;
+		padding: 20px 0;
+		width: 500px;
+		box-shadow: 0 0 10px rgba(51, 51, 51, 0.38);
+		height: calc(100% - 65px);
+		right: -600px;
+		top: 65px;
+		-webkit-transition: all;
+		-o-transition: all;
+		transition: all;
+		-webkit-transition-duration: 300ms;
+		transition-duration: 300ms;
+		z-index: 5;
+		opacity: 0;
+		filter: alpha(opacity=0);
+	}
+
+	#chat.toggled {
+		opacity: 1;
+		right: 0px;
+	}
+
+	.pull-aside {
+		margin-right: 300px;
+		transition: 300ms;
+	}
+</style>
+<div class="panel-tab-location">
+	<div class="panel-tab">
+		<ul class="panel-tab-list p-0 m-0">
+			<li data-ng-click="toBoardStory()"><a href="">需求</a></li>
+			<li data-ng-click="toBoardtask()"><a href="">任务</a></li>
+			<li data-ng-click="toBoardLog()"><a href="">日志</a></li>
+			<li class="select-vertical-nav"><a href="">缺陷</a></li>
+			<!-- <li data-ui-sref="project.board.plan"><a href="">测试计划</a></li> -->
+		</ul>
+	</div>
+</div>
+
+<div class="board-scrum-stages" ng-model="treeNodes" style="margin: 5px 0px 0px 15px;
+padding: 0 140px 0 0px!important;overflow: -webkit-paged-x;"
+ ng-if="treeNodes.length>0">
+	<div class="scrum-group scrum-height">
+		<div class="scrum-stages-header f-700 dropdown">
+			<div class="stage-name">模块树
+				<span class="task-count" ng-show="treeNodes.length>0"> · {{treeNodes.length}}</span>
+			</div>
+			<a class="function-menu" data-toggle="dropdown" aria-expanded="true">
+				<i class="md md-keyboard-arrow-down f-20"></i>
+			</a>
+			<ul class="dropdown-menu dm-icon pull-right">
+				<li>
+					<a href="" data-ng-click="expandAll(true)">
+						<i class="md md-assignment-returned"></i>展开全部</a>
+				</li>
+				<li>
+					<a href="" data-ng-click="expandAll(false)">
+						<i class="md md-assignment-returned"></i>收缩全部</a>
+				</li>
+				<li>
+					<a href="" data-ui-sref="project.modules">
+						<i class="md md-assignment-returned"></i>模块管理</a>
+				</li>
+			</ul>
+		</div>
+		<ul id="bugmoduleTree" class="ztree tree-transparent group-task-list p-0" style="position: relative;margin: 5px 5px 0 15px;"></ul>
+	</div>
+</div>
+
+<div class="board-scrum-stages" ng-model="stageList" id="board-scrum-special">
+	<div class="scrum-group scrum-height" ng-class="{'disabled':s.stage.name=='模块树','require-panel':s.stage.name=='模块树'}"
+	 ng-repeat="s in stageList" when-scrolled load-more="loadBugMore(name)">
+		<div class="scrum-stages-header f-700 dropdown">
+			<div class="stage-name">{{s.stage.name}}
+				<span class="task-count" ng-show="s.totalSize>0"> · {{s.totalSize}}</span>
+			</div>
+		</div>
+		<ul class="group-task-list p-0 connectedSortable" style="height: 100%" ui-sortable="sortableBugOptions" ng-model="s.taskList"
+		 ng-if="s.stage.name!='模块树'">
+			<li class="group-task-card" ng-repeat="task in s.taskList" data-ng-click="bugDetail($event,task)">
+				<div id="task{{task.id}}"></div>
+				<div style="width:100%;">
+					<div class="group-task-content">
+						<div class="task-content-wrapper">
+							<div class="flex-content m-l-5"><span class="c-purple">#{{task.no}}</span> {{task.title}}</div>
+							<span class="flex-img-head group-user-head m-l-5"><img class="lv-img-sm" ng-src="{{task.userIcon}}"></span>
+						</div>
+					</div>
+					<div>
+						<ul class="lv-attrs" style="margin-left:0px">
+							<li><span title="创建时间"><i class="md md-today"></i>{{task.lastUpdateTime | date:"yyyy-MM-dd"}}</span></li>
+							<li><span title="创建人"><i class="md md-person-outline"></i>{{task.createByRealname}}</span></li>
+							<!-- <li><i class="md md-person" title="处理人"></i>{{task.assignedToRealname}}</li> -->
+							<li><span ng-if="task.pri=='3'" title="优先级"><i class="md md-sort"></i>低</span>
+								<span ng-if="task.pri=='2'" title="优先级"><i class="md md-sort"></i>中</span>
+								<span ng-if="task.pri=='1'" title="优先级"><i class="md md-sort"></i>高</span></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+			<!-- <div ng-if="s.stage.name=='Fixed' && !aa.isAllFix" class="group-task-show"> <a href="" ng-click="allClick('isAllFix',6)">
+					<i class="md md-expand-more f-18 ico-place"></i>
+					显示全部</a></div>
+			<div ng-if="s.stage.name=='Fixed' && aa.isAllFix" class="group-task-show"> <a href="" ng-click="allClick('isAllFix',6)">
+					<i class="md md-expand-less f-18 ico-place"></i>
+					收起</a></div>
+			<div ng-if="s.stage.name=='Closed' && !aa.isAllClose" class="group-task-show"> <a href="" ng-click="allClick('isAllClose',0)">
+					<i class="md md-expand-more f-18 ico-place"></i>
+					显示全部</a></div>
+			<div ng-if="s.stage.name=='Closed' && aa.isAllClose" class="group-task-show"> <a href="" ng-click="allClick('isAllClose',0)">
+					<i class="md md-expand-less f-18 ico-place"></i>
+					收起</a></div> -->
+		</ul>
+		<div ng-show="{{arcStatus=='1'&&s.stage.name=='New'}}" class="group-task-add"> <a href="" ng-click="openNewBug()"><i
+				 class="md md-add m-r-5 f-20"></i> 新建BUG</a></div>
+	</div>
+</div>
+
+<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;top:113px">
+	<ui-view onload="stateOnload()"></ui-view>
+</aside>
+
+<aside id="chat" class="chat" data-ng-include="" src="'project/board/bugSearch.html'" data-ng-class="{ 'toggled': showView === true }"
+ style="background-color: #fafafa;width:300px">
+</aside>
+
+<script>
+	angular.module("project").registerCtrl('boardBugListController',
+		function ($scope, Modal, $http, $stateParams, $timeout, debounce, $state, $rootScope, $ocLazyLoad, socketio, Messenger, $templateCache, $compile, $q) {
+
+			//项目归档状态
+			$http.post("ws/getProjectInfo", { projectId: $stateParams.project }).success(function (data) {
+				$scope.arcStatus = data.result.arcStatus;
+			});
+
+			$scope.toBoardtask = function () {
+				$state.go("project.boardtask", { moduleId: $stateParams.moduleId });
+			}
+
+			$scope.toBoardStory = function () {
+				$state.go("project.boardstory", { moduleId: $stateParams.moduleId });
+			}
+
+			$scope.toBoardLog = function () {
+				$state.go("project.boardTeamLog", { moduleId: $stateParams.moduleId });
+			}
+
+			//ztree setting
+			$scope.treeOptions = {
+				data: {
+					simpleData: {
+						enable: true,
+						idKey: "id",
+						pIdKey: "parent",
+						rootPId: 0
+					}
+				},
+				callback: {
+					onClick: function onClick(event, treeId, treeNode) {
+						$scope.search.module = { id: treeNode.id }
+						$scope.pageIndex = $scope.newPage = $scope.openPage = $scope.fixPage = $scope.reopenPage = $scope.fixlaterPage = $scope.rejectPage = $scope.closePage = 1;
+						getStageList($scope.search);
+						$stateParams.moduleId = treeNode.id;
+						$scope.moduleTree.selectNode(treeNode);
+					},
+				}
+			};
+			$http.post("ws/getMembers", { projectId: $stateParams.project }).success(function (data) {
+				var taskMembers = [];
+				angular.forEach(data.result, function (v, n) {
+					taskMembers.push({ id: v.userDTO.user_id, name: v.userDTO.user_realname, icon: v.userDTO.remark1, userName: v.userDTO.user_name });
+				});
+				$scope.projectUsers = taskMembers;
+			});
+
+			$scope.bugDetail = function (e, bug) {
+				$state.go("project.boardbug.bug", { bugNo: bug.no });
+			}
+
+			$scope.pageIndex = $scope.newPage = $scope.openPage = $scope.fixPage = $scope.reopenPage = $scope.fixlaterPage = $scope.rejectPage = $scope.closePage = 1;
+			$scope.search = { project: { id: $stateParams.project }, assignedToList: [], labels: [], statusList: [], type: 2, module: { id: 0 }, page: $scope.pageIndex, rows: 10 };
+
+			//加载ztree
+			$ocLazyLoad.load(['assets/ztree/jquery.ztree.all.min.js', 'assets/ztree/zTreeStyle.css'])
+				.then(function () {
+
+					$scope.$watch("treeNodes", function (v) {
+						if (angular.isUndefined(v))
+							return;
+						$scope.moduleTree = $.fn.zTree.init($("#bugmoduleTree"), $scope.treeOptions, $scope.treeNodes);
+						$scope.moduleTree.expandNode($scope.moduleTree.getNodeByParam("id", '0', null), true, false, true);
+						$scope.moduleTree.selectNode($scope.moduleTree.getNodeByParam("id", $scope.search.module.id));
+					});
+				})
+			// getStageList($scope.search);
+			$q.all([$http.post("ws/getModuleByprojectId", { projectId: $stateParams.project }), $http.post("ws/getBugStageList", { projectId: $stateParams.project, search: $scope.search })]).then(function (data) {
+				setTreeNodes(data[0].data);
+				$scope.stageList = data[1].data.result;
+				$scope.originalOrderList = angular.copy($scope.stageList);
+			});
+
+			var setTreeNodes = function (data) {
+				var tempModuleList = data
+				var modList = [{ id: 0, name: "所有模块", parent: undefined, projectId: {} }];
+				if (tempModuleList.length > 0) {
+					for (var i = 0; i < tempModuleList.length; i++) {
+						// if (tempModuleList[i].id == $stateParams.moduleId) {
+						// 	$('#mileName')[0].innerHTML = tempModuleList[i].name;
+						// }
+						modList.push(tempModuleList[i]);
+					}
+				}
+				$scope.treeNodes = modList
+			}
+
+			//全部展开
+			$scope.expandAll = function (flag) {
+				$scope.moduleTree.expandAll(flag);
+			}
+
+			function getModuleByProjectId() {
+				$http.post("ws/getModuleByprojectId", { projectId: $stateParams.project }).success(function (data) {
+					setTreeNodes(data);
+				})
+			}
+
+			//查询bug所有阶段信息
+			function getStageList(search) {
+				$http.post("ws/getBugStageList", { projectId: $stateParams.project, search: search }).success(function (data) {
+					$scope.stageList = data.result;
+					$scope.originalOrderList = angular.copy($scope.stageList);
+				});
+			}
+
+			//加载更多bug
+			$scope.loadBugMore = debounce(function (name) {
+				if (name.contains("模块树")) return;//忽略模块树看板
+				var totalSize = 0, status, index, page;//获取需加载的需求状态和总数
+				if (name.contains("New")) {
+					status = 1;
+					index = 0;
+					page = ++$scope.newPage;
+				} else if (name.contains("Open")) {
+					status = 1;
+					index = 1;
+					page = ++$scope.openPage;
+				} else if (name.contains("Fixed")) {
+					status = 6;
+					index = 2;
+					page = ++$scope.fixPage;
+				} else if (name.contains("Reopen")) {
+					status = 3;
+					index = 3;
+					page = ++$scope.reopenPage;
+				} else if (name.contains("FixLater")) {
+					status = 4;
+					index = 4;
+					page = ++$scope.fixlaterPage;
+				} else if (name.contains("Rejected")) {
+					status = 5;
+					index = 5;
+					page = ++$scope.rejectPage;
+				} else {
+					status = 0;
+					index = 6;
+					page = ++$scope.closePage;
+				}
+				totalSize = $scope.stageList[index].totalSize;
+				var search = angular.copy($scope.search);
+				search.page = page;
+				if (page >= (totalSize / 10 + 1)) return;//超出总数不请求数据
+
+				$http.post("ws/getMoreBugStageList", { projectId: $stateParams.project, status: status, search: search }).success(function (data) {
+					$scope.stageList[index].taskList = $scope.stageList[index].taskList.concat(data.result);
+				});
+			}, 300);
+
+			$scope.$on("bugSearchBo", function (event, msg) {
+				$scope.search = msg.search;
+				if ($scope.search.type == 1) {
+					$scope.search.createBy = $scope.subject.userName;
+				}
+				$scope.pageIndex = $scope.newPage = $scope.openPage = $scope.fixPage = $scope.reopenPage = $scope.fixlaterPage = $scope.rejectPage = $scope.closePage = 1;
+				getStageList($scope.search);
+			});
+
+			$scope.$watch('showView', function (v) {
+				if (v) {
+					$("#board-scrum-special").addClass("pull-aside")
+				} else {
+					$("#board-scrum-special").removeClass("pull-aside")
+				}
+			})
+
+			//新增bug
+			$scope.openNewBug = function () {
+				var taskModule;
+				$scope.search.module.name = $('#mileName')[0].innerHTML;
+				if ($scope.search.module.name != '研发模块') {
+					taskModule = $scope.search.module;
+				} else {
+					taskModule = null;
+				}
+				Modal.open("project/bug/add.html", { module: taskModule }, {
+					onClose: function (bug) {
+						//getStageList($scope.search);
+					}
+				});
+			}
+
+			$scope.$on("createNewBug", function (event, bug) {
+				if (bug.project && bug.project.id == $stateParams.project) {
+					if ((bug.module && bug.module.id == $stateParams.moduleId) ||
+						(!bug.module && $stateParams.moduleId == 0)) {
+						for (var i = 0; i < $scope.projectUsers.length; i++) {
+							if ($scope.projectUsers[i].userName == bug.createBy) {
+								bug.createByRealname = $scope.projectUsers[i].name;
+							}
+							if ($scope.projectUsers[i].userName == bug.initAssignedTo) {
+								bug.assignedToRealname = $scope.projectUsers[i].name;
+								bug.userIcon = $scope.projectUsers[i].icon;
+							}
+						}
+						bug.assignedTo = bug.initAssignedTo;
+						$scope.stageList[0].taskList.unshift(bug);
+						$scope.stageList[0].totalSize++;
+						$scope.originalOrderList = angular.copy($scope.stageList);
+						$http.post("ws/orderStageBug", { stage: $scope.stageList[0] });
+					}
+				}
+			});
+
+			//bug详情改变时刷新看板
+			$scope.$on("flushBugList", function (event, msg) {
+				if (msg.type == 'delete') {
+					for (var i = 0; i < $scope.stageList[0].taskList.length; i++) {
+						if ($scope.stageList[0].taskList[i].id == msg.bug.id) {
+							$scope.stageList[0].taskList.splice(i, 1);
+							$scope.stageList[0].totalSize--;
+							break;
+						}
+					}
+					$scope.originalOrderList = angular.copy($scope.stageList);
+				} else if (msg.type == 'update') {
+					for (var i = 0; i < $scope.stageList.length; i++) {
+						for (var j = 0; j < $scope.stageList[i].taskList.length; j++) {
+							if ($scope.stageList[i].taskList[j].id == msg.bug.id) {
+								if ((msg.bug.module && msg.bug.module.id == $stateParams.module) ||
+									(!msg.bug.module && $stateParams.module == 0)) {
+									var newbug = angular.copy(msg.bug);
+									$scope.stageList[i].taskList[j].assignedToRealname = newbug.assignedTo.user_realname;
+									$scope.stageList[i].taskList[j].userIcon = newbug.assignedTo.icon;
+									$scope.stageList[i].taskList[j].assignedTo = newbug.assignedTo.user_realname;
+									$scope.stageList[i].taskList[j].createByRealname = newbug.createBy.user_realname;
+									$scope.stageList[i].taskList[j].createBy = newbug.createBy.user_realname;
+									$scope.stageList[i].taskList[j].title = newbug.title;
+									$scope.stageList[i].taskList[j].pri = newbug.pri;
+								} else {
+									$scope.stageList[i].taskList.splice(j, 1);
+									$scope.stageList[i].totalSize--;
+								}
+							}
+							break;
+						}
+					}
+					$scope.originalOrderList = angular.copy($scope.stageList);
+				} else if (msg.type == 'open') {
+					getStageList($scope.search);
+				} else if (msg.type == 'fixLater') {
+					changeBugStatus(4, 5, msg.bug);
+				} else if (msg.type == 'reject') {
+					changeBugStatus(5, 6, msg.bug);
+				} else if (msg.type == 'fixed') {
+					changeBugStatus(6, 3, msg.bug);
+				} else if (msg.type == 'reopen') {
+					changeBugStatus(3, 4, msg.bug);
+				} else if (msg.type == 'close') {
+					changeBugStatus(0, 7, msg.bug);
+				}
+			});
+
+			var changeBugStatus = function (status, index, bug) {
+				for (var i = 0; i < $scope.stageList.length; i++) {
+					for (var j = 0; j < $scope.stageList[i].taskList.length; j++) {
+						if ($scope.stageList[i].taskList[j].id == bug.id) {
+							$scope.stageList[i].taskList.splice(j, 1);
+							$scope.stageList[i].totalSize--;
+							break;
+						}
+					}
+				}
+				bug.status = status;
+				var newbug = angular.copy(bug);
+				newbug.assignedToRealname = newbug.assignedTo.user_realname;
+				newbug.userIcon = newbug.assignedTo.icon;
+				newbug.assignedTo = newbug.assignedTo.user_realname;
+				newbug.createByRealname = newbug.createBy.user_realname;
+				newbug.createBy = newbug.createBy.user_realname;
+				$scope.stageList[index].taskList.unshift(newbug);
+				$scope.stageList[index].totalSize++;
+				$http.post("ws/orderStageBug", { stage: $scope.stageList[index] });
+				$scope.originalOrderList = angular.copy($scope.stageList);
+			}
+			//bug排序
+			$scope.sortableBugOptions = {
+				revert: 200,
+				items: ".group-task-card",
+				cursor: "-webkit-grabbing",
+				cancel: "a,input,[ng-click]",
+				connectWith: ".connectedSortable",
+				placeholder: "task-ph",
+				update: function (event, ui) {
+					$timeout(function () {
+						for (var i = 1; i < $scope.stageList.length; i++) {
+							var taskList = $scope.stageList[i].taskList;
+							if (taskList.length == $scope.originalOrderList[i].taskList.length) {
+								for (var j = 0; j < taskList.length; j++) {
+									if (taskList[j].id != $scope.originalOrderList[i].taskList[j].id) {
+										$scope.originalOrderList = angular.copy($scope.stageList);
+										$http.post("ws/orderStageBug", { stage: $scope.stageList[i] }).success(function () {
+											Messenger.success("操作成功！");
+										});
+									}
+								}
+							}
+						}
+					})
+
+				},
+				helper: 'clone',
+				beforeStop: function (e, ui) {
+					var ss = $('.task-ph').parent().prev().find(".stage-name")[0].innerText;
+					if (ss.contains("New")) {
+						if (ui.item.sortable.model.status != 1) {
+							Messenger.error("无效操作！");
+							ui.item.sortable.cancel();//取消排序
+						}
+					}
+					if (ss.contains("Open")) {
+						if (ui.item.sortable.model.status == 1 || ui.item.sortable.model.status == 3 || ui.item.sortable.model.status == 4) {
+							ui.item.sortable.cancel();//取消排序
+							$scope.openBug(ui);
+						} else if (ui.item.sortable.model.status != 2) {
+							Messenger.error("无效操作！");
+							ui.item.sortable.cancel();//取消排序
+						}
+					}
+					if (ss.contains("Fixed")) {
+						if (ui.item.sortable.model.status == 1 || ui.item.sortable.model.status == 3 || ui.item.sortable.model.status == 4) {
+							ui.item.sortable.cancel();//取消排序
+							$scope.fixBug(ui);
+						} else if (ui.item.sortable.model.status != 6) {
+							Messenger.error("无效操作！");
+							ui.item.sortable.cancel();//取消排序
+						}
+					}
+					if (ss.contains("Reopen")) {
+						if (ui.item.sortable.model.status == 6 || ui.item.sortable.model.status == 5 || ui.item.sortable.model.status == 0) {
+							ui.item.sortable.cancel();//取消排序
+							$scope.reOpenBug(ui);
+						} else if (ui.item.sortable.model.status != 3) {
+							Messenger.error("无效操作！");
+							ui.item.sortable.cancel();//取消排序
+						}
+					}
+					if (ss.contains("FixLater")) {
+						if (ui.item.sortable.model.status == 1 || ui.item.sortable.model.status == 3) {
+							ui.item.sortable.cancel();//取消排序
+							$scope.bugDelay(ui);
+						} else if (ui.item.sortable.model.status != 4) {
+							Messenger.error("无效操作！");
+							ui.item.sortable.cancel();//取消排序
+						}
+					}
+					if (ss.contains("Rejected")) {
+						if (ui.item.sortable.model.status == 1 || ui.item.sortable.model.status == 3 || ui.item.sortable.model.status == 4) {
+							ui.item.sortable.cancel();//取消排序
+							$scope.bugReject(ui);
+						} else if (ui.item.sortable.model.status != 5) {
+							Messenger.error("无效操作！");
+							ui.item.sortable.cancel();//取消排序
+						}
+					}
+					if (ss.contains("Closed")) {
+						if (ui.item.sortable.model.status == 6 || ui.item.sortable.model.status == 5) {
+							ui.item.sortable.cancel();//取消排序
+							$scope.closeBug(ui);
+						} else if (ui.item.sortable.model.status != 0) {
+							Messenger.error("无效操作！");
+							ui.item.sortable.cancel();//取消排序
+						}
+					}
+				}
+			};
+
+			//打开bug
+			$scope.openBug = function (ui) {
+				var taskModule;
+				$scope.search.module.name = $('#mileName')[0].innerHTML;
+				if ($scope.search.module.name != '研发模块') {
+					taskModule = $scope.search.module;
+				} else {
+					taskModule = null;
+				}
+				var bug = ui.item.sortable.model;
+				if(bug.project.arcStatus=='0'){
+					Messenger.error("项目【"+bug.project.name+"】合同编号在ERP不存在或已过时，请更改为最新编号后重试！")
+					return;
+				}
+				Modal.open('project/task/create-modal.html', { bug: bug, module: taskModule }, {
+					size: "big",
+					title: '创建任务',
+					animation: true,
+					onClose: function (data) {
+						//getStageList($scope.search);
+						var newBug = [];
+						if (bug.status == 1) {
+							newBug = $scope.stageList[0].taskList;
+							$scope.stageList[0].totalSize--;
+						} else if (bug.status == 3) {
+							newBug = $scope.stageList[3].taskList;
+							$scope.stageList[3].totalSize--;
+						} else {
+							newBug = $scope.stageList[4].taskList;
+							$scope.stageList[4].totalSize--;
+						}
+						var openBug = $scope.stageList[1].taskList;
+						for (var i = 0; i < newBug.length; i++) {
+							if (newBug[i].id == bug.id) {
+								newBug.splice(i, 1);
+							}
+						}
+						bug.status = 2;
+						openBug.unshift(bug);
+						$scope.stageList[1].totalSize++;
+						$http.post("ws/orderStageBug", { stage: $scope.stageList[1] });
+						$scope.originalOrderList = angular.copy($scope.stageList);
+					}
+				});
+			}
+			//完成bug
+			$scope.fixBug = function (ui) {
+				var bug = ui.item.sortable.model;
+				Modal.openConfirm({
+					title: "BugFixed",
+					message: "点击解决后将不会生成任何关联的任务，也不会有工时信息！",
+					btnText: "解决",
+					btnClass: "btn-block bgm-lightblue simple-shadow",
+					onClose: function () {
+						$http.post("ws/bug/changeBugStatus", { bugId: bug.id, status: 6 });
+						var newBug = [];
+						if (bug.status == 1) {
+							newBug = $scope.stageList[0].taskList;
+							$scope.stageList[0].totalSize--;
+						} else if (bug.status == 3) {
+							newBug = $scope.stageList[3].taskList;
+							$scope.stageList[3].totalSize--;
+						} else {
+							newBug = $scope.stageList[4].taskList;
+							$scope.stageList[4].totalSize--;
+						}
+						var fixBug = $scope.stageList[2].taskList;
+						for (var i = 0; i < newBug.length; i++) {
+							if (newBug[i].id == bug.id) {
+								newBug.splice(i, 1);
+							}
+						}
+						bug.status = 6;
+						fixBug.unshift(bug);
+						$scope.stageList[2].totalSize++;
+						$http.post("ws/orderStageBug", { stage: $scope.stageList[2] });
+						$scope.originalOrderList = angular.copy($scope.stageList);
+						Messenger.success("操作成功！");
+					}
+				});
+			}
+			//重新打开bug
+			$scope.reOpenBug = function (ui) {
+				var bug = ui.item.sortable.model;
+				Modal.open("project/task/bugReopen.html", { bugId: bug.id, projectId: bug.project.id }, {
+					title: "BugReopen",
+					onClose: function () {
+						//getStageList($scope.search);
+						Messenger.success("操作成功！");
+						var newBug = [];
+						if (bug.status == 6) {
+							newBug = $scope.stageList[2].taskList;
+							$scope.stageList[2].totalSize--;
+						} else if (bug.status == 5) {
+							newBug = $scope.stageList[5].taskList;
+							$scope.stageList[5].totalSize--;
+						} else {
+							newBug = $scope.stageList[6].taskList;
+							$scope.stageList[6].totalSize--;
+						}
+						var reOpenBug = $scope.stageList[3].taskList;
+						for (var i = 0; i < newBug.length; i++) {
+							if (newBug[i].id == bug.id) {
+								newBug.splice(i, 1);
+							}
+						}
+						bug.status = 3;
+						reOpenBug.unshift(bug);
+						$scope.stageList[3].totalSize++;
+						$http.post("ws/orderStageBug", { stage: $scope.stageList[3] });
+						$scope.originalOrderList = angular.copy($scope.stageList);
+					}
+				});
+			}
+			//延迟bug
+			$scope.bugDelay = function (ui) {
+				var bug = ui.item.sortable.model;
+				Modal.openConfirm({
+					title: "BugDelay",
+					message: "点击推迟后将更改BUG为<div class='bug-block bug-FixLater m-5'>FixLater</div>状态<br>" +
+						"你可以随时<div class='bug-block bgm-green m-5'><i class='md md-play-arrow'></i> 开始</div>" +
+						"<div class='bug-block bgm-red m-5'><i class='md md-stop'></i> 拒绝</div>或者" +
+						"<div class='bug-block bgm-orange m-5'><i class='md md-panorama-fisheye'></i> 解决</div>该BUG!",
+					btnText: "推迟",
+					btnClass: "btn-block bgm-lightblue simple-shadow",
+					onClose: function () {
+						$http.post("ws/bug/changeBugStatus", { bugId: bug.id, status: 4 });
+						//getStageList($scope.search);
+						Messenger.success("操作成功！");
+						var newBug = [];
+						if (bug.status == 1) {
+							newBug = $scope.stageList[0].taskList;
+							$scope.stageList[0].totalSize--;
+						} else {
+							newBug = $scope.stageList[3].taskList;
+							$scope.stageList[3].totalSize--;
+						}
+						var bugDelay = $scope.stageList[4].taskList;
+						for (var i = 0; i < newBug.length; i++) {
+							if (newBug[i].id == bug.id) {
+								newBug.splice(i, 1);
+							}
+						}
+						bug.status = 4;
+						bugDelay.unshift(bug);
+						$scope.stageList[4].totalSize++;
+						$http.post("ws/orderStageBug", { stage: $scope.stageList[4] });
+						$scope.originalOrderList = angular.copy($scope.stageList);
+					}
+				});
+			}
+			//拒绝bug
+			$scope.bugReject = function (ui) {
+				var bug = ui.item.sortable.model;
+				Modal.open("project/task/bugReject.html", { bugId: bug.id }, {
+					title: "BugReject",
+					onClose: function () {
+						//getStageList($scope.search);
+						Messenger.success("操作成功！");
+						var newBug = [];
+						if (bug.status == 1) {
+							newBug = $scope.stageList[0].taskList;
+							$scope.stageList[0].totalSize--;
+						} else if (bug.status == 3) {
+							newBug = $scope.stageList[3].taskList;
+							$scope.stageList[3].totalSize--;
+						} else {
+							newBug = $scope.stageList[4].taskList;
+							$scope.stageList[4].totalSize--;
+						}
+						var bugReject = $scope.stageList[5].taskList;
+						for (var i = 0; i < newBug.length; i++) {
+							if (newBug[i].id == bug.id) {
+								newBug.splice(i, 1);
+							}
+						}
+						bug.status = 5;
+						bugReject.unshift(bug);
+						$scope.stageList[5].totalSize++;
+						$http.post("ws/orderStageBug", { stage: $scope.stageList[5] });
+						$scope.originalOrderList = angular.copy($scope.stageList);
+					}
+				});
+			}
+			//关闭bug
+			$scope.closeBug = function (ui) {
+				var bug = ui.item.sortable.model;
+				Modal.open("project/task/bugClose.html", { bugId: bug.id, projectId: bug.project.id }, {
+					title: "BugClose",
+					onClose: function () {
+						//getStageList($scope.search);
+						Messenger.success("操作成功！");
+						var newBug = [];
+						if (bug.status == 6) {
+							newBug = $scope.stageList[2].taskList;
+							$scope.stageList[2].totalSize--;
+						} else {
+							newBug = $scope.stageList[5].taskList;
+							$scope.stageList[5].totalSize--;
+						}
+						var closeBug = $scope.stageList[6].taskList;
+						for (var i = 0; i < newBug.length; i++) {
+							if (newBug[i].id == bug.id) {
+								newBug.splice(i, 1);
+							}
+						}
+						bug.status = 0;
+						closeBug.unshift(bug);
+						$scope.stageList[6].totalSize++;
+						$http.post("ws/orderStageBug", { stage: $scope.stageList[6] });
+						$scope.originalOrderList = angular.copy($scope.stageList);
+					}
+				});
+			}
+		/* 	$(document).bind("click", function (e) {
+				if ($(e.target).closest("#chat").length == 0) {
+					if ($('aside.chat').hasClass('toggled')) {
+					
+						$('aside.chat').removeClass('toggled');
+					}
+
+				} else {
+					return;
+				}
+			}); */
+		});
+</script>

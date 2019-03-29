@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="updateWeekDayEstimate" log="false" className="com.chinacreator.c2.project.service.WorkLogService" method="updateWeekDayEstimate">
+  <name>更新工作日工时数</name>
+  <inputs>
+    <input collection="false" desc="" id="weekDay" required="true" type="com.chinacreator.c2.project.task.WeekDay"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.weekDay" name="weekDay" signature="QWeekDay;" type="com.chinacreator.c2.project.task.WeekDay"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

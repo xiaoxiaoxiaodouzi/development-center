@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getAllLabels" log="false" className="com.chinacreator.c2.project.issue.IssueService" method="getAllLabels">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取产品编号下所有标签</name>
+  <desc>获取产品编号下所有标签</desc>
+  <inputs>
+    <input collection="false" desc="Id" id="product" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.product" name="product" signature="I" type="int"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

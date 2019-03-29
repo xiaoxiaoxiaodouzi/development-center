@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="delStage" log="false" className="com.chinacreator.c2.project.stage.TaskStageService" method="delStage">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>删除任务阶段</name>
+  <desc>删除某任务阶段</desc>
+  <inputs>
+    <input collection="false" desc="" id="id" required="true" type="int"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.id" name="id" signature="I" type="int"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

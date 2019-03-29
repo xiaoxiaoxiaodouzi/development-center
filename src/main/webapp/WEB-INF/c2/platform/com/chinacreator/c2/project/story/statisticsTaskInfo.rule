@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="statisticsTaskInfo" log="false" className="com.chinacreator.c2.project.story.StoryService" method="statisticsTaskInfo">
+  <name>统计需求下任务信息</name>
+  <desc>统计需求下的任务信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="int"/>
+    <input collection="false" desc="" id="storyId" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+    <param autoValue="Input.storyId" name="storyId" signature="I" type="int"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

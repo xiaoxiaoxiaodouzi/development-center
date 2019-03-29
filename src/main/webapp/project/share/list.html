@@ -1,0 +1,92 @@
+<link href="css/share/list.css" rel="stylesheet">
+
+<div class="container m-t-10">
+
+<div class="card">
+<div class="card-header bgm-cyan">
+<div id="search-wrap" class="ng-scope" ng-hide="addDocState">
+    <input type="text" placeholder="搜索..." ng-model="search">
+</div>
+<div id="add-tl-item" ng-class="{toggled:addDocState}">
+    <i class="add-new-item md md-add c-cyan" data-ng-click="addDocState = true" title="添加文档"></i>
+    <div class="add-tl-body">
+    	<div class="fg-line" ng-class="{'has-error':!entity.name&&docTitleCheck}">
+            <input autofocus type="text" data-ng-model="entity.name" class="form-control" placeholder="文档标题">
+        </div>
+        <div class="doc-files">
+        	<ul>
+        		<li ng-repeat="file in entity.docFiles"><i class="md md-attach-file"></i> {{file.name}} <i class="md md-close c-red" ng-click="delFile(entity.docFiles,file)"></i></li>
+        		<li class="c-blue" style="cursor: pointer;" ngf-select="true" ngf-max-size="524288000" ngf-change="fileSelected($files, $file, $event, $rejectedFiles,entity,entity.docFiles)"><i class="md-file-upload f-24"></i><span class="f-14 upload-text">上传附件</span></li>
+        	</ul>
+        	<div class="clearfix"></div>
+		</div>
+    	<textarea height="300" ng-model="entity.content" c2-markdown-editor></textarea>
+        <div class="add-tl-actions text-right">
+            <button class="btn btn-primary btn-sm" type="button" data-ng-click="submit(entity,entity.docFiles);"> 保 存 </button>
+			<button type="button" class="btn btn-link btn-sm" data-ng-click="addDocState = false;cleanForm();"> 取 消 </button>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<div class="card" ng-if="nothing">
+	<div class="card-header text-center">
+		项目还没有任何共享文档...
+	</div>
+</div>
+
+<div class="card" ng-repeat="doc in docs | filter:search">
+    <div class="card-header" ng-if="!doc.edit">
+        <h2 class="doc-title" data-ui-sref="project.doc({docId:'{{doc.id}}'})">{{doc.name}}</h2>
+        <div class="c-gray text-left doc-author">
+        	<img class="lv-img-sm" ng-src="{{doc.userIcon}}">
+        	<span>{{doc.userName}}&nbsp;&nbsp;-&nbsp;&nbsp; {{doc.createtime | date:"yyyy-MM-dd"}} </span>
+        </div>
+        
+
+        <div class="c-gray p-t-10 m-t-5 l-h-2" style="border-top: 1px solid #eee;cursor: pointer;" data-ui-sref="project.doc({docId:'{{doc.id}}'})">
+          <div class="doc-files download" ng-if="doc.files&&doc.files.length>0">
+        	<ul>
+        		<li ng-repeat="file in doc.files"><i class="md md-attach-file c-blue"></i> <a ng-href="{{file.path}}" target="_blank" class="c-blue stop-propagate">{{file.name}}</a></li>
+        	</ul>
+        	<div class="clearfix"></div>
+		  </div>{{doc.text}}
+		  </div>
+		  <ul class="actions">
+            <li class="dropdown action-show">
+                <a href="" data-toggle="dropdown" aria-expanded="false" >
+                    <i class="md md-more-vert"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <a ng-click="doc.edit = true">编辑</a>
+                    </li>
+                    <li data-ng-if="docDel">
+                        <a href="" ng-click="delDoc(doc)">删除</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="card-header" ng-if="doc.edit">
+    	<div class="fg-line" ng-class="{'has-error':!doc.name}"><input type="text" class="form-control" ng-model="doc.name"></div>
+        <div class="doc-files c-blue">
+        	<ul>
+        		<li ng-repeat="file in doc.files"><i class="md md-attach-file c-blue"></i> {{file.name}} <i class="md md-close c-red" ng-click="delFile(doc.files,file)"></i></li>
+        		<li class="c-blue" style="cursor: pointer;" ngf-select="true" ngf-max-size="524288000" ngf-change="fileSelected($files, $file, $event, $rejectedFiles,doc,doc.files)"><i class="md-file-upload"></i>上传附件</li>
+        	</ul>
+        	<div class="clearfix"></div>
+		</div>
+    	<textarea height="300" ng-model="doc.content" c2-markdown-editor></textarea>
+        <div class="add-tl-actions text-right">
+            <button class="btn btn-primary btn-sm" type="button" data-ng-click="submit(doc,doc.files)"> 保 存 </button>
+			<button type="button" class="btn btn-link btn-sm" data-ng-click="doc.edit = false;refreshList()"> 取 消 </button>
+        </div>
+    </div>
+</div>
+
+<aside id="detail-panel" state-aside-container class="cOverflow" style="padding:0 0">
+	<ui-view onload="stateOnload()"></ui-view>
+</aside>
+</div>

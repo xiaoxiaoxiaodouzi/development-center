@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getCurrentMemberWRProjects" log="false" className="com.chinacreator.c2.project.weeklyReport.WeeklyReportService" method="getCurrtentMemberWRProjects">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取当前用户的周报对应的项目</name>
+  <desc>查询当前用户的周报（所在项目周报+提交过来的周报）</desc>
+  <inputs>
+    <input collection="false" desc="周报详情项目下拉所用的查询条件" id="week" required="false" type="java.lang.Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.week" name="week" signature="QInteger;" type="java.lang.Integer"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="updateTaskWithOutRegisAction" log="false" className="com.chinacreator.c2.project.task.TaskService" method="updateTaskWithOutRegisAction">
+  <name>修改任务,不记录日志</name>
+  <desc>修改任务,用于描述更新时不记录日志</desc>
+  <inputs>
+    <input collection="false" desc="" id="task" required="true" type="com.chinacreator.c2.project.task.Task"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.task" name="task" signature="QTask;" type="com.chinacreator.c2.project.task.Task"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

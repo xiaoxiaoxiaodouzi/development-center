@@ -1,0 +1,53 @@
+<div ng-controller="BugRejectModalController">
+<div class="p-l-10 p-r-10 f-14">
+<div class="form-group m-b-0">
+<!-- 	<label class="control-label" for="rejectTextarea">拒绝理由</label> -->
+    <div class="fg-line">
+    	<label for="rejectTextarea">拒绝理由</label>
+        <textarea id="rejectTextarea" class="form-control" ng-model="rejectReason" placeholder=""></textarea>
+    </div>
+</div>
+</div>
+<div class="p-10 text-right">
+	<span ng-show="errorMsg" class="c-red bug-reject-modal-error-msg">需要填写拒绝理由！</span> 
+	<button ng-click="reject()" class="btn btn-primary simple-shadow">拒绝</button>
+	<button ng-click="dismiss()" class="btn btn-default simple-shadow">取消</button>
+</div>
+</div>
+
+<style>
+.bug-reject-modal-error-msg.ng-hide-add {
+  opacity:1;
+  transition: 1s linear all;
+}
+
+.bug-reject-modal-error-msg.ng-hide-add-active {
+  opacity:0;
+}
+</style>
+<script>
+developmentCenter.registerCtrl('BugRejectModalController',function($scope,Modal,$timeout,$http,$ocLazyLoad){
+	$ocLazyLoad.load("assets/js/autosize.min.js").then(function(){
+		autosize($("#rejectTextarea"));
+	});
+	
+	$scope.errorMsg = false;
+	$scope.reject = function(){
+		if($scope.rejectReason){
+			$http.post("ws/bug/changeBugStatus", {
+				bugId : $scope.bugId,
+				status:5,
+				comment : $scope.rejectReason
+			}).success(function(data) {
+				Modal.close();
+			});
+		}else{
+			$("#rejectTextarea").focus();
+			$scope.errorMsg = true;
+			$timeout(function(){
+				$scope.errorMsg = false;
+			},1500);
+		}
+	}
+});
+</script>

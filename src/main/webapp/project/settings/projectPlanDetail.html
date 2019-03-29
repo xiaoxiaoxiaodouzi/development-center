@@ -1,0 +1,239 @@
+<link href="css/task/addTask.css" rel="stylesheet">
+
+<div data-ng-controller="editPlanCtrl" class="base-body">
+	<div class="task-new-header">
+		<!-- <button style="float: right" type="button" class="close btn-close-new" ng-click="modalOptions.X()">
+					<span aria-hidden="true">&times;</span>
+				</button> -->
+		<!-- 控制编辑状态的显示 -->
+		<!-- data-ng-show="(subject.userName==projectPlan.assignedTo || angular.isUndefined(projectPlan.assignedTo) || subject.userName==projectPlan.assignedTo.userName)&&!edit" -->
+		<ul style="float: right" class="actions m-r-10" ng-show="!edit">
+			<li class="dropdown action-show">
+				<a href="" data-toggle="dropdown" aria-expanded="false">
+					<i class="md md-more-vert"></i>
+				</a>
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li>
+						<a ng-click="projectPlanEditFun()">编辑</i>
+						</a>
+					</li>
+					<li>
+						<a data-ng-click="delprojectPlan()" href="javascript:void(0);">删除</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<ng-form name="aform">
+			<div class="task" data-ng-if="edit">
+				<input id="projectPlan-name" name="projectPlanName" type="text" ng-model="projectPlan.name" class="form-control"
+				 data-ng-class="{'has-error-border':!projectPlan.name&&taskNameRed}" ng-model-options="{updateOn:'blur'}"
+				 ng-keypress="blurIfEnterKeyWasPressed($event)" />
+			</div>
+			<div data-ng-if="!edit" style="margin-left:20px">
+				<h3>
+					<span>{{projectPlan.name}}</span>
+				</h3>
+			</div>
+		</ng-form>
+	</div>
+	<div class="new-white-card task-new-handler-warp" data-ng-show="edit" style="border: 1px solid #eee;border-radius: 3px;">
+		<div class="task-new-handler-set">
+			<div class="task-new-handler">
+				<h6 class="task-info-title">负责人</h6>
+				<div class="task-new-line">
+					<c2-dropdown class="animate" bind-data="projectPlan.assigned" item-click="userClick(projectPlan.assigned)" items="projectUsers"
+					 item-name="userRealname" multiple=false max-height="200" filter="true" filter-pinyin="true">
+						<a class="dropdown-toggle" ng-class="{'have-value':projectPlan.assigned.userRealname}">
+	                        <img class="lv-img-sm" ng-if="projectPlan.assigned" ng-src="{{projectPlan.assigned.icon}}" style="width: 28px;border-radius: 50%;margin-right: 4px;">
+							<span ng-if="projectPlan.assigned==undefined">待分配</span>
+							<span ng-if="projectPlan.assigned!=undefined">{{projectPlan.assigned.userRealname}} </span>
+	                    </a>
+					</c2-dropdown>
+				</div>
+			</div>
+			
+			<div class="task-new-handler middle">
+				<h6 class="task-info-title">优先级</h6>
+				<div class="task-new-line">
+					<c2-dropdown class="animate" bind-data="level" item-click="levelClick(level)" items="allLevels" item-name="title"
+					 multiple=false max-height="200">
+						<a class="dropdown-toggle" ng-class="{'have-value':level.title}">
+							<i class="md md-sort"></i>
+							<span ng-if="level==undefined">选择优先级</span>
+							<span ng-if="level!=undefined">{{level.title}} </span>
+						</a>
+					</c2-dropdown>
+				</div>
+			</div>
+		
+			<div class="task-new-handler middle">
+				<h6 class="task-info-title">启动时间</h6>
+				<div class="task-new-line">
+					<span class="md md-event" ng-click="showDeadline()" ng-class="{'have-value':projectPlan.startDate}"></span>
+					<input id="deadline" show-clear="true" name="deadline" type="text" class="form-control" ng-class="{'have-value':projectPlan.startDate}"
+					 date-time-picker clear-icon="md md-delete" ng-model="projectPlan.startDate" placeholder="选择启动时间" format="YYYY-MM-DD">
+					</input>
+				</div>
+			</div>
+
+			<div class="task-new-handler middle">
+				<h6 class="task-info-title">预计完成时间</h6>
+				<div class="task-new-line">
+					<span class="md md-event" ng-click="showDeadline()" ng-class="{'have-value':projectPlan.endDate}"></span>
+					<input id="deadline" show-clear="true" name="deadline" type="text" class="form-control" ng-class="{'have-value':projectPlan.endDate}"
+					 date-time-picker clear-icon="md md-delete" ng-model="projectPlan.endDate" placeholder="选择完成时间" format="YYYY-MM-DD">
+					</input>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div data-ng-show="!edit">
+		<div class="new-white-card task-new-handler-warp" style="border: 1px solid #eee;padding: 14px 0 12px 15px;border-radius: 3px;">
+			<div class="row f-14 p-t-3" style="height:25px">
+				<div class="col-sm-6">
+					<span style="color: #777">启动时间：{{projectPlan.startDate | date:'yyyy-MM-dd' }}</span>
+				</div>
+				<div class="col-sm-6">
+					<span style="color: #777">预计完成时间：{{projectPlan.endDate | date:'yyyy-MM-dd' }}</span>
+				</div>
+			</div>
+			<div class="row f-14 p-t-3" style="height:25px">
+				<div class="col-sm-6">
+					<span style="color: #777" class="m-r-10">负责人：{{projectPlan.assigned.userRealname}}</span>
+				</div>
+				<div class="col-sm-6">
+					<span style="color: #777" class="m-r-10">优先级:{{level.title}}</span>
+				</div>
+			</div>
+		</div>
+		<div class="new-infos-view" ng-show="projectPlan.description">
+			<div class="new-infos-note-view on-top on-bottom" style="border-bottom: none!important;border-top: none!important;border-left:none;  border-right:none;">
+				<div class="note-adder-set">
+					<div class="add-note-handler c2lightbox">
+						<div id="markdowntext" ng-bind-html="projectPlan.description | markdown" class="ng-binding"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="m-t-20 m-l-25" data-ng-if="edit">
+
+		<div class="rf-summary" style="background-color: white;
+    border: 1px solid rgba(0,0,0,.05);
+    margin-left: -5px;margin-right: 20px;">
+			<textarea c2-markdown-editor height="150" id="task-description" ng-model="projectPlan.description"></textarea>
+		</div>
+	</div>
+
+
+	<div ng-include="'project/task/PlanTasklist.html'">
+	</div>
+
+	<div class="task-new-infos-wrap">
+		<div class="task-new-footer">
+			<hr />
+			<form id="new-task-save">
+				<div style="margin:0 20px 10px 0; float:right;">
+					<span id="addTaskErrorMsg" class="c-red pull-left m-r-10 m-t-10">请完善计划</span>
+					<button class="btn btn-link" data-ng-if="edit" data-ng-click="canCelprojectPlan()">取消</button>
+					<button class="btn btn-primary btn-save-task" data-ng-if="edit" data-ng-click="saveprojectPlan()">保存</button>
+				</div>
+				<div style="clear:both; float:none; height:0; overflow:hidden"></div>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+	developmentCenter.registerCtrl('editPlanCtrl', ['$stateParams', '$rootScope', '$compile', 'markdownConverter', 'Modal', '$state', '$scope', '$http', 'Messenger', '$timeout',
+		function ($stateParams, $rootScope, $compile, markdownConverter, Modal, $state, $scope, $http, Messenger, $timeout) {
+			$scope.allLevels = [{ title: '紧急', value: 0 }, { title: '一般', value: 1 }, { title: '可延迟', value: 2 }]
+			$scope.subject = $rootScope.subject;
+			$scope.edit = false;
+			//$scope.level = { title: '紧急', value: 0 };
+			if (!$stateParams.projectPlan) {
+				$http.get("ProjectPlan/" + $stateParams.planId).success(function (data) {
+					if (data) {
+						$scope.projectPlan = data;
+					} else {
+						Messenger.post("计划不存在或被删除！")
+					}
+				})
+			} else {
+				$scope.projectPlan = $stateParams.projectPlan;
+			}
+			var planLevel = function () {
+				if ($scope.projectPlan.level == 0) {
+					$scope.level = { title: '紧急', value: 0 }
+				};
+				if ($scope.projectPlan.level == 1) {
+					$scope.level = { title: '一般', value: 1 }
+				};
+				if ($scope.projectPlan.level == 2) {
+					$scope.level = { title: '可拖延', value: 2 }
+				};
+			}
+			planLevel();
+			$http.post("ws/getMembers", { projectId: $stateParams.project }).success(function (data) {
+				$scope.projectUsers = [];
+				angular.forEach(data.result, function (v, n) {
+					$scope.projectUsers.push({ userId: v.userDTO.user_id, userRealname: v.userDTO.user_realname, icon: v.userDTO.remark1, userName: v.userDTO.user_name });
+				});
+			});
+			//负责人
+			$scope.userClick = function (user) {
+				$scope.projectPlan.assignedTo = user.userName;
+				$scope.projectPlan.assigned = user;
+			}
+
+			//时间选择器--截止日期
+			$scope.showDeadline = function () {
+				$('#deadline').focus();
+			}
+
+			$scope.saveprojectPlan = function () {
+				$http.post("ProjectPlan/plan/" + $stateParams.planId,
+					$scope.projectPlan
+				).success(function (data) {
+					//Messenger.post('修改计划成功！')
+					$('aside#detail-panel').removeClass('toggled');
+					$scope.$emit("updateprojectPlan", { projectPlan: data });
+					$state.go('^');
+				})
+			}
+
+			$scope.projectPlanEditFun = function () {
+				$scope.edit = true;
+			}
+
+			$scope.canCelprojectPlan = function () {
+				$scope.edit = false;
+			}
+			$scope.delprojectPlan = function () {
+				if ($scope.projectPlan.taskNum && $scope.projectPlan.taskNum.undone > 0) {
+					Messenger.post('该计划下存在未完成任务，请先删除任务再删除计划！')
+					return;
+				}
+				Modal.openConfirm({
+					title: "删除确认",
+					message: "是否删除计划【" + $scope.projectPlan.name + "】？",
+					btnText: "删除",
+					btnClass: "btn-block bgm-lightblue simple-shadow",
+					onClose: function () {
+						$http.delete("ProjectPlan/" + $scope.projectPlan.id, $scope.projectPlan
+						).success(function (data) {
+							$scope.$emit("deleteprojectPlan", { projectPlan: data.result });
+						});
+					}
+				});
+
+			}
+
+			$scope.levelClick = function (data) {
+				$scope.level = data;
+				$scope.projectPlan.level = data.value;
+			}
+		}
+	])
+</script>

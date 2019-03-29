@@ -1,0 +1,97 @@
+<div ng-controller="setTeamCtrl" class="m-t-10">
+	<div class="card management">
+	    <div class="card-header">
+	        <h2>团队名称</h2>
+	    </div>
+	
+	    <div class="card-body card-padding p-t-0">
+	        <form data-ng-submit="saveTeam();">
+	            <div class="row">
+	                <div class="col-md-12">
+	                    <div class="form-group">
+	                        <div class="fg-line">
+	                            <input type="text" ng-model="team.name" class="form-control fg-input">
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	            <div class="m-t-10">
+	                <button class="btn btn-primary btn-sm" type="submit">保存</button>
+	            </div>
+	        </form>
+	
+	    </div>
+	</div>
+	
+	<div class="card">
+	    <div class="card-header">
+	        <h2>转让团队</h2>
+	    </div>
+	
+	    <div class="card-body card-padding p-t-0">
+	        <div class="alert alert-info" role="alert">请注意！ 团队转让后，你将不再是“团队所有者”，你将失去某些管理权限（如添加成员、维护周报、删除团队等）。</div>
+	        <button class="btn btn-warning btn-icon-text" ng-click="transformOwner()"><i class="md md-transform"></i>转让团队</button>
+	    </div>
+	</div>
+	
+	<div class="card">
+	    <div class="card-header">
+	        <h2>删除团队</h2>
+	    </div>
+	
+	    <div class="card-body card-padding p-t-0">
+	        <div class="alert alert-info" role="alert">
+	            删除团队将会连同其相关的成员数据一起删除。
+	            <br/>
+	            <br/>
+	            <strong style="color:#FF5722;">此操作无法恢复!</strong>
+	        </div>
+	        <button class="btn btn-danger btn-icon-text" ng-click="deleteTeam()"><i class="md md-delete"></i>删除团队</button>
+	    </div>
+	</div>
+</div>
+
+<script>
+angular.module("developmentCenter").registerCtrl('setTeamCtrl',
+	function ($scope, $rootScope, $http, $state, $stateParams,debounce,$timeout, Messenger, Modal){
+	
+	$http.get("team/v1/"+$stateParams.teamId).success(function(data){
+		$scope.team = data;
+	})
+	
+	//删除团队
+	$scope.deleteTeam = function(){
+		Modal.openConfirm({
+			title:"删除确认",
+			message:"点击删除后团队及成员信息将会同时删除且操作不可恢复，请谨慎操作!",
+			btnText:"删除",
+			btnClass:"btn-block bgm-lightblue simple-shadow",
+			onClose:function(){
+				$http.delete("team/v1/"+$stateParams.teamId).success(function(data){
+					Messenger.success("删除成功");
+					$state.go("home.team.users");
+				})
+			}
+		});
+	}
+	
+	//修改团队名称
+	$scope.saveTeam = function(){
+		$http.post("team/v1/"+$stateParams.teamId,$scope.team).success(function(data){
+			Messenger.success("保存成功");
+		})
+	}
+	
+	//转让团队
+	$scope.transformOwner = function(){
+		Modal.open('team/transform-owner.html', { team: $scope.team }, {
+			title: '移交管理权限',
+			size: 'big',
+			onClose: function () {
+				$state.go("home.team.users");
+			}
+		})
+	}
+})
+	
+</script>

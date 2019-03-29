@@ -1,0 +1,374 @@
+<style>
+#report-form-list .lv-item {
+	padding: 12px 20px;
+}
+
+#report-form-list .lv-item:hover{
+	background-color:#EFF4F9;
+}
+
+#report-form-list .report-title:hover {
+	cursor: pointer;
+}
+
+#report-form-list .report-title {
+	max-width: 30%;
+    width: 30%;
+    text-align:left !important;;
+}
+
+.report-form-detail .card{
+	box-shadow:none;
+	margin-bottom:0px;
+}
+
+#report-form-list .report-open-content {
+    background-color: white;
+    border-bottom: 1px solid white;
+    margin:0px -3px 3px -3px ;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+#report-form-list .report-open-title {
+	background-color: #EFF4F9;
+	font-weight: bold;
+}
+
+#report-form-list .report-title .report-title-name {
+	color:#69aa46;
+	margin-left:30px;
+	width:100px;
+	max-width:100px;
+}
+
+#report-form-list .lv-item .turn{
+	transform:rotate(180deg);
+}
+
+#report-form-list .lv-item .md-keyboard-arrow-down{
+	transition: transform 500ms;
+}
+
+#report-form-list .lv-pagination{
+	border-top: 0px;
+}
+
+.report-label-earlier{
+	background-color: #4caf50;
+}
+
+.report-label-normal{
+	background-color: #7FDC82;
+}
+
+.report-label-latter{
+	background-color: #ff9800;
+}
+
+.report-label-lose{
+	background-color: #f44336;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+	cursor: pointer;
+}
+
+.report-form-title-green {
+	color: #69aa46 ;
+}
+
+.rf-summary {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.rf-content .table .column,
+#report-form-list .lv-item .column{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: clip;
+	text-align: center;
+}
+
+.rf-content .table {
+	margin-bottom:0px;
+}
+
+.rf-content .table .column >a {
+	color:#161617;
+}
+
+.rf-content .table .column >a:hover {
+	color:#2196f3;
+	cursor:pointer;
+}
+
+.report-form-detail .card .rf-content .lv-header-alt {
+	padding: 5px 12px 12px 20px;
+	border-bottom: 0px;
+	background-color: #eee;
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 10px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 0px; 
+}
+
+.table > thead > tr > th {
+  border-bottom: 0px;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+   background-color: inherit;
+}
+
+.report-form-detail{
+	display:block !important ;
+	overflow: hidden;
+	transition: max-height 0.3s ;
+	transition-delay:0s;
+	max-height:0px;
+}
+
+.report-form-detail.open{
+	transition: max-height 0.3s ;
+	transition-delay:0s;
+	max-height:20000px;
+}
+
+.w-report p:first {
+    margin-top: 15px;
+    line-height: 2em;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+</style>
+<div id="report-form-list" class="container" ng-controller="assessListController">
+	<div class="card m-t-20">
+		<div class="card-header">
+			<h2>
+				考核列表<small>查询、展示考核报表</small>
+			</h2>
+		</div>
+
+		<div class="card-body clearfix">
+			<div  class="listview lv-bordered lv-lg " style="padding: 0px 23px 0px 20px;">
+				<!-- 搜索 -->
+				<div class="lv-header-alt">
+					<c2-dropdown id="deptDrop" tree-options="deptTreeOptions" tree-nodes="deptTree" max-height="200">
+						<div class="picker picker-white text-overflow" style="max-width:500px;">
+							{{selectedDeptNode?"":"考核部门"}}{{selectedDeptNode.name}}<span class="caret"></span>
+						</div>
+					</c2-dropdown>
+					
+					<c2-dropdown class="animate" bind-data="search.users" clean-button="true" items="deptUsers" item-name="userRealname" item-id="userId" after-clean-event="cleanUsers()" multiple="true" max-height="200" filter="true">
+						<div class="picker"> {{search.users.length>0?'人员数:'+search.users.length:'被考核人'}}<span class="caret"></span></div>
+					</c2-dropdown>
+					
+					<c2-date-range-dropdown date-range="dateRange" format="YYYY-MM" start-date="2018-01">
+		           		<div class="picker picker-white">
+							{{dateRange.show}}<span class="caret"></span>
+						</div>
+	        </c2-date-range-dropdown>
+					
+					<c2-dropdown class="animate" bind-data="search.status" items="allStatus" item-name="title" item-id="title" item-click="selectStatus(item)"
+					clean-button="true" after-clean-event="cleanStatus()" max-height="200">
+						<div class="picker"> {{search.status?search.status.title:'选择考核状态'}}<span class="caret"></span></div>
+					</c2-dropdown>
+				</div>
+
+				<div class="lv-body">				
+					<div class="media-body">
+						<table class="table table-hover m-b-0">
+							<thead>
+								<tr>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">姓名</th>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">考核期</th>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">总分</th>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">评级</th>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">考核人</th>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">复核人</th>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">状态</th>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="app in appraisals">
+									<td class="column" style="text-align: center;">{{app.userRealname}}</td>
+									<td class="column" style="text-align: center;">
+										<span ng-if="app.month<10">{{app.year}}-0{{app.month}}</span>
+										<span ng-if="app.month>=10">{{app.year}}-{{app.month}}</span>
+									</td>
+									<td class="column" style="text-align: center;">
+										<span ng-if="app.score">{{app.score}}</span>
+									  	<span ng-if="!app.score">--</span>
+									</td>
+									<td class="column" style="text-align: center;">
+										<span ng-if="app.level">{{app.level}}</span>
+									  	<span ng-if="!app.level">--</span>
+									</td>
+									<td class="column" style="text-align: center;">
+										<span ng-if="app.assessorRealname">{{app.assessorRealname}}</span>
+									  	<span ng-if="!app.assessorRealname">--</span>
+									</td>
+									<td class="column" style="text-align: center;">
+										<span ng-if="app.reviewerRealname">{{app.reviewerRealname}}</span>
+									  	<span ng-if="!app.reviewerRealname">--</span>
+									</td>
+									<td class="column" style="text-align: center;">{{app.status}}</td>
+									<td class="column" style="text-align: center;">
+										<a style="cursor: pointer" ng-if="app.assessable && app.status=='待考核'" ng-click="viewAppraisal(app)">考核</a>
+										<a style="cursor: pointer" ng-if="app.reviewable && app.status=='待复核'" ng-click="viewAppraisal(app)">复核</a>
+										<a style="cursor: pointer" ng-if="(app.userName==subject.userName&&!app.assessable&&!app.reviewable)||(app.assessable&&!app.reviewable && app.status!='待考核')
+										||(!app.assessable&&app.reviewable && app.status!='待复核')||app.status=='已完成'" ng-click="viewAppraisal(app)">查看</a>
+									</td>
+									
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<c2-pagination id="pageEle" total="total" page-size="10"
+			on-page-change="refreshList(pageIndex)"></c2-pagination>
+		
+		<div class="text-center p-b-20" ng-if="!appraisals || appraisals.length==0">暂无记录</div>
+	</div>
+</div>
+
+<script>
+angular.module("developmentCenter").registerCtrl('assessListController',
+  function(Messenger,$scope,$rootScope,$http,$stateParams,Modal,$state,debounce,$timeout){
+
+	//初始数据
+	$scope.subject = $rootScope.subject;
+	$scope.pageIndex=1;
+	$scope.isTouchUser = false;
+	$scope.allStatus=[{title:'待考核'},{title:'待复核'},{title:'已完成'}];
+	
+	$scope.dateRange = {start:moment().subtract(1,'month').toDate().getTime(),end:moment().toDate().getTime()};
+	$scope.search={
+		status:{title:'待考核'},users:[],
+		startYear:moment($scope.dateRange.start).format("YYYY-MM").split("-")[0],
+		startMonth:moment($scope.dateRange.start).format("YYYY-MM").split("-")[1],
+		endYear:moment($scope.dateRange.end).format("YYYY-MM").split("-")[0],
+		endMonth:moment($scope.dateRange.end).format("YYYY-MM").split("-")[1],
+	};
+	
+	//机构树配置
+	$scope.deptTreeOptions = {
+		data: {
+			simpleData: {
+				enable: true,
+				idKey: "id",
+				pIdKey: "pid",
+				rootPId: 0
+			}
+		},
+		callback: {
+			onClick: zTreeOnClick
+		}
+	};
+
+	$scope.viewAppraisal=function(app){
+		$state.go('home.assesdetail',{assessId:app.id,orgId:$scope.selectedDeptNode.id,isManagedOrg:$scope.selectedDeptNode.isManagedOrg,isAssessor:app.assessable,isReviewer:app.reviewable});
+	}
+
+	//切换机构
+	function zTreeOnClick(event,treeId,treeNode){
+		$scope.selectedDeptNode = treeNode;
+		$scope.search.users = [];
+		getDeptUsers(treeNode.id,treeNode.isManagedOrg);
+	}
+	
+	$scope.cleanUsers = function(){
+		$scope.search.users = [];
+	}
+	
+	$scope.selectStatus = function(item){
+		$scope.search.status = item;
+		getDeptUsers($scope.selectedDeptNode.id,$scope.selectedDeptNode.isManagedOrg);
+	}
+	
+	$scope.cleanStatus = function(){
+		$scope.search.status = undefined;
+		getDeptUsers($scope.selectedDeptNode.id,$scope.selectedDeptNode.isManagedOrg);
+	}
+	
+	//机构树
+	$http.get("projects/v1/appraisalsOrgs").success(function(data){
+		$scope.deptTree = data;
+		$timeout(function(){
+			var treeObj = $.fn.zTree.getZTreeObj("deptDropTree");
+			var nodes = treeObj.getNodesByParam("isManagedOrg", true, null)
+			for(var i=0;i<nodes.length;i++){
+				for(var j=0;j<nodes[i].children.length;j++){
+					nodes[i].children[j].isManagedOrg = true;
+				}
+			}
+		},400);
+		
+		//$http.post("ws/dept/getCurrentUserDeptTree",{deepth:-1}).success(function(currentDept){//当前用户所在的部门
+		//	$scope.deptTree = currentDept.result;
+			var currentGroupDept = data[0];
+			$scope.selectedDeptNode = currentGroupDept;
+			
+			$scope.$watch("dateRange",function(v){
+				if(angular.isUndefined(v	)) return ;
+				//startYear endYear startMonth endMonth
+				$scope.search.startYear = moment(v.start).format("YYYY-MM").split("-")[0];
+				$scope.search.startMonth = moment(v.start).format("YYYY-MM").split("-")[1];
+				$scope.search.endYear = moment(v.end).format("YYYY-MM").split("-")[0];
+				$scope.search.endMonth = moment(v.end).format("YYYY-MM").split("-")[1];
+				
+				getDeptUsers($scope.selectedDeptNode.id,$scope.selectedDeptNode.isManagedOrg);
+			},true);
+			
+		//}) ;
+		
+	})
+	
+	//机构成员
+	function getDeptUsers(orgId,isManagedOrg){
+		$http.get("projects/v1/appraisalusers?orgId="+orgId+"&startYear="+$scope.search.startYear+"&startMonth="+$scope.search.startMonth+
+				"&endYear="+$scope.search.endYear+"&isManagedOrg="+$scope.selectedDeptNode.isManagedOrg+
+				"&endMonth="+$scope.search.endMonth+"&status="+($scope.search.status?$scope.search.status.title:"")).success(function(data){
+			var obj = {};
+			data = data.reduce(function(item, next) {
+				obj[next.userId] ? '' : obj[next.userId] = true && item.push(next);
+			    return item;
+			}, []);
+			$scope.deptUsers = data;
+			debounceSearch(1);
+		});
+	}
+	
+	$scope.$watch("search",function(v){
+		debounceSearch($scope.pageIndex);
+	},true);
+	
+	$scope.refreshList = function(pageIndex){
+		debounceSearch(pageIndex);
+	}
+	
+	var debounceSearch = debounce(function(pageIndex){
+		var user = "";
+		$scope.search.users.forEach(u=>{
+			user += "userId="+u.userId+"&";
+		})
+		$http.get("projects/v1/appraisals?"+user+"order=-year-month-score-level%2BuserName&page="+pageIndex+"&rows=10&orgId="+$scope.selectedDeptNode.id+"&startYear="+$scope.search.startYear+
+				"&startMonth="+$scope.search.startMonth+"&endYear="+$scope.search.endYear+"&isManagedOrg="+$scope.selectedDeptNode.isManagedOrg+
+				"&endMonth="+$scope.search.endMonth+"&status="+($scope.search.status?$scope.search.status.title:"")).success(function(data){
+			$scope.appraisals = data.contents;
+			$scope.total = data.total;
+			$timeout(function () {
+				$("#pageEle").controller("c2Pagination").goPage(pageIndex);
+			}, 0);
+		})
+	},600);
+}) ;
+
+</script>

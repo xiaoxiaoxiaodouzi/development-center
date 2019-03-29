@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="wr/getWeeklyReportTasks" log="false" className="com.chinacreator.c2.project.weeklyReport.WeeklyReportService" method="getWeeklyReportTasks">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取周报任务</name>
+  <desc>查询周报任务</desc>
+  <inputs>
+    <input collection="false" desc="@param" id="startParam" required="true" type="java.util.Map"/>
+    <input collection="false" desc="@param" id="endParam" required="true" type="java.util.Map"/>
+    <input collection="false" desc="" id="projectId" required="true" type="Integer"/>
+    <input collection="false" desc="@param" id="reportId" required="true" type="Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="@throws InvocationTargetException   @throws IllegalAccessException" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.startParam" name="startParam" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+    <param autoValue="Input.endParam" name="endParam" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+    <param autoValue="Input.projectId" name="projectId" signature="QInteger;" type="Integer"/>
+    <param autoValue="Input.reportId" name="reportId" signature="QInteger;" type="Integer"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

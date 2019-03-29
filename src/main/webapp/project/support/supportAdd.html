@@ -1,0 +1,86 @@
+<style>
+.al-control-label {
+    float: left;
+    padding-top: 8px;
+    text-align: right;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+#supportErrorMessage{opacity: 1;}
+#supportErrorMessage.ng-hide {
+  opacity: 0;
+}
+#supportErrorMessage.ng-hide-add, #supportErrorMessage.ng-hide-remove{
+  transition: all linear 0.5s;
+}
+</style>
+
+<div class="container">
+<div class="card m-t-20">
+   	<div class="card-header">
+		<h2>
+			支持单申请 <small>提交支持单申请前，请提前和执行方沟通好。</small>
+		</h2> 
+	</div>
+	
+	<div class="card-body clearfix" style="padding: 10px 26px;">
+		<div class="form-group fg-float" ng-class="{'has-error':!support.title&&!check.title}">
+            <div class="fg-line">
+                <input type="text" ng-model="support.title" class="input-lg form-control fg-input">
+            </div>
+            <label class="fg-label">标题</label>
+        </div>
+        <!-- <c2-dropdown bind-data-id="support.orgId" bind-data="org" items="supportOrgs" item-click="orgClick(org)" item-name="name" item-id="id" max-height="200">
+			<button class="btn btn-default btn-icon-text picker-shadow" ng-class="{'btn-danger':!support.orgId&&!check.orgId}">
+				<i class="md md-account-balance" title="申请部门" ></i> <span ng-if="!org">申请部门</span>{{org.name}} &nbsp;<span class="caret"></span>
+			</button>
+		</c2-dropdown> -->
+		<c2-dropdown id="deptDrop" tree-options="deptTreeOptions" tree-nodes="supportOrgs" max-height="200" clean-button="true">
+			<div class="picker picker-white text-overflow" style="margin-top: 3px;max-width:500px;">
+					<i class="md md-account-balance" title="申请部门"></i>  <span ng-if="!org">选择申请部门</span>{{org.name}} &nbsp;<span class="caret"></span>
+			</div>
+		</c2-dropdown>
+        <c2-dropdown bind-data-id="support.projectId" bind-data="project" items="supportProjects" item-name="name" item-id="id" filter="true" max-height="200">
+			<button class="btn btn-default btn-icon-text picker-shadow" ng-class="{'btn-danger':!support.projectId&&!check.projectId}">
+					<i class="md md-apps"></i> <span ng-if="!project">项目</span>{{project.name}} &nbsp;<span class="caret"></span>
+			</button>
+		</c2-dropdown>
+		<c2-dropdown bind-data-id="support.doOrgId" bind-data="worg" items="supportOrgs" item-name="name" item-id="id" max-height="200">
+			<button class="btn btn-default btn-icon-text picker-shadow" ng-disabled="true" ng-class="{'btn-danger':!support.doOrgId&&!check.doOrgId}">
+					<i class="md md-account-balance" title="执行部门"></i> <span ng-if="!worg">执行部门</span>{{worg.name}} &nbsp;<span class="caret"></span>
+			</button>
+		</c2-dropdown>
+		<c2-dropdown class="animate" bind-data-id="support.manageUser" bind-data="muser" items="manageUsers" item-name="userRealname" item-id="username" item-click="focusInput()" max-height="300" filter="true" filter-pinyin="false" filter-property="userRealname,jp,qp,jobNumber" filter-placeholder="姓名/拼音">
+            <button class="btn btn-default btn-icon-text picker-shadow" ng-class="{'btn-danger':!support.manageUser&&!check.manageUser}">
+					<i class="md md-person" title="对接人"></i> <span ng-if="!muser">对接人</span>{{muser.userRealname}} &nbsp;<span class="caret"></span>
+			</button>
+        </c2-dropdown>
+		<!-- <c2-dropdown class="animate" bind-data-id="support.checkUser" bind-data="cuser" items="checkUsers" item-name="userRealname" item-id="username" max-height="300" filter="true" filter-pinyin="false" filter-property="userRealname,jp,qp,jobNumber" filter-placeholder="姓名/拼音">
+            <button class="btn btn-default btn-icon-text picker-shadow" ng-class="{'btn-danger':!support.checkUser&&!check.checkUser}">
+					<i class="md md-person" title="验收负责人"></i> <span ng-if="!cuser">验收负责人</span>{{cuser.userRealname}} &nbsp;<span class="caret"></span>
+			</button>
+        </c2-dropdown> -->
+		<div class="row m-t-10">
+			<div class="form-group col-sm-3">
+			    <label class="control-label al-control-label" style="width:92px;">要求开始时间</label>
+		        <div style="margin-left: 102px;">
+		        <input date-time-picker format="YYYY年M月D日" ng-model="support.askStartTime" class="form-control" type="text"/>
+		    	</div>
+			</div>
+			<div class="form-group col-sm-3">
+			    <label class="control-label al-control-label" style="width:92px;">要求结束时间</label>
+		        <div style="margin-left: 102px;">
+		        <input date-time-picker format="YYYY年M月D日" ng-model="support.askEndTime" class="form-control" type="text"/>
+		    	</div>
+			</div>
+		</div>
+		<textarea c2-markdown-editor height="180" ng-model="support.description"></textarea>
+		<div class="text-right p-20">
+		<span id="supportErrorMessage" ng-show="passMessageShow" class="c-red m-r-10">请完善必填信息</span>
+		<button class="btn btn-default btn-icon-text m-r-10" ng-click="goBack()"><i class="md md-arrow-back"></i> 返回</button>
+		<button class="btn btn-primary btn-icon-text" ng-click="submit()"><i class="md md-check"></i> 提交申请</button>
+		</div>
+	</div>
+</div>
+</div>

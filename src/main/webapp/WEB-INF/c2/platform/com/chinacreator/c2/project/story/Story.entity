@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity:Entity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cdata="http://www.chinacreator.com/platform/mvc/cdata" xmlns:docket="http://www.chinacreator.com/platform/mvc/docket" xmlns:entity="http://www.chinacreator.com/platform/mvc/entity" dbType="MySQL" sn="story">
+  <docket:name>需求</docket:name>
+  <docket:desc>  </docket:desc>
+  <docket:createType>来自数据库</docket:createType>
+  <docket:primaryKey>
+    <docket:pkAttribute attribute="id"/>
+  </docket:primaryKey>
+  <docket:attributes>
+    <docket:attribute code="id" length="0" name="id" nullable="false" type="int" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="project" length="10" name="关联项目" nullable="true" precision="" type="int" default="0">
+      <docket:valueRange xsi:type="cdata:BDValueRange" displayExpr="data.Project.id" id="entity:com.chinacreator.c2.project.info.Project"/>
+    </docket:attribute>
+    <docket:attribute code="module" length="10" name="关联模块" nullable="true" precision="" type="int" default="0">
+      <docket:valueRange xsi:type="cdata:BDValueRange" displayExpr="data.Module.id" id="entity:com.chinacreator.c2.project.info.Module"/>
+    </docket:attribute>
+    <docket:attribute code="milestone" length="10" name="所属里程碑" nullable="true" precision="" type="int" default="0">
+      <docket:valueRange xsi:type="cdata:BDValueRange" displayExpr="data.Milestone.id" id="entity:com.chinacreator.c2.project.milestone.Milestone"/>
+    </docket:attribute>
+    <docket:attribute code="title" length="255" name="标题" nullable="true" type="string256" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="pri" length="8" name="优先级" nullable="true" type="bigdecimal" default="3">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="status_" length="1" name="正常，关闭，确认" nullable="true" type="char1" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="openedby" length="50" name="创建人" nullable="true" type="string64" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="openeddate" length="0" name="创建时间" nullable="true" type="timestamp" default="CURRENT_TIMESTAMP">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="spec" length="65535" name="需求定义" nullable="true" type="text" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="assigned_to" length="255" name="负责人" nullable="true" type="string256">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="order_no" length="0" name="排序号" nullable="true" type="int">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="startDate" length="0" name="开始时间" nullable="true" type="timestamp" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="endDate" length="0" name="预计完成时间" nullable="true" type="timestamp" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="type" length="1" name="功能，用户体验" nullable="true" type="char1" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="mainStory" length="65535" name="作为" nullable="true" type="text" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="storyFunction" length="65535" name="我想要" nullable="true" type="text" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="storyEffect" length="65535" name="以便于" nullable="true" type="text" default="">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="proposer" length="256" name="提出人" nullable="true" type="string256">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+    <docket:attribute code="completes" length="1" name="完成度" nullable="true" type="char1" default="0">
+      <docket:valueRange xsi:type="cdata:AllValueRange"/>
+    </docket:attribute>
+  </docket:attributes>
+  <docket:subDokcets/>
+  <docket:events/>
+  <docket:table ds="" table="zt_story"/>
+  <docket:cache>false</docket:cache>
+  <entity:datas/>
+  <entity:views/>
+</entity:Entity>

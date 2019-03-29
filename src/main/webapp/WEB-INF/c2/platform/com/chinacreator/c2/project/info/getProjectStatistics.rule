@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="project/statistics" log="false" className="com.chinacreator.c2.project.service.ProjectService" method="getProjectStatistics">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取项目基本的统计信息</name>
+  <desc>获取项目的基本统计信息(成员个数，任务个数等等)</desc>
+  <inputs>
+    <input collection="false" desc="项目id" id="projectIds" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="项目信息" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectIds" name="projectIds" signature="QList&lt;QInteger;>;" type="java.util.List"/>
+  </params>
+  <return signature="QList&lt;QProjectSimpleStatistics;>;" type="java.util.List"/>
+</CustomRule>

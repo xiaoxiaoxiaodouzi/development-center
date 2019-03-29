@@ -1,0 +1,60 @@
+<div id="${ele.id}Wrapper" class="col-sm-$!{param.span} no-padding #if($!{param.computeHeight}=="true")fixed-height-container#end">
+    <div c2-tree tree-id="$!{ele.id}" search-enable="$!{param.searchEnable}"
+        selected-multi="$!{param.selectedMulti}" name-is-html="$!{param.nameIsHtml}"
+        style="overflow:auto;"
+        #attr("tree-height=$!{param.height}" $!{param.height})
+		#attr("compute-height=$!{param.computeHeight}" $!{param.computeHeight})
+		#attr("compute-height-fix=$!{param.computeHeightFix}" $!{param.computeHeightFix})
+        #attr("bind-data='$!{ele.binding}'" $!{ele.binding})
+        #attr("auto-param='$!{param.autoParam}'" $!{param.autoParam})
+        #attr("other-param='$!{param.otherParam}'" $!{param.otherParam})
+        #attr("expend-level='$!{param.expendLevel}'" $!{param.expendLevel})
+        #attr("expend-all='$!{param.expendAll}'" $!{param.expendAll})
+        #attr("node-name='$!{param.nodeName}'" $!{param.nodeName})
+        #attr("node-title='$!{param.nodeTitle}'" $!{param.nodeTitle})
+        show-icon="$!{param.showIcon}" show-title="$!{param.showTitle}"
+        editor-enable="$!{param.editorEnable}" 
+        drag-move="$!{param.dragMove}" drag-copy="$!{param.dragCopy}" 
+        #attr("drag-moveable='functions.$!{param.dragMoveable}'" $!{param.dragMoveable})
+        #attr("drag-inner='functions.$!{param.dragInner}'" $!{param.dragInner})
+        search-hide="$!{param.searchHide}"
+        
+        show-rename-btn="$!{param.showRenameBtn}" show-remove-btn="$!{param.showRemoveBtn}"
+        check-enable="$!{param.checkEnable}" check-style="$!{param.checkStyle}"
+        auto-check-trigger = $!{param.autoCheckTrigger}
+        #attr("chkbox-type='$!{param.chkboxType}'" $!{param.chkboxType})
+        
+        #attr("filter='functions.$!{param.dataFilter}'" $!{param.dataFilter})
+        #attr("before-init='functions.$!{param.beforeInit}'" $!{param.beforeInit})
+        #attr("before-async='functions.$!{param.beforeAsync}'" $!{param.beforeAsync})
+        #attr("before-check='functions.$!{param.beforeCheck}'" $!{param.beforeCheck})
+        #attr("before-click='functions.$!{param.beforeClick}'" $!{param.beforeClick})
+        #attr("before-dbl-click='functions.$!{param.beforeDblClick}'" $!{param.beforeDblClick})
+        #attr("before-drag='functions.$!{param.beforeDrag}'" $!{param.beforeDrag})
+        #attr("before-drop='functions.$!{param.beforeDrop}'" $!{param.beforeDrop})
+        #attr("before-remove='functions.$!{param.beforeRemove}'" $!{param.beforeRemove})
+        #attr("before-rename='functions.$!{param.beforeRename}'" $!{param.beforeRename})
+        #attr("before-right-click='functions.$!{param.beforeRightClick}'" $!{param.beforeRightClick})
+        #attr("on-async-error='functions.$!{param.onAsyncError}'" $!{param.onAsyncError})
+        #attr("on-async-success='functions.$!{param.onAsyncSuccess}'" $!{param.onAsyncSuccess})
+        #attr("node-check='functions.$!{param.nodeCheck}'" $!{param.nodeCheck})
+        #attr("node-click='functions.$!{param.nodeClick}'" $!{param.nodeClick})
+        #attr("node-dbl-click='functions.$!{param.nodeDblClick}'" $!{param.nodeDblClick})
+        #attr("node-right-click='functions.$!{param.nodeRightClick}'" $!{param.nodeRightClick})
+        #attr("node-drag='functions.$!{param.nodeDrag}'" $!{param.nodeDrag})
+        #attr("node-drag-move='functions.$!{param.nodeDragMove}'" $!{param.nodeDragMove})
+        #attr("node-drop='functions.$!{param.nodeDrop}'" $!{param.nodeDrop})
+        #attr("node-remove='functions.$!{param.nodeRemove}'" $!{param.nodeRemove})
+        #attr("node-rename='functions.$!{param.nodeRename}'" $!{param.nodeRename})
+        >
+		<ul id="$!{ele.id}" class="ztree"></ul>
+		#if($!{param.searchEnable}=="true")
+		<div class="nav-search minimized">
+			<span class="form-search input-icon">
+				<input type="text" autocomplete="off" ng-model="$!{ele.id}_searchStr" class="input-small nav-search-input" placeholder="$!{param.searchPlaceholder}">
+				<i class="ace-icon fa fa-search nav-search-icon"></i>
+			</span>
+		</div>
+		#end
+	</div>
+</div>

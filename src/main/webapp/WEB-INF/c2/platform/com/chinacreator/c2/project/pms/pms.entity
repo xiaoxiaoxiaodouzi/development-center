@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity:Entity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:docket="http://www.chinacreator.com/platform/mvc/docket" xmlns:entity="http://www.chinacreator.com/platform/mvc/entity">
+  <docket:name>组合体</docket:name>
+  <docket:primaryKey/>
+  <docket:attributes/>
+  <docket:subDokcets/>
+  <docket:events/>
+  <docket:table/>
+  <entity:datas/>
+  <entity:views/>
+</entity:Entity>

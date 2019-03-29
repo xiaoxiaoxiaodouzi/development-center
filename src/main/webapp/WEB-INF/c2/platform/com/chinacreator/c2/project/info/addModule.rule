@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="module/addModule" log="false" className="com.chinacreator.c2.project.info.ModuleService" method="saveModule">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>新增模块</name>
+  <inputs>
+    <input collection="false" desc="" id="parent" required="true" type="int"/>
+    <input collection="false" desc="" id="projectId" required="true" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.project.info.Module"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.parent" name="parent" signature="I" type="int"/>
+    <param autoValue="Input.projectId" name="projectId" signature="QString;" type="String"/>
+  </params>
+  <return signature="QModule;" type="com.chinacreator.c2.project.info.Module"/>
+</CustomRule>

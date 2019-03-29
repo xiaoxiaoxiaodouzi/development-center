@@ -1,0 +1,155 @@
+<style>
+.media>.pull-left {
+	padding-right: 5px;
+}
+
+.listview .lv-item {
+	transition-property: all;
+	transition-duration: 0ms;
+}
+
+.milestone-detail .lv-item:hover {
+	background-color: #EFF4F9;
+}
+
+.listview .lv-item {
+	transition-property: all;
+	transition-duration: 0ms;
+}
+
+.my-label {
+	border: 1px solid rgb(33, 150, 243);
+	padding: 2px 12px;
+	background-color: rgb(228, 241, 253);
+	margin-top: 0;
+	margin-bottom: 10px;
+	float: left;
+	margin-left: 30px;
+	display: inline-block;
+}
+
+.my-pm-view {
+	line-height: 1.7;
+	border-bottom: 1px solid #eee;
+	padding-bottom: 10px;
+	/*padding: 20px 0 0;*/
+}
+
+.my-pm-view p{
+	color: #000;
+	margin-bottom: 15px;
+}
+.b-1-e{
+	border-bottom: 1px solid #eee;
+}
+
+.btn-addnewto-milestone {
+	margin-left:42%;
+}
+.btn-addnewto-milestone div{
+	margin-top:5px;
+	margin-left:0;
+}
+.btn-addnewto-milestone div i{
+	padding:0 3px 0 0;
+}
+.btn-addnewto-milestone div a{
+	font-size:14px;
+	color:#8bc34a;
+}
+.btn-addnewto-milestone div a:hover {
+	background:#8bc34a;
+	color:white;
+}
+</style>
+<div class="container" ng-controller="milestoneDetailCtrl">
+	<div class="card m-t-20" id="profile-main">
+		<div class="clearfix">
+			<div class="pmb-block">
+			
+				<div class="pmbb-header p-b-20 b-1-e">
+					<h2>
+						<i class="md md-av-timer m-r-5"></i>{{milestone.title}} <span class="pull-right"> 
+						<span class="f-14"> 截止：{{milestone.date | date:'yyyy年MM月dd日'}} </span> 
+							<span style="margin-left: 10px"> 
+								<span ng-if="milestone.status==0"><font color='#00BCD4' class="f-14">已保存</font></span>
+								<span ng-if="milestone.status==1"><font color='green' class="f-14">已确认</font></span>
+								<span ng-if="milestone.status==2"><font color='grey' class="f-14">已关闭</font></span>
+							</span> 
+							<span ng-if="milestone.status!='2'" style="margin-left: 10px" perm-res="{{project.id}}##milestone_cud">
+								<ul class="actions ng-scope">
+									<li class="dropdown" style="display: inline-block; top:-2px;">
+										<a href="" data-toggle="dropdown" aria-expanded="true"><i class="md md-more-vert"></i></a>
+										<ul class="dropdown-menu dropdown-menu-right">
+											<li ng-if="milestone.status!='2'"><a data-ng-click="milestone.isEditInfo=true" href="">编辑</a></li>
+											<li ng-if="milestone.status!='1'"><a data-ng-click="updateStatus(milestone,1)" href="">确认</a></li>
+											<li ng-if="milestone.status!='2'"><a data-ng-click="updateStatus(milestone,2)" href="">关闭</a></li>
+										</ul>
+									</li>
+								</ul>
+							</span>
+						</span>
+					</h2>
+				</div>
+
+				<div class="pmbb-body m-t-20 m-b-20">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="my-pm-view ng-binding ng-scope" data-ng-if="!milestone.isEditInfo" ng-bind-html="milestone.desc | markdown"></div>
+						</div>
+					</div>
+					<form data-ng-submit="saveInfo()" class="pmbb-edit" data-ng-if="milestone.isEditInfo">
+						<div class="pmbb-view ng-scope">
+							<div class="col-md-6">
+								<div class="fg-line">
+									<label for="title">名称</label> 
+									<input id="title" type="text" class="form-control ng-pristine ng-valid ng-touched"
+										ng-model="milestone.title" required="required">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="fg-line">
+									<label for="exampleInputEmail1">截止日期</label> 
+									<input id="deadline" type="text" date-time-picker class="form-control ng-pristine ng-valid ng-touched"
+										ng-model="milestone.date" format="YYYY-MM-DD">
+								</div>
+							</div>
+							<div class="col-md-12">
+								<textarea height="200" ng-model="milestone.desc" c2-markdown-editor class="form-control" rows="5" placeholder="需求描述"></textarea>
+							</div>
+							<div ng-if="isChange" class="fg-line" style="margin-top: 20px;margin-bottom: 20px;">
+								<input placeholder="请输入变更理由..." type="text" data-ng-model="milestone.reason"  required="required"
+									class="form-control ng-pristine ng-valid ng-touched">
+							</div>
+							<div>
+								<button class="btn btn-primary btn-sm" type="submit">保存</button>
+								<button class="btn btn-link btn-sm" ng-click="cancelInfo()">取消</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				
+				<div>
+					<ul class="tab-nav">
+						<li class="btn-wave" data-ui-sref-active="active" ng-click="changeList(0)">
+							<a data-ui-sref="project.milestoneDetail.storyList">需求 ({{story.closed}}/{{story.closed+story.opened}})</a></li>
+						<li class="btn-wave" data-ui-sref-active="active" ng-click="changeList(1)">
+							<a data-ui-sref="project.milestoneDetail.taskList">任务 ({{milestone.taskDoneNum}}/{{milestone.taskDoneNum+milestone.taskUndoneNum}})</a></li>
+						<li class="btn-wave" data-ui-sref-active="active" ng-click="changeList(2)">
+							<a data-ui-sref="project.milestoneDetail.bugList">bug ({{bug.closed}}/{{bug.closed+bug.opened}})</a></li>
+						<li class="btn-wave" data-ui-sref-active="active">
+							<a data-ui-sref="project.milestoneDetail.changeList">变更记录</a></li>
+							
+						<!-- 添加btn -->
+						<!-- <li class="btn-addnewto-milestone">							
+							<div ng-if="addToMilestone.status==0 && milestone.status!='2'"><a class="btn btn-link btn-sm" ng-click="addStuffToMilestone()"><i class="md md-add"></i>添加需求</a></div>
+							<div ng-if="addToMilestone.status==1 && milestone.status!='2'"><a class="btn btn-link btn-sm" ng-click="addStuffToMilestone()"><i class="md md-add"></i>添加任务</a></div>
+							<div ng-if="addToMilestone.status==2 && milestone.status!='2'"><a class="btn btn-link btn-sm" ng-click="addStuffToMilestone()"><i class="md md-add"></i>添加bug</a></div>
+						</li> -->
+					</ul>
+					<div id="detailUIView" ui-view="detailUIView"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

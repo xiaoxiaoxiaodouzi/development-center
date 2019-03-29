@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getCompleteTaskList" log="false" className="com.chinacreator.c2.project.stage.TaskStageService" method="getCompleteTaskList">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取项目部分完成任务</name>
+  <desc>查询部分或者全部已完成任务</desc>
+  <inputs>
+    <input collection="false" desc="@return" id="projectId" required="true" type="int"/>
+    <input collection="false" desc="" id="condition" required="true" type="java.util.Map"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+    <param autoValue="Input.condition" name="condition" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

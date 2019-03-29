@@ -1,0 +1,179 @@
+<style>
+.p-b-40{
+	padding-bottom:40px !important;     
+}
+.form-search {
+    height: 30px;
+    background: #eeeeee;
+    border: none;
+    margin-left: -10px;
+    border-radius: 3px;
+    width: 225px;
+    padding-left: 25px;
+    margin-right: 10px;
+    font-size: 12px;
+}
+</style>
+<div class="card-body p-b-40" ng-controller="setManagerCtrl">
+	<div class="listview lv-bordered lv-lg">
+	
+		<div class="m-b-10 f-14">已选用户：
+			<span ng-repeat="uu in selectedUser">
+				{{uu.userRealname}}
+			</span>
+		</div>
+				<div class="lv-header-alt">
+					<i class="md md-search" style="font-size: 18px;color: #A9A9A9;position: relative;left: 18px;"></i>
+	            	<input type="text" ng-model="name" class="form-search" placeholder="姓名">
+				</div>
+	
+				<div class="lv-body">				
+					<div class="media-body">
+						<table class="table table-hover m-b-0">
+							<thead>
+								<tr>
+									<th style="width: 20px; text-align: center;border-bottom: 1px solid #f0f0f0;"></th>
+									<th style="width: 80px; text-align: center;border-bottom: 1px solid #f0f0f0;">姓名</th>
+									<th style="width: 100px; text-align: center;border-bottom: 1px solid #f0f0f0;">邮箱</th>
+									<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">联系方式</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="user in users">
+									<td class="column" style="text-align: center;">
+										<i ng-show="user.check && !user.disabled" class="md md-check" ng-click="unCheckUser(user)" style="position: absolute;font-size: 18px;color: #009688;"></i>
+						   	  			<div ng-show="!user.check && !user.disabled" ng-click="checkUser(user)" style="width: 15px;height: 15px;
+						   	  				border: 1px solid grey;border-radius: 2px;position: absolute;margin-top: 4px;"></div>
+									</td>
+									<td class="column" style="text-align: center;">{{user.name}}</td>
+									<td class="column" style="text-align: center;">{{user.email}}</td>
+									<td class="column" style="text-align: center;">{{user.phone}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<c2-pagination id="pageEle" total="total" page-size="10"
+					on-page-change="refreshList(pageIndex)"></c2-pagination>
+				</div>
+			</div>
+			
+		<button class="btn btn-primary waves-effect" style="float: right;" ng-click="onOk()">确定</button>
+</div>
+
+<script>
+angular.module("developmentCenter").registerCtrl('setManagerCtrl',
+  function(Messenger,$scope,$timeout,$http,$stateParams,Modal,debounce){
+	
+	$scope.name="";
+	
+	$scope.selectedUser = $scope.managers?angular.copy($scope.managers):[];//已选择的机构考核负责人
+	
+	//查询行政分类机构下的所有用户作为选择用户
+	var getManagers = debounce(function(pageIndex,name){
+		$http.get("project/v1/users?page="+pageIndex+"&rows=10&name="+name).success(function(data){
+			for(var i=0;i<data.contents.length;i++){
+				data.contents[i].userId = data.contents[i].id;
+				data.contents[i].userRealname = data.contents[i].name;
+				for(var j=0;j<$scope.managers.length;j++){
+					if(data.contents[i].userId == $scope.managers[j].userId){
+						data.contents[i].check = true;
+					}
+				}
+			}
+			//父机构考核负责人不能再设置为子机构的负责人，子机构负责人设置为父机构时子机构数据应清除
+			disableCheck(data,pageIndex);
+		})
+	},800);
+	
+	function disableCheck(data,pageIndex){
+		var pids = [];
+		getPids(pids,$scope.dept.id);//当前机构的所有父机构id
+		var cond = {filters:{groupOp:'OR',rules:[]}};
+		pids.forEach(pid=>{
+			cond.filters.rules.push({field:'managedOrgId',op:'eq',data:pid});
+		})
+		$http.get("project/v1/orgassessormanagers?page=1&rows=999&cond="+encodeURI(JSON.stringify(cond))).success(function(manager){
+			for(var i=0;i<data.contents.length;i++){
+				manager.contents.forEach(ma=>{
+					if(ma.userId == data.contents[i].userId){
+						data.contents[i].disabled = true;
+					}
+				})
+			}
+			$scope.users = data.contents;
+			$scope.total = data.total;
+			$timeout(function () {
+				$("#pageEle").controller("c2Pagination").goPage(pageIndex);
+			}, 0);
+		})
+		
+	}
+	
+	var getPids = function(pids,id){
+		for(var i=0;i<$scope.deptTree.length;i++){
+			if($scope.deptTree[i].id == id){
+				pids.push($scope.deptTree[i].pid);
+				getPids(pids,$scope.deptTree[i].pid);
+			}
+		}
+	}
+	
+	$scope.refreshList = function(pageIndex){
+		getManagers(pageIndex,$scope.name);
+	}
+	
+	//搜索用户
+	$scope.$watch("name",function(v){
+		getManagers(1,v);
+	})	
+	
+	$scope.checkUser = function(user){
+		user.check = true;
+		$scope.selectedUser.push(user);
+	}
+	
+	$scope.unCheckUser = function(user){
+		user.check = false;
+		for(var i=0;i<$scope.selectedUser.length;i++){
+			if($scope.selectedUser[i].userId==user.id){
+				$scope.selectedUser.splice(i,1);
+				i--;
+			}
+		}
+	}
+	
+	//设置机构负责人
+	$scope.onOk = function(){
+		var list = [];
+		for(var i=0;i<$scope.selectedUser.length;i++){
+			var entity = {userId:$scope.selectedUser[i].userId,userRealname:$scope.selectedUser[i].userRealname,userName:$scope.selectedUser[i].userName,managedOrgId:$scope.dept.id,managedOrgName:$scope.dept.name};
+			list.push(entity);
+		}
+		if($scope.selectedUser.length==0 && $scope.managers.length>0){
+			var id = "";
+			$scope.managers.forEach(ma=>{
+				id += "id="+ma.id+"&";
+			})
+			$http.delete("project/v1/orgassessormanagers?"+id+"1=1").success(function(){
+				Messenger.success("修改成功");
+				Modal.close(list);
+			})
+		}else{
+			if($scope.managers && $scope.managers.length>0){//更改机构负责人
+				$http.put("project/v1/orgassessormanagers/"+$scope.dept.id,list).success(function(data){
+					Messenger.success("修改成功");
+					Modal.close(list);
+				})
+			}else{//新增负责人
+				$http.post("project/v1/orgassessormanagers",list).success(function(data){
+					Messenger.success("设置成功");
+					Modal.close(list);
+				})
+			}
+		}
+	}
+	
+}) ;
+
+</script>

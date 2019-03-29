@@ -1,0 +1,1240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.task.TaskMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_comunity_task.id ,
+		  c2_comunity_task.story_id ,
+		  c2_comunity_task.bug_id ,
+		  c2_comunity_task.project_id ,
+		  c2_comunity_task.module_id ,
+		  c2_comunity_task.milestone_id ,
+		  c2_comunity_task.name_ ,
+		  c2_comunity_task.pri ,
+		  c2_comunity_task.estimate ,
+		  c2_comunity_task.consumed ,
+		  c2_comunity_task.left_ ,
+		  c2_comunity_task.deadline ,
+		  c2_comunity_task.is_done ,
+		  c2_comunity_task.closed ,
+		  c2_comunity_task.description ,
+		  c2_comunity_task.assigned_to ,
+		  c2_comunity_task.est_start_date ,
+		  c2_comunity_task.finished_by ,
+		  c2_comunity_task.finished_date ,
+		  c2_comunity_task.creator ,
+		  c2_comunity_task.create_date ,
+		  c2_comunity_task.task_type ,
+		  c2_comunity_task.project_task_order ,
+		  c2_comunity_task.my_task_order ,
+		  c2_comunity_task.stage_id ,
+		  c2_comunity_task.is_confirm ,
+		  c2_comunity_task.confirm_user ,
+		  c2_comunity_task.support_id ,
+		  zt_project_plan_T1.id T1_id ,
+		  zt_project_plan_T1.name T1_name ,
+		  zt_project_plan_T1.parent T1_parent ,
+		  zt_project_plan_T1.order_ T1_order_ ,
+		  zt_project_plan_T1.c2_logicdelete_flag T1_c2_logicdelete_flag ,
+		  zt_project_plan_T1.start_date T1_start_date ,
+		  zt_project_plan_T1.end_date T1_end_date ,
+		  zt_project_plan_T1.assigned_to T1_assigned_to ,
+		  zt_project_plan_T1.description T1_description ,
+		  zt_project_plan_T1.sn T1_sn ,
+		  zt_project_plan_T1.level T1_level 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_comunity_task.id = #{id}</if>
+	    <if test="storyId != null">and c2_comunity_task.story_id = #{storyId}</if>
+	    <if test="bugId != null">and c2_comunity_task.bug_id = #{bugId}</if>
+	    <if test="projectId != null">and c2_comunity_task.project_id = #{projectId}</if>
+	    <if test="moduleId != null">and c2_comunity_task.module_id = #{moduleId}</if>
+	    <if test="milestoneId != null">and c2_comunity_task.milestone_id = #{milestoneId}</if>
+	    <if test="name != null">and c2_comunity_task.name_ = #{name}</if>
+	    <if test="pri != null">and c2_comunity_task.pri = #{pri}</if>
+	    <if test="estimate != null">and c2_comunity_task.estimate = #{estimate}</if>
+	    <if test="consumed != null">and c2_comunity_task.consumed = #{consumed}</if>
+	    <if test="left != null">and c2_comunity_task.left_ = #{left}</if>
+	    <if test="deadline != null">and c2_comunity_task.deadline = #{deadline}</if>
+	    <if test="isDone != null">and c2_comunity_task.is_done = #{isDone}</if>
+	    <if test="closed != null">and c2_comunity_task.closed = #{closed}</if>
+	    <if test="assignedTo != null">and c2_comunity_task.assigned_to = #{assignedTo}</if>
+	    <if test="estStartDate != null">and c2_comunity_task.est_start_date = #{estStartDate}</if>
+	    <if test="finishedBy != null">and c2_comunity_task.finished_by = #{finishedBy}</if>
+	    <if test="finishedDate != null">and c2_comunity_task.finished_date = #{finishedDate}</if>
+	    <if test="creator != null">and c2_comunity_task.creator = #{creator}</if>
+	    <if test="createDate != null">and c2_comunity_task.create_date = #{createDate}</if>
+	    <if test="taskType != null">and c2_comunity_task.task_type = #{taskType}</if>
+	    <if test="projectTaskOrder != null">and c2_comunity_task.project_task_order = #{projectTaskOrder}</if>
+	    <if test="myTaskOrder != null">and c2_comunity_task.my_task_order = #{myTaskOrder}</if>
+	    <if test="stageId != null">and c2_comunity_task.stage_id = #{stageId}</if>
+	    <if test="isConfirm != null">and c2_comunity_task.is_confirm = #{isConfirm}</if>
+	    <if test="confirmUser != null">and c2_comunity_task.confirm_user = #{confirmUser}</if>
+	    <if test="supportId != null">and c2_comunity_task.support_id = #{supportId}</if>
+		<if test="projectPlan != null and projectPlan.id !=null">and c2_comunity_task.project_plan = #{projectPlan.id}</if>
+</sql>
+
+
+<!-- ElementID:TaskResult,Generated=true -->
+<resultMap id="TaskResult" type="com.chinacreator.c2.project.task.Task">
+	<id property="id" column="id"/>
+	<result property="storyId" column="story_id"/>
+	<result property="bugId" column="bug_id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="moduleId" column="module_id"/>
+	<result property="milestoneId" column="milestone_id"/>
+	<result property="name" column="name_"/>
+	<result property="pri" column="pri"/>
+	<result property="estimate" column="estimate"/>
+	<result property="consumed" column="consumed"/>
+	<result property="left" column="left_"/>
+	<result property="deadline" column="deadline"/>
+	<result property="isDone" column="is_done"/>
+	<result property="closed" column="closed"/>
+	<result property="description" column="description"/>
+	<result property="assignedTo" column="assigned_to"/>
+	<result property="estStartDate" column="est_start_date"/>
+	<result property="finishedBy" column="finished_by"/>
+	<result property="finishedDate" column="finished_date"/>
+	<result property="creator" column="creator"/>
+	<result property="createDate" column="create_date"/>
+	<result property="taskType" column="task_type"/>
+	<result property="projectTaskOrder" column="project_task_order"/>
+	<result property="myTaskOrder" column="my_task_order"/>
+	<result property="stageId" column="stage_id"/>
+	<result property="isConfirm" column="is_confirm"/>
+	<result property="confirmUser" column="confirm_user"/>
+	<result property="supportId" column="support_id"/>
+	<association property="projectPlan" column="T1_id" javaType="com.chinacreator.c2.project.info.ProjectPlan" resultMap="ProjectPlanResult" columnPrefix="T1_"/>	
+</resultMap>
+
+<!--Generated=false-->
+<resultMap id="userResult" type="java.util.HashMap">
+	<id property="userId" column="user_id"/>
+	<result property="userName" column="user_name"/>
+	<result property="userRealname" column="user_realname"/>
+	<result property="userIcon" column="user_icon"/>
+</resultMap>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.task.Task" resultType="int">
+	select count(*) from c2_comunity_task 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.task.Task">
+	update c2_comunity_task
+<set>
+	<if test="storyId != null">story_id=#{storyId,jdbcType=NUMERIC},</if>
+	<if test="bugId != null">bug_id=#{bugId,jdbcType=NUMERIC},</if>
+	<if test="projectId != null">project_id=#{projectId,jdbcType=NUMERIC},</if>
+	<if test="moduleId != null">module_id=#{moduleId,jdbcType=NUMERIC},</if>
+	<if test="milestoneId != null">milestone_id=#{milestoneId,jdbcType=NUMERIC},</if>
+	<if test="name != null">name_=#{name,jdbcType=VARCHAR},</if>
+	<if test="pri != null">pri=#{pri,jdbcType=NUMERIC},</if>
+	<if test="estimate != null">estimate=#{estimate,jdbcType=NUMERIC},</if>
+	<if test="consumed != null">consumed=#{consumed,jdbcType=NUMERIC},</if>
+	<if test="left != null">left_=#{left,jdbcType=NUMERIC},</if>
+	<if test="deadline != null">deadline=#{deadline,jdbcType=DATE},</if>
+	<if test="isDone != null">is_done=#{isDone,jdbcType=CHAR},</if>
+	<if test="closed != null">closed=#{closed,jdbcType=CHAR},</if>
+	<if test="description != null">description=#{description,jdbcType=CLOB},</if>
+	<if test="assignedTo != null">assigned_to=#{assignedTo,jdbcType=VARCHAR},</if>
+	<if test="estStartDate != null">est_start_date=#{estStartDate,jdbcType=DATE},</if>
+	<if test="finishedBy != null">finished_by=#{finishedBy,jdbcType=VARCHAR},</if>
+	<if test="finishedDate != null">finished_date=#{finishedDate,jdbcType=DATE},</if>
+	<if test="creator != null">creator=#{creator,jdbcType=VARCHAR},</if>
+	<if test="createDate != null">create_date=#{createDate,jdbcType=TIMESTAMP},</if>
+	<if test="taskType != null">task_type=#{taskType,jdbcType=NUMERIC},</if>
+	<if test="projectTaskOrder != null">project_task_order=#{projectTaskOrder,jdbcType=NUMERIC},</if>
+	<if test="myTaskOrder != null">my_task_order=#{myTaskOrder,jdbcType=NUMERIC},</if>
+	<if test="stageId != null">stage_id=#{stageId,jdbcType=NUMERIC},</if>
+	<if test="isConfirm != null">is_confirm=#{isConfirm,jdbcType=VARCHAR},</if>
+	<if test="confirmUser != null">confirm_user=#{confirmUser,jdbcType=VARCHAR},</if>
+	<if test="supportId != null">support_id=#{supportId,jdbcType=NUMERIC},</if>
+	<if test="projectPlan != null and projectPlan.id !=null">project_plan=#{projectPlan.id,jdbcType=NUMERIC}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:update,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_comunity_task
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="productId==null">product_id = null,</if>
+		    <if test="moduleId==null">module_id = null,</if>
+		    <if test="name==null">name_ = null,</if>
+		    <if test="pri==null">pri = null,</if>
+		    <if test="estimate==null">estimate = null,</if>
+		    <if test="consumed==null">consumed = null,</if>
+		    <if test="left==null">left_ = null,</if>
+		    <if test="deadline==null">deadline = null,</if>
+		    <if test="status==null">status_ = null,</if>
+		    <if test="description==null">description = null,</if>
+		    <if test="assignedTo==null">assigned_to = null,</if>
+		    <if test="estStarteDate==null">est_starte_date = null,</if>
+		    <if test="finishedBy==null">finished_by = null,</if>
+		    <if test="finishedDate==null">finished_date = null,</if>
+		    <if test="deleteBy==null">delete_by = null,</if>
+		    <if test="deletedDate==null">deleted_date = null,</if>
+		    <if test="deletedReason==null">deleted_reason = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.task.Task">
+    delete from c2_comunity_task where 1=1 and id = #{id}
+</delete>
+
+<sql id="column_sql4taskDetail">
+		  c2_comunity_task.id ,
+		  c2_comunity_task.story_id ,
+		  c2_comunity_task.project_id ,
+		  c2_comunity_task.module_id ,
+		  c2_comunity_task.milestone_id ,
+		  c2_comunity_task.name_ ,
+		  c2_comunity_task.pri ,
+		  c2_comunity_task.estimate ,
+		  c2_comunity_task.consumed ,
+		  c2_comunity_task.left_ ,
+		  c2_comunity_task.deadline ,
+		  c2_comunity_task.is_done ,
+		  c2_comunity_task.description ,
+		  c2_comunity_task.assigned_to ,
+		  c2_comunity_task.est_start_date ,
+		  c2_comunity_task.finished_by ,
+		  c2_comunity_task.finished_date ,
+		  c2_comunity_task.bug_id ,
+		  td_sm_user.user_id
+</sql>
+
+<!-- ElementID:select,Generated=false -->
+<select id="select" parameterType="com.chinacreator.c2.project.task.Task" resultMap="TaskResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_task 
+	    <include refid="one2one_sql"/>
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+
+
+<resultMap id="TaskDetailResult" type="map">
+	<id property="id" column="id"/>
+	<result property="storyId" column="story_id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="moduleId" column="module_id"/>
+	<result property="milestoneId" column="milestone_id"/>
+	<result property="name" column="name_"/>
+	<result property="pri" column="pri"/>
+	<result property="estimate" column="estimate"/>
+	<result property="consumed" column="consumed"/>
+	<result property="left" column="left_"/>
+	<result property="deadline" column="deadline"/>
+	<result property="confirmUser" column="confirm_user"/>
+	<result property="isConfrim" column="is_confirm"/>
+	<result property="isDone" column="is_done" jdbcType="CHAR" javaType="boolean"/>
+	<result property="description" column="description"/>
+	<result property="assignedTo" column="assigned_to"/>
+	<result property="finishedBy" column="finished_by"/>
+	<result property="finishedDate" column="finished_date"/>
+	<result property="bugId" column="bug_id"/>
+	<result property="userId" column="user_id"/>
+</resultMap>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_comunity_task where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	<choose>
+		<when test="@com.chinacreator.c2.dao.util.EntityBeanUtil@isEntityObj(entity)">#{entity.id}</when>
+		<otherwise>#{entity}</otherwise>
+	</choose>
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="TaskResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_task 
+		<include refid="one2one_sql"/>
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="TaskResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_task 
+		<include refid="one2one_sql"/>
+		 where c2_comunity_task.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.task.Task" resultMap="TaskResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_task 
+		<include refid="one2one_sql"/>
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:selectByStoryids,Generated=false -->
+<select id="selectByStoryids" resultMap="TaskResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_task 
+	where c2_comunity_task.story_id in (
+<foreach collection="list" item="id" separator=",">
+		#{id,jdbcType=NUMERIC}
+</foreach>
+)
+</select>
+
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="TaskResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_task 
+	<include refid="one2one_sql"/>
+	where c2_comunity_task.id in (
+		select distinct id from c2_comunity_task inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_comunity_task 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_task.id = #{entity.id}</if>
+	        <if test="entity.storyId != null">and c2_comunity_task.story_id = #{entity.storyId}</if>
+	        <if test="entity.bugId != null">and c2_comunity_task.bug_id = #{entity.bugId}</if>
+	        <if test="entity.projectId != null">and c2_comunity_task.project_id = #{entity.projectId}</if>
+	        <if test="entity.moduleId != null">and c2_comunity_task.module_id = #{entity.moduleId}</if>
+	        <if test="entity.milestoneId != null">and c2_comunity_task.milestone_id = #{entity.milestoneId}</if>
+	        <if test="entity.name != null">and c2_comunity_task.name_ = #{entity.name}</if>
+	        <if test="entity.pri != null">and c2_comunity_task.pri = #{entity.pri}</if>
+	        <if test="entity.estimate != null">and c2_comunity_task.estimate = #{entity.estimate}</if>
+	        <if test="entity.consumed != null">and c2_comunity_task.consumed = #{entity.consumed}</if>
+	        <if test="entity.left != null">and c2_comunity_task.left_ = #{entity.left}</if>
+	        <if test="entity.deadline != null">and c2_comunity_task.deadline = #{entity.deadline}</if>
+	        <if test="entity.isDone != null">and c2_comunity_task.is_done = #{entity.isDone}</if>
+	        <if test="entity.closed != null">and c2_comunity_task.closed = #{entity.closed}</if>
+	        <if test="entity.assignedTo != null">and c2_comunity_task.assigned_to = #{entity.assignedTo}</if>
+	        <if test="entity.estStartDate != null">and c2_comunity_task.est_start_date = #{entity.estStartDate}</if>
+	        <if test="entity.finishedBy != null">and c2_comunity_task.finished_by = #{entity.finishedBy}</if>
+	        <if test="entity.finishedDate != null">and c2_comunity_task.finished_date = #{entity.finishedDate}</if>
+	        <if test="entity.creator != null">and c2_comunity_task.creator = #{entity.creator}</if>
+	        <if test="entity.createDate != null">and c2_comunity_task.create_date = #{entity.createDate}</if>
+	        <if test="entity.taskType != null">and c2_comunity_task.task_type = #{entity.taskType}</if>
+	        <if test="entity.projectTaskOrder != null">and c2_comunity_task.project_task_order = #{entity.projectTaskOrder}</if>
+	        <if test="entity.myTaskOrder != null">and c2_comunity_task.my_task_order = #{entity.myTaskOrder}</if>
+	        <if test="entity.stageId != null">and c2_comunity_task.stage_id = #{entity.stageId}</if>
+	        <if test="entity.isConfirm != null">and c2_comunity_task.is_confirm = #{entity.isConfirm}</if>
+	        <if test="entity.confirmUser != null">and c2_comunity_task.confirm_user = #{entity.confirmUser}</if>
+	        <if test="entity.supportId != null">and c2_comunity_task.support_id = #{entity.supportId}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.task.Task" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_comunity_task(
+		<trim prefixOverrides=",">
+		    <if test="storyId != null">story_id</if>
+		    <if test="bugId != null">,bug_id</if>
+		    <if test="projectId != null">,project_id</if>
+		    <if test="moduleId != null">,module_id</if>
+		    <if test="milestoneId != null">,milestone_id</if>
+		    <if test="name != null">,name_</if>
+		    <if test="pri != null">,pri</if>
+		    <if test="estimate != null">,estimate</if>
+		    <if test="consumed != null">,consumed</if>
+		    <if test="left != null">,left_</if>
+		    <if test="deadline != null">,deadline</if>
+		    <if test="isDone != null">,is_done</if>
+		    <if test="closed != null">,closed</if>
+		    <if test="description != null">,description</if>
+		    <if test="assignedTo != null">,assigned_to</if>
+		    <if test="estStartDate != null">,est_start_date</if>
+		    <if test="finishedBy != null">,finished_by</if>
+		    <if test="finishedDate != null">,finished_date</if>
+		    <if test="creator != null">,creator</if>
+		    <if test="createDate != null">,create_date</if>
+		    <if test="taskType != null">,task_type</if>
+		    <if test="projectTaskOrder != null">,project_task_order</if>
+		    <if test="myTaskOrder != null">,my_task_order</if>
+		    <if test="stageId != null">,stage_id</if>
+		    <if test="isConfirm != null">,is_confirm</if>
+		    <if test="confirmUser != null">,confirm_user</if>
+		    <if test="supportId != null">,support_id</if>
+		    <if test="projectPlan != null and projectPlan.id !=null">,project_plan</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="storyId != null">#{storyId,jdbcType=NUMERIC}</if>
+		    <if test="bugId != null">,#{bugId,jdbcType=NUMERIC}</if>
+		    <if test="projectId != null">,#{projectId,jdbcType=NUMERIC}</if>
+		    <if test="moduleId != null">,#{moduleId,jdbcType=NUMERIC}</if>
+		    <if test="milestoneId != null">,#{milestoneId,jdbcType=NUMERIC}</if>
+		    <if test="name != null">,#{name,jdbcType=VARCHAR}</if>
+		    <if test="pri != null">,#{pri,jdbcType=NUMERIC}</if>
+		    <if test="estimate != null">,#{estimate,jdbcType=NUMERIC}</if>
+		    <if test="consumed != null">,#{consumed,jdbcType=NUMERIC}</if>
+		    <if test="left != null">,#{left,jdbcType=NUMERIC}</if>
+		    <if test="deadline != null">,#{deadline,jdbcType=DATE}</if>
+		    <if test="isDone != null">,#{isDone,jdbcType=CHAR}</if>
+		    <if test="closed != null">,#{closed,jdbcType=CHAR}</if>
+		    <if test="description != null">,#{description,jdbcType=CLOB}</if>
+		    <if test="assignedTo != null">,#{assignedTo,jdbcType=VARCHAR}</if>
+		    <if test="estStartDate != null">,#{estStartDate,jdbcType=DATE}</if>
+		    <if test="finishedBy != null">,#{finishedBy,jdbcType=VARCHAR}</if>
+		    <if test="finishedDate != null">,#{finishedDate,jdbcType=DATE}</if>
+		    <if test="creator != null">,#{creator,jdbcType=VARCHAR}</if>
+		    <if test="createDate != null">,#{createDate,jdbcType=TIMESTAMP}</if>
+		    <if test="taskType != null">,#{taskType,jdbcType=NUMERIC}</if>
+		    <if test="projectTaskOrder != null">,#{projectTaskOrder,jdbcType=NUMERIC}</if>
+		    <if test="myTaskOrder != null">,#{myTaskOrder,jdbcType=NUMERIC}</if>
+		    <if test="stageId != null">,#{stageId,jdbcType=NUMERIC}</if>
+		    <if test="isConfirm != null">,#{isConfirm,jdbcType=VARCHAR}</if>
+		    <if test="confirmUser != null">,#{confirmUser,jdbcType=VARCHAR}</if>
+		    <if test="supportId != null">,#{supportId,jdbcType=NUMERIC}</if>
+		    <if test="projectPlan != null and projectPlan.id !=null">,#{projectPlan.id,jdbcType=NUMERIC}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_comunity_task (story_id,bug_id,project_id,module_id,milestone_id,name_,pri,estimate,consumed,left_,deadline,is_done,closed,description,assigned_to,est_start_date,finished_by,finished_date,creator,create_date,task_type,project_task_order,my_task_order,stage_id,is_confirm,confirm_user,support_id,project_plan)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.storyId,jdbcType = NUMERIC},
+		         #{entity.bugId,jdbcType = NUMERIC},
+		         #{entity.projectId,jdbcType = NUMERIC},
+		         #{entity.moduleId,jdbcType = NUMERIC},
+		         #{entity.milestoneId,jdbcType = NUMERIC},
+		         #{entity.name,jdbcType = VARCHAR},
+		         #{entity.pri,jdbcType = NUMERIC},
+		         #{entity.estimate,jdbcType = NUMERIC},
+		         #{entity.consumed,jdbcType = NUMERIC},
+		         #{entity.left,jdbcType = NUMERIC},
+		         #{entity.deadline,jdbcType = DATE},
+		         #{entity.isDone,jdbcType = CHAR},
+		         #{entity.closed,jdbcType = CHAR},
+		         #{entity.description,jdbcType = CLOB},
+		         #{entity.assignedTo,jdbcType = VARCHAR},
+		         #{entity.estStartDate,jdbcType = DATE},
+		         #{entity.finishedBy,jdbcType = VARCHAR},
+		         #{entity.finishedDate,jdbcType = DATE},
+		         #{entity.creator,jdbcType = VARCHAR},
+		         #{entity.createDate,jdbcType = TIMESTAMP},
+		         #{entity.taskType,jdbcType = NUMERIC},
+		         #{entity.projectTaskOrder,jdbcType = NUMERIC},
+		         #{entity.myTaskOrder,jdbcType = NUMERIC},
+		         #{entity.stageId,jdbcType = NUMERIC},
+		         #{entity.isConfirm,jdbcType = VARCHAR},
+		         #{entity.confirmUser,jdbcType = VARCHAR},
+		         #{entity.supportId,jdbcType = NUMERIC},
+				 #{entity.projectPlan.id,jdbcType=NUMERIC}
+				)
+</foreach>
+</insert>
+
+<select id="getColCommentByTableName" parameterType="map" resultType="map">
+	SELECT COLUMN_NAME col,COLUMN_COMMENT `comment`
+	FROM INFORMATION_SCHEMA.COLUMNS
+	WHERE table_name = #{tabName} and TABLE_SCHEMA = #{schema}
+</select>
+
+<select id="projectTaskList" parameterType="map" resultMap="taskListResult">
+SELECT
+	t.*,
+	u.user_id userId,
+	u.remark1 userIcon,
+	u.user_realname userRealname,
+	m.title milestoneTitle,
+	d.name_ moduleName,
+	p.name_ projectName,
+	p.arc_status arcStatus,
+	b.id bugId,
+	b.title bugTitle,
+	b.status_ bugState,
+	b.no bugNo,
+	b.project bugProjectId,
+	e.work_date,
+	e.record_date,
+	e.description as descr,
+	q.user_realname as creator_realname
+	FROM
+		c2_comunity_task t
+	LEFT JOIN td_sm_user u ON t.assigned_to = u.user_name
+	LEFT JOIN c2_comunity_milestone m ON t.milestone_id = m.id
+	LEFT JOIN zt_project p ON t.project_id = p.id
+	LEFT JOIN zt_module d ON t.module_id=d.id
+	LEFT JOIN c2_community_bug b ON t.bug_id = b.id
+	LEFT JOIN c2_comunity_task_estimate e on t.id=e.task_id
+	LEFT JOIN td_sm_user q on q.user_name=t.creator
+  where (<trim prefixOverrides="or">
+  		<if test="NotDone">t.is_done = 0</if>
+  		<if test="Done">or (t.is_done = 1 and t.closed = 0)</if>
+  		<if test="Closed">or (t.is_done = 1 and t.closed = 1)</if>
+  		</trim>
+  		<if test="!NotDone and !Done and !Closed">1=2</if>
+  		)
+      <if test="week.name == 'choose'">and t.deadline between #{week.st,jdbcType=DATE} and #{week.et,jdbcType=DATE}</if>
+      
+      <if test="labels != null">and t.id in (select task_id from c2_comunity_label_task where label_id in
+		<foreach item="l" collection="labels" open="(" separator="," close=")">
+	        '${l.id}'
+	    </foreach>
+	    )
+      </if>
+      <if test="projects != null">and t.project_id in 
+		<foreach item="p" collection="projects" open="(" separator="," close=")">
+	        '${p.id}'
+	    </foreach>
+	    and t.assigned_to in (<!-- 排除非项目成员 -->
+		select distinct t.user_name from c2_projectuser u,td_sm_user t where u.project_id=#{projects[0].id}
+		and u.user_id=t.user_id
+		UNION
+		select t.user_name from zt_project p,td_sm_user t where p.`owner`=t.user_id and p.id=#{projects[0].id}
+	  	)
+      </if>
+	  <if test="milestone != null">and t.milestone_id = #{milestone.id}</if>
+	  <if test="story != null">and t.story_id = #{story.id}</if>
+	  <if test="planId != null">and t.project_plan = #{planId}</if>
+      <if test="users != null and creator == null">and t.assigned_to in 
+		<foreach item="u" collection="users" open="(" separator="," close=")">
+	        '${u.userName}'
+	    </foreach>
+      </if>
+      <if test="creator !=null">and t.creator = #{creator}</if>
+      
+      <if test="bug">and t.bug_id is not null</if>
+       
+      
+      GROUP BY id ORDER BY t.is_done asc,t.closed asc,
+      <if test="orderWay!=null">${orderWay} asc,</if>
+      t.finished_date desc, t.id desc
+</select>  
+<select id="selectTask" parameterType="map" resultMap="taskListResult">
+    SELECT
+	c2_comunity_task.*,
+	u.user_id userId,
+	u.remark1 userIcon,
+	u.user_realname userRealname,
+	m.title milestoneTitle,
+	d.name_ moduleName,
+	p.name_ projectName,
+	p.arc_status arcStatus
+	FROM
+		c2_comunity_task
+	LEFT JOIN td_sm_user u ON c2_comunity_task.assigned_to = u.user_name
+	LEFT JOIN c2_comunity_milestone m ON c2_comunity_task.milestone_id = m.id
+	LEFT JOIN zt_project p ON c2_comunity_task.project_id = p.id
+	LEFT JOIN zt_module d ON c2_comunity_task.module_id=d.id
+	 <where>
+			<include refid="whereClause_sql"/>
+	</where>
+	order by c2_comunity_task.id desc
+</select>
+
+<select id="projectTask" parameterType="int" resultMap="taskListResult">
+SELECT
+	  t.id ,
+	  t.story_id ,
+	  t.bug_id ,
+	  t.project_id ,
+	  t.module_id ,
+	  t.milestone_id ,
+	  t.name_ ,
+	  t.pri ,
+	  t.estimate ,
+	  t.consumed ,
+	  t.left_ ,
+	  t.deadline ,
+	  t.is_done ,
+	  t.closed ,
+	  t.description ,
+	  t.assigned_to ,
+	  t.est_start_date ,
+	  t.finished_by ,
+	  t.finished_date ,
+	  t.creator,
+	  t.create_date ,
+	  t.task_type ,
+	  t.project_task_order ,
+	  t.my_task_order ,
+	  t.stage_id ,
+	  t.is_confirm ,
+	  t.confirm_user ,
+	  zt_project_plan_T1.id T1_id ,
+	  zt_project_plan_T1.name T1_name ,
+	  zt_project_plan_T1.parent T1_parent ,
+	  zt_project_plan_T1.order_ T1_order_ ,
+	  zt_project_plan_T1.c2_logicdelete_flag T1_c2_logicdelete_flag ,
+	  zt_project_plan_T1.start_date T1_start_date ,
+	  zt_project_plan_T1.end_date T1_end_date ,
+	  zt_project_plan_T1.assigned_to T1_assigned_to,
+	u.user_id userId,
+	u.remark1 userIcon,
+	u.user_realname userRealname,
+	m.title milestoneTitle,
+	d.name_ moduleName,
+	p.name_ projectName,
+	p.arc_status arcStatus,
+	b.no bugNo
+FROM
+	c2_comunity_task t
+LEFT JOIN td_sm_user u ON t.assigned_to = u.user_name
+LEFT JOIN c2_comunity_milestone m ON t.milestone_id = m.id
+LEFT JOIN zt_project p ON t.project_id = p.id
+LEFT JOIN zt_module d ON t.module_id=d.id
+LEFT JOIN c2_community_bug b ON t.bug_id=b.id
+left outer join zt_project_plan zt_project_plan_T1 on t.project_plan=zt_project_plan_T1.id
+where t.id = #{_parameter}
+</select>  
+
+<resultMap type="map" id="taskListResult">
+	<id property="id" column="id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="moduleId" column="module_id"/>
+	<result property="storyId" column="story_id"/>
+	<result property="stageId" column="stage_id"/>
+	<result property="name" column="name_"/>
+	<result property="pri" column="pri"/>
+	<result property="estimate" column="estimate"/>
+	<result property="consumed" column="consumed"/>
+	<result property="left" column="left_"/>
+	<result property="deadline" column="deadline"/>
+	<result property="isDone" column="is_done" javaType="boolean"/>
+	<result property="closed" column="closed" javaType="boolean"/>
+	<result property="isConfirm" column="is_confirm"/>
+	<result property="confirmUser" column="confirm_user"/>
+	<result property="description" column="description"/>
+	<result property="assignedTo" column="assigned_to"/>
+	<result property="finishedDate" column="finished_date"/>
+	<result property="bugId" column="bug_id"/>
+	<result property="creator" column="creator"/>
+	<result property="userIcon" column="userIcon"/>
+	<result property="userRealname" column="userRealname"/>
+	<result property="milestoneTitle" column="milestoneTitle"/>
+	<result property="milestoneId" column="milestone_id"/>
+	<result property="taskType" column="task_type"/>
+	<result property="projectName" column="projectName"/>
+	<result property="myTaskOrder" column="my_task_order"/>
+	<result property="projectTaskOrder" column="project_task_order"/>
+	<association property="projectPlan" column="T1_id" javaType="com.chinacreator.c2.project.info.ProjectPlan" resultMap="ProjectPlanResult" columnPrefix="T1_"/>
+	<collection property="labels" column="id" select="taskLables"/>
+</resultMap>
+
+<select id="taskLables" parameterType="int" resultType="com.chinacreator.c2.project.label.Label">
+SELECT
+	l.id,
+	l.name,
+	l.color
+FROM
+	c2_comunity_label_task lt
+JOIN c2_comunity_label l ON lt.label_id = l.id
+WHERE
+	lt.task_id = #{id}
+</select>
+
+<select id="selectCalenderEstimateEvents" parameterType="map" resultMap="calenderResult">
+	select sum(binary(tt.consumed)) title,tt.date start
+		from (select est.consumed,est.date from c2_comunity_task_estimate est LEFT outer JOIN c2_comunity_task task 
+			on est.task_id = task.id where est.account =#{assignedTo}
+				and est.work_date <![CDATA[>=]]> STR_TO_DATE(#{start},'%Y-%m-%d') 
+				and est.work_date <![CDATA[<=]]> STR_TO_DATE(#{end},'%Y-%m-%d')
+		) tt 
+	GROUP BY tt.date
+</select>
+
+<resultMap type="map" id="calenderResult">
+	<result property="title" column="title" javaType="string"/>
+	<result property="start" column="start" javaType="string"/>
+</resultMap>
+
+<select id="getTaskList" parameterType="string" resultMap="getTaskListResult">
+	select 
+		  c2_comunity_task.id taskId,
+		  c2_comunity_task.name_ taskName,
+		  zt_project.name_ projectName,
+		  zt_project.id projectId 
+		 from c2_comunity_task 
+		 LEFT JOIN zt_project ON c2_comunity_task.project_id = zt_project.id
+		 where c2_comunity_task.assigned_to = #{_parameter} and c2_comunity_task.is_done = 0
+		 order by zt_project.id asc ,c2_comunity_task.id desc
+</select>
+
+<select id="getTaskListByProjectId" parameterType="int" resultType="java.util.HashMap">
+	select t.*,temp.* from c2_comunity_task t,(
+		select s.*,m.name_ moduleName from zt_story s,zt_module m where s.module=m.id and s.project=#{projectId,jdbcType=NUMERIC} 
+	)temp where t.story_id=temp.id GROUP BY t.story_id;
+</select>
+
+<resultMap type="java.util.LinkedHashMap" id="getTaskListResult">
+	<id property="taskId" column="taskId"/>
+	<result property="taskName" column="taskName"/>
+	<result property="projectName" column="projectName"/>
+	<result property="projectId" column="projectId"/>
+</resultMap>
+
+<select id="selectTasksInPeriod" parameterType="map" resultMap="selectTasksInPeriodResult">
+	select 
+		<include refid="selectTasksInPeriod_column_sql"/>
+	    from c2_comunity_task
+	    LEFT JOIN td_sm_user ON c2_comunity_task.assigned_to = td_sm_user.user_name
+		 <where>
+		 	<if test="userIDs!=null">
+		 		and c2_comunity_task.assigned_to 
+		 		in (
+					select 
+						td_sm_user.user_name
+					from c2_projectuser left join td_sm_user on c2_projectuser.user_id = td_sm_user.user_id 
+					where c2_projectuser.project_id = #{projectId,jdbcType=NUMERIC}  order by job_id
+				)
+		 	</if>
+			<if test="projectId != null">and c2_comunity_task.project_id = #{projectId}</if>
+			and (
+			(
+			c2_comunity_task.est_start_date <![CDATA[>=]]> #{start,jdbcType=DATE}
+			and c2_comunity_task.est_start_date <![CDATA[<=]]> #{end,jdbcType=DATE}
+			) or 
+			(
+			c2_comunity_task.deadline <![CDATA[>=]]> #{start,jdbcType=DATE}
+			and c2_comunity_task.deadline <![CDATA[<=]]> #{end,jdbcType=DATE}
+			) or 
+			(
+			c2_comunity_task.est_start_date <![CDATA[<=]]> #{start,jdbcType=DATE}
+			and c2_comunity_task.deadline <![CDATA[>=]]> #{end,jdbcType=DATE}
+			)
+			or c2_comunity_task.id in (
+			select distinct c2_comunity_task.id from c2_comunity_task 
+	    	left join c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id
+		 	<where>
+				<if test="projectId != null">and c2_comunity_task.project_id = #{projectId}</if>
+				and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}
+				and c2_comunity_task_estimate.work_date <![CDATA[<=]]>  #{end,jdbcType=DATE}
+				and c2_comunity_task.estimate != c2_comunity_task_estimate.left_ <!-- 兼容禅道(禅道只要建一个任务就会往工时表插一条记录。。。) -->
+			</where>
+			)
+			)
+		</where>
+		order by  c2_comunity_task.assigned_to desc
+</select>
+
+<sql id="selectTasksInPeriod_column_sql">
+		  c2_comunity_task.id ,
+		  c2_comunity_task.story_id ,
+		  c2_comunity_task.project_id ,
+		  c2_comunity_task.module_id ,
+		  c2_comunity_task.milestone_id ,
+		  c2_comunity_task.name_ ,
+		  c2_comunity_task.pri ,
+		  c2_comunity_task.estimate ,
+		  c2_comunity_task.consumed ,
+		  c2_comunity_task.left_ ,
+		  c2_comunity_task.deadline ,
+		  c2_comunity_task.is_done ,
+		  c2_comunity_task.description ,
+		  c2_comunity_task.est_start_date ,
+		  c2_comunity_task.finished_by ,
+		  c2_comunity_task.finished_date ,
+		  CONCAT(td_sm_user.user_name,'/-/',td_sm_user.user_realname) assigned_to
+</sql>
+
+<resultMap id="selectTasksInPeriodResult" type="com.chinacreator.c2.project.task.Task">
+	<id property="id" column="id"/>
+	<result property="storyId" column="story_id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="moduleId" column="module_id"/>
+	<result property="milestoneId" column="milestone_id"/>
+	<result property="name" column="name_"/>
+	<result property="pri" column="pri"/>
+	<result property="estimate" column="estimate"/>
+	<result property="consumed" column="consumed"/>
+	<result property="left" column="left_"/>
+	<result property="deadline" column="deadline"/>
+	<result property="isDone" column="is_done"/>
+	<result property="description" column="description"/>
+	<result property="assignedTo" column="assigned_to"/>
+	<result property="estStartDate" column="est_start_date"/>
+	<result property="finishedBy" column="finished_by"/>
+	<result property="finishedDate" column="finished_date"/>
+</resultMap>
+
+<select id="totalProjectTask" parameterType="map" resultType="int">
+SELECT count(*) totalProjectTask from c2_comunity_task where project_id = #{projectId}
+and <if test="planId !=null">project_plan=#{planId} </if>
+</select>
+
+<select id="doneProjectTask" parameterType="map" resultType="int">
+SELECT count(*) doneProjectTask from c2_comunity_task where is_done = 1 and project_id=#{projectId}
+and <if test="planId !=null">project_plan=#{planId} </if>
+</select>
+<select id="sumConsumedProjectTask" parameterType="map" resultType="int">
+SELECT sum(binary(consumed)) sumConsumedProjectTask from c2_comunity_task where project_id=#{projectId}
+and <if test="planId !=null">project_plan=#{planId} </if>
+</select>
+
+<select id="totalUserTask" parameterType="map" resultType="int">
+SELECT count(*) totalProjectTask from c2_comunity_task where assigned_to = #{userName}
+</select>
+<select id="doneUserTask" parameterType="map" resultType="int">
+SELECT count(*) doneProjectTask from c2_comunity_task where is_done = 1 and assigned_to=#{userName}
+</select>
+<select id="sumConsumedUserTask" parameterType="map" resultType="int">
+SELECT sum(binary(consumed)) sumConsumedProjectTask from c2_comunity_task where assigned_to=#{userName}
+</select>
+
+<update id="updateWithNull" parameterType="com.chinacreator.c2.project.task.Task">
+	update c2_comunity_task
+<set>
+	<if test="storyId != null">story_id=#{storyId,jdbcType=NUMERIC},</if>
+	<if test="projectId != null">project_id=#{projectId,jdbcType=NUMERIC},</if>
+	<if test="moduleId != null">module_id=#{moduleId,jdbcType=NUMERIC},</if>
+	<if test="milestoneId != null">milestone_id=#{milestoneId,jdbcType=NUMERIC},</if>
+	<if test="name != null">name_=#{name,jdbcType=VARCHAR},</if>
+	<if test="pri != null">pri=#{pri,jdbcType=NUMERIC},</if>
+	<if test="estimate != null">estimate=#{estimate,jdbcType=NUMERIC},</if>
+	<if test="consumed != null">consumed=#{consumed,jdbcType=NUMERIC},</if>
+	<if test="left != null">left_=#{left,jdbcType=NUMERIC},</if>
+	<if test="isDone != null">is_done=#{isDone,jdbcType=CHAR},</if>
+	<if test="closed != null">closed=#{closed,jdbcType=CHAR},</if>
+	<if test="description != null">description=#{description,jdbcType=CLOB},</if>
+	<if test="assignedTo != null">assigned_to=#{assignedTo,jdbcType=VARCHAR},</if>
+	<if test="stageId != null">stage_id=#{stageId,jdbcType=NUMERIC},</if>
+	
+	<choose>
+		<when test="milestoneId==null">milestone_id=null,</when>
+		<otherwise>milestone_id=#{milestoneId,jdbcType=NUMERIC},</otherwise>
+	</choose>
+	<choose>
+		<when test="deadline==null">deadline=null,</when>
+		<otherwise>deadline=#{deadline,jdbcType=DATE},</otherwise>
+	</choose>
+	<choose>
+		<when test="finishedBy==null">finished_by=null,</when>
+		<otherwise>finished_by=#{finishedBy,jdbcType=VARCHAR},</otherwise>
+	</choose>
+	<choose>
+		<when test="finishedDate==null">finished_date=null</when>
+		<otherwise>finished_date=#{finishedDate,jdbcType=DATE}</otherwise>
+	</choose>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+<select id="selectSingleWeeklyReportTask" parameterType="map" resultMap="selectRangeTasksWithProjectIdResult">
+select 
+	  <include refid="selectRangeTasksWithProjectId_column_sql"/>
+    from c2_comunity_task
+    LEFT JOIN td_sm_user ON c2_comunity_task.assigned_to = td_sm_user.user_name
+     <if test="reportId !=null">
+    	 LEFT JOIN c2_comunity_task_snapshot on c2_comunity_task.id = c2_comunity_task_snapshot.task_id and c2_comunity_task_snapshot.report_id = #{reportId,jdbcType=NUMERIC}
+    </if>
+    <if test="reportId ==null">
+    	 LEFT JOIN c2_comunity_task_snapshot on c2_comunity_task.id = c2_comunity_task_snapshot.task_id and c2_comunity_task_snapshot.report_id is null
+    </if>
+     <where>
+	(
+		
+		(
+		c2_comunity_task.deadline <![CDATA[>=]]> #{start,jdbcType=DATE}
+		and c2_comunity_task.deadline <![CDATA[<=]]> #{end,jdbcType=DATE}
+		)
+	) 
+	and c2_comunity_task.id = #{taskId}
+	</where>
+</select>
+
+<select id="selectRangeTasksWithProjectId" parameterType="map" resultMap="selectRangeTasksWithProjectIdResult">
+	select 
+		<include refid="selectRangeTasksWithProjectId_column_sql"/>
+	    from c2_comunity_task
+	    LEFT JOIN td_sm_user ON c2_comunity_task.assigned_to = td_sm_user.user_name
+	    <if test="reportId !=null">
+	    	 LEFT JOIN c2_comunity_task_snapshot on c2_comunity_task.id = c2_comunity_task_snapshot.task_id and c2_comunity_task_snapshot.report_id = #{reportId,jdbcType=NUMERIC}
+	    </if>
+	    <if test="reportId ==null">
+	    	 LEFT JOIN c2_comunity_task_snapshot on c2_comunity_task.id = c2_comunity_task_snapshot.task_id and c2_comunity_task_snapshot.report_id is null
+	    </if>
+		 <where>
+		(
+		   
+		  (
+		    c2_comunity_task.deadline <![CDATA[>=]]> #{start,jdbcType=DATE}
+		    and c2_comunity_task.deadline <![CDATA[<=]]> #{end,jdbcType=DATE}
+		  ) 
+			
+			or c2_comunity_task.id in (
+				select distinct c2_comunity_task.id from c2_comunity_task 
+		    	left join c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id
+			 	<where>
+					<if test="projectId != null">
+						and c2_comunity_task.assigned_to 
+				 		in (
+				 			SELECT
+								td_sm_user.user_name
+							FROM c2_projectuser
+							LEFT JOIN td_sm_user ON c2_projectuser.user_id = td_sm_user.user_id
+							WHERE
+								c2_projectuser.project_id = #{projectId,jdbcType=NUMERIC}
+							UNION
+							select td_sm_user.user_name from td_sm_user 
+							INNER JOIN zt_project on td_sm_user.user_id = zt_project.`owner` and zt_project.id = #{projectId,jdbcType=NUMERIC}
+						)
+					</if>
+					and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}
+					and c2_comunity_task_estimate.work_date <![CDATA[<=]]>  #{end,jdbcType=DATE}
+				</where>
+			)
+		)
+			<if test="projectId!=null">
+		 		and c2_comunity_task.assigned_to 
+		 		in (
+		 			SELECT
+						td_sm_user.user_name
+					FROM c2_projectuser
+					LEFT JOIN td_sm_user ON c2_projectuser.user_id = td_sm_user.user_id
+					WHERE
+						c2_projectuser.project_id = #{projectId,jdbcType=NUMERIC}
+					UNION
+					select td_sm_user.user_name from td_sm_user 
+					INNER JOIN zt_project on td_sm_user.user_id = zt_project.`owner` and zt_project.id = #{projectId,jdbcType=NUMERIC}
+				)
+		 	</if>
+		</where>
+		order by  c2_comunity_task.assigned_to desc
+</select>
+
+<select id="selectNextWeekTasksWithProjectId" parameterType="map" resultMap="selectRangeTasksWithProjectIdResult">
+	select 
+		<include refid="selectRangeTasksWithProjectId_column_sql"/>
+	    from c2_comunity_task
+	    LEFT JOIN td_sm_user ON c2_comunity_task.assigned_to = td_sm_user.user_name
+	    <if test="reportId !=null">
+	    	 LEFT JOIN c2_comunity_task_snapshot on c2_comunity_task.id = c2_comunity_task_snapshot.task_id and c2_comunity_task_snapshot.report_id = #{reportId,jdbcType=NUMERIC}
+	    </if>
+	    <if test="reportId ==null">
+	    	 LEFT JOIN c2_comunity_task_snapshot on c2_comunity_task.id = c2_comunity_task_snapshot.task_id and c2_comunity_task_snapshot.report_id is null
+	    </if>
+		 <where>
+		(
+			(
+			c2_comunity_task.deadline <![CDATA[>=]]> #{start,jdbcType=DATE}
+			and c2_comunity_task.deadline <![CDATA[<=]]> #{end,jdbcType=DATE}
+			) 
+			or c2_comunity_task.id in (
+				select distinct c2_comunity_task.id from c2_comunity_task 
+		    	left join c2_comunity_task_estimate on c2_comunity_task.id = c2_comunity_task_estimate.task_id
+			 	<where>
+					<if test="projectId != null">
+						and c2_comunity_task.assigned_to 
+				 		in (
+				 			SELECT
+								td_sm_user.user_name
+							FROM c2_projectuser
+							LEFT JOIN td_sm_user ON c2_projectuser.user_id = td_sm_user.user_id
+							WHERE
+								c2_projectuser.project_id = #{projectId,jdbcType=NUMERIC}
+							UNION
+							select td_sm_user.user_name from td_sm_user 
+							INNER JOIN zt_project on td_sm_user.user_id = zt_project.`owner` and zt_project.id = #{projectId,jdbcType=NUMERIC}
+						)
+					</if>
+					and c2_comunity_task_estimate.work_date <![CDATA[>=]]> #{start,jdbcType=DATE}
+					and c2_comunity_task_estimate.work_date <![CDATA[<=]]>  #{end,jdbcType=DATE}
+				</where>
+			)
+		)
+			<if test="projectId!=null">
+		 		and c2_comunity_task.assigned_to 
+		 		in (
+		 			SELECT
+						td_sm_user.user_name
+					FROM c2_projectuser
+					LEFT JOIN td_sm_user ON c2_projectuser.user_id = td_sm_user.user_id
+					WHERE
+						c2_projectuser.project_id = #{projectId,jdbcType=NUMERIC}
+					UNION
+					select td_sm_user.user_name from td_sm_user 
+					INNER JOIN zt_project on td_sm_user.user_id = zt_project.`owner` and zt_project.id = #{projectId,jdbcType=NUMERIC}
+				)
+		 	</if>
+		</where>
+		order by  c2_comunity_task.assigned_to desc
+</select>
+<sql id="selectRangeTasksWithProjectId_column_sql">
+		  distinct(c2_comunity_task.id) taskId,
+		  c2_comunity_task.story_id ,
+		  c2_comunity_task.project_id ,
+		  c2_comunity_task.module_id ,
+		  c2_comunity_task.milestone_id ,
+		  c2_comunity_task.name_ ,
+		  c2_comunity_task.pri ,
+		  c2_comunity_task.estimate ,
+		  c2_comunity_task.consumed ,
+		  c2_comunity_task.left_ ,
+		  c2_comunity_task.deadline ,
+		  c2_comunity_task.is_done ,
+		  c2_comunity_task.description ,
+		  c2_comunity_task.est_start_date ,
+		  c2_comunity_task.finished_by ,
+		  c2_comunity_task.finished_date ,
+		  c2_comunity_task.assigned_to ,
+		  td_sm_user.user_realname assignedToRealName ,
+		  c2_comunity_task_snapshot.reason,
+		  c2_comunity_task_snapshot.handle
+</sql>
+	
+<resultMap id="selectRangeTasksWithProjectIdResult" type="map">
+	<result property="taskId" column="taskId" jdbcType="NUMERIC"/>
+	<result property="storyId" column="story_id" jdbcType="NUMERIC"/>
+	<result property="projectId" column="project_id" jdbcType="NUMERIC"/>
+	<result property="moduleId" column="module_id" jdbcType="NUMERIC"/>
+	<result property="milestoneId" column="milestone_id" jdbcType="NUMERIC"/>
+	<result property="name" column="name_" jdbcType="VARCHAR"/>
+	<result property="pri" column="pri"/>
+	<result property="estimate" column="estimate" jdbcType="NUMERIC"/>
+	<result property="consumed" column="consumed" jdbcType="NUMERIC"/>
+	<result property="left" column="left_" jdbcType="NUMERIC"/>
+	<result property="deadline" column="deadline" jdbcType="DATE" javaType="java.sql.Date"/>
+	<result property="isDone" column="is_done" jdbcType="CHAR" javaType="BOOLEAN"/>
+	<result property="description" column="description" jdbcType="CLOB"/>
+	<result property="assignedTo" column="assigned_to" jdbcType="VARCHAR"/>
+	<result property="assignedToRealName" column="assignedToRealName" jdbcType="VARCHAR"/>
+	<result property="finishedBy" column="finished_by" jdbcType="VARCHAR"/>
+	<result property="finishedDate" column="finished_date" jdbcType="DATE" javaType="java.sql.Date"/>
+	<result property="reason" column="reason" jdbcType="VARCHAR"/>
+	<result property="handle" column="handle" jdbcType="VARCHAR"/>
+</resultMap>
+
+<select id="selectTaskIdByBug" parameterType="Integer" resultMap="TaskResult">
+	select * from c2_comunity_task where bug_id=#{bugId,jdbcType=NUMERIC}
+</select>
+
+<select id="selectTaskOperationInfo" parameterType="int" resultType="map">
+select t.id,t.name_ taskName,t.assigned_to assignedTo,a.actor from c2_comunity_task t
+left join c2_comunity_action a on t.id=a.target_id
+where t.id = #{taskId} order by a.date_ desc limit 0,1
+</select>
+
+<select id="teamTaskList" parameterType="map" resultMap="taskListResult">
+SELECT
+	t.*,
+	u.user_id userId,
+	u.remark1 userIcon,
+	u.user_realname userRealname,
+	m.title milestoneTitle,
+	d.name_ moduleName,
+	p.name_ projectName,
+	p.arc_status arcStatus,
+	b.id bugId,
+	b.title bugTitle,
+	b.status_ bugState,
+	b.no bugNo,
+	b.project bugProjectId,
+	e.work_date ,
+	e.description as descr
+	FROM
+		c2_comunity_task t
+	LEFT JOIN td_sm_user u ON t.assigned_to = u.user_name
+	LEFT JOIN c2_comunity_milestone m ON t.milestone_id = m.id
+	LEFT JOIN zt_project p ON t.project_id = p.id
+	LEFT JOIN zt_module d ON t.module_id=d.id
+	LEFT JOIN c2_community_bug b ON t.bug_id = b.id
+	LEFT JOIN c2_comunity_task_estimate e on t.id=e.task_id
+  where (<trim prefixOverrides="or">
+  		<if test="NotDone">t.is_done = 0</if>
+  		<if test="Done">or (t.is_done = 1 and t.closed = 0)</if>
+  		<if test="Closed">or (t.is_done = 1 and t.closed = 1)</if>
+  		</trim>
+  		<if test="!NotDone and !Done and !Closed">1=2</if>
+  		)
+      <if test="week.name == 'choose'">and t.deadline between #{week.st,jdbcType=DATE} and #{week.et,jdbcType=DATE}</if>
+      
+      <if test="projects != null">and t.project_id in 
+		<foreach item="p" collection="projects" open="(" separator="," close=")">
+	        '${p.id}'
+	    </foreach>
+      </if>
+      <if test="users != null">and t.assigned_to in 
+		<foreach item="u" collection="users" open="(" separator="," close=")">
+	        '${u.userName}'
+	    </foreach>
+      </if>
+      ORDER BY t.is_done asc,t.finished_date desc,ISNULL(t.deadline), t.deadline asc, t.closed asc, t.id asc
+</select>
+
+<select id="teamGroupProjects" parameterType="map" resultType="map">
+SELECT
+	DISTINCT p.id,p.name_ name
+	FROM
+		c2_comunity_task t
+	LEFT JOIN zt_project p ON t.project_id = p.id
+	<where>
+		t.assigned_to in 
+		<foreach item="u" collection="users" open="(" separator="," close=")">
+	        '${u.userName}'
+	    </foreach>
+	</where>
+</select>
+
+<update id="projectTaskListOrder" parameterType="map">
+update c2_comunity_task set project_task_order = 
+<if test="direction=='down'">
+	project_task_order+1 
+	where project_task_order &gt;= #{targetTaskOrder} and project_task_order &lt; #{moveTaskOrder}
+</if>
+<if test="direction=='up'">
+	project_task_order-1 
+	where project_task_order &lt;= #{targetTaskOrder} and project_task_order &gt; #{moveTaskOrder}
+</if>
+ and project_id=#{projectId}
+</update>
+<select id="projectTaskMaxOrder" parameterType="int" resultType="int">
+select max(project_task_order) from c2_comunity_task where project_id=#{projectId} and is_done=0;
+</select>
+
+<update id="myTaskListOrder" parameterType="map">
+update c2_comunity_task set my_task_order = 
+<if test="direction=='down'">
+	my_task_order+1 
+	where my_task_order &gt;= #{targetTaskOrder} and my_task_order &lt; #{moveTaskOrder}
+</if>
+<if test="direction=='up'">
+	my_task_order-1 
+	where my_task_order &lt;= #{targetTaskOrder} and my_task_order &gt; #{moveTaskOrder}
+</if>
+ and assigned_to=#{username}
+</update>
+
+<!--Generated=false-->
+<update id="updateTaskModule" parameterType="map">
+	update c2_comunity_task
+<set>
+	module_id=#{module.id,jdbcType=NUMERIC}
+</set>
+<where>
+	id in(
+		select t.id from(
+			select t.id from c2_comunity_task t where t.story_id=${id}
+		)t
+	)
+</where>
+</update>
+
+<select id="myTaskMaxOrder" parameterType="string" resultType="int">
+select max(my_task_order) from c2_comunity_task where assigned_to=#{username} and is_done=0;
+</select>
+<!-- ElementID:selectUnion,Generated=true -->
+<select id="selectUnion" parameterType="list" resultMap="TaskResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_task 
+	<include refid="one2one_sql"/>
+	 INNER JOIN
+<foreach collection="list" item="entity" separator="UNION" open="(" close=")">
+		SELECT 
+			 id
+		FROM c2_comunity_task 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_task.id = #{entity.id}</if>
+	        <if test="entity.storyId != null">and c2_comunity_task.story_id = #{entity.storyId}</if>
+	        <if test="entity.bugId != null">and c2_comunity_task.bug_id = #{entity.bugId}</if>
+	        <if test="entity.projectId != null">and c2_comunity_task.project_id = #{entity.projectId}</if>
+	        <if test="entity.moduleId != null">and c2_comunity_task.module_id = #{entity.moduleId}</if>
+	        <if test="entity.milestoneId != null">and c2_comunity_task.milestone_id = #{entity.milestoneId}</if>
+	        <if test="entity.name != null">and c2_comunity_task.name_ = #{entity.name}</if>
+	        <if test="entity.pri != null">and c2_comunity_task.pri = #{entity.pri}</if>
+	        <if test="entity.estimate != null">and c2_comunity_task.estimate = #{entity.estimate}</if>
+	        <if test="entity.consumed != null">and c2_comunity_task.consumed = #{entity.consumed}</if>
+	        <if test="entity.left != null">and c2_comunity_task.left_ = #{entity.left}</if>
+	        <if test="entity.deadline != null">and c2_comunity_task.deadline = #{entity.deadline}</if>
+	        <if test="entity.isDone != null">and c2_comunity_task.is_done = #{entity.isDone}</if>
+	        <if test="entity.closed != null">and c2_comunity_task.closed = #{entity.closed}</if>
+	        <if test="entity.assignedTo != null">and c2_comunity_task.assigned_to = #{entity.assignedTo}</if>
+	        <if test="entity.estStartDate != null">and c2_comunity_task.est_start_date = #{entity.estStartDate}</if>
+	        <if test="entity.finishedBy != null">and c2_comunity_task.finished_by = #{entity.finishedBy}</if>
+	        <if test="entity.finishedDate != null">and c2_comunity_task.finished_date = #{entity.finishedDate}</if>
+	        <if test="entity.creator != null">and c2_comunity_task.creator = #{entity.creator}</if>
+	        <if test="entity.createDate != null">and c2_comunity_task.create_date = #{entity.createDate}</if>
+	        <if test="entity.taskType != null">and c2_comunity_task.task_type = #{entity.taskType}</if>
+	        <if test="entity.projectTaskOrder != null">and c2_comunity_task.project_task_order = #{entity.projectTaskOrder}</if>
+	        <if test="entity.myTaskOrder != null">and c2_comunity_task.my_task_order = #{entity.myTaskOrder}</if>
+	        <if test="entity.stageId != null">and c2_comunity_task.stage_id = #{entity.stageId}</if>
+	        <if test="entity.isConfirm != null">and c2_comunity_task.is_confirm = #{entity.isConfirm}</if>
+	        <if test="entity.confirmUser != null">and c2_comunity_task.confirm_user = #{entity.confirmUser}</if>
+	        <if test="entity.supportId != null">and c2_comunity_task.support_id = #{entity.supportId}</if>
+			</where>
+</foreach>
+	c2_temp_table ON c2_comunity_task.id = c2_temp_table.id
+</select>
+
+<delete id="deleteByMilestoneId" parameterType="com.chinacreator.c2.project.task.Task">
+	delete from c2_comunity_task 
+	<where>
+		<include refid="whereClause_sql"/>
+	</where>
+</delete>
+
+<!-- ElementID:one2one_sql,Generated=true -->
+<sql id="one2one_sql">
+	     left outer join zt_project_plan zt_project_plan_T1 on c2_comunity_task.project_plan=zt_project_plan_T1.id
+</sql>
+
+<!-- ElementID:ProjectPlanResult,Generated=true -->
+<resultMap id="ProjectPlanResult" type="com.chinacreator.c2.project.info.ProjectPlan">
+	<id property="id" column="id"/>
+	<result property="name" column="name"/>
+	<result property="parent" column="parent"/>
+	<result property="order" column="order_"/>
+	<result property="c2LogicdeleteFlag" column="c2_logicdelete_flag"/>
+	<result property="startDate" column="start_date"/>
+	<result property="endDate" column="end_date"/>
+	<result property="assignedTo" column="assigned_to"/>
+	<result property="description" column="description"/>
+	<result property="sn" column="sn"/>
+	<result property="level" column="level"/>
+</resultMap>
+</mapper>

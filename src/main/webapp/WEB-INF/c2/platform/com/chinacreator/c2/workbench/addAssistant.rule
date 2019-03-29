@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="assis/addAssistant" log="false" className="com.chinacreator.c2.project.info.MembersMgt" method="addAssistant">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>添加助理名单</name>
+  <desc>添加助理</desc>
+  <inputs>
+    <input collection="false" desc="" id="assistantList" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.assistantList" name="assistantList" signature="QList&lt;QAssistant;>;" type="java.util.List"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

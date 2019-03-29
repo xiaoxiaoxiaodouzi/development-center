@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ErrorMessages xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/error">
+  <errorMsgs desc="" errorNum="101">
+    <log></log>
+    <message></message>
+  </errorMsgs>
+  <errorMsgs desc="" errorNum="102">
+    <log></log>
+    <message></message>
+  </errorMsgs>
+  <errorMsgs desc="未知错误" errorNum="unkown">
+    <message>系统发生未知错误，请联系系统管理员</message>
+  </errorMsgs>
+  <errorMsgs errorNum="103">
+    <message></message>
+  </errorMsgs>
+  <errorMsgs errorNum="100"/>
+</ErrorMessages>

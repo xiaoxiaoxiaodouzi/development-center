@@ -1,0 +1,314 @@
+<p>Markdown是一种用纯文本的形式书写带有丰富格式文档的语法，并且它非常简单，花5分钟熟悉一下就能流畅地使用了!</p>
+<h2>基础书写格式</h2>
+<h3>段落</h3>
+<p>在 Markdown 中，连续的一行或多行就是<strong>一个段落</strong>，如果要分段(换行)，需要用空行来进行切段，即：两个回车才是一个换行。</p>
+<p>
+	<code>markdown：</code>
+</p>
+<pre>
+	<code class="lang-markdown hljs  hljs ">这是第一个段落
+我跟上面是同一个段落
+
+这是第二个段落
+</code>
+</pre>
+<p>
+	<code>显示效果：</code>
+</p>
+<hr>
+<p>这是第一个段落 我跟上面是同一个段落</p>
+<p>这是第二个段落</p>
+<hr>
+<h3 id="-">大纲</h3>
+<p>
+	Markdown 中，使用
+	<code>#</code>
+	来定义大纲标题，有多少个
+	<code>#</code>
+	，就表示是几级的大纲。比如：
+</p>
+<p>
+	<code>markdown：</code>
+</p>
+<pre>
+	<code class="lang-markdown hljs bash hljs ">
+# 这是一级标题（会生成&lt;h1&gt;标签
+这里是段落内容
+
+## 这里是二级标题（会生成&lt;h2&gt;标签）
+这里是段落内容
+...
+
+###### 这里是六级标题
+</code>
+</pre>
+<p>
+	<code>显示效果：</code>
+</p>
+<hr>
+<h1 id="-h1-">
+	这是一级标题（会生成
+	<code>&lt;h1&gt;</code>
+	标签）
+</h1>
+<p>这里是段落内容</p>
+<h2 id="-h2-">
+	这里是二级标题（会生成
+	<code>&lt;h2&gt;</code>
+	标签）
+</h2>
+<p>这里是段落内容 ...</p>
+<h6 id="-h6-">
+	这里是六级标题（会生成
+	<code>&lt;h6&gt;</code>
+	标签）
+</h6>
+<hr>
+<h3 id="-">引用内容</h3>
+<p>
+	引用部分的内容只需要在行首加上
+	<code>&gt;</code>
+	就可以了。比如：
+</p>
+<pre>
+<code>
+&gt;To be or not to be, that is a question.
+</code>
+</pre>
+<p>看起来是这样的：</p>
+<blockquote>
+	<p>To be or not to be, that is a question.</p>
+</blockquote>
+<h3>强调文本</h3>
+<p>
+	您可以使用<strong>加粗</strong>和<em>斜体</em>来格式化文本内容。
+</p>
+<pre>
+	<code class=" hljs markdown hljs ">加粗使用: <span
+			class="hljs-strong"><span class="hljs-strong">**这种语法**</span></span>
+斜体使用: <span class="hljs-emphasis"><span class="hljs-emphasis">*这种语法*</span></span> 或 <span
+			class="hljs-emphasis"><span class="hljs-emphasis">_这种语法_</span></span>
+还可以混合使用：<span class="hljs-strong"><span class="hljs-strong">**加粗文本中的_斜体_*</span></span>*
+</code>
+</pre>
+<h3 id="-">超链接</h3>
+<p>
+	通过
+	<code>[文本](url)</code>
+	的形式来添加超链接，比如这个<a href="http://www.baidu.com">百度(别点，你会被带走...)</a>的链接就是这样写的：
+</p>
+<pre>
+	<code class=" hljs markdown hljs ">[<span
+			class="hljs-link_label"><span class="hljs-link_label">百度(别点，你会被带走...)</span></span>](<span
+			class="hljs-link_url"><span class="hljs-link_url">http://www.baidu.com</span></span>)
+</code>
+</pre>
+<h3 id="-">图片</h3>
+<p>
+	图片和超链接写法类似，只是开头多了一个
+	<code>!</code>
+	，比如这样：
+</p>
+<pre>
+	<code class=" hljs markdown hljs ">![<span
+			class="hljs-link_label"><span class="hljs-link_label">我是一张图片</span></span>](<span
+			class="hljs-link_url"><span class="hljs-link_url">https://www.baidu.com/img/bdlogo.png</span></span>)
+</code>
+</pre>
+<p>
+	<img src="https://www.baidu.com/img/bdlogo.png" alt="我是一张图片">
+</p>
+<p>如果在文档中添加本地文件或者图片，直接在本地复制文件后(或直接截图)，在编辑器中粘贴(Ctrl+V)即可</p>
+<h3 id="-">列表</h3>
+<h4 id="-">无序列表</h4>
+<p>
+	在行首添加
+	<code>*</code>
+	或
+	<code>-</code>
+	可以开启列表模式，比如
+</p>
+<pre>
+	<code class=" hljs markdown hljs ">
+<span class="hljs-bullet"><span class="hljs-bullet">* </span></span>第一，...
+<span class="hljs-bullet"><span class="hljs-bullet">* </span></span>第二，...
+<span class="hljs-bullet"><span class="hljs-bullet">* </span></span>第三，...
+
+<span class="hljs-bullet"><span class="hljs-bullet">- </span></span>首先，...
+<span class="hljs-bullet"><span class="hljs-bullet">- </span></span>其次，...
+<span class="hljs-bullet"><span class="hljs-bullet">- </span></span>最后，...
+</code>
+</pre>
+<h4 id="-">有序列表</h4>
+<p>在行首添加数字，就可以开启有序列表模式，比如：</p>
+<pre>
+	<code class=" hljs markdown hljs ">
+<span class="hljs-bullet"><span class="hljs-bullet">1. </span></span>打开冰箱
+<span class="hljs-bullet"><span class="hljs-bullet">2. </span></span>把大象放进去
+<span class="hljs-bullet"><span class="hljs-bullet">3. </span></span>关上冰箱
+</code>
+</pre>
+<h4 id="-">列表嵌套</h4>
+<p>在上一级列表的基础上加两个空格，即可嵌套列表</p>
+<pre>
+	<code class=" hljs markdown hljs ">
+<span class="hljs-bullet"><span class="hljs-bullet">1. </span></span>打开冰箱
+  1. 用右手打开
+  2. 轻轻地打开
+<span class="hljs-bullet"><span class="hljs-bullet">2. </span></span>把大象放进去
+  * 不要吐槽
+<span class="hljs-code"><span class="hljs-code">    * 大象太大</span></span>
+<span class="hljs-code"><span class="hljs-code">    * 冰箱太小</span></span>
+<span class="hljs-code"><span class="hljs-code">    * 例子很无聊</span></span>
+<span class="hljs-bullet"><span class="hljs-bullet">3. </span></span>关上冰箱
+</code>
+</pre>
+<p>整体效果：</p>
+<hr>
+<ol>
+	<li>打开冰箱
+		<ol>
+			<li>用右手打开</li>
+			<li>轻轻地打开</li>
+		</ol>
+	</li>
+	<li>把大象放进去
+		<ul>
+			<li>不要吐槽
+				<ul>
+					<li>大象太大</li>
+					<li>冰箱太小</li>
+					<li>例子很无聊</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>关上冰箱</li>
+</ol>
+<hr>
+<h2 id="-">代码</h2>
+<h3 id="-">行内代码</h3>
+<p>在文本中使用 ` 包裹的内容会被识别为代码，比如</p>
+<pre>
+	<code class=" hljs markdown hljs ">现在你可以不用 <span
+			class="hljs-code"><span class="hljs-code">`document.getElementById()`</span></span> 了，现代浏览器都把复制了 <span
+			class="hljs-code"><span class="hljs-code">`id`</span></span> 属性的元素放在了全局变量里。
+</code>
+</pre>
+<p>渲染出来：</p>
+<blockquote>
+	<p>
+		现在你可以不用
+		<code>document.getElementById()</code>
+		了，现代浏览器都把复制了
+		<code>id</code>
+		属性的元素放在了全局变量里。
+	</p>
+</blockquote>
+<p>多行代码</p>
+<p>
+	使用 <strong>```</strong> 来包裹多行的内容成为代码。
+</p>
+<p>比如：</p>
+<pre>
+	<code class="lang-js hljs cs hljs "> <span class="hljs-keyword"><span
+			class="hljs-keyword">var</span></span> a = <span class="hljs-number"><span
+			class="hljs-number">0</span></span>;
+ <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> b = <span
+			class="hljs-number"><span class="hljs-number">1</span></span>;
+ <span class="hljs-keyword"><span class="hljs-keyword">var</span></span> c = a + b;
+</code>
+</pre>
+<p>
+	基本语法就这么多了。由于markdown引擎问题，
+	<code>表格</code>
+	的相关语法暂不支持
+</p>
+
+<p>更新了markdown引擎，已经支持表格了，markdown语法：</p>
+<pre>
+	<code class=" hljs diff">月份|收入|支出
+<span class="hljs-header">----|----|---</span>
+8   |1000|500
+9   |1200|600
+10  |1400|650
+</code>
+</pre>
+<p>显示出来的样子：</p>
+<table class="table table-striped table-bordered table-hover">
+	<thead>
+		<tr>
+			<th>月份</th>
+			<th>收入</th>
+			<th>支出</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>8</td>
+			<td>1000</td>
+			<td>500</td>
+		</tr>
+		<tr>
+			<td>9</td>
+			<td>1200</td>
+			<td>600</td>
+		</tr>
+		<tr>
+			<td>10</td>
+			<td>1400</td>
+			<td>650</td>
+		</tr>
+	</tbody>
+</table>
+<p>其中，航标题后的一行使用的横杆数量是不要求的，只是为了排版好看才人工对齐。比如你可以这样来定义上述表格。</p>
+<pre>
+	<code class=" hljs diff">月份|收入|支出
+<span class="hljs-deletion">-|-|-</span>
+8|1000|500
+9|1200|600
+10|1400|650
+</code>
+</pre>
+<p>你还可以使用 : 指定列的对齐方式。</p>
+<pre>
+	<code class=" hljs ruby">月份（居中对齐）|收入（右对齐）|支出（左对齐）
+<span class="hljs-symbol">:--------------</span><span
+			class="hljs-symbol">:|-------------</span><span class="hljs-symbol">:|</span><span
+			class="hljs-symbol">:------------</span>
+<span class="hljs-number">8</span>               |<span
+			class="hljs-number">1000</span>          |<span class="hljs-number">500</span>
+<span class="hljs-number">9</span>               |<span
+			class="hljs-number">1200</span>          |<span class="hljs-number">600</span>
+<span class="hljs-number">10</span>              |<span
+			class="hljs-number">1400</span>          |<span class="hljs-number">650</span>
+</code>
+</pre>
+<p>看起来效果如下：</p>
+<table class="table table-striped table-bordered table-hover">
+	<thead>
+		<tr>
+			<th style="text-align: center">月份（居中对齐）</th>
+			<th style="text-align: right">收入（右对齐）</th>
+			<th style="text-align: left">支出（左对齐）</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td style="text-align: center">8</td>
+			<td style="text-align: right">1000</td>
+			<td style="text-align: left">500</td>
+		</tr>
+		<tr>
+			<td style="text-align: center">9</td>
+			<td style="text-align: right">1200</td>
+			<td style="text-align: left">600</td>
+		</tr>
+		<tr>
+			<td style="text-align: center">10</td>
+			<td style="text-align: right">1400</td>
+			<td style="text-align: left">650</td>
+		</tr>
+	</tbody>
+</table>
+</div>

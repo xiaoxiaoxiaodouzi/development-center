@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	version="2.4">
+
+	<display-name>ChinaCreator Enterprise-Development Platform Product</display-name>
+
+	<!-- ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓系统基础配置，请勿修改↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ -->
+	<!-- 平台中跟WebApplicationContext配置文件路径 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:c2-core-context.xml,classpath*:context/*-context.xml,classpath*:custom/*-context.xml</param-value>
+	</context-param>
+	
+	<context-param>
+        <param-name>spring.profiles.active</param-name>
+        <param-value>ssoapi</param-value>
+    </context-param>
+    
+	<!-- 平台全局属性初始化 -->
+	<listener>
+		<listener-class>com.chinacreator.c2.web.init.ServerInitListener</listener-class>
+	</listener>
+
+	<!-- ApplicationContext初始化 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- 平台扩展初始化 -->
+	<listener>
+		<listener-class>com.chinacreator.c2.web.init.StartupsInitListener</listener-class>
+	</listener>
+
+	<!-- Session过期时间，单位是分钟。默认是永不超时，可以根据业务需求修改 -->
+	<session-config>
+		<session-timeout>-1</session-timeout>
+	</session-config>
+
+	<!-- 平台Servlet注册 -->
+	<servlet>
+		<servlet-name>C2 Core Servlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:web-core-context.xml,classpath*:web/*-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>C2 Core Servlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<!-- 支持gzip压缩，不需要压缩的话可以删除，建议在所有项目都启用该Filter -->
+	<filter>
+		<filter-name>GZIPFilter</filter-name>
+		<filter-class>com.chinacreator.c2.web.filter.GZIPFilter</filter-class>
+		<init-param>
+			<param-name>excludeURL</param-name>
+			<param-value>/file/**</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>GZIPFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!-- <filter> <filter-name>ssoFilter</filter-name> <filter-class>com.chinacreator.cloud.app.login.filter.SSOLoginFilter</filter-class> 
+		</filter> <filter-mapping> <filter-name>ssoFilter</filter-name> <url-pattern>/*</url-pattern> 
+		</filter-mapping> -->
+
+	<!-- 编码统一使用UTF-8 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 系统基础配置，请勿修改 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ -->
+
+	<!-- oAuth2SSOFilter配置开始 -->
+	 <filter>
+		<filter-name>oAuth2SSOFilter</filter-name>
+		<filter-class>com.chinacreator.asp.comp.sys.oauth2.sso.client.filter.OAuth2SSOFilter</filter-class>
+		<init-param>
+			<param-name>clientId</param-name>
+			<!-- (必填项)客户端ID jpkbkeohS36lkIJQuv_oNg  jyU2NcPfQRSsJGkeMWzib5w  jpkbkeohS36lkIJQuv_oNg KkVhMjOuQyibgfQJo9sT0rQ-->
+			<param-value>KSeYcO5ES4eVzlMckcnUuQ</param-value>
+		</init-param>
+		<init-param>
+			<param-name>clientSecret</param-name>
+			<!-- (必填项)客户端安全KEY 6QA8yTQzRpaVZCAtaW50QA 9SYSqo2xS6yOgjViM_E3dw 6QA8yTQzRpaVZCAtaW50QA R3oLgoOARB2mN9hhR3Go1g-->
+			<param-value>HBwmZZXAQo2CbCXtb_U6nA</param-value>
+		</init-param>
+		<init-param>
+			<param-name>authrizationServerUrl</param-name>
+			<!-- (必填项)c2统一认证授权服务器地址 http://172.16.33.40:8084/server-->
+			<param-value>http://ams.dev.c2cloud.cn</param-value>
+		</init-param>
+		<init-param>
+			<param-name>authrizationServerInnerUrl</param-name>
+			<!-- (可选项)c2统一认证授权服务器内部地址，如果为空，则使用authrizationServerUrl项的值 -->
+			<param-value>http://172.17.32.102:32410</param-value>
+		</init-param>
+		<init-param>
+			<param-name>clientUrl</param-name>
+			<!-- (必填项)客户端地址 -->
+			<param-value>http://127.0.0.1:8080</param-value>
+		</init-param>
+		<init-param>
+			<param-name>enableCredentialCache</param-name>
+			<!-- (可选项，默认为false) 每次请求客户端与服务器是否同步校验 如果为true,客户端从cookie中获取accessToken后，再从服务端获取用户信息是否存在 
+				如果为false,客户端只判断cookie中accessToken是否存在 -->
+			<param-value>false</param-value>
+		</init-param>
+		<init-param>
+			<param-name>tokenVerificationEndurance</param-name>
+			<param-value>1000000</param-value>
+			</init-param>
+		<init-param>
+			<param-name>anonUrl</param-name>
+			<!-- (可选项，默认为空) 匿名访问的url，如果有多个地址，地址之间以分号分隔 -->
+			<param-value></param-value>
+		</init-param>
+		<init-param>
+			<param-name>authenticateSpi</param-name>
+			<!-- (可选项，默认为com.chinacreator.asp.comp.sys.oauth2.common.spi.DefaultSpi) 
+				c2统一认证授权拦截器spi接口实现类 必须实现com.chinacreator.asp.comp.sys.oauth2.common.spi.OAuth2SSOSpi -->
+			<param-value>com.chinacreator.c2.security.handler.OAuth2SSOFilterSpiImpl</param-value>
+		</init-param>
+		<init-param>
+			<param-name>scopeProvider</param-name>
+			<!-- (可选项) c2统一认证授权资源Scope提供接口实现类 必须实现com.chinacreator.asp.comp.sys.oauth2.common.ScopeProvider -->
+			<param-value></param-value>
+		</init-param>
+		<init-param>
+			<param-name>scopes</param-name>
+			<!-- (可选项)访问资源权限范围 ，如果有多个值，用逗号分隔 -->
+			<param-value>user.read</param-value>
+		</init-param>
+		<init-param>
+			<param-name>allowOrigins</param-name>
+			<!-- (可选项)允许访问的域名，多个域名之间用逗号分隔 -->
+			<param-value></param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>oAuth2SSOFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping> 
+	<!-- oAuth2SSOFilter配置结束 -->
+	<filter>
+		<filter-name>projectUrlAuthenFilter</filter-name>
+		<filter-class>com.chinacreator.c2.web.filter.ProjectUrlAuthenFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>projectUrlAuthenFilter</filter-name>
+		<url-pattern>/e/project/*</url-pattern>
+	</filter-mapping>
+</web-app>

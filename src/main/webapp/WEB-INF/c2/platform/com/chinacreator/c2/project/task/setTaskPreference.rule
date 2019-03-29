@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="setTaskPreference" log="false" className="com.chinacreator.c2.project.task.TaskService" method="setTaskPreference">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>设置当前用户偏好信息</name>
+  <desc>设置当前用户偏好信息,若当前用户已经存在此偏好则修改之</desc>
+  <inputs>
+    <input collection="false" desc="" id="preference" required="true" type="com.chinacreator.c2.project.info.UserPreferences"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.preference" name="preference" signature="QUserPreferences;" type="com.chinacreator.c2.project.info.UserPreferences"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

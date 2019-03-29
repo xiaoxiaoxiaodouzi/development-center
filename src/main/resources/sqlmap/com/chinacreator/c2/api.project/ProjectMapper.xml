@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinacreator.c2.api.project.ProjectMapper">	
+
+<sql id="column_sql">
+		  zt_project.id ,
+		  zt_project.name_ ,
+		  zt_project.code ,
+		  zt_project.status_ ,
+		  zt_project.description ,
+		  zt_project.create_date ,
+		  zt_project.arc_status ,
+		  zt_project.brief ,
+		  zt_project.pic ,
+		  zt_project.icon ,
+		  zt_project.link ,
+		  zt_project.cloud_link ,
+		  zt_project.publish ,
+		  zt_project.cloud_publish ,
+		  zt_project.owner 
+</sql>
+
+<sql id="whereClause_sql">
+	    <if test="id != null">and zt_project.id = #{id}</if>
+	    <if test="name != null">and zt_project.name_ = #{name}</if>
+	    <if test="code != null">and zt_project.code = #{code}</if>
+	    <if test="status != null">and zt_project.status_ = #{status}</if>
+	    <if test="description != null">and zt_project.description = #{description}</if>
+	    <if test="createDate != null">and zt_project.create_date = #{createDate}</if>
+	    <if test="arcStatus != null">and zt_project.arc_status = #{arcStatus}</if>
+	    <if test="brief != null">and zt_project.brief = #{brief}</if>
+	    <if test="pic != null">and zt_project.pic = #{pic}</if>
+	    <if test="icon != null">and zt_project.icon = #{icon}</if>
+	    <if test="link != null">and zt_project.link = #{link}</if>
+	    <if test="cloudLink != null">and zt_project.cloud_link = #{cloudLink}</if>
+	    <if test="publish != null">and zt_project.publish = #{publish}</if>
+	    <if test="cloudPublish != null">and zt_project.cloud_publish = #{cloudPublish}</if>
+	    <if test="owner != null">and zt_project.owner = #{owner}</if>
+</sql>
+
+
+<resultMap id="ProjectResult" type="com.chinacreator.c2.api.bean.Project">
+	<id property="id" column="id"/>
+	<result property="name" column="name_"/>
+	<result property="code" column="code"/>
+	<result property="status" column="status_"/>
+	<result property="description" column="description"/>
+	<result property="createDate" column="create_date"/>
+	<result property="arcStatus" column="arc_status"/>
+	<result property="brief" column="brief"/>
+	<result property="pic" column="pic"/>
+	<result property="icon" column="icon"/>
+	<result property="link" column="link"/>
+	<result property="cloudLink" column="cloud_link"/>
+	<result property="publish" column="publish"/>
+	<result property="cloudPublish" column="cloud_publish"/>
+	<result property="owner" column="owner"/>
+</resultMap>
+
+<select id="getMyProjectsInfo" parameterType="string" resultMap="ProjectResult">
+	select 
+			p.id,p.name_,p.arc_status,p.brief,p.icon,p.pic 
+	from zt_project p 
+	where p.`owner` = #{_parameter,jdbcType=VARCHAR}
+	union
+	select 
+		 p1.id,p1.name_,p1.arc_status,p1.brief,p1.icon,p1.pic 
+	from zt_project p1 LEFT JOIN c2_projectuser u on p1.id = u.PROJECT_ID 
+	where u.USER_ID = #{_parameter,jdbcType=VARCHAR}
+</select>
+
+</mapper>

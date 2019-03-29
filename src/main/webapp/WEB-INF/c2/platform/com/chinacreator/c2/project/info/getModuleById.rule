@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getModuleById" log="false" className="com.chinacreator.c2.project.info.ModuleService" method="getModuleById">
+  <name>获取模块详情</name>
+  <desc>查询模块详情  projectId  moduleId</desc>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="String"/>
+    <input collection="false" desc="" id="moduleId" required="true" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="模块详情  projectId  moduleId" id="" name="方法返回值" type="com.chinacreator.c2.project.info.Module"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="QString;" type="String"/>
+    <param autoValue="Input.moduleId" name="moduleId" signature="QString;" type="String"/>
+  </params>
+  <return signature="QModule;" type="com.chinacreator.c2.project.info.Module"/>
+</CustomRule>

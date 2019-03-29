@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getAllLabelAndMilestone" log="false" className="com.chinacreator.c2.project.story.StoryService" method="getAllLabelAndMilestone">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取所有标签和里程碑</name>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="int"/>
+    <input collection="false" desc="" id="isUnclosed" required="false" type="java.lang.Boolean"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+    <param autoValue="Input.isUnclosed" name="isUnclosed" signature="QBoolean;" type="java.lang.Boolean"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

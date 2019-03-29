@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="updateProject" log="false" className="com.chinacreator.c2.project.service.ProjectService" method="updateProject">
+  <name>更新项目基本信息</name>
+  <desc>更新项目基本信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="project" required="true" type="com.chinacreator.c2.project.info.Project"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.project.info.Project"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.project" name="project" signature="QProject;" type="com.chinacreator.c2.project.info.Project"/>
+  </params>
+  <return signature="QProject;" type="com.chinacreator.c2.project.info.Project"/>
+</CustomRule>

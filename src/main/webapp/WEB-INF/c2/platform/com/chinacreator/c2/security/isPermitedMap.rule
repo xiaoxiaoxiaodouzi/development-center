@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="isPermitedMap" log="false" className="com.chinacreator.c2.security.shiro.impls.ProjectAuthorizationProvider" method="isProjectPermitedByBatch">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>批量权限鉴定-普通权限与项目权限</name>
+  <inputs>
+    <input collection="false" desc="" id="permExprs" required="true" type="[LString;"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.permExprs" name="permExprs" signature="[QString;" type="[LString;"/>
+  </params>
+  <return signature="QMap&lt;QString;QBoolean;>;" type="java.util.Map"/>
+</CustomRule>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getTypeListByProject" log="false" className="com.chinacreator.c2.project.testcase.TypeService" method="getTypeListByProject">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>查询分类树</name>
+  <desc>某计划下的所有分类树</desc>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="false" type="String"/>
+    <input collection="false" desc="" id="planId" required="false" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="QString;" type="String"/>
+    <param autoValue="Input.planId" name="planId" signature="QString;" type="String"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getIssueCommentByIssueId" log="false" className="com.chinacreator.c2.project.issue.IssueService" method="getIssueCommentByIssueId">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取问题回复</name>
+  <desc>获取问题回复</desc>
+  <inputs>
+    <input collection="false" desc="" id="issueId" required="true"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="问题回复集合" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.issueId" name="issueId" signature="QString;" type="java.lang.String"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

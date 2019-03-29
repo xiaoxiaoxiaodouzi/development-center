@@ -1,0 +1,12 @@
+<div class="modal" id="modalDefault" tabindex="-1" role="dialog" aria-hidden="false">
+    <div class="modal-dialog" ng-class="{'modal-sm':modalOptions.size=='small','modal-lg':modalOptions.size=='big'}">
+        <div class="modal-content">
+            <div class="modal-header {{modalOptions.headerColor}}">
+            	<button type="button" class="close" ng-click="modalOptions.X()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" ng-bind-html="modalOptions.title"></h4>
+            </div>
+            <div class="modal-body" ng-style="modalOptions.bodyStyle" ng-include="modalOptions.url"></div>
+        </div>
+    </div>
+</div>
+

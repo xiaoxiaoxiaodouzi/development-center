@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="transformOwner" log="false" className="com.chinacreator.c2.project.service.ProjectService" method="transformOwner">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>转让项目所有者</name>
+  <desc>转让项目</desc>
+  <inputs>
+    <input collection="false" desc="项目ID" id="projectId" required="true" type="int"/>
+    <input collection="false" desc="" id="ownerId" required="true" type="String"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+    <param autoValue="Input.ownerId" name="ownerId" signature="QString;" type="String"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

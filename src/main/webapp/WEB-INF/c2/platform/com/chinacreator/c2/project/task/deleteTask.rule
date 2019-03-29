@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="deleteTask" log="false" className="com.chinacreator.c2.project.task.TaskService" method="deleteTask">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>删除任务</name>
+  <inputs>
+    <input collection="false" desc="" id="task" required="true" type="com.chinacreator.c2.project.task.Task"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.task" name="task" signature="QTask;" type="com.chinacreator.c2.project.task.Task"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

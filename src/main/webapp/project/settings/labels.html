@@ -1,0 +1,743 @@
+<style>
+.issue-label {
+  display: inline-block;
+  height: 34px;
+  padding: 0 10px;
+  margin-right: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 34px;
+  text-align: center;
+  border-radius: 3px;
+  -webkit-transition: all 0.2s linear;
+  transition: all 0.2s linear;
+}
+.lv-item.add {
+  display: none;
+}
+.labels-action:hover {
+  color: #4183c4;
+  cursor: pointer;
+}
+.lv-item .media-delete {
+  display: none;
+}
+.lv-item.delete .media-delete {
+  display: block;
+}
+
+.lv-item.delete .media-view {
+  display: none;
+}
+
+.lv-item .media-edit {
+  display: none;
+}
+
+.lv-item.edit .media-edit {
+  display: block;
+}
+
+.lv-item.edit .media-view {
+  display: none;
+}
+/*
+*color
+*/
+.color-editor {
+position: relative;
+float: left;
+width: 100px;
+}
+
+.label-edit label {
+display: block;
+margin-bottom: 5px;
+}
+
+.color-editor-bg {
+position: absolute;
+left: 0;
+z-index: 10;
+width: 20px;
+height: 20px;
+margin-top: 7px;
+margin-left: 7px;
+cursor: pointer;
+border-radius: 3px;
+}
+input.color-editor-input {
+border-radius: 0 !important;
+color: #858585;
+background-color: #fff;
+border: 1px solid #d5d5d5;
+padding: 5px 4px 6px;
+font-size: 14px;
+font-family: inherit;
+box-shadow: none !important;
+transition-duration: .1s;
+width: 100px;
+padding-left: 34px;
+border-color: #ccc !important;
+}
+input.label-edit-name{
+min-height: 34px;
+padding: 7px 8px;
+font-size: 13px;
+color: #333;
+vertical-align: middle;
+background-color: #fff;
+background-repeat: no-repeat;
+background-position: right center;
+border: 1px solid #ccc;
+border-radius: 3px;
+outline: none;
+box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+border-color: #b5b5b5;
+width: 40%;
+float: left;
+margin-right: 10px;
+}
+.label-dropdown-menu {
+position: absolute;
+top: 100%;
+left: 50%;
+z-index: 100;
+width: 160px;
+margin-top: 2px;
+margin-left: -80px;
+padding-top: 5px;
+padding-bottom: 5px;
+list-style: none;
+background-color: #fff;
+background-clip: padding-box;
+border: 1px solid rgba(0,0,0,0.15);
+border-radius: 4px;
+box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+}
+
+.label-dropdown-menu:before {
+position: absolute;
+top: -16px;
+left: 72px;
+display: inline-block;
+content: "";
+border: 8px solid transparent;
+border-bottom-color: #ccc;
+border-bottom-color: rgba(0,0,0,0.15);
+}
+
+.label-dropdown-menu:after {
+position: absolute;
+top: -14px;
+left: 73px;
+display: inline-block;
+content: "";
+border: 7px solid transparent;
+border-bottom-color: #fff;
+}
+
+.label-colors {
+position: absolute;
+left: 0;
+float: left;
+display: none;
+width: auto;
+margin-left: 0;
+padding: 5px;
+}
+
+.label-colors:before {
+left: 8px;
+}
+
+.label-colors:after {
+left: 9px;
+}
+
+.label-color-chooser {
+	display: table-row;
+	height: 25px;
+	list-style: none
+}
+
+.label-color-chooser li {
+	display: table-cell;
+	width: 1%
+}
+
+.label-color-chooser li:hover {
+	position: relative;
+	z-index: 2;
+	outline: 2px solid #fff;
+	box-shadow: 0 0 5px 2px rgba(0,0,0,0.25)
+}
+
+.label-color-chooser .label-color-cooser-color {
+	display: block;
+	width: 25px;
+	height: 25px;
+	text-align: center;
+	cursor: pointer
+}
+
+.num {
+    font-size: 16px;
+    padding: 5px;
+    color: cadetblue;
+}
+.text-click-link{
+	padding: 0 5px;
+    cursor: pointer;
+}
+.ui-sortable-handle{
+	cursor: ns-resize;
+}
+@media (min-width: 480px){
+	.listview .lv-item .label-lv-actions {
+		position: absolute;
+	    right: 67px;
+	    height: 30px;
+	    margin-top: -15px;
+	    top: 50%;
+	}
+}
+
+@media (max-width: 767px){
+	.listview .lv-item .label-lv-actions {
+		position: absolute;position: absolute;
+	    right: 7px;
+	    margin-top: -15px;
+	    top: 50%;
+	}
+}
+</style>
+<div ng-controller="labelCtrl">
+	<!-- <div class="block-header"></div> -->
+	<div class="card" id="profile-main">
+		<div class="card-header">
+			<h2>
+				标签列表 <small>标签用于项目内的各种数据进行分类，方便您按自己的方式管理、检索内容 </small>
+			</h2>
+			<button class="btn bgm-blue btn-float waves-effect"
+				ng-click="addLabel()">
+				<i class="md md-add"></i>
+			</button>
+			<ul class="actions">
+	            <li class="dropdown action-show">
+	                <a href="" data-toggle="dropdown" aria-expanded="false" >
+	                    <i class="md md-more-vert"></i>
+	                </a>
+	                <ul class="dropdown-menu dropdown-menu-right">
+	                    <li>
+	                        <a ng-click="chooseProject()">导入标签</a>
+	                    </li>
+	                </ul>
+	            </li>
+	        </ul>
+		</div>
+
+		<div class="card-body clearfix">
+			<div class="listview lv-bordered lv-lg">
+				<div class="lv-header-alt">
+					<h2 class="lvh-label hidden-xs">标签总数<span class="num">{{LabelList.length}}</span></h2>
+				</div>
+
+				<div class="lv-body">
+
+				<div ng-show="isLabelAdd" class="lv-item media" id="item_add">
+
+					<div class="media-body" style="overflow: visible;">
+
+						<input autofocus="autofocus" class="label-edit-name" id="edit_input_add"  placeholder="新标签名..." size="30" type="text">
+
+						<div class="color-editor js-color-editor">
+							<label class="color-editor-bg"></label>
+								<input type="text" id="label-color-add"
+								ng-focus="labelOnfocus($event);"
+								ng-blur="labelOnblur($event);" name="label[color]"
+								class="color-editor-input js-color-editor-input hexfield" maxlength="7"
+								autocomplete="off" spellcheck="off">
+
+								<div class="label-dropdown-menu label-colors">
+									<ul class="label-color-chooser">
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-e11d21"
+											style="background-color: #e11d21 !important;"
+											data-hex-color="e11d21"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-eb6420"
+											style="background-color: #eb6420 !important;"
+											data-hex-color="eb6420"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-fbca04"
+											style="background-color: #fbca04 !important;"
+											data-hex-color="fbca04"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-009800"
+											style="background-color: #009800 !important;"
+											data-hex-color="009800"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-006b75"
+											style="background-color: #006b75 !important;"
+											data-hex-color="006b75"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-207de5"
+											style="background-color: #207de5 !important;"
+											data-hex-color="207de5"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-0052cc"
+											style="background-color: #0052cc !important;"
+											data-hex-color="0052cc"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-5319e7"
+											style="background-color: #5319e7 !important;"
+											data-hex-color="5319e7"> </span></li>
+									</ul>
+
+									<ul class="label-color-chooser">
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-f7c6c7"
+											style="background-color: #f7c6c7 !important;"
+											data-hex-color="f7c6c7"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-fad8c7"
+											style="background-color: #fad8c7 !important;"
+											data-hex-color="fad8c7"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-fef2c0"
+											style="background-color: #fef2c0 !important;"
+											data-hex-color="fef2c0"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-bfe5bf"
+											style="background-color: #bfe5bf !important;"
+											data-hex-color="bfe5bf"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-bfdadc"
+											style="background-color: #bfdadc !important;"
+											data-hex-color="bfdadc"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-c7def8"
+											style="background-color: #c7def8 !important;"
+											data-hex-color="c7def8"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-bfd4f2"
+											style="background-color: #bfd4f2 !important;"
+											data-hex-color="bfd4f2"> </span></li>
+										<li><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-d4c5f9"
+											style="background-color: #d4c5f9 !important;"
+											data-hex-color="d4c5f9" data-selected=""> </span></li>
+									</ul>
+								</div>
+						</div>
+						<div class="label-lv-actions">
+							<button type="button" class="btn btn-default waves-effect" data-ng-click="cancelAddLabel()">取消</button>
+					         &nbsp;&nbsp;&nbsp;&nbsp;
+							<button class="btn btn-primary btn-sm waves-effect" type="button" data-ng-click="saveAddLabel()">保存</button>
+						</div>
+					</div>
+				</div>
+
+				<div ng-if="!isLabelAdd&&LabelList.length==0" class="text-center c-gray p-20">
+				这个项目还没有标签，你可以<a class="text-click-link" ng-click="chooseProject()">导入标签</a>或者<a class="text-click-link" ng-click="addLabel()">添加一个新标签</a>。
+				</div>
+				
+				<div ui-sortable="sortableOptions" ng-model="LabelList">
+				<div class="lv-item media" id="item_{{label.id}}" ng-repeat="label in LabelList" style="transition-duration: 0ms;">
+
+					<div class="media-body media-view">
+
+							<span class="issue-label label-link" ng-click="editLabel(label.id);" style="background-color: {{label.color}}; color: {{getTextColor(label.color)}}; ">
+						     <i class="md md-label-outline"></i>
+						      <span class="">{{label.name}}</span>
+						    </span>
+
+						<div class="label-lv-actions">
+							<span class="labels-action" style="font-size: 18px" ng-click="editLabel(label.id);">
+					          <i class="md md-edit"></i>
+					                                     
+					         </span>
+					         &nbsp;&nbsp;&nbsp;&nbsp;
+							<span class="labels-action" style="font-size: 18px" ng-click="deleteLabel(label.id);">
+					         <i class="md md-delete"></i>
+					                                   
+					         </span>
+						</div>
+					</div>
+
+					<div class="media-body media-delete">
+						<span class="label-delete-confirmation" style="height: 34px;line-height: 34px;font-size: 16px;"><strong
+							class="text-danger">确认删除?</strong>
+							&nbsp;&nbsp;删除一个标签同时也会把它从关联的问题中移除。
+						</span>
+
+						<div class="label-lv-actions">
+							<button type="button" class="btn btn-default waves-effect" data-ng-click="cancelDeleteLabel(label.id);">取消</button>
+					         &nbsp;&nbsp;&nbsp;&nbsp;
+							<button class="btn btn-primary btn-sm waves-effect" type="button" data-ng-click="saveDeleteLabel(label);">删除</button>
+						</div>
+					</div>
+
+					<div class="media-body media-edit" style="overflow: visible;">
+
+						<input autofocus="autofocus" class="label-edit-name" id="edit_input_{{label.id}}"  placeholder="标签名..." size="30" type="text" value="{{label.name}}">
+
+						<div class="color-editor js-color-editor">
+							<label class="color-editor-bg"
+								style="background-color: {{label.color}};"></label>
+								<input type="text" id="label-color-{{label.id}}"
+								ng-focus="labelOnfocus($event);" ng-click="labelOnfocus($event);"
+							    ng-blur="labelOnblur($event);" name="label[color]"
+								class="color-editor-input js-color-editor-input hexfield"
+								value="{{label.color}}" maxlength="7" 
+								autocomplete="off" spellcheck="off">
+								
+								<div class="label-dropdown-menu label-colors">
+									<ul class="label-color-chooser">
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-e11d21"
+											style="background-color: #e11d21 !important;"
+											data-hex-color="e11d21"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-eb6420"
+											style="background-color: #eb6420 !important;"
+											data-hex-color="eb6420"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-fbca04"
+											style="background-color: #fbca04 !important;"
+											data-hex-color="fbca04"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-009800"
+											style="background-color: #009800 !important;"
+											data-hex-color="009800"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-006b75"
+											style="background-color: #006b75 !important;"
+											data-hex-color="006b75"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-207de5"
+											style="background-color: #207de5 !important;"
+											data-hex-color="207de5"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-0052cc"
+											style="background-color: #0052cc !important;"
+											data-hex-color="0052cc"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-5319e7"
+											style="background-color: #5319e7 !important;"
+											data-hex-color="5319e7"> </span></li>
+									</ul>
+
+									<ul class="label-color-chooser">
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-f7c6c7"
+											style="background-color: #f7c6c7 !important;"
+											data-hex-color="f7c6c7"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-fad8c7"
+											style="background-color: #fad8c7 !important;"
+											data-hex-color="fad8c7"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-fef2c0"
+											style="background-color: #fef2c0 !important;"
+											data-hex-color="fef2c0"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-bfe5bf"
+											style="background-color: #bfe5bf !important;"
+											data-hex-color="bfe5bf"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-bfdadc"
+											style="background-color: #bfdadc !important;"
+											data-hex-color="bfdadc"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-c7def8"
+											style="background-color: #c7def8 !important;"
+											data-hex-color="c7def8"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-bfd4f2"
+											style="background-color: #bfd4f2 !important;"
+											data-hex-color="bfd4f2"> </span></li>
+										<li data-ng-click="colorCLick($event)"><span
+											class="label-color-cooser-color js-color-chooser-color labelstyle-d4c5f9"
+											style="background-color: #d4c5f9 !important;"
+											data-hex-color="d4c5f9" data-selected=""> </span></li>
+									</ul>
+								</div>
+						</div>
+						<div class="label-lv-actions">
+						<button class="btn btn-primary btn-sm waves-effect" type="button" data-ng-click="saveEditLabel(label)">保存</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+							<button type="button" class="btn btn-default waves-effect" data-ng-click="cancelEdit(label.id)">取消</button>
+						</div>
+					</div>
+				</div>
+				</div>
+
+<!-- 				<c2-pagination ng-if="pagination.totalRow>0" total="pagination.totalRow" page-size="7" on-page-change="loadLabelListForPage(pageIndex,7)"></c2-pagination> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+angular.module("project").registerCtrl('labelCtrl',function($scope, $http, $state, $stateParams, $timeout, Messenger,Modal) {
+
+	//拖动排序参数
+	$scope.sortableOptions = {
+		axis: "y",
+		update:function(e,l){
+			var sortList = new Array();
+			$timeout(function(){
+				angular.forEach($scope.LabelList,function(v,i){
+					sortList.push({id:v.id,rank:i});
+				});
+				$http.post("ws/sortLabel",{labels:sortList}).then(function(data){
+					Messenger.success("排序成功");
+				},function(){
+					Messenger.success("排序失败");
+				});
+			},0);
+			
+		}
+	};
+	
+	$scope.initLabel=function(){
+		$scope.colorArray=["#e11d21","#eb6420","#fbca04","#159818",
+		               	"#006b75","#207de5","#0052cc","#5319e7","#f7c6c7","#fad8c7",
+		               	"#fef2c0","#bfe5bf","#bfdadc"];
+		$scope.loadLabelListForPage();
+	};
+
+	$scope.loadLabelListForPage=function(){
+		$scope.cancelAddLabel();
+		if(!$stateParams.project||$stateParams.project==""){
+			Messenger.post({
+		                'message': "没有产品参数，页面无法加载数据！",
+		                'type': 'error',
+		            });
+			return;
+		}
+		$http.post("e/label/op/selectLabel",{project:$stateParams.project}).success(function(data){
+			$scope.LabelList=data.result;
+		});
+	};
+
+
+	$scope.editLabel = function(labelId) {
+		$("#item_"+labelId).addClass("edit");
+	};
+
+	$scope.cancelEdit=function(labelId){
+		$("#item_"+labelId).removeClass("edit");
+	};
+	
+	$scope.colorCLick=function(ev){
+		if($(".label-color-chooser li:hover span").length==1){
+			var color=$(".label-color-chooser li:hover span").attr("data-hex-color");
+			$(ev.target).parent().parent().parent().prev().val("#"+color);
+			//$(ev.target).css({color:"#"+color});
+			$(ev.target).parent().parent().parent().prev().prev().css({background:"#"+color});
+		}
+		$(ev.target).parent().parent().parent().hide();
+	}
+
+	$scope.labelOnblur=function(ev){
+		if($(".label-color-chooser li:hover span").length==1){
+			var color=$(".label-color-chooser li:hover span").attr("data-hex-color");
+			$(ev.target).val("#"+color);
+			//$(ev.target).css({color:"#"+color});
+			$(ev.target).prev().css({background:"#"+color});
+		} 
+		$(ev.target).next().hide();
+	};
+
+	$scope.labelOnfocus=function(ev){
+		$(ev.target).next().show();
+	};
+
+	$scope.saveEditLabel=function(labelObj){
+		
+		var labelName=$("#edit_input_"+labelObj.id).val();
+		if(labelName==""){
+			Messenger.post({type:'error',message:'名称不能为空'});
+			$("#edit_input_"+labelObj.id).focus();
+			return;
+		}
+
+		var labelColor=$("#label-color-"+labelObj.id).val();
+		if(labelColor==""){
+			Messenger.post({type:'error',message:'颜色不能为空'});
+			$("#label-color-"+labelObj.id).focus();
+			return;
+		}
+
+		//验证颜色
+		var colorObj=$scope.parseColor(labelColor);
+		if(undefined==colorObj){
+			Messenger.post({type:'error',message:'请输入正确的16进制颜色格式！'});
+			$("#label-color-"+labelObj.id).focus();
+			return;
+		}
+
+		$http.post("ws/updateLabel",{
+			label:{
+				name:labelName,
+				id:labelObj.id,
+				color:labelColor
+			}
+		}).success(function(data) {
+			labelObj.name=labelName;
+			labelObj.color=labelColor;
+		    Messenger.post({type:'success',message:'保存成功'});
+		    $scope.cancelEdit(labelObj.id);
+		}).error(function() {
+			Messenger.post({type:'error',message:'系统异常，操作失败！'});
+		});
+
+	};
+
+	$scope.parseColor=function(color){
+		var r,g,b;
+		if(color.indexOf("#")==-1) return undefined;
+		if(color.length==4){
+			r=parseInt(color.substr(1,1),16);
+			g=parseInt(color.substr(2,1),16);
+			b=parseInt(color.substr(3,1),16);
+		}else if(color.length==7){
+			r=parseInt(color.substr(1,2),16);
+			g=parseInt(color.substr(3,2),16);
+			b=parseInt(color.substr(5,2),16);
+		}else{
+			return undefined;
+		}
+
+		if(isNaN(r)||isNaN(g)||isNaN(b)) return undefined;
+
+		return {r:r,g:g,b:b};
+	};
+
+
+	$scope.deleteLabel=function(labelId){
+		$("#item_"+labelId).addClass("delete");
+	};
+
+	$scope.cancelDeleteLabel=function(labelId){
+		$("#item_"+labelId).removeClass("delete");
+	}
+
+	$scope.saveDeleteLabel=function(labelObj){
+		$http.post("ws/deleteLabel", {
+			label:{
+				id:labelObj.id
+			}
+		}).success(function(data){
+			$scope.loadLabelListForPage();
+		    Messenger.post({type:'success',message:'删除成功'});
+		    $scope.cancelDeleteLabel(labelObj.id);
+		});
+	};
+
+	$scope.isLabelAdd = false;
+	$scope.addLabel=function(){
+		$scope.isLabelAdd = !$scope.isLabelAdd;
+		if($scope.isLabelAdd){
+			$("#edit_input_add").val("");
+			$("#edit_input_add").focus();
+			var color=$scope.getRandomColor();
+			$("#label-color-add").val(color);
+			$("#label-color-add").prev().css({background:color});
+		}
+	}
+
+
+	$scope.cancelAddLabel=function(){
+		$scope.isLabelAdd = false;
+	}
+
+	$scope.saveAddLabel=function(){
+		if(angular.isUndefined($stateParams.project)||""==$stateParams.project){
+	    	   Messenger.post({
+	                'message': "标题不能为空！",
+	                'type': 'error',
+	            });
+	            return;
+	    }
+
+		var labelName=$("#edit_input_add").val();
+		if(labelName==""){
+			Messenger.post({type:'error',message:'名称不能为空'});
+			$("#edit_input_add").focus();
+			return;
+		}
+
+		var labelColor=$("#label-color-add").val();
+		if(labelColor==""){
+			Messenger.post({type:'error',message:'颜色不能为空'});
+			$("#label-color-add").focus();
+			return;
+		}
+
+		//验证颜色
+		if(!$scope.parseColor(labelColor)){
+			Messenger.post({type:'error',message:'颜色格式不正确'});
+			$("#label-color-add").focus();
+			return;
+		}
+
+		$http.post("ws/addLabel", {
+			label:{
+				name:labelName,
+				color:labelColor,
+				project:$stateParams.project
+			}
+		}).success(function(data) {
+			$scope.cancelAddLabel();
+			$scope.loadLabelListForPage();
+		    Messenger.post({type:'success',message:'添加成功'});
+		});
+	};
+
+	$scope.getRandomColor=function(){
+		//return '#'+Math.floor(Math.random()*16777215).toString(16);
+		return $scope.colorArray[Math.floor((Math.random()*10))];
+	};
+	
+	$scope.getTextColor=function(color){
+		return getTextColorByBackColor(color);
+	};
+	
+	function importLabels(params){
+		Modal.open("project/settings/labels-import.html",params,{
+				title:'可导入的标签',
+	  			size:"big",
+	  			bodyStyle:{"min-height":"320px"},
+	  			onClose:function(params){
+	  				if(params.state){
+	  					$scope.loadLabelListForPage();
+	  					Messenger.success(params.message);
+	  				}else{
+	  					$scope.chooseProject();
+	  				}
+	  			}
+			});
+	}
+	$scope.chooseProject = function(){
+		Modal.open("project/settings/label-project-select.html",{},{
+  			title:'请选择标签模版或者项目',
+  			animation:true,
+  			size:"big",
+  			onClose:function(params){
+  				importLabels(params);
+  			}
+  		});
+	}
+	
+	$http.post("ws/isProjectPermitedByBatch",{projectId:$stateParams.project,permExprs:["advancedSet_menu"]})
+	.success(function(data,status,headers,config){
+		$scope.advancedSetMenu = data.result["advancedSet_menu"];
+	});
+
+	$scope.initLabel();
+});
+</script>

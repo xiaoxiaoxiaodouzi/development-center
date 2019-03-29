@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.info.MemberMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_projectuser.id ,
+		  c2_projectuser.project_id ,
+		  c2_projectuser.user_id ,
+		  c2_projectuser.job_id 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_projectuser.id = #{id}</if>
+	    <if test="projectId != null">and c2_projectuser.project_id = #{projectId}</if>
+	    <if test="userId != null">and c2_projectuser.user_id = #{userId}</if>
+	    <if test="jobId != null">and c2_projectuser.job_id = #{jobId}</if>
+</sql>
+
+
+<!-- ElementID:MemberResult,Generated=true -->
+<resultMap id="MemberResult" type="com.chinacreator.c2.project.info.Member">
+	<id property="id" column="id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="userId" column="user_id"/>
+	<result property="jobId" column="job_id"/>
+</resultMap>
+
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.info.Member" resultType="int">
+	select count(*) from c2_projectuser 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.info.Member">
+	update c2_projectuser
+<set>
+	<if test="projectId != null">project_id=#{projectId,jdbcType=NUMERIC},</if>
+	<if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
+	<if test="jobId != null">job_id=#{jobId,jdbcType=VARCHAR}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:update,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_projectuser
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="projectId==null">project_id = null,</if>
+		    <if test="userId==null">user_id = null,</if>
+		    <if test="jobId==null">job_id = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.info.Member">
+    delete from c2_projectuser where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.info.Member" resultMap="MemberResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_projectuser 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_projectuser where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="MemberResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_projectuser 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="MemberResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_projectuser 
+		 where c2_projectuser.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.info.Member" resultMap="MemberResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_projectuser 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="MemberResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_projectuser 
+	where c2_projectuser.id in (
+		select distinct id from c2_projectuser inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_projectuser 
+			<where>
+	        <if test="entity.id != null">and c2_projectuser.id = #{entity.id}</if>
+	        <if test="entity.projectId != null">and c2_projectuser.project_id = #{entity.projectId}</if>
+	        <if test="entity.userId != null">and c2_projectuser.user_id = #{entity.userId}</if>
+	        <if test="entity.jobId != null">and c2_projectuser.job_id = #{entity.jobId}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.info.Member" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_projectuser(
+		<trim prefixOverrides=",">
+		    <if test="projectId != null">project_id</if>
+		    <if test="userId != null">,user_id</if>
+		    <if test="jobId != null">,job_id</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="projectId != null">#{projectId,jdbcType=NUMERIC}</if>
+		    <if test="userId != null">,#{userId,jdbcType=VARCHAR}</if>
+		    <if test="jobId != null">,#{jobId,jdbcType=VARCHAR}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_projectuser (project_id,user_id,job_id)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.projectId,jdbcType = NUMERIC},
+		         #{entity.userId,jdbcType = VARCHAR},
+		         #{entity.jobId,jdbcType = VARCHAR}
+				)
+</foreach>
+</insert>
+
+<delete id="deleteByPU" parameterType="com.chinacreator.c2.project.info.Member">
+    delete from c2_projectuser 
+    where project_id=#{projectId,jdbcType=NUMERIC} 
+    and	user_id=#{userId,jdbcType=VARCHAR}
+</delete>
+
+<delete id="deleteByPUJ" parameterType="com.chinacreator.c2.project.info.Member">
+    delete from c2_projectuser 
+    where project_id=#{projectId,jdbcType=NUMERIC} 
+    and	user_id=#{userId,jdbcType=VARCHAR}
+    and job_id = #{jobId,jdbcType=VARCHAR}
+</delete>
+
+<select id="selectByProjectId" parameterType="java.lang.Integer" resultMap="MemberResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_projectuser 
+		 where c2_projectuser.project_id = #{projectId,jdbcType=NUMERIC}  order by job_id
+</select>
+
+<select id="selectByUserId" resultMap="MemberResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_projectuser 
+		 where c2_projectuser.user_id = #{userId,jdbcType=VARCHAR}
+</select>
+
+<select id="exists" resultType="int" parameterType="com.chinacreator.c2.project.info.Member">
+	 SELECT count(*)
+	 from c2_projectuser 
+	 where project_id = #{projectId,jdbcType=NUMERIC}
+	 and user_id = #{userId,jdbcType=VARCHAR}
+	 and job_id = #{jobId,jdbcType=VARCHAR}
+</select>
+
+<select id="queryAddMember" resultType="java.lang.String">
+	select u.user_name from c2_projectuser pu left join td_sm_user u on pu.user_id=u.user_id
+		where pu.project_id in(
+			select project_id from c2_projectuser where user_id = #{currUserId,jdbcType=VARCHAR}
+			union
+			select id from zt_project where owner = #{currUserId,jdbcType=VARCHAR}
+		) 
+		and pu.user_id not in(
+			select user_id from c2_projectuser  where project_id = #{projectId,jdbcType=NUMERIC}
+			union
+			select  owner from zt_project where id = #{projectId,jdbcType=NUMERIC}
+		)
+</select>
+
+<select id="queryUsersByUsernames" resultType="map">
+	select user_id userId,user_name userName,user_realname userRealname,remark1 icon from td_sm_user where user_name in 
+	<foreach item="username" collection="list" open="(" separator="," close=")">
+        #{username}
+    </foreach>
+</select>
+<select id="queryUserInfoByUsername" resultType="map" parameterType="string">
+	select user_id userId,user_name userName,user_realname userRealname,remark1 icon from td_sm_user where user_name = #{username,jdbcType=VARCHAR}
+</select>
+
+<select id="queryUserByUserRealname" resultType="map">
+	select 
+		user_id userId,
+		user_name userName,
+		user_realname userRealname,
+		remark1 remark1 ,
+		user_isvalid state
+	from 
+		td_sm_user 
+	where 
+		user_realname like '%${_parameter}%'
+</select>
+
+<select id="queryByProjectCreator" resultType="map">
+	SELECT
+		<include refid="User_Column_List" />
+		FROM td_sm_user	
+		where user_id =		
+		(select  owner from zt_project where id = #{projectId,jdbcType=NUMERIC})
+</select>
+
+<select id="queryByProjectResponsible" resultType="map">
+	SELECT
+		<include refid="User_Column_List" />
+		FROM td_sm_user	
+		where user_id in		
+		(select user_id from c2_projectuser  where job_id = '11' and project_id = #{projectId,jdbcType=NUMERIC})
+</select>
+
+<select id="existsByProjectAndUser" resultType="int">
+	select 
+	 (SELECT count(*)
+	 from c2_projectuser 
+	 where project_id = #{projectId,jdbcType=NUMERIC}
+	 and user_id = #{userId,jdbcType=VARCHAR})
+	 +
+	 (SELECT count(*)
+	 from zt_project
+	 where id = #{projectId,jdbcType=NUMERIC}
+	 and owner = #{userId,jdbcType=VARCHAR})	 
+	 as cnt
+</select>
+
+	<sql id="User_Column_List">
+		user_id, user_name, user_realname,user_pinyin, user_sex,user_hometel,
+		user_worktel, user_workaddress,user_mobiletel1, user_mobiletel2, user_fax,user_oicq,
+		user_birthday,user_email, user_address, user_postalcode, user_idcard, user_isvalid,
+		user_regdate, user_logincount, user_type, past_time, dredge_time,lastlogin_date,
+		worklength, politics, login_ip, cert_sn, user_sn,remark1, remark2, remark3,remark4,
+		remark5, remark6, remark7, remark8,remark9, remark10
+	</sql>
+	
+	<resultMap id="JobResultMap"
+		type="com.chinacreator.c2.project.info.JobDTO">
+		<result column="JOB_ID" property="jobId" jdbcType="VARCHAR" />
+		<result column="JOB_NAME" property="jobName" jdbcType="VARCHAR" />
+		<result column="JOB_DESC" property="jobDesc" jdbcType="VARCHAR" />
+		<result column="JOB_SCOPE" property="jobScope" jdbcType="CHAR" />
+		<result column="JOB_FUNCTION" property="jobFunction" jdbcType="VARCHAR" />
+		<result column="JOB_AMOUNT" property="jobAmount" jdbcType="VARCHAR" />
+		<result column="JOB_NUMBER" property="jobNumber" jdbcType="VARCHAR" />
+		<result column="JOB_CONDITION" property="jobCondition" jdbcType="VARCHAR" />
+		<result column="JOB_RANK" property="jobRank" jdbcType="VARCHAR" />
+		<result column="OWNER_ID" property="ownerId" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Job_Column_List">
+		job_id,job_name,job_desc,job_scope,job_function,job_amount,job_number,job_condition,job_rank,owner_id
+	</sql>
+	
+<select id="selectUserNamesByProjectId" parameterType="java.lang.Integer" resultType="string">
+	select 
+		td_sm_user.user_name
+	    from c2_projectuser left join td_sm_user on c2_projectuser.user_id = td_sm_user.user_id 
+		where c2_projectuser.project_id = #{projectId,jdbcType=NUMERIC}  order by job_id
+</select>
+
+<select id="queryUserByProjectId" resultType="map">
+	SELECT
+		<include refid="User_Column_List" />
+		from td_sm_user 
+		where user_id in(
+			select user_id from c2_projectuser where project_id = #{projectId,jdbcType=NUMERIC}
+		)
+</select>
+
+<select id="queryJobByProjectId" resultMap="JobResultMap">
+	SELECT
+		<include refid="Job_Column_List" />
+		from td_sm_job
+		where job_id in(
+			select job_id from c2_projectuser where project_id = #{projectId,jdbcType=NUMERIC}
+		)
+</select>
+
+<select id="selectProjectWorkers" parameterType="int" resultType="map">
+	   select 
+			  td_sm_user.user_id,td_sm_user.user_name,td_sm_user.user_realname,td_sm_user.remark1
+		 from td_sm_user
+	left join c2_projectuser 
+	       on td_sm_user.user_id = c2_projectuser.user_id 
+	left join td_sm_job 
+	       on c2_projectuser.job_id = td_sm_job.job_id
+	    where c2_projectuser.job_id != 15 
+	      and c2_projectuser.project_id = #{_parameter}
+		union
+	   select td_sm_user.user_id,td_sm_user.user_name,td_sm_user.user_realname,td_sm_user.remark1
+		 from td_sm_user
+	left join zt_project  
+	       on td_sm_user.user_id = zt_project.`owner` 
+	    where zt_project.id = #{_parameter}
+</select>
+
+<resultMap type="map" id="ProjectWorkersResultMap">
+	<id column="user_id" property="userId"/>
+	<result column="user_name" property="userName"/>
+	<result column="user_realname" property="userRealname"/>
+	<result column="remark1" property="userIcon"/>
+</resultMap>
+
+<select id="queryUserByProjectIdForAdd" resultType="map">
+	SELECT
+		user_id, user_name, user_realname, remark1
+		from td_sm_user 
+		where user_id in(
+			select user_id from c2_projectuser where project_id = #{projectId,jdbcType=NUMERIC}
+			UNION
+			select owner as user_id from zt_project where id= #{projectId,jdbcType=NUMERIC}
+		)
+</select>
+
+<select id="getProjectMemberNames" parameterType="int">
+	SELECT 
+			td_sm_user.user_name
+	FROM td_sm_user left join c2_projectuser ON td_sm_user.user_name = c2_projectuser.user_name 
+	WHERE c2_projectuser.project_id = 13
+	UNION 
+	SELECT 
+			td_sm_user.user_name 
+	FROM td_sm_user INNER JOIN zt_project ON td_sm_user.user_id = zt_project.`owner` AND zt_project.id = 13 
+</select>
+
+<select id="wrapIcon2UserDTO" parameterType="list" resultType="map">
+	select td_sm_user.user_name userName,td_sm_user.remark1 icon from td_sm_user where user_name in 
+	<foreach item="user" collection="list" open="(" separator="," close=")">
+        #{user.userName}
+    </foreach>
+</select>
+
+
+<select id="existsByUserName" parameterType="string" resultType="map">
+	select * from td_sm_user where user_name=#{name}
+</select>
+
+<select id="getUserByNames" parameterType="list" resultType="map">
+	select * from td_sm_user where user_name in 
+	<foreach item="user" collection="list" open="(" separator="," close=")">
+        #{user}
+    </foreach>
+</select>
+
+<select id="queryUserById" parameterType="string" resultType="map">
+	select * from td_sm_user where user_id=#{userId}
+</select>
+
+<select id="queryUserByIds" parameterType="list" resultType="map">
+	select * from td_sm_user where user_id in 
+	<foreach item="user" collection="list" open="(" separator="," close=")">
+        #{user}
+    </foreach>
+</select>
+
+<insert id="insertUser" parameterType="map">
+	insert into 
+	td_sm_user (user_id,user_name,user_realname,user_pinyin,user_isvalid,remark1,remark3,user_sex,user_password,
+				user_hometel,user_worktel,user_mobiletel1,user_mobiletel2,user_email)
+	values (#{userId},#{userName},#{userRealName},#{userPinyin},#{userIsvalid},#{remark1},#{remark3},#{userSex},'123456',
+			#{userHometel},#{userWorktel},#{userMobiletel1},#{userMobiletel2},#{userEmail})
+</insert>
+
+<select id="queryUserByUserCondition" parameterType="string" resultType="string">
+	select user_id from td_sm_user where user_name like '%${search}%' or user_realname like '%${search}%' or remark2 like '%${search}%'
+</select>
+
+<select id="isPermitted" parameterType="map" resultType="map">
+	select * from tb_sm_privilege t,td_sm_roleresop t1 where t.id=t1.op_id and t1.role_id in (${roleIds}) and t.perm_expr = #{perm}
+</select>
+
+<update id="editUserImg" parameterType="map">
+	update td_sm_user set remark1 = #{remark1} where user_name=#{userName}
+</update>
+</mapper>

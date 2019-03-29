@@ -1,0 +1,306 @@
+<style>
+.user-entrance{ text-align: center; border-left: 1px solid #3c70c6; padding: 0 12px;}
+.profile-pic img{ width:35px; height:35px; border-radius:50%;}
+.profile-pic img:hover{ cursor:pointer;}
+
+.nav-body{
+	display:flex !important;
+	flex: 1 1 auto !important;
+	justify-content: center;
+}
+.nav-body ul{
+	height: 65px;
+}
+.nav-body ul li{
+	float:left;
+	list-style:none;
+	display:flex;
+	margin-right:40px;
+	font-size:17px;
+}
+.nav-body ul li:last-child {
+    margin-right: 0;
+}
+.nav-body ul li a{
+	color:#fff;
+	line-height:65px;
+	padding: 0 5px;
+}
+.nav-body ul li a:hover{
+	border-bottom: 3px solid #fff;
+	height:65px;
+	line-height:65px;
+}
+.select-nav-item a{
+	border-bottom: 3px solid #fff;
+	height:65px;
+	line-height:65px;
+}
+
+.top-bar-layout{ display: flex; padding: 0; margin-bottom: 0 !important; height:65px; align-items: center;}
+.logo-layout{ display: flex; flex: 0 0 auto; width:215px;}
+.nav-right-layout{ display: flex; flex: 0 0 auto; min-width: 215px; position: relative; top:2px;}
+.top-menu{ display: flex; align-items: center;}
+</style>
+
+<ul class="header-inner top-bar-layout">
+
+	<li class="logo logo-layout">
+        <a href="index.html"> <img src="assets/img/C2.png" width="50px"><span class="m-l-5 logo-text-style  hidden-xs">开发中心 {{ layoutSS }}</span></a>
+    </li>
+
+	 <li class="nav-body hidden-xs text-overflow t-o-10">
+		<ul class="p-0 hidden-xs">
+			<li data-ui-sref-active="select-nav-item" class="p-0">
+            	<a data-ui-sref="home.workbench">工作台</a>
+        	</li>
+        	<li data-ui-sref-active="select-nav-item" class="p-0">
+            	<a data-ui-sref="home.projects">项目</a>
+        	</li>
+        	<li data-ui-sref-active="select-nav-item" class="p-0">
+            	<a data-ui-sref="home.weeklyReports">周报</a>
+        	</li>
+        	<li data-ui-sref-active="select-nav-item" class="p-0">
+            	<a data-ui-sref="home.support">支持单</a>
+        	</li>
+        	<li data-ui-sref-active="select-nav-item" class="p-0">
+            	<a ng-href="https://docs.c2cloud.cn/#/" target="_blank">文档</a>
+        	</li>
+        	<li data-ui-sref-active="select-nav-item" class="p-0">
+            	<a data-ui-sref="home.shares">资源</a>
+        	</li>
+        	<li data-ui-sref-active="select-nav-item" class="p-0">
+            	<a data-ui-sref="home.team">团队</a>
+        	</li>
+        	<li data-ui-sref-active="select-nav-item" class="p-0">
+            	<a data-ui-sref="home.assess">考核</a>
+        	</li>
+        	<li data-ui-sref-active="select-nav-item" class="p-0" ng-show={{subject.userName=='zhong.long'}}>
+            	<a data-ui-sref="home.rzmx">财务</a>
+        	</li>
+        	<li data-ui-sref-active="select-nav-item" class="p-0" data-ng-class="{ 'active toggled': $state.includes('home.settings') }"  perm-res="home_settings">
+            	<a data-ui-sref="home.settings">设置</a>
+        	</li>
+		</ul>
+	 </li>	
+		
+    <li class="pull-right nav-right-layout">
+        <ul class="top-menu">
+            
+            <li class="dropdown">
+              <a aria-expanded="true" class="md md-add c-white f-20 f-700" style="text-align: center;" data-toggle="dropdown" href="">
+
+              </a>
+              <ul class="dropdown-menu dm-icon pull-right">
+                <li>
+                  <a href="" ng-click="addTask();">
+                    <i class="md md-format-list-bulleted"></i>任务</a>
+                </li>
+                <li>
+                  <a href="" ng-click="addStory();">
+                    <i class="md md-content-paste"></i> 需求</a>
+                </li>
+                <li>
+                  <a href="" ng-click="addBug();">
+                    <i class="md md-bug-report"></i> BUG</a>
+                </li>
+                <li>
+                  <a href="" ng-click="addDoc();">
+                    <i class="md md-attach-file"></i>文档</a>
+                </li>
+              </ul>
+            </li>
+
+			<!-- <li>
+                <a class="md md-loop c-white f-20 f-700" data-toggle="tooltip" data-placement="bottom" title="开发中心旧版" target="_blank" style="text-align: center;" href="https://oldproject.c2cloud.cn"></a>
+            </li> -->
+            
+			<li id="top-search">
+                <a class="tm-search" href="" data-ng-click="hctrl.openSearch()"></a>
+            </li>
+            
+            <li>
+              <a class="md md-help c-white f-20" data-toggle="tooltip" data-placement="bottom" title="开发中心使用手册" style="text-align: center;" href="http://docs.c2cloud.cn/#/f/docViewer?doc=dc-user-manual" target="_blank" ></a>
+            </li>
+            
+            <li class="dropdown">
+              <a aria-expanded="true" class="md md-smartphone c-white f-20 f-700 text-center" data-placement="bottom" title="手机APP下载" data-toggle="dropdown"></a>
+              <div class="dropdown-menu pull-right">
+              <img width="160" alt="二维码" src="../assets/img/cli_500px.png"/>
+              <div class="text-center">扫一扫下载手机APP</div>
+              </div>
+            </li>
+            
+            <li class="user-entrance hidden-xs dropdown" >
+            	
+            	<a class="profile-pic" data-toggle="dropdown" aria-expanded="true" data-placement="bottom" title="{{subject.userRealname}}">
+                	<img ng-src="{{subject.remark1}}" alt="">
+                </a>
+                <ul class="dropdown-menu dm-icon pull-right m-t-20">
+                	 <li>
+		                <a ui-sref="home.profile"><i class="md md-person"></i> 个人信息</a>
+		            </li>
+		            <li>
+		                <a href=""><i class="md md-settings-input-antenna"></i> 通知设置</a>
+		            </li>
+		            <li>
+		                <a ui-sref="home.about"><i class="md md-info-outline"></i> 关于应用</a>
+		            </li>
+		            <li>
+		                <a href="" data-ng-click="mactrl.logout()"><i class="md md-history"></i> 登出</a>
+		            </li>
+                </ul>
+            </li>
+            
+        </ul>
+    </li>
+    
+</ul>
+
+<!-- Top Search Content START -->
+<div id="top-search-wrap">
+    <form ng-submit="hctrl.searchEnter()">
+    <c2-dropdown id="search-dropdown" bind-data-id="hctrl.globalSearch" items="hctrl.suggests" disabled="true" item-click="hctrl.suggestClick(hctrl.globalSearch)">
+    <input id="globalSearchInput" type="text" ng-model="hctrl.globalSearch">
+    </c2-dropdown>
+    </form>
+    <i id="top-search-close" data-ng-click="hctrl.closeSearch()">&times;</i>
+</div>
+
+<div id="globalSearchDiv" class="c-overflow">
+	<div class="container ng-scope">
+		<div class="m-t-30 m-b-10" style="padding:12px; background:#fff;border-bottom:1px solid #eee;" >
+			<c2-dropdown bind-data-id="globalSearchCondition.type" bind-data="searchType" items="totalSearchTypes" item-name="name" item-id="id">
+				<div class="picker picker-white">
+					<i class="md {{searchType.iconClass}}"></i> <span class="p-l-5 p-r-5 m-l-5">{{searchType.name}}</span>
+				</div>
+				<dropdown-item-template>
+				<i class="md {{item.iconClass}} f-14"></i>
+				<span class="text">{{item.name}}</span>
+				<span class="md md-check check-mark"></span>
+				</dropdown-item-template>
+			</c2-dropdown>
+			<c2-dropdown class="animate" bind-data-id="globalSearchCondition.project" bind-data="searchProject" items="totalSearchProjectItems" item-name="name" item-id="id" max-height="200" filter="true" >
+				<div class="picker picker-white text-overflow">
+					<i class="md md-apps"></i> <span class="p-l-5 p-r-5 m-l-5">{{searchProject.name}}</span>
+				</div>
+			</c2-dropdown>
+			<div class="text-overflow choose-display p-l-10 m-l-10">
+				<ul style="padding:0; margin:0;">
+					<li ng-if="globalSearchCondition.module"><i title="模块" class="md md-extension f-12"><span class="m-l-5">{{globalSearchCondition.moduleName}}</span></i><span ng-click="searchClean('module')"><i class="md md-clear clear-ico"></i></span></li>
+					<li ng-if="globalSearchCondition.milestone"><i title="里程碑" class="md md-av-timer f-12"><span class="m-l-5">{{globalSearchCondition.milestoneName}}</span></i><span ng-click="searchClean('milestone')"><i class="md md-clear clear-ico"></i></span></li>
+					<li ng-if="globalSearchCondition.label"><i title="标签" class="md md-label-outline f-12"><span class="m-l-5">{{globalSearchCondition.labelName}}</span></i><span ng-click="searchClean('label')"><i class="md md-clear clear-ico"></i></span></li>
+				</ul>
+			</div>
+			<div ng-if="searchData" style="float: right;line-height: 32px;">找到相关结果<span class="num">{{searchData.searchHits.totalHits}}</span>个，用时<span class="num">{{searchData.spendTime}}</span>ms</div>
+		</div>
+	
+		<div class="card m-t-30" style="height: calc(100% - 65px);">
+			<div class="card-body clearfix">
+				<div class="listview lv-bordered lv-lg" style="height: auto;">
+					<div class="text-center" style="min-height: 450px;" ng-if="!searchData || searchData.searchHits.hits.length==0">
+					<div style="display: inline-block;margin-top: 150px;">
+					<i class="md md-search" style="float: left;font-size: 150px;color:#eee;"></i>
+					<span class="c-gray" style="float: left;margin-top: 55px;text-align: left;line-height: 22px;">
+					用来搜索自己参与项目的任务，BUG，需求。<br>
+					关键字可以是任何和任务，BUG，需求相关的字、词、人、里程碑、模块、标签、BUG编号等等。<br>
+					比如:"平台","严艺琳","yilin.yan","yanyilin","#123"...<br>
+					结果的类型,项目名称，模块，里程碑，标签都可以点击进行筛选。
+					</span>
+					</div>
+					</div>
+					<div class="lv-body m-t-20 m-b-30">
+						<!-- 任务 start -->
+						<div class="lv-item media b-n" ng-class="{'active-shadow':activeId==hit.type+hit.id}" ng-repeat="hit in searchData.searchHits.hits">
+						<div ng-if="hit.type=='task'">
+                   			<div class="pull-left m-r-20">
+                       			<div class="ico-type" ng-click="changeSearch('type','task')"><i class="md md-format-list-bulleted f-20" title="任务,点击只查询任务"></i></div>
+                  			</div>
+                   			<div class="pull-left user-head">
+                       			<img class="lv-img-sm" ng-src="{{hit.source.userIcon}}">
+                       			<div ng-bind-html="hit.source.userRealname"></div>
+                   			</div>
+                   			<div class="media-body">
+                       			<div class="lv-title pull-left">
+								<a ng-click="searchDetail('task',hit)" class="cursor-pointer" ng-bind-html="hit.source.name"></a>
+								<span class="p-l-10 p-r-10 m-r-5 label-show" ng-style="label.backgroundStyle" ng-click="changeSearch('label',label,label.name)" ng-repeat="label in hit.source.labels">{{label.name}}</span> 
+                       			</div>                      			
+                       			<div class="clearfix"></div>
+                       			<div class="s-des-t text-overflow-more" ng-bind-html="hit.source.descriptionHL"></div>
+                       			<ul class="lv-attrs">
+	                           		<li ng-show="!hit.source.isDone"><i class="md md-today" title="截止日期"></i> <span ng-show="hit.source.estStartDate" title="{{hit.source.residueDate}}">{{hit.source.deadline | date:"yyyy-MM-dd"}}</span><span ng-show="!hit.source.estStartDate" title="任务结束时间">未分配</span></li>
+		                            <li title="完成时间" ng-show="hit.source.isDone"><i class="md md-today"></i> {{hit.source.finishedDate | date:"yyyy-MM-dd"}} </li>
+		                            <li title="项目" class="cursor-pointer" ng-click="changeSearch('project',hit.source.projectId)"><i class="md md-apps"></i> <span ng-bind-html="hit.source.projectName"></span></li>
+		                            <li title="模块" class="cursor-pointer" ng-click="changeSearch('module',hit.source.moduleId,hit.source.moduleName)" ng-show="hit.source.moduleName"><i class="md md-extension"></i> <span ng-bind-html="hit.source.moduleName"></span></li>
+		                            <li title="里程碑" class="cursor-pointer" ng-click="changeSearch('milestone',hit.source.milestoneId,hit.source.milestoneTitle)" ng-show="hit.source.milestoneTitle"><i class="md md-av-timer"></i> <span ng-bind-html="hit.source.milestoneTitle"></span></li>
+		                            <li title="工时"><i class="md md-history m-f-w m-r-5"></i> {{hit.source.consumed}}/{{hit.source.estimate}}</li>
+		                            <li title="bug编号" ng-show="hit.source.bugId">
+		                            	<a class="c-purple cursor-pointer" ng-click="searchDetail('bug',hit)">#{{hit.source.bugNo}}</a>
+		                            </li>
+		                            <li title="任务状态" ng-show="!hit.source.isDone"><i class="md md-done c-gray f-16"></i> 未完成</li>
+		                            <li title="任务状态" ng-show="hit.source.isDone&&!hit.source.closed"><i class="md md-done c-teal f-16"></i> 已完成</li>
+		                            <li title="任务状态" ng-show="hit.source.isDone&&hit.source.closed"><i class="md md-settings-power f-16"></i> 已关闭</li>
+                       			</ul>
+                   			</div>
+                   		</div>
+                   		<div ng-if="hit.type=='bug'">
+               				<div class="pull-left m-r-30">
+                       			<div class="ico-type" ng-click="changeSearch('type','bug')"><i class="md md-bug-report f-20" title="BUG,点击只查询BUG"></i></i></div>
+                  			</div>
+                   			<div class="media-body">
+								<div class="lv-title" style="max-width: 80%;">
+									<b class="c-Reopen m-r-10">#{{hit.source.bugNo}}</b> <a class="cursor-pointer" ng-click="searchDetail('bug',hit)" ng-bind-html="hit.source.title"></a>
+									<span class="p-l-10 p-r-10 m-r-5 label-show" ng-style="label.backgroundStyle" ng-click="changeSearch('label',label,label.name)" ng-repeat="label in hit.source.labels">{{label.name}}</span>
+								</div>
+								<div class="s-des-t text-overflow-more" ng-bind-html="hit.source.specHL"></div>
+								<ul class="lv-attrs">	
+									<div class="bug-block bug-{{fomatBugStatus(hit.source.status)}}" >{{fomatBugStatus(hit.source.status)}}</div>
+									<li title="创建时间"><i class="md md-today" ></i> {{hit.source.createTime|date:'yyyy-MM-dd'}}</li>
+									<li title="项目" class="cursor-pointer" ng-click="changeSearch('project',hit.source.projectId)"><i class="md md-apps"></i> <span ng-bind-html="hit.source.projectName"></span></li>
+									<li title="模块" class="cursor-pointer" ng-click="changeSearch('module',hit.source.moduleId,hit.source.moduleName)" ng-show="hit.source.moduleName"><i class="md md-extension"></i> <span ng-bind-html="hit.source.moduleName"></span></li>
+									<li title="里程碑" class="cursor-pointer" ng-click="changeSearch('milestone',hit.source.milestoneId,hit.source.milestoneTitle)" ng-show="hit.source.milestoneTitle"><i class="md md-av-timer"></i> <span ng-bind-html="hit.source.milestoneTitle"></span></li>
+									<li title="创建人"><i class="md md-person-outline" ></i> <span ng-bind-html="hit.source.createByName"></span></li>
+									<li title="处理人"><i class="md md-person" ></i> <span ng-bind-html="hit.source.assignedToName"></span></li>
+									<li title="优先级"><i class="md md-sort" ></i> {{hit.source.pri}}</li>
+								</ul>
+					  		</div>
+               			</div>
+               			<div ng-if="hit.type=='story'">
+              				<div class="pull-left m-r-30">
+                      			<div class="ico-type" ng-click="changeSearch('type','story')"><i class="md  md-content-paste f-20" title="需求,点击只查询需求"></i></div>
+                 			</div>
+                  			<div class="media-body">
+							<div class="lv-title">								
+								<a class="cursor-pointer" ng-click="searchDetail('story',hit)" ng-bind-html="hit.source.title"></a>
+								<span class="p-l-10 p-r-10 m-r-5 label-show" ng-style="label.backgroundStyle" ng-click="changeSearch('label',label,label.name)" ng-repeat="label in hit.source.labels">{{label.name}}</span> 
+							</div>
+							<div class="s-des-t text-overflow-more" ng-bind-html="hit.source.specHL"></div>
+							<ul class="lv-attrs">
+								<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #6cc644;margin-right: 5px;" ng-if="hit.source.status=='1'" >已打开</span>
+								<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #999;margin-right: 5px;" ng-if="hit.source.status=='0'" >已关闭</span>
+								<li><i class="md md-today" title="创建时间"></i> {{hit.source.openedDate|date:'yyyy-MM-dd'}}</li>
+								<li title="项目" class="cursor-pointer" ng-click="changeSearch('project',hit.source.projectId)"><i class="md md-apps"></i> <span ng-bind-html="hit.source.projectName"></span></li>
+								<li title="模块" class="cursor-pointer" ng-click="changeSearch('module',hit.source.moduleId,hit.source.moduleName)" ng-show="hit.source.moduleName"><i class="md md-extension"></i> <span ng-bind-html="hit.source.moduleName"></span></li>
+								<li title="里程碑" class="cursor-pointer" ng-click="changeSearch('milestone',hit.source.milestoneId,hit.source.milestoneTitle)" ng-show="hit.source.milestoneTitle"><i class="md md-av-timer"></i> <span ng-bind-html="hit.source.milestoneTitle"></span></li>
+								<li><i class="md md-person-outline" title="创建人"></i> <span ng-bind-html="hit.source.openedByName"></span></li>
+								<li><i class="md md-sort" title="优先级"></i> {{hit.source.pri}}</li>
+							</ul>				
+							</div>
+	               		</div>
+               			</div>
+               			
+					</div>
+				</div>
+				<c2-pagination ng-if="searchData.searchHits.totalHits" id="searchPagebar" total="searchData.searchHits.totalHits" page-size="20" on-page-change="searchPaging(pageIndex)"></c2-pagination>
+			</div>
+		</div>
+	</div>
+</div>
+
+<aside id="search-detail-panel" search-aside-container class="cOverflow" style="background-color: #fafafa;">
+    <div class="detailContent" ng-include="detailUrl" onload="stateOnload()"></div>
+</aside>
+
+<script>
+$("[data-toggle]").tooltip();
+</script>

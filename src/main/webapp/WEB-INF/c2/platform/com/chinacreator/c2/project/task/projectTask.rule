@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="projectTask" log="false" className="com.chinacreator.c2.project.task.TaskService" method="projectTask">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>任务详情</name>
+  <desc>根据ID获取任务详情</desc>
+  <inputs>
+    <input collection="false" desc="" id="id" required="true" type="Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.id" name="id" signature="QInteger;" type="Integer"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

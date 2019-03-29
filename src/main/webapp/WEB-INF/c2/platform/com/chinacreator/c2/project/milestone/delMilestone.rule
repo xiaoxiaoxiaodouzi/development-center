@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="delMilestone" log="false" className="com.chinacreator.c2.project.milestone.MilestoneService" method="deleteMilestone">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>删除里程碑</name>
+  <desc>删除</desc>
+  <inputs>
+    <input collection="false" desc="@return" id="milestone" required="true" type="com.chinacreator.c2.project.milestone.Milestone"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="boolean"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.milestone" name="milestone" signature="QMilestone;" type="com.chinacreator.c2.project.milestone.Milestone"/>
+  </params>
+  <return signature="Z" type="boolean"/>
+</CustomRule>

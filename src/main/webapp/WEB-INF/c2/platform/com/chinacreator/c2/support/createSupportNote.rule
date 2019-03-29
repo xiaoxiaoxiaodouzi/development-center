@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="support/createSupportNote" log="false" className="com.chinacreator.c2.support.SupportService" method="createSupportNote">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>创建支持单</name>
+  <inputs>
+    <input collection="false" desc="" id="support" required="true" type="com.chinacreator.c2.support.Support"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.support.Support"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.support" name="support" signature="QSupport;" type="com.chinacreator.c2.support.Support"/>
+  </params>
+  <return signature="QSupport;" type="com.chinacreator.c2.support.Support"/>
+</CustomRule>

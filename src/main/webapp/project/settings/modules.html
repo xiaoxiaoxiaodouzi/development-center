@@ -1,0 +1,854 @@
+<link href="assets/fonts/iconfont.css" rel="stylesheet">
+<style>
+	/* < !-- .dd {
+		max-width: inherit;
+	}
+
+	--> */
+
+	/* 表格上下边框线 */
+	.form-search {
+		height: 30px;
+		background: #eeeeee;
+		border: none;
+		margin-left: -10px;
+		border-radius: 3px;
+		width: 250px;
+		padding-left: 25px;
+		margin-right: 10px;
+		font-size: 14px;
+	}
+
+	.dropdown-menu {
+		z-index: 25 !important;
+	}
+
+	.tui-grid-cell {
+		border-top-width: 1px;
+		border-bottom-width: 1px;
+	}
+</style>
+<div class="container m-t-10">
+	<div class="card" ng-controller="modEditCtrl">
+		<div class="card-header">
+			<h2>
+				模块
+				<small>模块维护</small>
+			</h2>
+			<div title="折叠全部">
+				<button style="border: none;
+					margin-top: 11px;" data-ng-click="collapseAll()">
+					<i class="md md-remove">折叠全部</i>
+				</button>
+
+				<button style="border: none;
+					margin-top: 11px;margin-left: 5px;" data-ng-click="expandAll()">
+					<i class="md md-add">展开全部</i>
+				</button>
+
+				<button style="border: none;
+				margin-top: 11px;margin-left: 5px;" data-ng-click="addRootMod()">
+					<i class="md md-apps">新增根模块</i>
+				</button>
+			</div>
+		</div>
+
+		<div class="card-body clearfix">
+			<div class="listview lv-bordered lv-lg">
+				<div class="lv-header-alt">
+					<i class="md md-search" style="font-size: 18px;color: #A9A9A9;position: relative;top: -5px;left: 18px;"></i>
+					<input type="text" ng-model="search.title" class="form-search" placeholder="标题">
+
+					<c2-dropdown class="animate" style="margin-top: 3px;margin-left:10px;" bind-data="search.status"
+						items="allStatusList" item-name="title" max-height="200" clean-button="true">
+						<div class="picker picker-white text-overflow" style="max-width:140px;">
+							<!-- <i class="md md-av-timer"></i> -->
+							<span ng-if="!search.status">选择状态
+								<i class="caret"></i>
+							</span>{{search.status.title}}
+						</div>
+					</c2-dropdown>
+
+					<c2-dropdown class="animate" style="margin-top: 3px;margin-left:10px;" bind-data="search.milestone"
+						items="allMileList" item-name="title" max-height="200" filter="true" clean-button="true">
+						<div class="picker picker-white text-overflow" style="max-width:140px;">
+							<!-- <i class="md md-av-timer"></i> -->
+							<span ng-if="!search.milestone">选择里程碑
+								<i class="caret"></i>
+							</span>{{search.milestone.title}}
+						</div>
+					</c2-dropdown>
+
+					<!-- <c2-dropdown style="margin-top: 3px;margin-left:10px;" bind-date="module" tree-options="treeOptions" id="modTree"
+					 tree-nodes="zTreeNodes">
+						<div class="picker picker-white">
+							 <i class="md md-extension"></i> {{module.name}} &nbsp;
+							<span class="caret"></span>
+						</div>
+					</c2-dropdown> -->
+
+					<c2-dropdown class="animate" style="margin-top: 3px;margin-left:10px;" bind-data="search.pri"
+						items="allPriList" item-name="title" max-height="200" clean-button="true">
+						<div class="picker picker-white text-overflow" style="max-width:160px;">
+							<!-- <i class="md md-sort"></i>  -->
+							<span ng-if="!search.pri">选择优先级
+								<i class="caret"></i>
+							</span>{{search.pri.title}}
+						</div>
+					</c2-dropdown>
+
+					<c2-dropdown class="animate" style="margin-top: 3px;margin-left:10px;" bind-data="search.completes"
+						items="allCompletes" item-name="title" max-height="200" clean-button="true">
+						<div class="picker picker-white text-overflow" style="max-width:160px;">
+							<!-- <i class="md md-sort"></i>  -->
+							<span ng-if="!search.completes">选择需求完成度
+								<i class="caret"></i>
+							</span>{{search.completes.title}}
+						</div>
+					</c2-dropdown>
+
+					<c2-dropdown bind-data="search.assignedToList" items="projectUsers" item-name="userRealname" multiple=true
+						max-height="200" filter="true" filter-pinyin="true" clean-button="true">
+						<div class="picker picker-white text-overflow" style="max-width:160px;padding-right: 0px;">
+							<i class="md md-account-child"></i>
+							<span ng-if="search.assignedToList.length==0">负责人</span>
+							<span ng-repeat="user in search.assignedToList">{{user.userRealname}} </span>
+							<span class="caret"></span>
+						</div>
+					</c2-dropdown>
+				</div>
+				<div class="lv-body">
+					<div ng-if="modList.length==0" class="lv-item no-animate text-center p-20">没有查到任何模块。</div>
+					<div id="grid"></div>
+				</div>
+			</div>
+		</div>
+
+		<aside id="detail-panel" state-aside-container class="cOverflow"
+			style="background-color: #fafafa;top:117px;width:600px;z-index: 99;">
+			<ui-view onload="stateOnload()"></ui-view>
+		</aside>
+	</div>
+</div>
+
+
+<script>
+	developmentCenter
+		.registerCtrl(
+			'modEditCtrl',
+			function ($scope, $element, $state, $stateParams, $timeout, Modal, Messenger, debounce,
+				$http) {
+				var completes = {
+					'0': 0,
+					'1': 25,
+					'2': 50,
+					'3': 75,
+					'4': 100
+				}
+
+				/* $http.post('ws/orderAllModule', {}).success(function (data) {
+
+				}) */
+
+				$scope.allCompletes = [
+					{ title: '0%', value: 0 },
+					{ title: '25%', value: 1 },
+					{ title: '50%', value: 2 },
+					{ title: '75%', value: 3 },
+					{ title: '100%', value: 3 }
+				];
+				//这里是为了解决刷新页面侧滑框统计数据没有的情况，让用户必须通过点击才能看到，刷新直接收起侧滑框
+				var url = window.location.hash
+				if (!url.endsWith('modules')) {
+					window.location.replace('#/project/' + $stateParams.project + '/modules')
+				}
+
+				$scope.search = {
+					week: { st: null, et: null },
+					assignedToList: []
+				}
+
+				$scope.AllPlanStatus = [{ title: '小于25%', value: 0 }, { title: '25%-50%之间', value: 1 }, { title: '50%-75%之间', value: 2 }, { title: '大于75%', value: 3 }];
+				$scope.allStatusList = [{ id: "1", title: "打开" }, { id: "3", title: "确认" }, { id: "2", title: "逾期" }, { id: "0", title: "关闭" }];
+				$scope.dateButtons = ['thisWeek', 'nextWeek', 'preWeek', 'thisMonth', 'preMonth', 'thisYear'];
+				$scope.allPriList = [{ id: "1", title: "高" }, { id: "2", title: "中" }, { id: "3", title: "低" }];
+				// $scope.dateRange = { show: "时间段", start: null, end: null };
+
+				// $scope.$watch("dateRange", debounce(function (v) {
+				// 	if (angular.isUndefined(v)) return;
+				// 	$scope.search.week = {
+				// 		st: v.start, et: v.end
+				// 	};
+				// }, 200), true);
+
+				$scope.$watch("debounce", function (v) {
+					debounceSearchFn(v);
+				}, true);
+
+				$scope.$watch("search", function (v, ov) {
+					initData(null, $scope.search);
+				}, true);
+
+				var debounceSearchFn = debounce(function (ds) {
+					angular.extend($scope.search, angular.copy(ds));
+				}, 600);
+
+				//收起全部
+				$scope.collapseAll = function () {
+					_.each($scope.modList, function (item) {
+						$scope.grid.collapse(item.rowKey, true);
+					})
+					//  $scope.grid.getColl();
+				}
+
+				$scope.expandAll = function () {
+					_.each($scope.modList, function (item) {
+						$scope.grid.expand(item.rowKey, true);
+					})
+				}
+				var projectId = $stateParams.project;
+
+				$http.post("ws/getAllLabelAndMilestone", {
+					"projectId": projectId
+				}).success(function (data) {
+					if (data.result.allLabelList) $scope.allLabelList = data.result.allLabelList;
+					if (data.result.allMilestoneList) $scope.allMileList = data.result.allMilestoneList;
+				});
+
+				//项目成员
+				$http.post("ws/getMembers", { projectId: projectId }).success(function (data) {
+					var taskMembers = [];
+					angular.forEach(data.result, function (v, n) {
+						taskMembers.push({ userId: v.userDTO.user_id, userRealname: v.userDTO.user_realname, icon: v.userDTO.remark1, userName: v.userDTO.user_name });
+					});
+					$scope.projectUsers = taskMembers;
+				});
+
+				$scope.modList = [];
+				// getInitTime(rootItems);
+				//循环计算所有模块的开始结束时间
+				$scope.grid = new tui.Grid({
+					el: $('#grid'),
+					// rowHeaders: ['rowNum', 'checkbox'],
+					bodyHeight: 500,
+					rowHeight: 40,
+					//columns配置了editOptions则根据下面点击事件来触发
+					//editingEvent:'click',
+					treeColumnOptions: {
+						name: 'title',
+						useCascadingCheckbox: false
+					},
+					//设置参数  http://nhnent.github.io/tui.grid/latest/Grid#getRow
+					columns: [
+						{
+							title: 'ID',
+							name: 'id',
+							hidden: true
+						},
+						{
+							title: '名称',
+							name: 'title',
+							minWidth: 200,
+							ellipsis: true,
+							formatter: function (value, rowData) {
+								if (rowData.title) return '<div title="' + rowData.title + '">' + '<a class="detail" name="' + rowData.rowKey + '"href="javascript:void(0)" ' + '>' + rowData.title + '</a></div>';
+								else if (rowData.name) return '<div title="' + rowData.name + '">' + '<a class="detail" name="' + rowData.rowKey + '"href="javascript:void(0)" ' + '>' + rowData.name + '</a></div>'
+							}
+						},
+						{
+							title: '完成度',
+							name: 'completes',
+							width: 180,
+							formatter: function (value, rowData) {
+								if (rowData.module) {
+									if (completes[value] != 100) {
+										return '<div style="display: flex;justify-content: center;align-items: center;"><div style="height:8px; border-radius:20px;margin-bottom:0px;width: -webkit-fill-available;" class="progress" title="完成度' + completes[value] + '%"><div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="background-color:#4ec315;width:' + completes[value] + '%"></div> </div><span style="    font-size: 12px;margin-left: 6px;margin-top: 2px;color: #8d8d8d;">' + completes[value] + '%</span></div> '
+									} else {
+										return '<div style="display: flex;justify-content: center;align-items: center;"><div style="height:8px; border-radius:20px;margin-bottom:0px;width: -webkit-fill-available;" class="progress" title="完成度' + completes[value] + '%"><div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="background-color:#4ec315;width:' + completes[value] + '%"></div> </div><i  class="ace-icon fa-wancheng1" style="font-size: 12px;margin-left: 6px;margin-top: 2px;color: #4ec315;"></i></div> '
+									}
+								} else {
+									if (value != 100) {
+										return '<div style="display: flex;justify-content: center;align-items: center;"><div style="height:8px; border-radius:20px;margin-bottom:0px;width: -webkit-fill-available;" class="progress" title="完成度' + value + '%"><div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="background-color:rgb(0,169,255);width:' + value + '%"></div> </div><span style="    font-size: 12px;margin-left: 6px;margin-top: 2px;color: #8d8d8d;">' + value + '%</span></div> '
+									} else {
+										return '<div style="display: flex;justify-content: center;align-items: center;"><div style="height:8px; border-radius:20px;margin-bottom:0px;width: -webkit-fill-available;" class="progress" title="完成度' + value + '%"><div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="background-color:rgb(0,169,255);width:' + value + '%"></div> </div><i  class="ace-icon fa-wancheng1" style="font-size: 12px;margin-left: 6px;margin-top: 2px;color: rgb(0,169,255);"></i></div> '
+									}
+								}
+							}
+						},
+						{
+							title: '类型',
+							name: 'type',
+							align: 'center',
+							width: 100,
+							formatter: function (value, rowData) {
+								if (rowData.module) return '<span style="color:#4ec315">需求</span>';
+								else return '<span style="color:rgb(0,169,255)">模块</span>';
+							}
+						},
+						{
+							title: '预计开始时间',
+							align: 'center',
+							width: 140,
+							name: 'startDate',
+							formatter: function (value, rowData) {
+								if (value) {
+									return moment(value).format('YYYY-MM-DD')
+								}
+							}
+						},
+						{
+							title: '预计完成时间',
+							align: 'center',
+							width: 140,
+							name: 'endDate',
+							formatter: function (value, rowData) {
+								if (value) {
+									return moment(value).format('YYYY-MM-DD')
+								}
+
+							}
+						},
+						{
+							title: '负责人',
+							align: 'center',
+							width: 100,
+							name: 'assignedTo',
+							formatter: function (value, rowData) {
+								if (rowData.module) return rowData.assignedTo ? (rowData.assignedTo.userRealname ? rowData.assignedTo.userRealname : '无') : '无';
+								else return rowData.assignedTo ? (rowData.assignedTo.userRealname ? rowData.assignedTo.userRealname : (rowData.assigned.userRealname ? rowData.assigned.userRealname : '无')) : '无';
+							}
+						},
+						{
+							title: '提出人',
+							align: 'center',
+							width: 100,
+							name: 'proposer',
+							formatter: function (value, rowData) {
+								if (rowData.proposer) return rowData.proposer.userRealname;
+								else return '无'
+							}
+						},
+						{
+							title: '操作',
+							align: 'center',
+							width: 80,
+							formatter: function (value, rowData) {
+								//判断是需求还是模块
+								if (rowData.module) return '<div>'
+									+ '<a class="story"><i  name="' + rowData.rowKey + '" ng-mousedown="$event.stopPropagation()" class="ace-icon fa-xiangqing1 right_handle" style="float:none;margin-left:0"></i></a>'
+									+ '</div>';
+								else return '<div>'
+									+ '<a class="add" title="新增"><i name="' + rowData.rowKey + '" ng-mousedown="$event.stopPropagation()" class="ace-icon fa-pinleizengjia right_add" style="float:none;margin-left:0"></i></a>'
+									+ '<a class="up" title="上移"><i name="' + rowData.rowKey + '" ng-mousedown="$event.stopPropagation()" class="ace-icon fa-up right_add" style="float:none;margin-left:0"></i></a>'
+									+ '<a class="down" title="下移"><i name="' + rowData.rowKey + '" ng-mousedown="$event.stopPropagation()" class="ace-icon fa-down right_add" style="float:none;margin-left:0"></i></a></div>';
+							},
+						}
+					]
+				});
+				//设置树表主题 有 default, striped (zebra pattern), and clean
+				tui.Grid.applyTheme("clean");
+				//初始化数据。
+				initData();
+				function initData() {
+					$http.post("ws/getModuleByProject", {
+						projectId: projectId,
+						search: $scope.search
+					}).success(function (data) {
+						$scope.moduleList = [];
+						var allitems = data.result;
+						var fun = function (items) {
+							$(items).each(function (i, o) {
+								var subItems = $.grep(allitems, function (v, i) {
+									return v.parent == o.id;
+								});
+								o.title = o.name;
+								fun(subItems);
+								o.showModInput = false;
+								o._children = subItems ? subItems : new Array();
+								$(o.storyList).each(function (index, item) {
+									//计算出模块下面的所有需求数
+									o._children.push(item);
+								})
+							});
+						};
+						var rootItems = $.grep(allitems, function (v) {
+							return v.parent == 0;
+						});
+						fun(rootItems);
+						rootItems.forEach(function (i) {
+							let child = getChildModule(i);
+							child.forEach(function (item) {
+								let childStory = getStorys(item);
+								var moduleCompletes = 0;
+								if (childStory.length > 0) {
+									//算出所有子需求的完成度
+									childStory.forEach(function (s) {
+										moduleCompletes += completes[s.completes]
+									})
+									moduleCompletes = moduleCompletes / childStory.length
+								} else {
+									moduleCompletes = 0;
+								}
+								item.completes = moduleCompletes.toFixed(0);
+							})
+						})
+						$scope.modList = rootItems;
+						$scope.grid.resetData($scope.modList);
+						_.each($scope.modList, function (item) {
+							$scope.grid.expand(item.rowKey)
+						})
+					});
+				}
+
+				function getAllChildModule(data, ary) {
+					if (!Array.isArray(ary)) ary = new Array();
+					if (data._children && data._children.length > 0) {
+						data._children.forEach(function (i) {
+							//模块
+							if (!i.module) ary.push(i);
+							else {
+								getAllChildModule(i, ary);
+							}
+						})
+					}
+					return ary
+				}
+
+				//循环查出所有的模块下面的需求
+				function getAllchildStorys(data, ary) {
+					if (!Array.isArray(ary)) ary = new Array();
+					if (data._children && data._children.length > 0) {
+						data._children.forEach(function (i) {
+							//需求
+							if (i.module) ary.push(i);
+							else {
+								getAllchildStorys(i, ary);
+							}
+						})
+					}
+					return ary;
+				}
+
+				//设置初始化时候的模块时间
+				function getInitTime(ary) {
+					let startDate = '';
+					let endDate = '';
+					ary.forEach(function (item) {
+						if (!item.total) item.total = { story: { done: 0, all: 0 }, task: { done: 0, all: 0 }, bug: { close: 0, all: 0 } }
+						//找到每一个模块
+						if (item._children && item._children.length > 0) {
+							item._children.forEach(function (i) {
+								if (!i.module) getInitTime([i])
+							})
+						}
+						//首先先将自己的bugNum计算出来，然后在加上所有的子数据
+						item.total.bug.all += item.bugNum ? item.bugNum : 0
+						item.total.bug.close += item.closeNum ? item.closeNum : 0
+						let childModule = getAllChildModule(item);
+						childModule.forEach(function (i) {
+							if (i.bugNum) item.total.bug.all += i.bugNum;
+							if (i.closeNum) item.total.bug.close += i.closeNum
+						})
+						//找到每个模块下面所有的需求
+						let childs = getAllchildStorys(item);
+						childs.forEach(function (i) {
+							item.total.story.all++;
+							if (i.completes == '4') item.total.story.done++;
+							if (i.taskInfo) {
+								item.total.task.all += i.taskInfo.doneNum + i.taskInfo.undoneNum;
+								item.total.task.done += i.taskInfo.doneNum;
+							}
+							if (!startDate) startDate = i.startDate;
+							if (startDate > i.startDate) startDate = i.startDate;
+							if (endDate < i.endDate) endDate = i.endDate;
+						})
+						item.startDate = startDate;
+						item.endDate = endDate;
+					})
+				}
+
+				/* 	$scope.grid.on('click', function (e) {
+						if (!angular.isUndefined(e.rowKey) && e.columnName != "title") {
+							$scope.rowkey = e.rowKey;
+							var rowData = $scope.grid.getRow(e.rowKey);
+							$scope.rowData = rowData;
+							//判断是否是刚刚新增的数据，刚刚新增的数据存在data里面
+							if (rowData.data) {
+								rowData = rowData.data
+							}
+							if (rowData.module) {
+								$state.go('project.modules.storyComment', { test: rowData, project: rowData.project.id, storyid: rowData.id })
+							} else {
+								$state.go('project.modules.moduleDetail', { module: rowData, moduleId: rowData.id })
+							}
+						}
+					}); */
+
+				//给上移下移添加点击事件
+				$('#grid').on('click', '.up', function (e) {
+					var rowKey = getRowKey(e);
+					var row = $scope.grid.getRow(rowKey);
+					//找到所有的兄弟节点
+					var rows = getBrotherNodes(row);
+					//找到自己所在兄弟节点的位置
+					if (rows.length === 0) {
+						Messenger.post('已经在当前模块下最顶层了，不能跨父级模块移动！');
+					} else {
+						rows.forEach(function (i, o) {
+							if (i.id === row.id) {
+								if (o === 0) Messenger.post('已经在当前模块下最顶层了，不能跨父级模块移动！');
+								else {
+									var pre = rows[o - 1]
+									var current = row;
+									//调用修改排序的借口
+									$http.post('ws/orderModule', { list: [pre, current] }).success(function (data) {
+										initData();
+										Messenger.post('操作成功！')
+									})
+								}
+							}
+						})
+					}
+				})
+
+				$('#grid').on('click', '.down', function (e) {
+					var rowKey = getRowKey(e);
+					var row = $scope.grid.getRow(rowKey);
+					//找到所有的兄弟节点
+					var rows = getBrotherNodes(row);
+					//找到自己所在兄弟节点的位置
+					if (rows.length === 0) {
+						Messenger.post('已经在当前模块下最底层了，不能跨父级模块移动！');
+					} else {
+						rows.forEach(function (i, o) {
+							if (i.id === row.id) {
+								if (o === rows.length - 1) Messenger.post('已经在当前模块下最底层了，不能跨父级模块移动！');
+								else {
+									var pre = rows[o + 1]
+									var current = row;
+									//调用修改排序的借口
+									$http.post('ws/orderModule', { list: [current, pre] }).success(function (data) {
+										initData();
+										Messenger.post('操作成功！')
+									})
+								}
+							}
+						})
+					}
+				})
+
+				//找到所有兄弟节点的数据
+				function getBrotherNodes(row) {
+					var parent = $scope.grid.getParent(row);
+					var broNodes = [];
+					if (parent && parent.attributes) {
+						var allC = $scope.grid.getChildren(parent.attributes.rowKey);
+						allC.forEach(function (i) {
+							if (!i.attributes.module) {
+								broNodes.push(i.attributes);
+							}
+						})
+					} else {
+						broNodes = $scope.modList;
+					}
+					return broNodes;
+				}
+
+				//给新增dom添加点击事件
+				$('#grid').on('click', '.add', function (e) {
+					e.stopPropagation();
+					var rowKey = getRowKey(e);
+					var row = $scope.grid.getRow(rowKey);
+					Modal.open("project/settings/addstoryPlans.html", {
+						moduleId: row.id, continueModules: function (data) {
+							continueModules(data)
+						}, continueStorys: function (data) {
+							continueStorys(data)
+						}
+					}, {
+							title: '',
+							animation: true,
+							size: "middle",
+							onClose: function (data) {
+								// initData();
+								var rows = [];
+								//找到新增内容挂在哪个模块下面,先判断是新增的模块还是需求
+								if (data.parent) {
+									rows = $scope.grid.findRows({
+										id: data.parent
+									});
+								} else {
+									rows = $scope.grid.findRows({
+										id: data.module.id
+									})
+								}
+								if (rows.length > 0) {
+									//第一个参数为新增数据，第二个参数为父rowkey
+									$scope.grid.appendRow(data, { parentRowKey: rows[0].rowKey });
+									if (data.module) {
+										let keys = getAllParentKey(data.rowKey);
+										editDataCompletes(keys);
+									}
+								} else {
+									Messenger.post('当前模块未找到！')
+								}
+							}
+						});
+				})
+
+				function continueModules(data) {
+					var rows = [];
+					if (data.parent !== 0) {
+						rows = $scope.grid.findRows({
+							id: data.parent
+						});
+						if (rows.length > 0) {
+							//第一个参数为新增数据，第二个参数为父rowkey
+							$scope.grid.appendRow(data, { parentRowKey: rows[0].rowKey });
+							if (data) {
+								let keys = getAllParentKey(data.rowKey);
+								editDataCompletes(keys);
+							}
+						} else {
+							Messenger.post('当前模块未找到！')
+						}
+					} else {
+						$scope.grid.appendRow(data, { parentRowKey: null });
+					}
+				}
+
+				function continueStorys(data) {
+					var rows = [];
+					rows = $scope.grid.findRows({
+						id: data.module.id
+					})
+					if (rows.length > 0) {
+						//第一个参数为新增数据，第二个参数为父rowkey
+						$scope.grid.appendRow(data, { parentRowKey: rows[0].rowKey });
+						if (data) {
+							let keys = getAllParentKey(data.rowKey);
+							editDataCompletes(keys);
+						}
+					} else {
+						Messenger.post('当前模块未找到！')
+					}
+				}
+
+
+
+				$('#grid').on('click', '.detail', function (e) {
+					e.stopPropagation();
+					var rowKey = getRowKey(e);
+					var rowData = $scope.grid.getRow(rowKey);
+					$scope.rowkey = rowKey;
+					$scope.rowData = rowData;
+					if (rowData.module) {
+						$state.go('project.modules.storyComment', { test: rowData, project: rowData.project.id, storyid: rowData.id })
+					} else {
+						$state.go('project.modules.moduleDetail', { module: rowData, moduleId: rowData.id })
+					}
+				})
+
+				$('#grid').on('click', '.edit', function (e) {
+					e.stopPropagation();
+					var rowkey = parseInt(getRowKey(e));
+					var rowData = $scope.grid.getRow(rowkey)
+					rowData.name = rowData.title;
+					Modal.open('project/settings/editModule.html', { module: rowData }, {
+						size: 'middle',
+						onClose: function (data) {
+							if (data) {
+								Messenger.post("保存成功！")
+								rowData = data;
+								$scope.grid.setValue(rowkey, "title", data.result.name);
+								$scope.grid.setValue(rowkey, "assignedTo", data.result.assigned);
+								$scope.grid.setValue(rowkey, "startDate", data.result.startDate);
+								$scope.grid.setValue(rowkey, "endDate", data.result.endDate);
+							} else {
+								$scope.grid.removeRow(rowKey);
+							}
+						}
+					})
+				})
+
+				$('#grid').on('click', '.story', function (e) {
+					e.stopPropagation();
+					var rowkey = getRowKey(e);
+					$scope.rowkey = rowkey;
+					var rowData = $scope.grid.getRow(rowkey);
+					$scope.rowData = rowData;
+					$(e.target).parent().attr("data-ui-sref", "project.modules.storyComment({project: " + rowData.project.id + ", storyid: " + rowData.id + "})");
+					$(e.target).parent().attr("href", "#/project/" + rowData.project.id + "/modules/story/" + rowData.id);
+					//$state.go('project.modules.storyComment', { project: rowData.project.id, storyid: rowData.id })
+				})
+
+				$scope.$on("updateStorys", function (event, msg) {
+					event.stopPropagation();
+					if ($scope.rowData.assigTo != msg.story.assigTo) $scope.grid.setValue($scope.rowkey, "assignedTo", msg.story.assigTo);
+					if ($scope.rowData.proposer != msg.story.proposer) $scope.grid.setValue($scope.rowkey, "proposer", msg.story.proposer);
+					if ($scope.rowData.startDate != msg.story.startDate) {
+						$scope.grid.setValue($scope.rowkey, "startDate", msg.story.startDate);
+						let keys = getAllParentKey($scope.rowkey);
+						editDataStartDate(keys)
+					}
+					if ($scope.rowData.endDate != msg.story.endDate) {
+						$scope.grid.setValue($scope.rowkey, "endDate", msg.story.endDate);
+						let keys = getAllParentKey($scope.rowkey);
+						editDataEndDate(keys)
+					}
+					if ($scope.rowData.completes != msg.story.completes) {
+						$scope.grid.setValue($scope.rowkey, "completes", msg.story.completes);
+						let keys = getAllParentKey($scope.rowkey);
+						editDataCompletes(keys);
+					}
+					if (msg.type == 'del') {
+						window.location.replace('#/project/' + $stateParams.project + '/modules');
+						// $('aside#detail-panel').removeClass('toggled');
+						initData();
+					}
+				});
+
+				//第一个参数为需要查询的key，第二个参数为所有父key
+				function getAllParentKey(key, keys) {
+					if (!Array.isArray(keys)) keys = [];
+					if ($scope.grid.getParent(key)) {
+						let rowkey = $scope.grid.getParent(key).attributes.rowKey;
+						keys.push(rowkey);
+						getAllParentKey(rowkey, keys);
+					}
+					return keys;
+				}
+
+				//批量修改数据的完成度
+				function editDataCompletes(rowkeys) {
+					rowkeys.forEach(function (item) {
+						let childs = getStoryList(item);
+						let moduleCompletes = 0;
+						let count = 0;
+						childs.forEach(function (i) {
+							moduleCompletes += completes[i.attributes.completes]
+							count++
+						})
+						if (count == 0) $scope.grid.setValue(item, "complets", 0);
+						else $scope.grid.setValue(item, "completes", (moduleCompletes / count).toFixed(0))
+					})
+				}
+
+				function getStorys(module, storyList) {
+					if (!storyList) storyList = [];
+					module._children.forEach(function (i) {
+						if (i._children) {
+							getStorys(i, storyList);
+						} else {
+							storyList.push(i)
+						}
+					})
+					return storyList;
+				}
+
+				function getChildModule(module, moduleList) {
+					if (!moduleList) moduleList = [module];
+					module._children.forEach(function (i) {
+						if (i._children) {
+							moduleList.push(i)
+							getChildModule(i, moduleList);
+						}
+					})
+					return moduleList;
+				}
+
+
+				//找到模块及其子模块下面的所有的需求，表格内方法通过rowKey去找
+				function getStoryList(rowkey, storyList) {
+					if (!storyList) storyList = [];
+					let childs = $scope.grid.getChildren(rowkey);
+					childs.forEach(function (i) {
+						if (i) {
+							if (!i.attributes.module) {
+								getStoryList(i, storyList)
+							} else {
+								storyList.push(i)
+							}
+						}
+					})
+					return storyList;
+				}
+
+
+				//批量修改数据的时间
+				function editDataStartDate(rowkeys) {
+					rowkeys.forEach(function (item) {
+						//获取所有数据的一级子数据
+						let childs = $scope.grid.getChildren(item);
+						let startDate = '';
+						childs.forEach(function (i) {
+							//找到所有子元素
+							if (!startDate) startDate = i.attributes.startDate;
+							if (startDate > i.attributes.startDate) startDate = i.attributes.startDate;
+						})
+						$scope.grid.setValue(item, "startDate", startDate)
+					})
+				}
+
+				//批量修改数据的时间
+				function editDataEndDate(rowkeys) {
+					rowkeys.forEach(function (item) {
+						//获取所有数据的一级子数据
+						let childs = $scope.grid.getChildren(item);
+						let endDate = '';
+						childs.forEach(function (i) {
+							//找到所有子元素
+							if (endDate < i.attributes.endDate) endDate = i.attributes.endDate;
+						})
+						$scope.grid.setValue(item, "endDate", endDate)
+					})
+				}
+
+
+				$scope.$on("updateModule", function (event, msg) {
+					$scope.grid.setValue($scope.rowkey, "title", msg.module.name);
+					$scope.grid.setValue($scope.rowkey, "name", msg.module.name);
+					$scope.grid.setValue($scope.rowkey, "assigned", msg.module.assigned);
+					$scope.grid.setValue($scope.rowkey, "assignedTo", msg.module.assignedTo);
+					$scope.grid.setValue($scope.rowkey, "startDate", msg.module.startDate);
+					$scope.grid.setValue($scope.rowkey, "endDate", msg.module.endDate);
+					var data = $scope.grid.getRow($scope.rowkey);
+					data = msg.module;
+					Messenger.post('修改模块' + data.name + '成功！')
+				})
+
+
+				$scope.$on("deleteModule", function (event, msg) {
+					$scope.grid.removeRow($scope.rowkey)
+					$state.go('^');
+					$('aside#detail-panel').removeClass('toggled');
+					Messenger.post('模块删除成功！')
+				})
+
+				//根据传过来得点击事件获取当前事件的name属性获取到rowKey
+				function getRowKey(e) {
+					var ary = e.target.attributes;
+					if (ary.length > 0) {
+						for (var i = 0; i < ary.length; i++) {
+							if (ary[i].name == "name") {
+								return ary[i].value
+							}
+						}
+					}
+				}
+
+				$scope.addRootMod = function (data) {
+					Modal.open("project/settings/addstoryPlans.html", {
+						addRootMod: true, addType: 'module', continueModules: function (data) {
+							continueModules(data)
+						}
+					}, {
+							size: 'middle',
+							onClose: function (data) {
+								$scope.grid.appendRow(data, { parentRowKey: null })
+							}
+						})
+				}
+
+			});
+</script>

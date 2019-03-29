@@ -1,0 +1,86 @@
+# java 项目的CI/CD过程分为4个阶段，测试->编译源码->编译镜像->部署镜像
+stages:
+  - test
+  - build_src
+  - build_image
+  - deploy
+
+# 编译全局变量定义
+variables:
+  # Docker私有仓库地址
+  REGISTRY_URL: "registry.c2cloud.cn"
+  # Docker私有仓库地址
+  TENANT: "c2cloud"
+  # 镜像名称(一般直接使用项目名称)
+  # FIXME: 起好名字
+  PROJECT_NAME: "development-center"
+
+# 所有分支都要做单元测试
+unit_test:
+  stage: test
+  # 使用带有maven标签的runner来执行编译
+  tags:
+    - maven
+  script:
+    - export LANGUAGE="en_US.utf8"
+    - export LANG="en_US.utf8"
+
+build_war:
+  stage: build_src
+  tags:
+    - maven
+  script:
+    - export LANGUAGE="en_US.utf8"
+    - export LANG="en_US.utf8"
+    - mvn clean package -U -Dmaven.test.skip=true
+  artifacts:
+    paths:
+    # 将编译产物上传到gitlab，给后续其他stage使用，war包的名称不做限制，各个项目在自己的Dockerfile中做好合适的组装脚本即可
+    # FIXME：根据项目目录结构配置
+    - target/*.war
+    # 编译产生的war包只在gitlab保存一天，这里可以改得更短，比如 1 hour
+    expire_in: 1 day
+  # 只有release分支和打的tag要编译war包
+  only: 
+    - /^release/.*$/
+    - tags
+
+
+# 编译release分支的镜像，release分支是用于发布的分支，系统集成测试在这个分支做
+# TODO 编译分支的镜像需要手动清理
+build_release_docker_images:
+  stage: build_image
+  tags:
+    - docker
+  services:
+    - docker:dind
+  dependencies:
+    - build_war
+  before_script:
+    - docker login -u $REGISTRY_TAG_USERNAME -p $REGISTRY_TAG_PASSWORD $REGISTRY_URL
+  script:
+    # 使用编译id作为镜像tag，而不是分支名称，避免重复导致仓库中有很多无id的镜像
+    # FIXME：根据项目目录结构配置
+    - docker build -t $REGISTRY_URL/$TENANT/$PROJECT_NAME:release.$CI_BUILD_ID .
+    - docker push $REGISTRY_URL/$TENANT/$PROJECT_NAME:release.$CI_BUILD_ID
+  only: 
+    - /^release/.*$/
+
+# 编译正式版本镜像，只有在打tag时触发，会自动生成docker镜像并push到私服，镜像的tag即git的tag名称
+build_tag_docker_images:
+  stage: build_image
+  tags:
+    - docker
+  services:
+    - docker:dind
+  dependencies:
+    - build_war
+  before_script:
+    - docker login -u $REGISTRY_TAG_USERNAME -p $REGISTRY_TAG_PASSWORD $REGISTRY_URL
+  script:
+    # tag名称中不能包含/
+    # FIXME：根据项目目录结构配置
+    - docker build -t $REGISTRY_URL/$TENANT/$PROJECT_NAME:$CI_BUILD_TAG .
+    - docker push $REGISTRY_URL/$TENANT/$PROJECT_NAME:$CI_BUILD_TAG
+  only: 
+    - tags

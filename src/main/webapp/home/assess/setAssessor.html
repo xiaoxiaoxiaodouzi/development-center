@@ -1,0 +1,114 @@
+<style>
+.p-b-40{
+	padding-bottom:40px !important;     
+}
+.has-error {
+    color: #f44336 !important;
+}
+</style>
+<div class="card-body p-b-40" ng-controller="setAssessorCtrl">
+		<div class="wr-view">
+			<div class="wkr-tasklist clearfix" >
+				<c2-dropdown class="animate" bind-data="assessor" items="deptUsers" item-name="name" item-id="id" item-click="selectAssessor(item)" max-height="200" filter="true">
+						<div class="picker" ng-class="{'have-value':assessor,'has-error':!assessor&&formCheck}"> {{assessor?assessor.name:'选择考核人'}}<span class="caret"></span></div>
+				</c2-dropdown>
+				
+				<c2-dropdown class="animate" bind-data="reviewer" items="deptUsers" item-name="name" item-id="id" item-click="selectReviewer(item)" max-height="200" filter="true">
+						<div class="picker" ng-class="{'have-value':reviewer,'has-error':!reviewer&&formCheck}"> {{reviewer?reviewer.name:'选择复核人'}}<span class="caret"></span></div>
+				</c2-dropdown>
+				
+	           	<button class="btn btn-primary waves-effect" style="float: right;" ng-click="onOk()">确定</button>
+			</div>
+		</div>
+</div>
+
+<script>
+angular.module("developmentCenter").registerCtrl('setAssessorCtrl',
+  function(Messenger,$scope,$http,$stateParams,Modal,Messenger){
+	
+	$scope.assessor = $scope.user.assessorId?{id:$scope.user.assessorId,name:$scope.user.assessorRealname}:undefined;
+	$scope.reviewer = $scope.user.reviewerId?{id:$scope.user.reviewerId,name:$scope.user.reviewerRealname}:undefined;
+	$scope.formCheck = false;
+	
+	$http.get("project/v1/getDeptUsers?orgId="+$scope.deptId).success(function(data){
+		
+		//排除机构考核负责人
+		if($scope.managers){
+			
+			var pids = [];
+			
+			var user = data.find(da=>da.id==$scope.user.userId);
+			if(pids.indexOf(user.orgIds[0])<0){
+				pids.push(user.orgIds[0]);
+			}
+			getPids(pids,user.orgIds[0]);//用户所在机构的父机构
+			
+			var managers = [];
+			pids.forEach(pid=>{
+				managers = managers.concat($scope.managers.filter(ma=> pid === ma.managedOrgId));
+		    })
+			for(var j=0;j<data.length;j++){
+				managers.forEach(manager=>{
+					if(data[j].id == manager.userId){
+						data.splice(j,1);
+						j--;
+					}
+				})
+			}
+			
+		}
+		$scope.deptUsers = data;
+	})
+	
+	var getPids = function(pids,id){
+		for(var i=0;i<$scope.deptTree.length;i++){
+			if($scope.deptTree[i].id == id){
+				if(pids.indexOf($scope.deptTree[i].pid)<0){
+					pids.push($scope.deptTree[i].pid);	
+				}
+				getPids(pids,$scope.deptTree[i].pid);
+			}
+		}
+	}
+			
+	
+	//选择考核人
+	$scope.selectAssessor = function(item){
+		$scope.assessor = item;
+	}
+	
+	//选择复核人
+	$scope.selectReviewer = function(item){
+		$scope.reviewer = item;
+	}
+	
+	//保存考核人和复核人信息
+	$scope.onOk = function(){
+		if(!$scope.assessor){
+			$scope.formCheck = true;
+			return;
+		}
+		if(!$scope.reviewer){
+			$scope.formCheck = true;
+			return;
+		}
+		var entity = {id:$scope.user.id,userId:$scope.user.userId,userRealname:$scope.user.userRealname,userName:$scope.user.userName,
+				assessorId:$scope.assessor.id,assessorRealname:$scope.assessor.name,assessorName:$scope.assessor.userName,
+				reviewerId:$scope.reviewer.id,reviewerRealname:$scope.reviewer.name,reviewerName:$scope.reviewer.userName};
+		if($scope.user.id){
+			$http.post("project/v1/assessors/"+$scope.user.id,entity).success(function(){
+				Messenger.success("修改设置成功");
+				Modal.close(entity);
+			})
+		}else{
+			$http.post("project/v1/assessors",entity).success(function(data){
+				Messenger.success("设置成功");
+				entity.id = data.id;
+				Modal.close(entity);
+			})
+		}
+	}
+	
+}) ;
+
+</script>

@@ -1,0 +1,815 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.story.StoryMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  zt_story.id ,
+		  zt_story.title ,
+		  zt_story.pri ,
+		  zt_story.status_ ,
+		  zt_story.openedby ,
+		  zt_story.openeddate ,
+		  zt_story.spec ,
+		  zt_story.assigned_to ,
+		  zt_story.order_no ,
+		  zt_story.startDate ,
+		  zt_story.endDate ,
+		  zt_story.type ,
+		  zt_story.mainStory ,
+		  zt_story.storyFunction ,
+		  zt_story.storyEffect ,
+		  zt_story.proposer ,
+		  zt_story.completes ,
+		  zt_project_T1.id T1_id ,
+		  zt_project_T1.name_ T1_name_ ,
+		  zt_project_T1.code T1_code ,
+		  zt_project_T1.status_ T1_status_ ,
+		  zt_project_T1.description T1_description ,
+		  zt_project_T1.create_date T1_create_date ,
+		  zt_project_T1.arc_status T1_arc_status ,
+		  zt_project_T1.brief T1_brief ,
+		  zt_project_T1.pic T1_pic ,
+		  zt_project_T1.icon T1_icon ,
+		  zt_project_T1.link T1_link ,
+		  zt_project_T1.cloud_link T1_cloud_link ,
+		  zt_project_T1.publish T1_publish ,
+		  zt_project_T1.cloud_publish T1_cloud_publish ,
+		  zt_project_T1.owner T1_owner ,
+		  zt_project_T1.contract_no T1_contract_no ,
+		  zt_module_T2.id T2_id ,
+		  zt_module_T2.name_ T2_name_ ,
+		  zt_module_T2.parent T2_parent ,
+		  zt_module_T2.order_ T2_order_ ,
+		  c2_comunity_milestone_T3.id T3_id ,
+		  c2_comunity_milestone_T3.project_id T3_project_id ,
+		  c2_comunity_milestone_T3.title T3_title ,
+		  c2_comunity_milestone_T3.description T3_description ,
+		  c2_comunity_milestone_T3.status T3_status ,
+		  c2_comunity_milestone_T3.opendate T3_opendate ,
+		  c2_comunity_milestone_T3.closedate T3_closedate ,
+		  c2_comunity_milestone_T3.enddate T3_enddate 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and zt_story.id = #{id}</if>
+	    <if test="title != null">and zt_story.title = #{title}</if>
+	    <if test="pri != null">and zt_story.pri = #{pri}</if>
+	    <if test="status != null">and zt_story.status_ = #{status}</if>
+	    <if test="openedby != null">and zt_story.openedby = #{openedby}</if>
+	    <if test="openeddate != null">and zt_story.openeddate = #{openeddate}</if>
+	    <if test="assignedTo != null">and zt_story.assigned_to = #{assignedTo}</if>
+	    <if test="orderNo != null">and zt_story.order_no = #{orderNo}</if>
+	    <if test="startDate != null">and zt_story.startDate = #{startDate}</if>
+	    <if test="endDate != null">and zt_story.endDate = #{endDate}</if>
+	    <if test="type != null">and zt_story.type = #{type}</if>
+	    <if test="proposer != null">and zt_story.proposer = #{proposer}</if>
+	    <if test="completes != null">and zt_story.completes = #{completes}</if>
+		<if test="project != null and project.id !=null">and zt_story.project = #{project.id}</if>
+		<if test="module != null and module.id !=0">and zt_story.module = #{module.id}</if>
+		<if test="milestone != null and milestone.id !=0">and zt_story.milestone = #{milestone.id}</if>
+</sql>
+
+
+<!-- ElementID:StoryResult,Generated=true -->
+<resultMap id="StoryResult" type="com.chinacreator.c2.project.story.Story">
+	<id property="id" column="id"/>
+	<result property="title" column="title"/>
+	<result property="pri" column="pri"/>
+	<result property="status" column="status_"/>
+	<result property="openedby" column="openedby"/>
+	<result property="openeddate" column="openeddate"/>
+	<result property="spec" column="spec"/>
+	<result property="assignedTo" column="assigned_to"/>
+	<result property="orderNo" column="order_no"/>
+	<result property="startDate" column="startDate"/>
+	<result property="endDate" column="endDate"/>
+	<result property="type" column="type"/>
+	<result property="mainStory" column="mainStory"/>
+	<result property="storyFunction" column="storyFunction"/>
+	<result property="storyEffect" column="storyEffect"/>
+	<result property="proposer" column="proposer"/>
+	<result property="completes" column="completes"/>
+	<association property="project" column="T1_id" javaType="com.chinacreator.c2.project.info.Project" resultMap="ProjectResult" columnPrefix="T1_"/>	
+	<association property="module" column="T2_id" javaType="com.chinacreator.c2.project.info.Module" resultMap="ModuleResult" columnPrefix="T2_"/>	
+	<association property="milestone" column="T3_id" javaType="com.chinacreator.c2.project.milestone.Milestone" resultMap="MilestoneResult" columnPrefix="T3_"/>	
+</resultMap>
+
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.story.Story" resultType="int">
+	select count(*) from zt_story 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.story.Story">
+	update zt_story
+<set>
+	<if test="title != null">title=#{title,jdbcType=VARCHAR},</if>
+	<if test="pri != null">pri=#{pri,jdbcType=NUMERIC},</if>
+	<if test="status != null">status_=#{status,jdbcType=CHAR},</if>
+	<if test="openedby != null">openedby=#{openedby,jdbcType=VARCHAR},</if>
+	<if test="openeddate != null">openeddate=#{openeddate,jdbcType=TIMESTAMP},</if>
+	<if test="spec != null">spec=#{spec,jdbcType=CLOB},</if>
+	<if test="assignedTo != null">assigned_to=#{assignedTo,jdbcType=VARCHAR},</if>
+	<if test="orderNo != null">order_no=#{orderNo,jdbcType=NUMERIC},</if>
+	<if test="startDate != null">startDate=#{startDate,jdbcType=TIMESTAMP},</if>
+	<if test="endDate != null">endDate=#{endDate,jdbcType=TIMESTAMP},</if>
+	<if test="type != null">type=#{type,jdbcType=CHAR},</if>
+	<if test="mainStory != null">mainStory=#{mainStory,jdbcType=CLOB},</if>
+	<if test="storyFunction != null">storyFunction=#{storyFunction,jdbcType=CLOB},</if>
+	<if test="storyEffect != null">storyEffect=#{storyEffect,jdbcType=CLOB},</if>
+	<if test="proposer != null">proposer=#{proposer,jdbcType=VARCHAR},</if>
+	<if test="completes != null">completes=#{completes,jdbcType=CHAR},</if>
+	<if test="project != null and project.id !=null">project=#{project.id,jdbcType=NUMERIC},</if>
+	<if test="module != null and module.id !=null">module=#{module.id,jdbcType=NUMERIC},</if>
+	<if test="milestone != null and milestone.id !=null">milestone=#{milestone.id,jdbcType=NUMERIC}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:update,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update zt_story
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="project==null">project = null,</if>
+		    <if test="module==null">module = null,</if>
+		    <if test="milestone==null">milestone = null,</if>
+		    <if test="title==null">title = null,</if>
+		    <if test="pri==null">pri = null,</if>
+		    <if test="status==null">status_ = null,</if>
+		    <if test="openedby==null">openedby = null,</if>
+		    <if test="openeddate==null">openeddate = null,</if>
+		    <if test="spec==null">spec = null,</if>
+		    <if test="assignedTo==null">assigned_to = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.story.Story">
+    delete from zt_story where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.story.Story" resultMap="StoryResult">
+	select 
+		<include refid="column_sql"/>
+	    from zt_story 
+		<include refid="one2one_sql"/>
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from zt_story where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	<choose>
+		<when test="@com.chinacreator.c2.dao.util.EntityBeanUtil@isEntityObj(entity)">#{entity.id}</when>
+		<otherwise>#{entity}</otherwise>
+	</choose>
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="StoryResult">
+	select 
+		<include refid="column_sql"/>
+	    from zt_story 
+		<include refid="one2one_sql"/>
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="StoryResult">
+	select 
+		<include refid="column_sql"/>
+	    from zt_story 
+		<include refid="one2one_sql"/>
+		 where zt_story.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.story.Story" resultMap="StoryResult">
+	select 
+		<include refid="column_sql"/>
+	    from zt_story 
+		<include refid="one2one_sql"/>
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="StoryResult">
+select 
+	<include refid="column_sql"/> 
+	from zt_story 
+	<include refid="one2one_sql"/>
+	where zt_story.id in (
+		select distinct id from zt_story inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from zt_story 
+			<where>
+	        <if test="entity.id != null">and zt_story.id = #{entity.id}</if>
+	        <if test="entity.title != null">and zt_story.title = #{entity.title}</if>
+	        <if test="entity.pri != null">and zt_story.pri = #{entity.pri}</if>
+	        <if test="entity.status != null">and zt_story.status_ = #{entity.status}</if>
+	        <if test="entity.openedby != null">and zt_story.openedby = #{entity.openedby}</if>
+	        <if test="entity.openeddate != null">and zt_story.openeddate = #{entity.openeddate}</if>
+	        <if test="entity.assignedTo != null">and zt_story.assigned_to = #{entity.assignedTo}</if>
+	        <if test="entity.orderNo != null">and zt_story.order_no = #{entity.orderNo}</if>
+	        <if test="entity.startDate != null">and zt_story.startDate = #{entity.startDate}</if>
+	        <if test="entity.endDate != null">and zt_story.endDate = #{entity.endDate}</if>
+	        <if test="entity.type != null">and zt_story.type = #{entity.type}</if>
+	        <if test="entity.proposer != null">and zt_story.proposer = #{entity.proposer}</if>
+	        <if test="entity.completes != null">and zt_story.completes = #{entity.completes}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:selectStoryListByIds,Generated=true -->
+<select id="selectStoryListByIds" parameterType="list" resultMap="storyMapResult">
+select 
+	<include refid="column_sql"/> ,
+	  user1.user_id T4_user_id,
+	  user1.user_name T4_user_name,
+	  user1.user_realname T4_user_realname,
+	  user1.remark1 T4_user_icon,
+	  user2.user_id T5_user_id,
+	  user2.user_name T5_user_name,
+	  user2.user_realname T5_user_realname,
+	  user2.remark1 T5_user_icon
+	from zt_story 
+	left outer join td_sm_user user1 on user1.user_name=zt_story.assigned_to
+	left outer join td_sm_user user2 on user2.user_name=zt_story.proposer
+	<include refid="one2one_sql"/>
+	where zt_story.id in (
+	<foreach collection="list" item="entity" >
+			#{entity}
+	</foreach>
+	)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.story.Story" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into zt_story(
+		<trim prefixOverrides=",">
+		    <if test="title != null">title</if>
+		    <if test="pri != null">,pri</if>
+		    <if test="status != null">,status_</if>
+		    <if test="openedby != null">,openedby</if>
+		    <if test="openeddate != null">,openeddate</if>
+		    <if test="spec != null">,spec</if>
+		    <if test="assignedTo != null">,assigned_to</if>
+		    <if test="orderNo != null">,order_no</if>
+		    <if test="startDate != null">,startDate</if>
+		    <if test="endDate != null">,endDate</if>
+		    <if test="type != null">,type</if>
+		    <if test="mainStory != null">,mainStory</if>
+		    <if test="storyFunction != null">,storyFunction</if>
+		    <if test="storyEffect != null">,storyEffect</if>
+		    <if test="proposer != null">,proposer</if>
+		    <if test="completes != null">,completes</if>
+		    <if test="project != null and project.id !=null">,project</if>
+		    <if test="module != null and module.id !=null">,module</if>
+		    <if test="milestone != null and milestone.id !=null">,milestone</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="title != null">#{title,jdbcType=VARCHAR}</if>
+		    <if test="pri != null">,#{pri,jdbcType=NUMERIC}</if>
+		    <if test="status != null">,#{status,jdbcType=CHAR}</if>
+		    <if test="openedby != null">,#{openedby,jdbcType=VARCHAR}</if>
+		    <if test="openeddate != null">,#{openeddate,jdbcType=TIMESTAMP}</if>
+		    <if test="spec != null">,#{spec,jdbcType=CLOB}</if>
+		    <if test="assignedTo != null">,#{assignedTo,jdbcType=VARCHAR}</if>
+		    <if test="orderNo != null">,#{orderNo,jdbcType=NUMERIC}</if>
+		    <if test="startDate != null">,#{startDate,jdbcType=TIMESTAMP}</if>
+		    <if test="endDate != null">,#{endDate,jdbcType=TIMESTAMP}</if>
+		    <if test="type != null">,#{type,jdbcType=CHAR}</if>
+		    <if test="mainStory != null">,#{mainStory,jdbcType=CLOB}</if>
+		    <if test="storyFunction != null">,#{storyFunction,jdbcType=CLOB}</if>
+		    <if test="storyEffect != null">,#{storyEffect,jdbcType=CLOB}</if>
+		    <if test="proposer != null">,#{proposer,jdbcType=VARCHAR}</if>
+		    <if test="completes != null">,#{completes,jdbcType=CHAR}</if>
+		    <if test="project != null and project.id !=null">,#{project.id,jdbcType=NUMERIC}</if>
+		    <if test="module != null and module.id !=null">,#{module.id,jdbcType=NUMERIC}</if>
+		    <if test="milestone != null and milestone.id !=null">,#{milestone.id,jdbcType=NUMERIC}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into zt_story (title,pri,status_,openedby,openeddate,spec,assigned_to,order_no,startDate,endDate,type,mainStory,storyFunction,storyEffect,proposer,completes,project,module,milestone)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.title,jdbcType = VARCHAR},
+		         #{entity.pri,jdbcType = NUMERIC},
+		         #{entity.status,jdbcType = CHAR},
+		         #{entity.openedby,jdbcType = VARCHAR},
+		         #{entity.openeddate,jdbcType = TIMESTAMP},
+		         #{entity.spec,jdbcType = CLOB},
+		         #{entity.assignedTo,jdbcType = VARCHAR},
+		         #{entity.orderNo,jdbcType = NUMERIC},
+		         #{entity.startDate,jdbcType = TIMESTAMP},
+		         #{entity.endDate,jdbcType = TIMESTAMP},
+		         #{entity.type,jdbcType = CHAR},
+		         #{entity.mainStory,jdbcType = CLOB},
+		         #{entity.storyFunction,jdbcType = CLOB},
+		         #{entity.storyEffect,jdbcType = CLOB},
+		         #{entity.proposer,jdbcType = VARCHAR},
+		         #{entity.completes,jdbcType = CHAR},
+				 #{entity.project.id,jdbcType=NUMERIC},				 #{entity.module.id,jdbcType=NUMERIC},				 #{entity.milestone.id,jdbcType=NUMERIC}
+				)
+</foreach>
+</insert>
+<!--Generated=true-->
+<sql id="one2one_sql">
+	     left outer join zt_project zt_project_T1 on zt_story.project=zt_project_T1.id
+	     left outer join zt_module zt_module_T2 on zt_story.module=zt_module_T2.id
+	     left outer join c2_comunity_milestone c2_comunity_milestone_T3 on zt_story.milestone=c2_comunity_milestone_T3.id
+</sql>
+<!--Generated=true-->
+<resultMap id="ProjectResult" type="com.chinacreator.c2.project.info.Project">
+	<id property="id" column="id"/>
+	<result property="name" column="name_"/>
+	<result property="code" column="code"/>
+	<result property="status" column="status_"/>
+	<result property="description" column="description"/>
+	<result property="createDate" column="create_date"/>
+	<result property="arcStatus" column="arc_status"/>
+	<result property="brief" column="brief"/>
+	<result property="pic" column="pic"/>
+	<result property="icon" column="icon"/>
+	<result property="link" column="link"/>
+	<result property="cloudLink" column="cloud_link"/>
+	<result property="publish" column="publish"/>
+	<result property="cloudPublish" column="cloud_publish"/>
+	<result property="owner" column="owner"/>
+	<result property="contractNo" column="contract_no"/>
+</resultMap>
+
+<!--Generated=true-->
+<resultMap id="ModuleResult" type="com.chinacreator.c2.project.info.Module">
+	<id property="id" column="id"/>
+	<result property="name" column="name_"/>
+	<result property="parent" column="parent"/>
+	<result property="order" column="order_"/>
+</resultMap>
+
+<!--Generated=false-->
+<update id="updateStoryMilestone" parameterType="com.chinacreator.c2.project.story.Story">
+	update zt_story
+<set>
+	milestone=#{milestone.id,jdbcType=NUMERIC}
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+<!--Generated=false-->
+<select id="statisticsTaskInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+select count(*) num,t.is_done from c2_comunity_task t where t.project_id=#{projectId} and t.story_id=#{storyId} group by t.is_done
+</select>
+
+<!--Generated=false-->
+<select id="statiProjectStoryTaskInfo" parameterType="Integer" resultType="java.util.HashMap">
+SELECT
+	count(*) num,
+	t.is_done,
+    t.story_id
+FROM
+	c2_comunity_task t
+WHERE
+	t.project_id =#{projectId} and t.story_id is not null
+GROUP BY
+	t.story_id,t.is_done
+</select>
+
+<!--Generated=false-->
+<resultMap id="userResult" type="java.util.HashMap">
+	<id property="userId" column="user_id"/>
+	<result property="userName" column="user_name"/>
+	<result property="userRealname" column="user_realname"/>
+	<result property="userIcon" column="user_icon"/>
+</resultMap>
+
+<!--Generated=false-->
+<resultMap id="storyMapResult" type="java.util.HashMap">
+	<id property="id" column="id" javaType="java.lang.Integer"/>
+	<result property="title" column="title"/>
+	<result property="pri" column="pri"/>
+	<result property="status" column="status_"/>
+	<result property="openeddate" column="openeddate"/>
+	<result property="startDate" column="startDate"/>
+	<result property="endDate" column="endDate"/>
+	<result property="openedby" column="openedby"/>
+	<result property="spec" column="spec"/>
+	<result property="orderNo" column="order_no"/>
+	<result property="mainStory" column="mainstory"/>
+	<result property="storyFunction" column="storyfunction"/>
+	<result property="storyEffect" column="storyeffect"/>
+	<result property="completes" column="completes"/>
+	<association property="assignedTo" column="T4_user_id" javaType="java.lang.Integer" resultMap="userResult" columnPrefix="T4_"/>
+	<association property="proposer" column="T5_user_id" javaType="java.lang.Integer" resultMap="userResult" columnPrefix="T5_"/>
+	<association property="project" column="T1_id" javaType="java.lang.Integer" resultMap="ProjectResult" columnPrefix="T1_"/>	
+	<association property="module" column="T2_id" javaType="java.lang.Integer" resultMap="ModuleResult" columnPrefix="T2_"/>	
+	<association property="milestone" column="T3_id" javaType="java.lang.Integer" resultMap="MilestoneResult" columnPrefix="T3_"/>	
+</resultMap>
+
+<!--Generated=false-->
+<select id="selectStoryListByPage" parameterType="java.util.HashMap" resultMap="storyMapResult">
+		select 
+		  zt_story.id ,
+		  zt_story.title ,
+		  zt_story.pri ,
+		  zt_story.status_ ,
+		  zt_story.openedby ,
+		  zt_story.openeddate ,
+		  zt_story.spec ,
+		  zt_story.order_no ,
+		  zt_story.assigned_to ,
+		  zt_story.startdate ,
+		  zt_story.enddate ,
+		  zt_story.type ,
+		  zt_story.mainstory ,
+		  zt_story.storyfunction ,
+		  zt_story.storyeffect ,
+		  zt_story.proposer ,
+		  zt_story.completes,
+		  zt_project.id T1_id ,
+		  zt_project.name_ T1_name_ ,
+		  zt_project.code T1_code ,
+		  zt_project.status_ T1_status_ ,
+		  zt_project.description T1_description ,
+		  zt_project.create_date T1_create_date ,
+		  zt_project.arc_status T1_arc_status ,
+		  zt_project.brief T1_brief ,
+		  zt_project.pic T1_pic ,
+		  zt_project.icon T1_icon ,
+		  zt_project.link T1_link ,
+		  zt_project.cloud_link T1_cloud_link ,
+		  zt_project.publish T1_publish ,
+		  zt_project.cloud_publish T1_cloud_publish ,
+		  zt_project.owner T1_owner ,
+		  zt_module.id T2_id ,
+		  zt_module.name_ T2_name_ ,
+		  zt_module.parent T2_parent ,
+		  zt_module.order_ T2_order_ ,
+		  c2_comunity_milestone.id T3_id ,
+		  c2_comunity_milestone.project_id T3_project_id ,
+		  c2_comunity_milestone.title T3_title ,
+		  c2_comunity_milestone.description T3_description ,
+		  c2_comunity_milestone.status T3_status ,
+		  c2_comunity_milestone.opendate T3_opendate ,
+		  c2_comunity_milestone.closedate T3_closedate ,
+		  c2_comunity_milestone.enddate T3_enddate,
+		  user1.user_id T4_user_id,
+		  user1.user_name T4_user_name,
+		  user1.user_realname T4_user_realname,
+		  user1.remark1 T4_user_icon,
+		  user2.user_id T5_user_id,
+		  user2.user_name T5_user_name,
+		  user2.user_realname T5_user_realname,
+		  user2.remark1 T5_user_icon
+	    from zt_story 
+		 left outer join zt_project on zt_story.project=zt_project.id
+	     left outer join zt_module on zt_story.module=zt_module.id
+	     left outer join c2_comunity_milestone on zt_story.milestone=c2_comunity_milestone.id
+	     left outer join td_sm_user user1 on user1.user_name=zt_story.assigned_to
+	     left outer join td_sm_user user2 on user2.user_name=zt_story.proposer
+		 <where>
+		 	<include refid="whereClause_sql"/>
+			<if test="labels != null and labels.size()&gt;0">and zt_story.id in (
+				select story_id from c2_comunity_label_story where label_id in
+				<foreach item="l" collection="labels" open="(" separator="," close=")">
+			        '${l.id}'
+			    </foreach>
+	   		)
+     		</if>
+     		<if test="statusList != null and statusList.size()&gt;0">
+     			and zt_story.status_ in 
+				<foreach item="s" collection="statusList" open="(" separator="," close=")">
+			        '${s}'
+			    </foreach>
+     		</if>
+		</where>
+		order by if(zt_story.status_!='0',0,1),zt_story.pri,zt_story.status_ desc,zt_story.openeddate desc
+</select>
+
+<select id="getStoryStageList" parameterType="java.util.HashMap" resultMap="storyMapResult">
+		select 
+		  zt_story.id ,
+		  zt_story.title ,
+		  zt_story.pri ,
+		  zt_story.status_ ,
+		  zt_story.openedby ,
+		  zt_story.openeddate ,
+		  zt_story.spec ,
+		  zt_story.order_no ,
+		  zt_story.assigned_to ,
+		  zt_story.startdate ,
+		  zt_story.enddate ,
+		  zt_story.type ,
+		  zt_story.mainstory ,
+		  zt_story.storyfunction ,
+		  zt_story.storyeffect ,
+		  zt_story.proposer ,
+		  zt_story.completes,
+		  zt_project.id T1_id ,
+		  zt_project.name_ T1_name_ ,
+		  zt_project.code T1_code ,
+		  zt_project.status_ T1_status_ ,
+		  zt_project.description T1_description ,
+		  zt_project.create_date T1_create_date ,
+		  zt_project.arc_status T1_arc_status ,
+		  zt_project.brief T1_brief ,
+		  zt_project.pic T1_pic ,
+		  zt_project.icon T1_icon ,
+		  zt_project.link T1_link ,
+		  zt_project.cloud_link T1_cloud_link ,
+		  zt_project.publish T1_publish ,
+		  zt_project.cloud_publish T1_cloud_publish ,
+		  zt_project.owner T1_owner ,
+		  zt_module.id T2_id ,
+		  zt_module.name_ T2_name_ ,
+		  zt_module.parent T2_parent ,
+		  zt_module.order_ T2_order_ ,
+		  c2_comunity_milestone.id T3_id ,
+		  c2_comunity_milestone.project_id T3_project_id ,
+		  c2_comunity_milestone.title T3_title ,
+		  c2_comunity_milestone.description T3_description ,
+		  c2_comunity_milestone.status T3_status ,
+		  c2_comunity_milestone.opendate T3_opendate ,
+		  c2_comunity_milestone.closedate T3_closedate ,
+		  c2_comunity_milestone.enddate T3_enddate,
+		  user1.user_id T4_user_id,
+		  user1.user_name T4_user_name,
+		  user1.user_realname T4_user_realname,
+		  user1.remark1 T4_user_icon,
+		  user2.user_id T5_user_id,
+		  user2.user_name T5_user_name,
+		  user2.user_realname T5_user_realname,
+		  user2.remark1 T5_user_icon
+	    from zt_story 
+		 left outer join zt_project on zt_story.project=zt_project.id
+	     left outer join zt_module on zt_story.module=zt_module.id
+	     left outer join c2_comunity_milestone on zt_story.milestone=c2_comunity_milestone.id
+	     left outer join td_sm_user user1 on user1.user_name=zt_story.assigned_to
+	     left outer join td_sm_user user2 on user2.user_name=zt_story.proposer
+		 <where>
+		 	<if test="title != null and title !=''">and zt_story.title like '%${title}%'</if>
+		    <if test="pri != null">and zt_story.pri = #{pri}</if>
+		    <if test="status != null">and zt_story.status_ = #{status}</if>
+		    <if test="completes != null">and zt_story.completes = #{completes}</if>
+			<if test="project != null and project.id !=null">and zt_story.project = #{project.id}</if>
+			<if test="module != null and module.id !=0">
+				<choose>
+					<when test="moduleList != null and moduleList.size()&gt;0">
+					and zt_story.module in
+					<foreach item="l" collection="moduleList" open="(" separator="," close=")">
+				        '${l.id}'
+				  </foreach>
+					</when>
+					<otherwise>
+						and zt_story.module=#{module.id}
+					</otherwise>
+				</choose>
+			</if>
+			<if test="milestone != null and milestone.id !=0">and zt_story.milestone = #{milestone.id}</if>
+			<if test="labels != null and labels.size()&gt;0">and zt_story.id in (
+				select story_id from c2_comunity_label_story where label_id in
+				<foreach item="l" collection="labels" open="(" separator="," close=")">
+			        '${l.id}'
+			    </foreach>
+	   		)
+     		</if>
+     		<if test="assignedToList != null and assignedToList.size()&gt;0">and zt_story.assigned_to in 
+				<foreach item="assigned" collection="assignedToList" open="(" separator="," close=")">
+			        '${assigned.userName}'
+			    </foreach>
+     		</if>
+     		<if test="status==1 and week.et != null">
+     			and zt_story.openeddate between #{week.st,jdbcType=DATE} and #{week.et,jdbcType=DATE}
+     		</if>
+     		<if test="status!=1 and week.et != null">
+     			and zt_story.endDate between #{week.st,jdbcType=DATE} and #{week.et,jdbcType=DATE}
+     		</if>
+		</where>
+		order by zt_story.pri,zt_story.endDate desc,zt_story.openeddate desc,zt_story.order_no desc
+</select>
+
+<!--Generated=true-->
+<resultMap id="MilestoneResult" type="com.chinacreator.c2.project.milestone.Milestone">
+	<id property="id" column="id"/>
+	<result property="projectId" column="project_id"/>
+	<result property="title" column="title"/>
+	<result property="description" column="description"/>
+	<result property="status" column="status"/>
+	<result property="opendate" column="opendate"/>
+	<result property="closedate" column="closedate"/>
+	<result property="enddate" column="enddate"/>
+</resultMap>
+
+<!--Generated=false-->
+<select id="storyIndex" parameterType="int" resultMap="storyIndexResult">
+select 
+  s.id,s.project projectId,s.module moduleId,s.milestone milestoneId,s.title,s.pri,s.status_ status,s.openedBy,s.openedDate,s.spec,
+zt_project.name_ projectName,zt_module.name_ moduleName,
+c2_comunity_milestone.title milestoneTitle,td_sm_user.user_realname openedByName,td_sm_user.user_pinyin openedByPinyin
+from zt_story s
+ left outer join zt_project on s.project=zt_project.id
+ left outer join zt_module on s.module=zt_module.id
+ left outer join c2_comunity_milestone on s.milestone=c2_comunity_milestone.id
+ left outer join td_sm_user on td_sm_user.user_name=s.openedBy
+where s.id = #{_parameter}
+</select>
+
+<!--Generated=false-->
+<resultMap type="map" id="storyIndexResult">
+	<id property="id" column="id"/>
+	<result property="status" column="status_"/>
+	<collection property="labels" column="id" select="storyLables"/>
+</resultMap>
+
+<!--Generated=false-->
+<select id="storyLables" parameterType="int" resultType="map">
+SELECT
+	l.id,
+	l.name,
+	l.color
+FROM
+	c2_comunity_label_story ls
+JOIN c2_comunity_label l ON ls.label_id = l.id
+WHERE
+	ls.story_id = #{id}
+</select>
+
+<!--Generated=false-->
+<select id="getMaxOrderNo" parameterType="int" resultMap="StoryResult">
+	select max(order_no) order_no from zt_story where project=#{projectId}
+</select>
+
+<!--Generated=false-->
+<delete id="deleteByMilestoneId" parameterType="com.chinacreator.c2.project.story.Story">
+	delete from zt_story  
+	<where>
+		<include refid="whereClause_sql"/>
+	</where>
+</delete>
+
+<!-- ElementID:selectUnion,Generated=true -->
+<select id="selectUnion" parameterType="list" resultMap="StoryResult">
+select 
+	<include refid="column_sql"/> 
+	from zt_story 
+	<include refid="one2one_sql"/>
+	 INNER JOIN
+<foreach collection="list" item="entity" separator="UNION" open="(" close=")">
+		SELECT 
+			 id
+		FROM zt_story 
+			<where>
+	        <if test="entity.id != null">and zt_story.id = #{entity.id}</if>
+	        <if test="entity.title != null">and zt_story.title = #{entity.title}</if>
+	        <if test="entity.pri != null">and zt_story.pri = #{entity.pri}</if>
+	        <if test="entity.status != null">and zt_story.status_ = #{entity.status}</if>
+	        <if test="entity.openedby != null">and zt_story.openedby = #{entity.openedby}</if>
+	        <if test="entity.openeddate != null">and zt_story.openeddate = #{entity.openeddate}</if>
+	        <if test="entity.assignedTo != null">and zt_story.assigned_to = #{entity.assignedTo}</if>
+	        <if test="entity.orderNo != null">and zt_story.order_no = #{entity.orderNo}</if>
+	        <if test="entity.startDate != null">and zt_story.startDate = #{entity.startDate}</if>
+	        <if test="entity.endDate != null">and zt_story.endDate = #{entity.endDate}</if>
+	        <if test="entity.type != null">and zt_story.type = #{entity.type}</if>
+	        <if test="entity.proposer != null">and zt_story.proposer = #{entity.proposer}</if>
+	        <if test="entity.completes != null">and zt_story.completes = #{entity.completes}</if>
+			</where>
+</foreach>
+	c2_temp_table ON zt_story.id = c2_temp_table.id
+</select>
+
+<!--Generated=false-->
+<select id="selectMyStoryList" parameterType="map" resultMap="storyMapResult">
+	select distinct
+		  zt_story.id ,
+		  zt_story.title ,
+		  zt_story.pri ,
+		  zt_story.status_ ,
+		  zt_story.openedby ,
+		  zt_story.openeddate ,
+		  zt_story.spec ,
+		  zt_story.order_no ,
+		  zt_story.assigned_to ,
+		  zt_story.startdate ,
+		  zt_story.enddate ,
+		  zt_story.type ,
+		  zt_story.mainstory ,
+		  zt_story.storyfunction ,
+		  zt_story.storyeffect ,
+		  zt_story.completes,
+		  zt_project.id T1_id ,
+		  zt_project.name_ T1_name_ ,
+		  zt_project.code T1_code ,
+		  zt_project.status_ T1_status_ ,
+		  zt_project.description T1_description ,
+		  zt_project.create_date T1_create_date ,
+		  zt_project.arc_status T1_arc_status ,
+		  zt_project.brief T1_brief ,
+		  zt_project.pic T1_pic ,
+		  zt_project.icon T1_icon ,
+		  zt_project.link T1_link ,
+		  zt_project.cloud_link T1_cloud_link ,
+		  zt_project.publish T1_publish ,
+		  zt_project.cloud_publish T1_cloud_publish ,
+		  zt_project.owner T1_owner ,
+		  zt_module.id T2_id ,
+		  zt_module.name_ T2_name_ ,
+		  zt_module.parent T2_parent ,
+		  zt_module.order_ T2_order_ ,
+		  c2_comunity_milestone.id T3_id ,
+		  c2_comunity_milestone.project_id T3_project_id ,
+		  c2_comunity_milestone.title T3_title ,
+		  c2_comunity_milestone.description T3_description ,
+		  c2_comunity_milestone.status T3_status ,
+		  c2_comunity_milestone.opendate T3_opendate ,
+		  c2_comunity_milestone.closedate T3_closedate ,
+		  c2_comunity_milestone.enddate T3_enddate,
+		  user1.user_id T4_user_id,
+		  user1.user_name T4_user_name,
+		  user1.user_realname T4_user_realname,
+		  user1.remark1 T4_user_icon,
+		  user2.user_id T5_user_id,
+		  user2.user_name T5_user_name,
+		  user2.user_realname T5_user_realname,
+		  user2.remark1 T5_user_icon
+	    from (select * from zt_story where assigned_to=#{userName}
+	      <if test="projects != null and projects.size()&gt;0">and zt_story.project in 
+			<foreach item="p" collection="projects" open="(" separator="," close=")">
+		        '${p.id}'
+		    </foreach>
+	      </if>
+		union 
+		select * from zt_story where openedBy=#{userName}
+	      <if test="projects != null and projects.size()&gt;0">and zt_story.project in 
+			<foreach item="p" collection="projects" open="(" separator="," close=")">
+		        '${p.id}'
+		    </foreach>
+	      </if>
+	      union 
+		select * from zt_story where proposer=#{userName}
+	      <if test="projects != null and projects.size()&gt;0">and zt_story.project in 
+			<foreach item="p" collection="projects" open="(" separator="," close=")">
+		        '${p.id}'
+		    </foreach>
+	      </if>
+	      union
+		select s.* from zt_story s,c2_comunity_task t where s.id=t.story_id
+		and t.assigned_to=#{userName} and s.assigned_to!=#{userName} and s.openedBy!=#{userName} and s.proposer!=#{userName}
+	      <if test="projects != null and projects.size()&gt;0">and t.project_id in 
+			<foreach item="p" collection="projects" open="(" separator="," close=")">
+		        '${p.id}'
+		    </foreach>
+	      </if>
+        )zt_story 
+		 left outer join zt_project on zt_story.project=zt_project.id
+	     left outer join zt_module on zt_story.module=zt_module.id
+	     left outer join c2_comunity_milestone on zt_story.milestone=c2_comunity_milestone.id
+	     left outer join td_sm_user user1 on user1.user_name=zt_story.assigned_to
+	     left outer join td_sm_user user2 on user2.user_name=zt_story.proposer
+		order by if(zt_story.status_!='0',0,1),zt_story.pri,zt_story.status_ desc,zt_story.openeddate desc
+</select>
+</mapper>

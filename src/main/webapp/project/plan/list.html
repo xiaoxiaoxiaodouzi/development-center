@@ -1,0 +1,261 @@
+<style>
+.dropdown-menu .label-color {
+	width: 13px;
+	height: 13px;
+	display: inline-block;
+	border-radius: 3px;
+	vertical-align: middle;
+	margin: 0 3px 2px 0;
+}
+.form-search {
+   height: 30px;
+    background: #eeeeee;
+    border: none;
+    margin-left: -10px;
+    border-radius: 3px;
+    width: 250px;
+    padding-left: 25px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+</style>
+<div class="container m-t-10" ng-if="testMenu">
+	<div class="card" id="profile-main">
+		<div class="card-header">
+			<h2>
+				测试执行管理 
+			</h2>
+		<button class="btn bgm-blue btn-float waves-effect"
+				ng-click="create()">
+				<i class="md md-add"></i>
+			</button>
+		</div>
+		<div class="card-body clearfix">
+			<div class="listview lv-bordered lv-lg">
+			<div class="lv-header-alt ng-binding" style="padding-left: 30px;">
+				测试执行总数：{{page.total}}
+				<i class="md md-search" style="font-size: 18px;color: #A9A9A9;position: relative;top: -4px;left: 18px;"></i>
+	            <input type="text" ng-model="search.name" class="form-search" placeholder="执行名">
+                
+				<c2-dropdown class="animate" bind-data="search.milestone" items="milestones" item-name="title" max-height="200" filter="true" clean-button="true">
+					<div class="picker picker-white text-overflow">
+						<span ng-if="!search.milestone"><i class="md md-av-timer" title="里程碑"></i>选择里程碑</span>
+						<span ng-if="search.milestone"><i class="md md-av-timer" title="里程碑"></i>{{search.milestone.title}}</span><span class="caret"></span>
+					</div>
+				</c2-dropdown>
+				
+				<c2-dropdown class="animate" bind-data="search.version" items="versions" item-name="title" max-height="200" filter="true" clean-button="true">
+					<div class="picker picker-white text-overflow">
+						<span ng-if="!search.version"><i class="md md-layers" title="版本"></i>选择版本</span>
+						<span ng-if="search.version"><i class="md md-layers" title="版本"></i>{{search.version.title}}</span><span class="caret"></span>
+					</div>
+				</c2-dropdown>
+			</div>
+				<div class="lv-body">
+				<div ng-if="pList.length==0" class="lv-item no-animate text-center p-20">没有查到任何测试计划。</div>
+					<div class="lv-item no-animate media" ng-repeat='p in pList'>
+
+						<div class="media-body">
+						<div>
+								<div class="col-sm-12">
+							<div class="row">
+							<div class="col-sm-6 lv-title">
+									<a data-ng-click="instanceView(p)" href="javascript:void(0);">{{p.name}}</a>
+							</div>
+							<div class="col-sm-6">
+								<div class="progress" style="margin-bottom: 0px;">
+										<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{getPercent((p.totalCount-p.dcsCount),p.totalCount)}}%">
+										</div>
+								</div>
+							</div>
+							</div>
+							
+							<div class="row">
+							<ul class="col-sm-6 lv-attrs">
+								<li style=" border: 0;padding: 2px 2px 3px;" ng-if="p.milestone"><i class="md md-av-timer" title="里程碑"></i> {{p.milestone.title}}</li>
+								<li style=" border: 0;padding: 2px 2px 3px;" ng-if="p.version"><i class="md md-layers" title="版本"></i> {{p.version}}</li>
+								<li ng-if="p.desc" ng-click="p.exDesc=!p.exDesc;p.expandText=p.exDesc?'收起':'展开'" ng-init="p.expandText='展开'" style="cursor: pointer;"><i class="md md-view-headline"></i> {{p.expandText}}版本说明</li>
+							</ul>
+							
+							<ul class="col-sm-6 lv-attrs">
+								<li style=" border: 0;padding: 2px 2px 3px;"><span style="font-size: 13px;color: #999;">待测试:
+								<a data-ui-sref="project.instanceTree.list({planId:{{p.id}},typeId:0,state:'待测试'})">{{p.dcsCount}}</a></span></li>
+								<li style=" border: 0;padding: 2px 2px 3px;"><span style="font-size: 13px;color: #999;">成功:
+								<a data-ui-sref="project.instanceTree.list({planId:{{p.id}},typeId:0,state:'成功'})">{{p.successCount}}</a></span></li>
+								<li style=" border: 0;padding: 2px 2px 3px;"><span style="font-size: 13px;color: #999;">失败:
+								<a data-ui-sref="project.instanceTree.list({planId:{{p.id}},typeId:0,state:'失败'})">{{p.failCount}}</a></span></li>
+								<li style=" border: 0;padding: 2px 2px 3px;"><span style="font-size: 13px;color: #999;">不可用:
+								<a data-ui-sref="project.instanceTree.list({planId:{{p.id}},typeId:0,state:'不可用'})">{{p.invalidCount}}</a></span></li>
+								<li style=" border: 0;padding: 2px 2px 3px;"><span style="font-size: 13px;color: #999;">阻塞:
+								<a data-ui-sref="project.instanceTree.list({planId:{{p.id}},typeId:0,state:'阻塞'})">{{p.zsCount}}</a></span></li>
+								<li style=" border: 0;padding: 2px 2px 3px;"><span style="font-size: 13px;color: #999;">待核查:
+								<a data-ui-sref="project.instanceTree.list({planId:{{p.id}},typeId:0,state:'待核查'})">{{p.dhcCount}}</a></span></li>
+								<li style=" border: 0;padding: 2px 2px 3px;"><span style="font-size: 13px;color: #999;">总数:
+								<a data-ui-sref="project.instanceTree.list({planId:{{p.id}},typeId:0})">{{p.totalCount}}</a></span></li>
+							</ul>
+							</div>
+							
+							</div>
+							<small ng-if="p.desc&&p.exDesc" class="lv-small lv-text-normal" ng-bind-html="p.desc | markdown"></small>
+						</div>
+						<div class="lv-actions actions dropdown">
+								<a href="" data-toggle="dropdown" aria-expanded="true"> <i
+									class="md md-more-vert"></i>
+								</a>
+
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li><a data-ng-click="editPlan(p)" href="javascript:void(0);">编辑</a></li>
+									<li><a data-ng-click="delPlan(p)" href="javascript:void(0);">删除</a></li>
+									<li><a data-ng-click="addInstance(p)" href="javascript:void(0);">用例选择</a></li>
+								</ul>
+								
+							</div>
+					</div>
+
+				</div>
+			</div>
+
+			<c2-pagination id="pageEle" total="page.total" page-size="10"
+				on-page-change="refreshList(pageIndex)"></c2-pagination>
+		</div>
+	</div>
+
+</div>
+</div>
+<div class="card m-t-20 m-l-10" ng-if="!testMenu">
+    <div class="unauthorized">
+            <h2>对不起!</h2>
+            <small>您没有权限访问测试执行!</small>
+            
+            <footer>
+                <a href="javascript:void(0)" onClick="history.go(-1);return true;" title="返回"><i class="md md-arrow-back"></i></a>
+                <a data-ui-sref="project.home" title="项目首页"><i class="md md-home"></i></a>
+            </footer>
+     </div>
+</div>
+<script>
+$('.display-center').animate({scrollTop:0});
+angular.module("project").registerCtrl('planListController',
+		function($scope, $http, $state, $stateParams, $timeout,Messenger, $rootScope, Modal,debounce) {
+		$scope.testMenu = true;
+		$scope.search = {name:undefined,milestone:undefined,version:undefined};	
+			$http.post("ws/isPermitedMap",{permExprs:[$stateParams.project+"##test_menu"]})
+			.success(function(data){
+				$scope.testMenu = data.result[$stateParams.project+"##test_menu"];
+			});		
+			//当前项目id
+			var projectId = ($stateParams.project && $stateParams.project != "") ? $stateParams.project: undefined;
+			$scope.page = {pageSize:10};
+			
+			//获取某项目下未关闭的里程碑
+			$http.post("ws/milestone/selectAllUnclosedMilestone", {
+				milestone : {
+					"projectId" : projectId
+				}
+			}).success(function(data) {
+				if (data.result)
+					$scope.milestones = data.result;
+			});
+			
+			//获取某项目下所有计划的版本号
+			$http.post("ws/getPlanVersionList", {
+					"projectId" : projectId
+			}).success(function(data) {
+				if (data.result)
+					$scope.versions = data.result;
+			});
+			
+			//测试计划列表
+			$scope.refreshList = function(pageIndex) {
+				$http.post("ws/getPlanList", {
+					condition : {projectId : projectId,search:$scope.search},
+					pageable : {pageIndex : pageIndex}
+				}).success(
+					function(data) {
+						$scope.pList = data.result.contents;
+						$scope.page.total = data.result.total;
+				});
+			}
+			
+			$scope.$watch("search.name", function(v) {
+				if(angular.isUndefined(v)) return;
+				treeSearch();
+			});
+			
+			$scope.$watch("search.milestone", function(v) {
+				if(angular.isUndefined(v)) return;
+				treeSearch();
+			});
+			
+			$scope.$watch("search.version", function(v) {
+				if(angular.isUndefined(v)) return;
+				treeSearch();
+			});
+			
+			var treeSearch = debounce(function(){
+				$scope.refreshList(1);
+			},500);
+			
+			$scope.refreshList(1);
+			//新增测试计划入口
+			$scope.create = function() {
+				Modal.open("project/plan/addPlan.html", {title : '',animation : true,size : "middle"}, {
+					onClose : function(data) {
+						$scope.refreshList(1);
+					}
+				});
+			}
+			//删除测试计划
+			$scope.delPlan = function(p){
+				Modal.delOpenConfirm({
+					title:"删除确认",
+					message:"是否删除【"+p.name+"】用例执行？",
+					btnText:"删除",
+					btnClass:"bgm-lightblue simple-shadow",
+					qxText:"取消",
+					qxClass:"bgm-lightblue simple-shadow",
+					onClose:function(){
+						$http.post("ws/delPlanById", {planId : p.id}).success(function(data) {
+							Messenger.post("删除成功");
+							$scope.refreshList(1);
+						});
+					}
+				});
+			}
+			//更新测试计划
+			$scope.editPlan = function(p){
+				Modal.open("project/plan/addPlan.html",{plan:p},{title : '',animation : true,size : "middle"}, {
+					onClose : function(data) {
+						$scope.refreshList(1);
+					}
+				});
+			}
+			//测试计划拥有实例时方可进入实例详情页面
+			$scope.instanceView = function(p){
+				$http.post("ws/selectInstanceCountById",{planId : p.id}).success(function(data){
+					if(data.result>0){
+						$state.go("project.instanceTree",{planId:p.id});//跳转至实例详情页面
+					}else{
+						$scope.addInstance(p);
+					}
+				})
+			}
+			//添加实例入口
+			$scope.addInstance = function(p){
+				Modal.open("project/plan/addInstance.html",{plan:p},{title : '',animation : true,size : "middle"});
+			}
+			
+			$scope.getPercent = function(suc, total) {
+				if (suc == 0) {
+					return 0;
+				}
+
+				if (total == 0) {
+					return 0;
+				}
+
+				return Math.round((suc / total) * 1000) / 10;
+			}
+
+});
+</script>

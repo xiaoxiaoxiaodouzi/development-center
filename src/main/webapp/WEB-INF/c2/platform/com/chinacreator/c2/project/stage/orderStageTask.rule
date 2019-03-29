@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="orderProjectTaskStage" log="false" className="com.chinacreator.c2.project.stage.TaskStageService" method="orderStageTask">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>拖拽排序任务阶段</name>
+  <desc>拖拽排序阶段或任务列表信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="stage" required="true" type="java.util.Map"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.stage" name="stage" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

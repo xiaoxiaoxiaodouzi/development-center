@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="addCaseType" log="false" className="com.chinacreator.c2.project.testcase.TypeService" method="addCaseType">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>新增用例分类</name>
+  <inputs>
+    <input collection="false" desc="" id="pid" required="true" type="int"/>
+    <input collection="false" desc="" id="projectId" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.project.testcase.Type"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.pid" name="pid" signature="I" type="int"/>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+  </params>
+  <return signature="QType;" type="com.chinacreator.c2.project.testcase.Type"/>
+</CustomRule>

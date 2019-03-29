@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="update/taskWithNull" log="false" className="com.chinacreator.c2.project.task.TaskService" method="updateTaskWithNull">
+  <name>保存任务(包括空值)</name>
+  <desc>修改任务,包括空值更新</desc>
+  <inputs>
+    <input collection="false" desc="" id="task" required="true" type="com.chinacreator.c2.project.task.Task"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.task" name="task" signature="QTask;" type="com.chinacreator.c2.project.task.Task"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

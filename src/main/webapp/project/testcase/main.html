@@ -1,0 +1,574 @@
+<style>
+.left-menu{
+	position: fixed;
+	width: 268px;
+	height: 100%;
+	background: #F5F5F5 !important;
+}
+.right-team-content{
+	position: relative;
+	width: calc(100% - 268px);
+	/*background: #ffffff; 
+	left: 268px;*/
+	padding: 0 20px;
+	/* min-height: 880px;
+	height: auto; */
+}
+.board-group::-webkit-scrollbar{
+	width: 6px;
+  	background-color: #e5e5e5;
+}
+.board-group::-webkit-scrollbar-thumb{
+	background-color: #a6a6a6;
+}
+.treeSearch{
+ 	height: 34px;
+    background: #E8E8E8;
+    border: none;
+    margin: 9px -8px;
+    border-radius: 3px;
+    width: 175px;
+    padding-left: 33px;
+    font-size: 14px;
+}
+.md-search-ico{
+	position: relative;
+    top: -13px;
+    left: 23px;
+    font-size: 18px;
+    color: #A9A9A9;
+}
+.md-add-ico{
+	position: relative;
+    top: -10px;
+    left: 18px;
+    font-size: 18px;
+}
+span.tmpzTreeMove_arrow{
+	z-index:100
+}
+/* .exportBtn:before{
+    right: 12px;
+    top: 35px;
+    content: "";
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    -webkit-transform: scale3d(0, 0, 0);
+    transform: scale3d(0, 0, 0);
+    transition: all;
+    transition-duration: 250ms;
+    backface-visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 0;
+    border-radius: 50%;
+    opacity: 0;
+}
+.exportBtn:hover:before{
+	opacity:1;
+	transform: scale3d(1, 1, 1);
+} */
+@media (min-width: 1200px){
+	body.sw-toggled #content {
+	    padding: 0px 0 30px 268px;
+	}
+}
+div#rMenu {position:fixed; visibility:hidden; top:0; z-index:100;text-align: left;padding: 2px;}
+.board-group {
+    overflow-y: auto;
+}
+</style>
+<div ng-if="testMenu" class="container">
+	<div class="left-menu" id="sidebar" style="top:130px;height: calc(100% - 133px);">
+	   	 <div class="sidebar-inner c-overflow">
+	   	 	<div style="position: fixed;z-index: 5;background: #F5F5F5 !important;width: 268px;padding: 20px 0 20px 5px;">
+		   	 <i class="md md-search md-search-ico"></i>
+		   	 <input type="text" ng-model="base.treeSearch" class="treeSearch" placeholder="搜索">
+		   	 <a data-toggle="tooltip" data-placement="left" title="鼠标右击触发相应操作">
+				<i class="md md-info md-add-ico"></i>
+			</a>
+		   	 <!-- <a href="" title="新增用例" ng-click="addCase()"><i class="md md-add md-add-ico c-teal m-r-5"></i></a>
+		   	 <a class="exportBtn" href="" title="导入" ng-click="importCase()"><i class="md md-import-export md-add-ico "></i></a> -->
+		   	 <!-- <a href="" title="复制" ng-click="copyCase()"><i class="md md-content-copy md-add-ico"></i></a> -->
+	   	 </div>
+	  		<!-- 用例树 -->
+			<ul id="caseTree" class="ztree tree-transparent" style="top: 95px;position: relative;padding: 0 5px 0 15px;"></ul>
+    	  </div>
+	   </div>
+	   <div class="right-team-content m-t-10" data-ui-view style="padding:0;background: #ffffff;left: 268px;"></div>
+</div>
+
+<div id="rMenu">
+	<ul class="dropdown-menu dropdown-menu-left">
+		<li id="m_add"><a href="" ng-click="addType();">增加分类</a></li>
+		<li id="m_edit"><a href="" ng-click="editType();">编辑</a></li>
+		<li id="m_del"><a href="" ng-click="removeType();">删除</a></li>
+		<li id="m_addC"><a href="" ng-click="addCase();">增加用例</a></li>
+		<li id="m_imp"><a href="" ng-click="importCase();">导入用例</a></li>
+	</ul>
+</div>
+
+<div class="container m-l-10" ng-if="!testMenu">
+    <div class="unauthorized">
+            <h2>对不起!</h2>
+            <small>您没有权限访问测试用例!</small>
+            
+            <footer>
+                <a href="javascript:void(0)" onClick="history.go(-1);return true;" title="返回"><i class="md md-arrow-back"></i></a>
+                <a data-ui-sref="project.home" title="项目首页"><i class="md md-home"></i></a>
+            </footer>
+     </div>
+</div>
+<script>
+angular.module("project").registerCtrl('caseController',
+	function($scope, $http, $state, $stateParams,debounce, $timeout,Messenger,Modal, $rootScope,$ocLazyLoad){
+	$scope.testMenu = true;
+	$scope.base ={treeSearch:""};
+	
+	$http.post("ws/isPermitedMap",{permExprs:[$stateParams.project+"##test_menu"]})
+	.success(function(data){
+		$scope.testMenu = data.result[$stateParams.project+"##test_menu"];
+	});
+	
+	//ztree setting
+	$scope.treeOptions = {
+		view:{
+			/* addHoverDom: addHoverDom,
+			removeHoverDom: removeHoverDom */
+		},
+		data: {
+			simpleData: {
+				enable: true,
+				idKey:"tid",
+				pIdKey: "tpid",
+				rootPId: 0
+            }
+        },
+       	edit: {
+        	editNameSelectAll: true,
+    		enable: true,
+    		showRemoveBtn: false,
+			showRenameBtn: false
+    	},
+    	callback:{
+    		onRightClick:function OnRightClick(event, treeId, treeNode){//右键点击事件
+    			var height = 0;
+    			$(".sidebar-inner").animate({scrollTop:$('.sidebar-inner').scrollTop()});
+    			$scope.caseTree.selectNode(treeNode);
+    			$("#rMenu ul").show();
+    			if(treeNode.level=='0'){
+    				height = 46;
+    				$("#m_add").show();
+    				$("#m_del").hide();
+    				$("#m_edit").hide();
+    				$("#m_addC").hide();
+    				$("#m_imp").hide();
+    			}else if(treeNode.type=='case'){
+    				height = 80;
+    				$("#m_del").show();
+    				$("#m_edit").show();
+    				$("#m_addC").hide();
+    				$("#m_add").hide();
+    				$("#m_imp").hide();
+    			}else{
+    				height = 182;
+    				$("#m_add").show();
+    				$("#m_del").show();
+    				$("#m_edit").show();
+    				$("#m_addC").show();
+    				$("#m_imp").show();
+    			}
+    			$("body").bind("mousedown", onBodyMouseDown);
+    			if($(window).height()-$('#'+treeNode.tId).offset().top<height){
+    				$("#rMenu").css({"top":($('#'+treeNode.tId).offset().top-height)+"px", "left":event.clientX+"px", "visibility":"visible"});
+    			}else{
+    				$("#rMenu").css({"top":(event.clientY)+"px", "left":event.clientX+"px", "visibility":"visible"});
+    			}
+    		},
+    		beforeClick:function beforeClick(treeId, treeNode, clickFlag){
+    			if(treeNode.type!="type"){
+    				$('#'+treeNode.tId).attr("data-ui-sref-active","active");
+    		    	$('#'+treeNode.tId+'_a').removeAttr("onclick").attr("data-ui-sref","project.case.detail({caseId:"+treeNode.id+"})");
+    		    	$('#'+treeNode.tId+'_a').removeAttr("target").attr("href","#/project/"+$stateParams.project+"/testcase/detail/"+treeNode.id);
+    		    }else{
+    		    	$('#'+treeNode.tId).attr("data-ui-sref-active","active");
+    		    	$('#'+treeNode.tId+'_a').removeAttr("onclick").attr("data-ui-sref","project.case.caseList");
+    		    	$('#'+treeNode.tId+'_a').removeAttr("target").attr("href","#/project/"+$stateParams.project+"/testcase/caseList/"+treeNode.id);
+    		    }
+    		},
+    		onClick:function onClick(event, treeId, treeNode){
+    			if(treeNode.type=="type"){
+    				$scope.typeId = treeNode.id;
+    				$scope.caseTree.expandNode(treeNode,true,false);
+    			}
+    		} ,
+    		onRename:function caseRename(event, treeId, treeNode, isCancel){
+    			if(treeNode.type=="type"){
+    				$http.post("ws/editCaseType",{id:treeNode.id,name:treeNode.name}).success(function(data){
+    					Messenger.post("分类【"+treeNode.name+"】更新成功");
+    					$state.go("project.case.caseList",{typeId:treeNode.id});
+    				});
+    			}else{
+    				$http.post("ws/editCaseName",{id:treeNode.id,name:treeNode.name}).success(function(data){
+    					Messenger.post("用例【"+treeNode.name+"】更新成功");
+    					if($state.current.name=="project.case.caseList"){
+    						$state.reload("project.case.caseList",{typeId:treeNode.getParentNode().id});
+    					}else{
+    						$state.reload("project.case.detail",{caseId:treeNode.id});
+    					}
+    				});
+    			}
+    			
+    		},
+			beforeDrop: beforeDrop,
+			beforeDragOpen: true,
+			onDrop: onDrop
+    	}
+	};
+	
+	function onBodyMouseDown(event){
+		if (!(event.target.id == "rMenu" || $(event.target).parents("#rMenu").length>0)) {
+			$('#rMenu ul').css('display','none');
+		} 
+	}
+	
+	$scope.addType=function(){
+		var treeNode = $scope.caseTree.getSelectedNodes()[0];
+		$('#rMenu ul').css('display','none')
+		//新增测试用例分类
+		$http.post("ws/addCaseType",{pid:treeNode.id,projectId:$stateParams.project}).success(function(data){
+			var newNode = {id:data.result.id,tid:'t_'+data.result.id, tpid:treeNode.tid, name:"",type:'type'};
+			newNode.isParent = true;
+			newNode = $scope.caseTree.addNodes(treeNode, newNode);
+			$scope.caseTree.editName(newNode[0]);
+			$scope.typeId = data.result.id;
+		})
+	}
+	
+	$scope.addCase = function(){
+		$('#rMenu ul').css('display','none')
+		var treeNode = $scope.caseTree.getSelectedNodes()[0];
+		//$("body").unbind("mousedown", onBodyMouseDown);
+		$scope.typeId = treeNode.id;
+		$state.go("project.case.addCase");
+	}
+	
+	$scope.removeType = function(){
+		$('#rMenu ul').css('display','none')
+		//$("body").unbind("mousedown", onBodyMouseDown);
+		var treeNode = $scope.caseTree.getSelectedNodes()[0];
+		if(treeNode.isParent){
+			if(confirm("【" + treeNode.name + "】下的子节点信息将同时删除，确认吗？")){
+				$scope.caseTree.removeNode(treeNode);
+				var nodes = $scope.caseTree.getNodesByParam("type","type",null);
+				for(var i=0;i<nodes.length;i++){
+					nodes[i].isParent = true;
+					$scope.caseTree.updateNode(nodes[i]);
+				}
+    			if(treeNode.type=="type"){
+    				$http.post("ws/removeCaseType",{id:treeNode.id}).success(function(data){
+    					Messenger.post("分类【"+treeNode.name+"】删除成功");
+    					$state.go("project.case.caseList",{typeId:'0'});
+    				});
+    			}else{
+    				$http.post("ws/removeCase",{id:treeNode.id}).success(function(data){
+    					Messenger.post("用例【"+treeNode.name+"】删除成功");
+    					if($state.current.name=="project.case.detail"){
+    						$state.go("project.case.caseList",{typeId:treeNode.getParentNode().id});
+    					}else{
+    						$state.reload("project.case.caseList",{typeId:treeNode.getParentNode().id});
+    					}
+    				});
+    			}
+			}
+		}else{
+			if(confirm("确认删除【" + treeNode.name + "】吗？")){
+				$scope.caseTree.removeNode(treeNode);
+				var nodes = $scope.caseTree.getNodesByParam("type","type",null);
+				for(var i=0;i<nodes.length;i++){
+					nodes[i].isParent = true;
+					$scope.caseTree.updateNode(nodes[i]);
+				}
+    			if(treeNode.type=="type"){
+    				$http.post("ws/removeCaseType",{id:treeNode.id}).success(function(data){
+    					Messenger.post("分类【"+treeNode.name+"】删除成功");
+    					if($state.current.name=="project.case.caseList"){
+    						$state.reload("project.case.caseList",{typeId:treeNode.getParentNode().id});
+    					}else{
+    						$state.go("project.case.caseList",{typeId:treeNode.getParentNode().id});
+    					}
+    				});
+    			}else{
+    				$http.post("ws/removeCase",{id:treeNode.id}).success(function(data){
+    					Messenger.post("用例【"+treeNode.name+"】删除成功");
+    					if($state.current.name=="project.case.detail"){
+    						$state.go("project.case.caseList",{typeId:treeNode.getParentNode().id});
+    					}else{
+    						$state.reload("project.case.caseList",{typeId:treeNode.getParentNode().id});
+    					}
+    				});
+    			}
+			}
+		}
+	}
+	
+	$scope.editType = function(){
+		$('#rMenu ul').css('display','none')
+		//$("body").unbind("mousedown", onBodyMouseDown);
+		var treeNode = $scope.caseTree.getSelectedNodes()[0];
+		$scope.caseTree.editName(treeNode);
+	}
+	//用例分类可以新增分类
+	/* var newCount = 1;
+	function addHoverDom(treeId, treeNode) {
+		if(treeNode.type=='type'){
+			var sObj = $("#" + treeNode.tId + "_span");
+			if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+			var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+				+ "' title='新增分类' onfocus='this.blur();'></span>";
+			sObj.after(addStr);
+			var btn = $("#addBtn_"+treeNode.tId);
+			if (btn) btn.bind("click", function(){
+				//新增测试用例分类
+				$http.post("ws/addCaseType",{pid:treeNode.id,projectId:$stateParams.project}).success(function(data){
+					var newNode = {id:data.result.id,tid:'t_'+data.result.id, tpid:treeNode.tid, name:"",type:'type'};
+					newNode.isParent = true;
+					newNode = $scope.caseTree.addNodes(treeNode, newNode);
+					$scope.caseTree.editName(newNode[0]);
+					$scope.typeId = data.result.id;
+				})
+				return false;
+			});
+			var sObj = $("#" + treeNode.tId+"_remove");
+			if (treeNode.editNameFlag || $("#addCaseBtn_"+treeNode.tId).length>0) return;
+			var addStr = "<span class='button add' id='addCaseBtn_" + treeNode.tId
+				+ "' title='新增用例' onfocus='this.blur();'></span>";
+			sObj.after(addStr);
+			var btn = $("#addCaseBtn_"+treeNode.tId);
+			if (btn) btn.bind("click", function(){
+				$scope.typeId = treeNode.id;
+				$state.go("project.case.addCase");
+				return false;
+			});
+		}
+	}; */
+	
+	//控制分类不可移动至用例下
+	function canInner(treeId, nodes, targetNode) {
+		if(targetNode && targetNode.type=='case'){
+			Messenger.error("用例【"+targetNode.name+"】下不可拥有子节点");
+			return false;
+		}
+		return true;
+	};
+	
+	/* //新增按钮样式移除
+	function removeHoverDom(treeId, treeNode){
+		$("#addBtn_"+treeNode.tId).unbind().remove();
+		$("#addCaseBtn_"+treeNode.tId).unbind().remove();
+	};
+	//控制显示删除按钮
+	function showRemoveBtn(treeId, treeNode) {
+		return treeNode.tid!='t_'+0;
+	}
+	//控制显示编辑按钮
+	function showRenameBtn(treeId, treeNode) {
+		return treeNode.tid!='t_'+0;
+	} */
+	
+	//treeNode
+	$http.post("ws/getCaseTypeById",{condition : {projectId:$stateParams.project}}).success(function(data){
+		$scope.treeNodes = data.result;
+	})
+	//加载ztree
+	$ocLazyLoad.load([ 'assets/ztree/jquery.ztree.all.min.js', 'assets/ztree/zTreeStyle.css' ])
+	.then(function(){
+		$scope.$watch("treeNodes", function(v) {
+			if (angular.isUndefined(v))
+				return;
+			$scope.caseTree = $.fn.zTree.init($("#caseTree"), $scope.treeOptions, $scope.treeNodes);
+			var nodes = $scope.caseTree.getNodesByParam("type","type",null);
+			for(var i=0;i<nodes.length;i++){
+				nodes[i].isParent = true;
+				$scope.caseTree.updateNode(nodes[i]);
+			}
+			$scope.caseTree.expandNode($scope.caseTree.getNodeByParam("tid", 't_0', null), true, false, true);
+		});
+	})
+	/* //新增用例按钮
+	$scope.addCase = function(){
+		var treeNode = $scope.caseTree.getSelectedNodes();
+		if(treeNode.length>0){
+			if(treeNode[0].id=='0'){
+				Messenger.post("根节点不能添加用例");
+				return;
+			}
+			if(treeNode[0].type=='case'){
+				Messenger.post("用例下不可添加子用例");
+				return;
+			}
+		}else{
+			Messenger.post("请选中需添加用例的分类节点");
+			return;
+		}
+		$state.go("project.case.addCase");
+	} */
+	//导入公共用例
+	$scope.importCase = function(){
+		$('#rMenu ul').css('display','none')
+		//$("body").unbind("mousedown", onBodyMouseDown);
+		var treeNode = $scope.caseTree.getSelectedNodes();
+		if(treeNode.length>0&&treeNode[0].type=='type'){
+			Modal.open("project/testcase/selectCommonCase.html",{projectId:$stateParams.project,typeId:$scope.typeId},{title : '',animation : true,size : "middle"});
+		}else{
+			Messenger.post("请选中需导入用例的分类节点");
+			return;
+		}
+	}
+	
+	var searchCase = debounce(function(v){
+		if(angular.isUndefined(v)) return;
+		var allNodes = $scope.caseTree.transformToArray($scope.caseTree.getNodes());
+		if(v==''||v==null){
+			$scope.caseTree.showNodes(allNodes);
+			$scope.caseTree.expandNode($scope.caseTree.getNodeByParam("tid", 't_0', null), true, false, false);
+		}else{
+			/*var nodes = [];
+			var cases = $scope.caseTree.getNodesByParamFuzzy("name", v, null);
+			 for(var i=0;i<cases.length;i++){
+				if(cases[i].type=='case'){
+					nodes.push(cases[i]);
+				}
+			} */
+			var nodes = $scope.caseTree.getNodesByParamFuzzy("name", v, null);
+			$scope.caseTree.hideNodes(allNodes);
+			if(nodes.length==0){
+				Messenger.post("未找到符合条件的用例");
+				return
+			}else{
+				var shouldShowNodes = [];
+	    		angular.forEach(nodes,function(node,n){
+	    			expandNodeCascade(node);
+	    			nodeParents(shouldShowNodes,node);
+	    		});
+	    		$scope.caseTree.showNodes(shouldShowNodes.concat(nodes));
+	    		$scope.caseTree.expandAll(true);
+			}
+		}
+	},1000);
+	
+	//树搜索字段
+	$scope.$watch("base.treeSearch", function(v) {
+		searchCase(v);
+	});
+	
+	//展开节点
+    function expandNodeCascade(node){
+    	var pn = node.getParentNode();
+        if(pn){
+        	if(!pn.open){
+        		$scope.caseTree.expandNode(pn,true,true,false);
+        	}else{
+        		expandNodeCascade(pn);
+        	}
+        }
+    }
+    //节点的所有父节点
+    function nodeParents(nodeArray,node){
+    	var parentNode = node.getParentNode();
+    	if(parentNode!=null){
+    		nodeArray.push(parentNode);
+    		nodeParents(nodeArray,parentNode);
+    	}
+    }
+    //节点拖拽操作结束之前的事件回调函数
+	function beforeDrop(treeId, treeNodes, targetNode, moveType, isCopy) {
+		if(targetNode && targetNode.type=='case' && moveType == "inner" && !isCopy){
+			Messenger.error("用例【"+targetNode.name+"】不能拥有子节点");
+			return false;
+		}
+		if(targetNode.tid=='t_0' && treeNodes[0].type == "case" && moveType == "inner" && !isCopy){
+			Messenger.error("用例【"+treeNodes[0].name+"】不能移动至根节点下");
+			return false;
+		}
+		if((targetNode.tid=='t_0' || targetNode.getParentNode().tid=='t_0') && treeNodes[0].type == "case" && moveType != "inner" && !isCopy){
+			Messenger.error("用例【"+treeNodes[0].name+"】不能移动至根节点下");
+			return false;
+		}
+		if((targetNode == null || (moveType != "inner" && !targetNode.parentTId)) && !isCopy){
+			Messenger.error("禁止拖拽为根节点");
+			return false;
+		}
+		if(isCopy && targetNode && targetNode.type=='case'){
+			Messenger.error("无效的复制操作");
+			return false;
+		}
+		if(isCopy && targetNode && targetNode.level=='0'){
+			Messenger.error("无效的复制操作");
+			return false;
+		}
+		if(isCopy && targetNode && targetNode.type=='type' && treeNodes[0].type=='type'){
+			Messenger.error("无效的复制操作");
+			return false;
+		}
+		return true;
+	}
+	function onDrop(event, treeId, treeNodes, targetNode, moveType, isCopy) {
+		if(moveType==null) return;
+		if(moveType!='inner'&&!isCopy){
+			var nodes = targetNode.getParentNode().children;
+			var ids = [],nos = [];
+			for(var i=0;i<nodes.length;i++){
+				ids.push(nodes[i].id);
+				nos.push(i+1);
+			}
+			if(treeNodes[0].type=='case'){
+				$http.post("ws/updateCaseNoByPrev",{ids:ids.join(','),nos:nos.join(','),typeId:targetNode.getParentNode().id}).success(function(data){
+					$state.reload("project.case.caseList");
+				});
+			}else{
+				$http.post("ws/updateTypeNoByPrev",{ids:ids.join(','),nos:nos.join(','),pid:targetNode.getParentNode().id}).success(function(data){
+					$state.reload("project.case.caseList");
+				});
+			}
+		}else if(moveType=='inner'&&!isCopy){
+			if(treeNodes[0].type=='case'){
+				$http.post("ws/updateCaseNoByInner",{caseId:treeNodes[0].id,typeId:targetNode.id}).success(function(data){
+					$state.reload("project.case.caseList");
+				});
+			}else{
+				$http.post("ws/updateTypeNoByInner",{typeId:treeNodes[0].id,pid:targetNode.id}).success(function(data){
+					$state.reload("project.case.caseList");
+				});
+			}
+		}else if(isCopy){//复制节点
+			$http.post("ws/copyCaseInfo",{caseId:treeNodes[0].id,typeId:targetNode.id}).success(function(data){
+				var node = {},flag = false;
+				var nodes = $scope.caseTree.getNodesByParam("tid","c_"+treeNodes[0].id);
+				for(var i=0;i<nodes.length;i++){
+					if(nodes[i].tpid!=targetNode.tid){
+						node = nodes[nodes.length-1-i];
+						flag = true;
+						break;
+					}
+				}
+				if(flag){
+					node.tid='c_'+data.result.id;
+					node.id=data.result.id;
+					$scope.caseTree.updateNode(node);
+				}else{
+					nodes[nodes.length-1].tid='c_'+data.result.id;
+					nodes[nodes.length-1].id=data.result.id;
+					$scope.caseTree.updateNode(nodes[nodes.length-1]);
+				}
+				if($state.current.name=="project.case.detail"){
+					$state.go("project.case.detail",{caseId:data.result.id});
+				}else{
+					$state.reload("project.case.caseList");
+				}
+				Messenger.post("用例复制成功");
+			})
+		}
+	}
+})
+</script>

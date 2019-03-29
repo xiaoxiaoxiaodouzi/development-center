@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getStoryListByIds" log="false" className="com.chinacreator.c2.project.story.StoryService" method="getStoryListByIds">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>批量查询需求列表</name>
+  <inputs>
+    <input collection="false" desc="" id="ids" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <res></res>
+  <params>
+    <param autoValue="Input.ids" name="ids" signature="QList&lt;QString;>;" type="java.util.List"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

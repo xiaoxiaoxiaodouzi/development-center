@@ -1,0 +1,41 @@
+	<div class="pmb-block" style="padding-top: 20px; margin-left:-40px; margin-right:-40px;">
+				
+				<div class="pmbb-body">
+					<div class="pmbb-view h-l-2">
+						<div id="tasks" class="listview lv-bordered" style="border:1px solid #F0F0F0;">
+							<div class="lv-body">
+							
+								<div ng-if="loadingTasks" class="lv-item list-show-animate text-center p-20">关联任务加载中...</div>
+								<div ng-if="!loadingTasks && taskList.length==0" class="lv-item list-show-animate text-center p-20">里程碑没有任何关联的任务!</div>
+								<!-- 任务列表 -->
+								<div class="lv-item media" ui-sref-active="active-shadow" ng-repeat="task in taskList">
+									<div class="checkbox pull-left">
+				                        <label>
+				                            <input ng-model="task.isDone" ng-disabled="true" type="checkbox" title="是否完成" />
+				                            <i class="input-helper"></i>
+				                        </label>
+				                    </div>
+									<div class="media-body">
+										<div class="lv-title" style="margin-bottom: 0 !important;">
+											<a class="pull-left" data-ui-sref="project.milestoneDetail.taskList.taskDetail({taskId:'{{task.id}}'})">{{task.name}}</a>
+											<span class="p-l-10 p-r-10 m-l-5 pull-left" style="height: 18px;line-height: 18px;vertical-align: middle;margin-top: 5px;" ng-style="label.backgroundStyle" 
+											ng-repeat="label in task.labels">{{label.name}}</span>
+											
+											<div class="pull-right  f-16" style="width: 80px; color:#6E6E6E;">
+												<font class="f-14 m-l-10" title="执行人">{{task.userRealname}}</font>
+											</div>
+											<a href title="工时" class="pull-right f-16" style="width: 70px; color:#6E6E6E;" ng-click="openEstimateEditModal(task)">
+												<i class="md md-history"></i>	{{task.consumed}}/{{task.estimate}}
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							</div>
+						</div>
+						<c2-pagination total="task.page.total" page-size="20" on-page-change="pageList(pageIndex)"></c2-pagination>
+					</div>
+				</div>
+				<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;">
+		<ui-view name="sideUIView" onload="stateOnload()"></ui-view>
+	</aside>

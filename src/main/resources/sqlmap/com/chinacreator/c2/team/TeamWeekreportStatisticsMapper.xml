@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.team.TeamWeekreportStatisticsMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_comunity_team_weekreport_statistics.id ,
+		  c2_comunity_team_weekreport_statistics.estimate ,
+		  c2_comunity_team_weekreport_statistics.consumed ,
+		  c2_comunity_team_weekreport_statistics.total ,
+		  c2_comunity_team_weekreport_statistics.completed ,
+		  c2_comunity_team_weekreport_statistics.canceled ,
+		  c2_comunity_team_weekreport_statistics.member ,
+		  c2_comunity_team_weekreport_statistics.worked ,
+		  c2_comunity_team_weekreport_statistics.cross_week ,
+		  c2_comunity_team_weekreport_statistics.delayed_ 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_comunity_team_weekreport_statistics.id = #{id}</if>
+	    <if test="estimate != null">and c2_comunity_team_weekreport_statistics.estimate = #{estimate}</if>
+	    <if test="consumed != null">and c2_comunity_team_weekreport_statistics.consumed = #{consumed}</if>
+	    <if test="total != null">and c2_comunity_team_weekreport_statistics.total = #{total}</if>
+	    <if test="completed != null">and c2_comunity_team_weekreport_statistics.completed = #{completed}</if>
+	    <if test="canceled != null">and c2_comunity_team_weekreport_statistics.canceled = #{canceled}</if>
+	    <if test="member != null">and c2_comunity_team_weekreport_statistics.member = #{member}</if>
+	    <if test="worked != null">and c2_comunity_team_weekreport_statistics.worked = #{worked}</if>
+	    <if test="crossWeek != null">and c2_comunity_team_weekreport_statistics.cross_week = #{crossWeek}</if>
+	    <if test="delayed != null">and c2_comunity_team_weekreport_statistics.delayed_ = #{delayed}</if>
+</sql>
+
+
+<!-- ElementID:TeamWeekreportStatisticsResult,Generated=true -->
+<resultMap id="TeamWeekreportStatisticsResult" type="com.chinacreator.c2.team.TeamWeekreportStatistics">
+	<id property="id" column="id"/>
+	<result property="estimate" column="estimate"/>
+	<result property="consumed" column="consumed"/>
+	<result property="total" column="total"/>
+	<result property="completed" column="completed"/>
+	<result property="canceled" column="canceled"/>
+	<result property="member" column="member"/>
+	<result property="worked" column="worked"/>
+	<result property="crossWeek" column="cross_week"/>
+	<result property="delayed" column="delayed_"/>
+</resultMap>
+
+
+
+
+
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.team.TeamWeekreportStatistics">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+	insert into c2_comunity_team_weekreport_statistics(
+	       <trim prefixOverrides=",">
+	         <if test="estimate != null">estimate</if>
+	         <if test="consumed != null">,consumed</if>
+	         <if test="total != null">,total</if>
+	         <if test="completed != null">,completed</if>
+	         <if test="canceled != null">,canceled</if>
+	         <if test="member != null">,member</if>
+	         <if test="worked != null">,worked</if>
+	         <if test="crossWeek != null">,cross_week</if>
+	         <if test="delayed != null">,delayed_</if>
+	        </trim>
+	 	 	 )
+	 values (
+	 <trim prefixOverrides=",">
+	         <if test="estimate != null">,#{estimate,jdbcType=NUMERIC}</if>
+	         <if test="consumed != null">,#{consumed,jdbcType=NUMERIC}</if>
+	         <if test="total != null">,#{total,jdbcType=NUMERIC}</if>
+	         <if test="completed != null">,#{completed,jdbcType=NUMERIC}</if>
+	         <if test="canceled != null">,#{canceled,jdbcType=NUMERIC}</if>
+	         <if test="member != null">,#{member,jdbcType=NUMERIC}</if>
+	         <if test="worked != null">,#{worked,jdbcType=NUMERIC}</if>
+	         <if test="crossWeek != null">,#{crossWeek,jdbcType=NUMERIC}</if>
+	         <if test="delayed != null">,#{delayed,jdbcType=NUMERIC}</if>
+	 </trim>
+	 	 	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.team.TeamWeekreportStatistics" resultType="int">
+	select count(*) from c2_comunity_team_weekreport_statistics 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.team.TeamWeekreportStatistics">
+	update c2_comunity_team_weekreport_statistics
+<set>
+	<if test="estimate != null">estimate=#{estimate,jdbcType=NUMERIC},</if>
+	<if test="consumed != null">consumed=#{consumed,jdbcType=NUMERIC},</if>
+	<if test="total != null">total=#{total,jdbcType=NUMERIC},</if>
+	<if test="completed != null">completed=#{completed,jdbcType=NUMERIC},</if>
+	<if test="canceled != null">canceled=#{canceled,jdbcType=NUMERIC},</if>
+	<if test="member != null">member=#{member,jdbcType=NUMERIC},</if>
+	<if test="worked != null">worked=#{worked,jdbcType=NUMERIC},</if>
+	<if test="crossWeek != null">cross_week=#{crossWeek,jdbcType=NUMERIC},</if>
+	<if test="delayed != null">delayed_=#{delayed,jdbcType=NUMERIC}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_comunity_team_weekreport_statistics
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="estimate==null">estimate = null,</if>
+		    <if test="consumed==null">consumed = null,</if>
+		    <if test="total==null">total = null,</if>
+		    <if test="completed==null">completed = null,</if>
+		    <if test="canceled==null">canceled = null,</if>
+		    <if test="member==null">member = null,</if>
+		    <if test="worked==null">worked = null,</if>
+		    <if test="crossWeek==null">cross_week = null,</if>
+		    <if test="delayed==null">delayed_ = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.team.TeamWeekreportStatistics">
+    delete from c2_comunity_team_weekreport_statistics where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.team.TeamWeekreportStatistics" resultMap="TeamWeekreportStatisticsResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_team_weekreport_statistics 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list">
+	insert into c2_comunity_team_weekreport_statistics (id,estimate,consumed,total,completed,canceled,member,worked,cross_week,delayed_) 
+<foreach collection="list" item="entity" index="index" separator="union all">
+		select 
+		#{entity.id,jdbcType = NUMERIC},
+				#{entity.estimate,jdbcType = NUMERIC},
+				#{entity.consumed,jdbcType = NUMERIC},
+				#{entity.total,jdbcType = NUMERIC},
+				#{entity.completed,jdbcType = NUMERIC},
+				#{entity.canceled,jdbcType = NUMERIC},
+				#{entity.member,jdbcType = NUMERIC},
+				#{entity.worked,jdbcType = NUMERIC},
+				#{entity.crossWeek,jdbcType = NUMERIC},
+				#{entity.delayed,jdbcType = NUMERIC}
+		from dual
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_comunity_team_weekreport_statistics where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	<choose>
+		<when test="@com.chinacreator.c2.dao.util.EntityBeanUtil@isEntityObj(entity)">#{entity.id}</when>
+		<otherwise>#{entity}</otherwise>
+	</choose>
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="TeamWeekreportStatisticsResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_team_weekreport_statistics 
+</select>
+
+<!-- ElementID:selectUnion,Generated=true -->
+<select id="selectUnion" parameterType="list" resultMap="TeamWeekreportStatisticsResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_team_weekreport_statistics 
+	 INNER JOIN
+<foreach collection="list" item="entity" separator="UNION" open="(" close=")">
+		SELECT 
+			 id
+		FROM c2_comunity_team_weekreport_statistics 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_team_weekreport_statistics.id = #{entity.id}</if>
+	        <if test="entity.estimate != null">and c2_comunity_team_weekreport_statistics.estimate = #{entity.estimate}</if>
+	        <if test="entity.consumed != null">and c2_comunity_team_weekreport_statistics.consumed = #{entity.consumed}</if>
+	        <if test="entity.total != null">and c2_comunity_team_weekreport_statistics.total = #{entity.total}</if>
+	        <if test="entity.completed != null">and c2_comunity_team_weekreport_statistics.completed = #{entity.completed}</if>
+	        <if test="entity.canceled != null">and c2_comunity_team_weekreport_statistics.canceled = #{entity.canceled}</if>
+	        <if test="entity.member != null">and c2_comunity_team_weekreport_statistics.member = #{entity.member}</if>
+	        <if test="entity.worked != null">and c2_comunity_team_weekreport_statistics.worked = #{entity.worked}</if>
+	        <if test="entity.crossWeek != null">and c2_comunity_team_weekreport_statistics.cross_week = #{entity.crossWeek}</if>
+	        <if test="entity.delayed != null">and c2_comunity_team_weekreport_statistics.delayed_ = #{entity.delayed}</if>
+			</where>
+</foreach>
+	c2_temp_table ON c2_comunity_team_weekreport_statistics.id = c2_temp_table.id
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="TeamWeekreportStatisticsResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_team_weekreport_statistics 
+		 where c2_comunity_team_weekreport_statistics.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.team.TeamWeekreportStatistics" resultMap="TeamWeekreportStatisticsResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_team_weekreport_statistics 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="TeamWeekreportStatisticsResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_team_weekreport_statistics 
+	where c2_comunity_team_weekreport_statistics.id in (
+		select distinct id from c2_comunity_team_weekreport_statistics inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_comunity_team_weekreport_statistics 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_team_weekreport_statistics.id = #{entity.id}</if>
+	        <if test="entity.estimate != null">and c2_comunity_team_weekreport_statistics.estimate = #{entity.estimate}</if>
+	        <if test="entity.consumed != null">and c2_comunity_team_weekreport_statistics.consumed = #{entity.consumed}</if>
+	        <if test="entity.total != null">and c2_comunity_team_weekreport_statistics.total = #{entity.total}</if>
+	        <if test="entity.completed != null">and c2_comunity_team_weekreport_statistics.completed = #{entity.completed}</if>
+	        <if test="entity.canceled != null">and c2_comunity_team_weekreport_statistics.canceled = #{entity.canceled}</if>
+	        <if test="entity.member != null">and c2_comunity_team_weekreport_statistics.member = #{entity.member}</if>
+	        <if test="entity.worked != null">and c2_comunity_team_weekreport_statistics.worked = #{entity.worked}</if>
+	        <if test="entity.crossWeek != null">and c2_comunity_team_weekreport_statistics.cross_week = #{entity.crossWeek}</if>
+	        <if test="entity.delayed != null">and c2_comunity_team_weekreport_statistics.delayed_ = #{entity.delayed}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getCaseInstanceById" log="false" className="com.chinacreator.c2.project.plan.InstanceService" method="getCaseInstanceById">
+  <name>通过id获取实例新</name>
+  <desc>通过id获取实例信息 包含实例步骤</desc>
+  <inputs>
+    <input collection="false" desc="" id="id" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.id" name="id" signature="I" type="int"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

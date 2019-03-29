@@ -1,0 +1,395 @@
+{"data":
+	[
+	{
+		"name": "遵章守纪",
+		"type":"rule",
+		"value": [
+			{
+				"key": "是",
+				"value": "3"
+			}, {
+				"key": "一般",
+				"value": "2"
+			}, {
+				"key": "严重",
+				"value": "1"
+			}
+		],
+		"reason": [
+			{
+				"key": "迟到早退",
+				"value": "1"
+			}, {
+				"key": "行政处罚",
+				"value": "2"
+			}, {
+				"key": "保密条例",
+				"value": "3"
+			}, {
+				"key": "other",
+				"value": "4"
+			}
+		]
+	},
+	{
+		"name": "团队及合作共事",
+		"type":"cooperation",
+		"value": [
+			{
+				"key": "非常好",
+				"value": "10"
+			}, {
+				"key": "好",
+				"value": "8"
+			}, {
+				"key": "一般",
+				"value": "6"
+			}, {
+				"key": "差",
+				"value": "4"
+			}, {
+				"key": "很差",
+				"value": "0"
+			}
+		],
+		"reason": [
+			{
+				"key": "技术支持",
+				"value": "1"
+			}, {
+				"key": "技术指导",
+				"value": "2"
+			}, {
+				"key": "技术培训",
+				"value": "3"
+			}, {
+				"key": "技术合作",
+				"value": "4"
+			},{
+				"key": "技术协作",
+				"value": "5"
+			},{
+				"key": "拒绝支持",
+				"value": "6"
+			},{
+				"key": "拒绝合作",
+				"value": "7"
+			}
+		]
+	},
+	{
+		"name": "贡献",
+		"type":"contribute",
+		"value": [
+			{
+				"key":"非常大",
+				"value": "10"
+			}, {
+				"key": "大",
+				"value": "8"
+			}, {
+				"key": "一般",
+				"value": "6"
+			}, {
+				"key": "小",
+				"value": "4"
+			}, {
+				"key": "无",
+				"value": "0"
+			}
+		],
+		"reason": [
+			{
+				"key": "执行者",
+				"value": "1"
+			}, {
+				"key": "结果影响",
+				"value": "2"
+			}, {
+				"key": "决策影响",
+				"value": "3"
+			}, {
+				"key": "技术方向影响",
+				"value": "4"
+			},{
+				"key": "组织氛围影响",
+				"value": "5"
+			}
+		]
+	},{
+		"name": "责任感、积极性",
+		"type":"positive",
+		"value": [
+			{
+				"key": "非常主动",
+				"value": "6"
+			}, {
+				"key": "主动",
+				"value": "5"
+			}, {
+				"key": "本位主义",
+				"value": "4"
+			}, {
+				"key": "敷衍",
+				"value": "1"
+			}, {
+				"key": "推脱责任",
+				"value": "0"
+			}
+		],
+		"reason": [
+			{
+				"key": "积极反馈他人工作问题",
+				"value": "1"
+			}, {
+				"key": "积极提出意见建议",
+				"value": "2"
+			}, {
+				"key": "及时反馈状态寻求帮助",
+				"value": "3"
+			}, {
+				"key": "敷衍了事",
+				"value": "4"
+			},{
+				"key": "推脱责任",
+				"value": "5"
+			},{
+				"key": "事不关己高高挂",
+				"value": "6"
+			}
+		]
+	},{
+		"name": "个人能力提升",
+		"type":"ability",
+		"value": [
+			{
+				"key": "技术分享",
+				"value": "3"
+			}, {
+				"key": "自我学习",
+				"value": "2"
+			}, {
+				"key": "被动学习",
+				"value": "1"
+			}, {
+				"key": "拒绝接受新技术",
+				"value": "0"
+			}
+		],
+		"reason": [
+		]
+	},{
+		"name": "工作复杂程度",
+		"type":"complexity",
+		"value": [
+			{
+				"key": "高于岗位要求",
+				"value": "10"
+			}, {
+				"key": "与岗位匹配",
+				"value": "8"
+			}, {
+				"key": "低于岗位要求",
+				"value": "5"
+			}
+		],
+		"reason": [
+		]
+	},{
+		"name": "工作效率",
+		"type":"efficiency",
+		"value": [
+			{
+				"key": "提前",
+				"value": "8"
+			}, {
+				"key": "按期",
+				"value": "6"
+			}, {
+				"key": "延期",
+				"value": "4"
+			}, {
+				"key": "严重延期",
+				"value": "2"
+			}
+		],
+		"reason": [
+		]
+	},{
+		"name": "工作量",
+		"type":"workload",
+		"value": [
+			{
+				"key": "超负荷",
+				"value": "20"
+			}, {
+				"key":"饱满",
+				"value": "15"
+			}, {
+				"key": "一般",
+				"value": "10"
+			}, {
+				"key": "不足",
+				"value": "5"
+			}, {
+				"key": "严重不足",
+				"value": "0"
+			}
+		],
+		"reason": [
+			{
+				"key": "标准工作量>10%",
+				"value": "1"
+			}, {
+				"key": "标准工作量>20%",
+				"value": "2"
+			}, {
+				"key": "标准工作量>30%",
+				"value": "3"
+			},{
+				"key": "标准工作量<10%",
+				"value": "4"
+			}, {
+				"key": "标准工作量<20%",
+				"value": "5"
+			}, {
+				"key": "标准工作量<30%",
+				"value": "6"
+			}
+		]
+	},{
+		"name": "工作质量",
+		"type":"workmanship",
+		"value": [
+			{
+				"key": "超出预期标准",
+				"value": "20"
+			}, {
+				"key": "满足要求",
+				"value": "16"
+			}, {
+				"key": "基本满足要求",
+				"value": "14"
+			}, {
+				"key": "不符合",
+				"value": "10"
+			}, {
+				"key": "严重不符合",
+				"value": "5"
+			}
+		],
+		"reason": [
+		]
+	},{
+		"name": "工作规范性",
+		"type":"normative",
+		"value": [
+			{
+				"key": "非常规范",
+				"value": "10"
+			}, {
+				"key": "基本规范",
+				"value": "8"
+			}, {
+				"key": "少量错误",
+				"value": "6"
+			}, {
+				"key": "严重不规范",
+				"value": "2"
+			}
+		],
+		"reason": [
+			{
+				"key": "编程规范",
+				"value": "1"
+			}, {
+				"key": "文档规范",
+				"value": "2"
+			}, {
+				"key": "流程规范",
+				"value": "3"
+			}
+		]
+	},{
+		"name": "红色事件",
+		"type":"redEvents",
+		"value": [
+			{
+				"key": "5级",
+				"value": "10"
+			}, {
+				"key": "4级",
+				"value": "8"
+			}, {
+				"key": "3级",
+				"value": "6"
+			}, {
+				"key": "2级",
+				"value": "4"
+			}, {
+				"key": "1级",
+				"value": "2"
+			}
+		],
+		"reason": [
+			{
+				"key": "客户表扬",
+				"value": "1"
+			}, {
+				"key": "公司表扬",
+				"value": "2"
+			}, {
+				"key": "文章发表",
+				"value": "3"
+			}, {
+				"key": "技术突破",
+				"value": "4"
+			}, {
+				"key": "业界影响",
+				"value": "5"
+			}
+		]
+	},{
+		"name": "黑色事件",
+		"type":"blackEvents",
+		"value": [
+			{
+				"key": "5级",
+				"value": "-10"
+			}, {
+				"key": "4级",
+				"value": "-8"
+			}, {
+				"key": "3级",
+				"value": "-6"
+			}, {
+				"key": "2级",
+				"value": "-4"
+			}, {
+				"key": "1级",
+				"value": "-2"
+			}
+		],
+		"reason": [
+			{
+				"key": "客户批评",
+				"value": "1"
+			}, {
+				"key": "公司批评",
+				"value": "2"
+			}, {
+				"key": "故障",
+				"value": "3"
+			}, {
+				"key": "事故（如系统瘫痪、数据丢失）",
+				"value": "4"
+			}
+		]
+	},{
+		"name": "复核人调整分",
+		"type":"adjustScore",
+		"value": [],
+		"reason": [
+		]
+	}
+],"version":"v1"}

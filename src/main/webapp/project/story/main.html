@@ -1,0 +1,279 @@
+<link href="css/task/board.css" rel="stylesheet">
+<style>
+.board-group {
+	background-color: #fff;
+}
+	
+.left-menu{
+	position: fixed;
+	width: 268px;
+	height: 100%;
+	background: #F5F5F5 !important;
+}
+.right-team-content{
+	position: relative;
+	width: calc(100% - 268px);
+	/*background: #ffffff; 
+	left: 268px;*/
+	padding: 0 20px;
+	/* min-height: 880px;
+	height: auto; */
+}
+.board-group::-webkit-scrollbar{
+	width: 6px;
+  	background-color: #e5e5e5;
+}
+.board-group::-webkit-scrollbar-thumb{
+	background-color: #a6a6a6;
+}
+.treeSearch{
+ 	height: 34px;
+    background: #E8E8E8;
+    border: none;
+    margin: 9px -8px;
+    border-radius: 3px;
+    width: 175px;
+    padding-left: 33px;
+    font-size: 14px;
+}
+.md-search-ico{
+	position: relative;
+    top: -13px;
+    left: 23px;
+    font-size: 18px;
+    color: #A9A9A9;
+}
+.md-add-ico{
+	position: relative;
+    top: -10px;
+    left: 18px;
+    font-size: 18px;
+}
+span.tmpzTreeMove_arrow{
+	z-index:100
+}
+
+@media (min-width: 1200px){
+	body.sw-toggled #content {
+	    padding: 0px 0 30px 268px;
+	}
+}
+div#rMenu {position:fixed; visibility:hidden; top:0; z-index:100;text-align: left;padding: 2px;}
+.board-group {
+    overflow-y: auto;
+}
+
+.card{
+	border: 2px solid #F5F5F5;
+	box-shadow:none;
+}
+
+.panel-tab-location{
+	position:fixed;
+}
+</style>
+<div class="panel-tab-location" >
+		<div class="panel-tab">
+			<ul class="panel-tab-list p-0 m-0">
+				<li class="select-vertical-nav"><a href="">需求</a></li>
+				<li data-ng-click="toBoardtask()"><a href="">任务</a></li>
+				<li data-ng-click="toBoardLog()"><a href="">日志</a></li>
+				<li data-ng-click="toBoardbug()"><a href="">缺陷</a></li>
+				<!-- <li data-ui-sref="project.board.plan"><a href="">测试计划</a></li> -->
+			</ul>
+		</div>
+	</div>
+<div class="container">
+	<div class="left-menu" id="sidebar" style="top:130px;height: calc(100% - 140px);">
+	   	 <div class="sidebar-inner c-overflow">
+	   	 	<div style="position: fixed;z-index: 5;background: #F5F5F5 !important;width: 268px;padding: 20px 0 20px 5px;">
+		   	 <i class="md md-search md-search-ico"></i>
+		   	 <input type="text" ng-model="base.treeSearch" class="treeSearch" placeholder="搜索">
+	   	 </div>
+	  		<!-- 用例树 -->
+			<ul id="moduleTree" class="ztree tree-transparent" style="top: 95px;position: relative;padding: 0 5px 0 15px;"></ul>
+    	  </div>
+	   </div>
+	   <div class="right-team-content m-t-10" data-ui-view style="padding:0;background: #ffffff;left: 268px;"></div>
+</div>
+
+<script>
+angular.module("project").registerCtrl('storyHomeController',
+	function($scope, $http, $state, $stateParams,debounce, $timeout,Messenger,Modal, $rootScope,$ocLazyLoad){
+	$scope.base ={treeSearch:""};
+	
+	$scope.toBoardtask = function(){
+		$state.go("project.boardtask",{moduleId:$stateParams.moduleId});	
+	}
+
+	$scope.toBoardbug = function(){
+		$state.go("project.boardbug",{moduleId:$stateParams.moduleId});	
+	}
+	
+	$scope.toBoardLog = function(){
+		$state.go("project.boardTeamLog",{moduleId:$stateParams.moduleId});	
+	}
+
+
+	//ztree setting
+	$scope.treeOptions = {
+		view:{
+			addHoverDom: addHoverDom,
+			removeHoverDom: removeHoverDom 
+		},
+		data: {
+			simpleData: {
+				enable: true,
+				idKey:"id",
+				pIdKey: "parent",
+				rootPId: 0
+            }
+        },
+       	edit: {
+        	editNameSelectAll: true,
+    		enable: true,
+    		renameTitle:'编辑模块',
+    		removeTitle:'删除模块',
+    		showRemoveBtn: showRemoveBtn,
+			showRenameBtn: showRenameBtn
+    	},
+    	callback:{
+    		onClick:function onClick(event, treeId, treeNode){
+    			$state.go("project.boardstory.storyList",{milestoneId:$stateParams.milestoneId,moduleId:treeNode.id});
+    		},
+    		onRename:function moduleRename(event, treeId, treeNode, isCancel){
+    			$http.post("ws/saveModule",{module:{id:treeNode.id,name:treeNode.name}}).success(function(data){
+    				Messenger.post("模块【"+treeNode.name+"】更新成功");
+					$state.go("project.boardstory.storyList",{milestoneId:$stateParams.milestoneId,moduleId:treeNode.id});
+				}); 
+    		},
+    		onRemove:function moduleRemove(event, treeId, treeNode){
+    			$http.post("ws/delMoudleById", {
+					module : {id:treeNode.id}
+				}).success(function(data) {
+					$scope.moduleTree.removeNode(treeNode);
+					Messenger.post("模块【"+treeNode.name+"】删除成功");
+					$state.go("project.boardstory.storyList",{milestoneId:$stateParams.milestoneId,moduleId:0});
+				});
+    		}
+    	}
+	};
+	
+	//新增模块
+	function addHoverDom(treeId, treeNode) {
+		if(treeNode.id !=0){
+			var sObj = $("#" + treeNode.tId + "_span");
+			if (treeNode.editNameFlag || $("#addBtn_"+treeNode.tId).length>0) return;
+			var addStr = "<span class='button add' id='addBtn_" + treeNode.tId
+				+ "' title='新增模块' onfocus='this.blur();'></span>";
+			sObj.after(addStr);
+			var btn = $("#addBtn_"+treeNode.tId);
+			if (btn) btn.bind("click", function(){
+				$http.post("ws/saveModule",{module:{parent:treeNode.id,projectId:{id:$stateParams.project},name:'新增模块'}}).success(function(data){
+					var newNode = {id:data.result.id,tid:'t_'+data.result.id, tpid:treeNode.tid, name:"新增模块"};
+					newNode = $scope.moduleTree.addNodes(treeNode, newNode);
+						//$scope.moduleTree.editName(newNode[0]);
+						//$scope.moduleId = data.result.id;
+				}) 
+				return false;
+			});
+		}
+	}; 
+	
+	//新增按钮样式移除
+	function removeHoverDom(treeId, treeNode){
+		$("#addBtn_"+treeNode.tId).unbind().remove();
+	};
+	
+	//控制显示删除按钮
+	function showRemoveBtn(treeId, treeNode) {
+		/* if(treeNode.id==0 || treeNode.isParent){//根节点和父节点不允许删除
+			return false;
+		}
+		//模块关联了需求不能删除
+		return true; */
+		return false;
+	}
+	//控制显示编辑按钮
+	function showRenameBtn(treeId, treeNode) {
+		return treeNode.id!=0;
+	}
+	
+	//模块
+	$http.post("ws/getModuleListByProject", { projectId: $stateParams.project  })
+		.success(function (data) {
+		var modList = [{ id: 0, name: "所有模块", parent: undefined, projectId: {} }];
+		for (var i = 0; i < data.result.length; i++) {
+
+			data.result[i].name=data.result[i].name
+			modList.push(data.result[i]);
+		}
+		$scope.treeNodes = modList;
+	});
+	
+	//加载ztree
+	$ocLazyLoad.load([ 'assets/ztree/jquery.ztree.all.min.js', 'assets/ztree/zTreeStyle.css' ])
+	.then(function(){
+		$scope.$watch("treeNodes", function(v) {
+			if (angular.isUndefined(v))
+				return;
+			$scope.moduleTree = $.fn.zTree.init($("#moduleTree"), $scope.treeOptions, $scope.treeNodes);
+			$scope.moduleTree.expandNode($scope.moduleTree.getNodeByParam("id", '0', null), true, false, true);
+			$scope.moduleTree.selectNode($scope.moduleTree.getNodeByParam("id",$stateParams.moduleId));
+		});
+	})
+	
+	
+	var searchCase = debounce(function(v){
+		if(angular.isUndefined(v)) return;
+		var allNodes = $scope.moduleTree.transformToArray($scope.moduleTree.getNodes());
+		if(v==''||v==null){
+			$scope.moduleTree.showNodes(allNodes);
+			$scope.moduleTree.expandNode($scope.moduleTree.getNodeByParam("id", '0', null), true, false, false);
+		}else{
+
+			var nodes = $scope.moduleTree.getNodesByParamFuzzy("name", v, null);
+			$scope.moduleTree.hideNodes(allNodes);
+			if(nodes.length==0){
+				Messenger.post("未找到符合条件的模块信息");
+				return
+			}else{
+				var shouldShowNodes = [];
+	    		angular.forEach(nodes,function(node,n){
+	    			expandNodeCascade(node);
+	    			nodeParents(shouldShowNodes,node);
+	    		});
+	    		$scope.moduleTree.showNodes(shouldShowNodes.concat(nodes));
+	    		$scope.moduleTree.expandAll(true);
+			}
+		}
+	},1000);
+	
+	//树搜索字段
+	$scope.$watch("base.treeSearch", function(v) {
+		searchCase(v);
+	});
+	
+	//展开节点
+    function expandNodeCascade(node){
+    	var pn = node.getParentNode();
+        if(pn){
+        	if(!pn.open){
+        		$scope.moduleTree.expandNode(pn,true,true,false);
+        	}else{
+        		expandNodeCascade(pn);
+        	}
+        }
+    }
+	
+    //节点的所有父节点
+    function nodeParents(nodeArray,node){
+    	var parentNode = node.getParentNode();
+    	if(parentNode!=null){
+    		nodeArray.push(parentNode);
+    		nodeParents(nodeArray,parentNode);
+    	}
+    }
+   
+})
+</script>

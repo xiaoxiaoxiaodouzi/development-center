@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getAllStory" log="false" className="com.chinacreator.c2.project.testcase.CaseService" method="getAllStory">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>通过项目id查询需求</name>
+  <desc>根据项目查询所有的需求</desc>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="Integer"/>
+    <input collection="false" desc="@return" id="milestoneId" required="false" type="Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="QInteger;" type="Integer"/>
+    <param autoValue="Input.milestoneId" name="milestoneId" signature="QInteger;" type="Integer"/>
+  </params>
+  <return signature="QList&lt;QStory;>;" type="java.util.List"/>
+</CustomRule>

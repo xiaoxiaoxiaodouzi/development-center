@@ -1,0 +1,42 @@
+<link href="css/task/estimate.css" rel="stylesheet">
+<style>
+.task-change-animate-add, .task-change-animate-remove {
+  -webkit-transition:all cubic-bezier(0,0,1,1) 0.3s;
+  -moz-transition:all cubic-bezier(0,0,1,1) 0.3s;
+  -o-transition:all cubic-bezier(0,0,1,1) 0.3s;
+  transition:all cubic-bezier(0,0,1,1) 0.3s;
+}
+
+.task-change-animate,
+.task-change-animate-add .task-change-animate-add-active {
+  opacity:0;
+}
+
+.task-change-animate-remove .task-change-animate-remove-active {
+  opacity:1;
+}
+</style>
+
+<div class="row p-20" ng-controller="taskEstimateCtrl" ng-class="{'task-change-animate':taskChangeAnimateFlag}">
+	<div c2-full-calendar id="calendar"
+		class="est-callender-wrap col-sm-10" start-date="startDate"
+		format="YYYY-MM-DD" events="estimateEvents"
+		event-click="estimateEventClick(params)"
+		day-click="estimateDayClick(params)"
+		event-after-render="estimateEventAfterRender(params)"
+		event-after-all-render="estimateEventAfterAllRender(params)"
+		view-render="estimateViewRender(params)"></div>
+	<!-- 用ng-include引入可以避免对话框一显示就被撑开，这时日历还没显示出来会有一大片空白 -->	
+	<div class="estimate-modal-open" ng-include="templateUrl"></div>
+	<div class="modal-footer">
+		<button class="btn btn-primary btn-sm" ng-click="changeTaskStatus()">
+			<i class="md" ng-class="{'md-play-arrow':task.isDone,'md-stop':!task.isDone}"></i> {{task.isDone?"启用任务":"完成任务"}}
+		</button>
+		<button class="btn btn-link btn-sm" ng-click="cancel()"> 
+			<i class="md md-clear"></i>关闭
+		</button>
+	</div>
+</div>
+
+
+

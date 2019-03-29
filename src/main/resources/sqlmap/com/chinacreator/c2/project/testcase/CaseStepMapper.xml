@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.testcase.CaseStepMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_community_case_step.id ,
+		  c2_community_case_step.case_id ,
+		  c2_community_case_step.step ,
+		  c2_community_case_step.expect_result ,
+		  c2_community_case_step.no_ 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_community_case_step.id = #{id}</if>
+	    <if test="caseId != null">and c2_community_case_step.case_id = #{caseId}</if>
+	    <if test="step != null">and c2_community_case_step.step = #{step}</if>
+	    <if test="expectResult != null">and c2_community_case_step.expect_result = #{expectResult}</if>
+	    <if test="no != null">and c2_community_case_step.no_ = #{no}</if>
+</sql>
+
+
+<!-- ElementID:CaseStepResult,Generated=true -->
+<resultMap id="CaseStepResult" type="com.chinacreator.c2.project.testcase.CaseStep">
+	<id property="id" column="id"/>
+	<result property="caseId" column="case_id"/>
+	<result property="step" column="step"/>
+	<result property="expectResult" column="expect_result"/>
+	<result property="no" column="no_"/>
+</resultMap>
+
+
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.testcase.CaseStep" resultType="int">
+	select count(*) from c2_community_case_step 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.testcase.CaseStep">
+	update c2_community_case_step
+<set>
+	<if test="caseId != null">case_id=#{caseId,jdbcType=NUMERIC},</if>
+	<if test="step != null">step=#{step,jdbcType=VARCHAR},</if>
+	<if test="expectResult != null">expect_result=#{expectResult,jdbcType=VARCHAR},</if>
+	<if test="no != null">no_=#{no,jdbcType=NUMERIC}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_community_case_step
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="caseId==null">case_id = null,</if>
+		    <if test="step==null">step = null,</if>
+		    <if test="expectResult==null">expect_result = null,</if>
+		    <if test="no==null">no_ = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.testcase.CaseStep">
+    delete from c2_community_case_step where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.testcase.CaseStep" resultMap="CaseStepResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_case_step 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_community_case_step where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="CaseStepResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_case_step 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="CaseStepResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_case_step 
+		 where c2_community_case_step.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.testcase.CaseStep" resultMap="CaseStepResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_case_step 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="CaseStepResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_community_case_step 
+	where c2_community_case_step.id in (
+		select distinct id from c2_community_case_step inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_community_case_step 
+			<where>
+	        <if test="entity.id != null">and c2_community_case_step.id = #{entity.id}</if>
+	        <if test="entity.caseId != null">and c2_community_case_step.case_id = #{entity.caseId}</if>
+	        <if test="entity.step != null">and c2_community_case_step.step = #{entity.step}</if>
+	        <if test="entity.expectResult != null">and c2_community_case_step.expect_result = #{entity.expectResult}</if>
+	        <if test="entity.no != null">and c2_community_case_step.no_ = #{entity.no}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.testcase.CaseStep" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_community_case_step(
+		<trim prefixOverrides=",">
+		    <if test="caseId != null">case_id</if>
+		    <if test="step != null">,step</if>
+		    <if test="expectResult != null">,expect_result</if>
+		    <if test="no != null">,no_</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="caseId != null">#{caseId,jdbcType=NUMERIC}</if>
+		    <if test="step != null">,#{step,jdbcType=VARCHAR}</if>
+		    <if test="expectResult != null">,#{expectResult,jdbcType=VARCHAR}</if>
+		    <if test="no != null">,#{no,jdbcType=NUMERIC}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_community_case_step (case_id,step,expect_result,no_)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.caseId,jdbcType = NUMERIC},
+		         #{entity.step,jdbcType = VARCHAR},
+		         #{entity.expectResult,jdbcType = VARCHAR},
+		         #{entity.no,jdbcType = NUMERIC}
+				)
+</foreach>
+</insert>
+
+<delete id="deleteStepByCaseId" parameterType="java.lang.Integer">
+	delete from c2_community_case_step where case_id=#{id,jdbcType=NUMERIC}
+</delete>
+
+<select id="getMaxNoByCaseId" parameterType="java.lang.Integer" resultType="java.util.HashMap">
+	select max(no_) no from c2_community_case_step where case_id=#{id,jdbcType=NUMERIC}
+</select>
+
+<delete id="deleteStepNoExist" parameterType="map">
+	delete from c2_community_case_step where case_id=#{caseId} 
+	<if test="list!=null and list.size()&gt;0">
+		and id not in
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		<foreach collection="list" item="entity" separator=",">
+			#{entity.id}
+		</foreach>
+		</trim>
+	</if>
+</delete>
+
+<select id="getStepListById" parameterType="java.util.HashMap" resultType="java.util.HashMap" useCache="false">
+	select id,step,expect_result expectResult,case_id caseId,no_ no from c2_community_case_step where case_id=#{id} order by no_
+</select>
+
+
+</mapper>

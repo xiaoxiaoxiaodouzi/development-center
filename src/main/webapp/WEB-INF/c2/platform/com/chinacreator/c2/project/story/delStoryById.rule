@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="delStoryById" log="false" className="com.chinacreator.c2.project.story.StoryService" method="delStoryById">
+  <name>按需求id删除需求</name>
+  <inputs>
+    <input collection="false" desc="" id="storyid" required="true" type="java.lang.Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="int"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.storyid" name="storyid" signature="QInteger;" type="java.lang.Integer"/>
+  </params>
+  <return signature="I" type="int"/>
+</CustomRule>

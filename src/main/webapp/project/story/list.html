@@ -1,0 +1,411 @@
+<style>
+#detail-panel{
+	width:750px;
+}
+	.dropdown-menu .label-color {
+		width: 13px;
+		height: 13px;
+		display: inline-block;
+		border-radius: 3px;
+		vertical-align: middle;
+		margin: 0 3px 2px 0;
+	}
+
+	.form-search {
+		height: 30px;
+		background: #eeeeee;
+		border: none;
+		margin-left: -10px;
+		border-radius: 3px;
+		width: 175px;
+		padding-left: 25px;
+		margin-right: 10px;
+		font-size: 12px;
+	}
+</style>
+<div class="container m-t-10 w-100 p-0" ng-controller="storyCtrl">
+	<!-- <div class="block-header">
+  </div> -->
+	<div class="card m-0" id="profile-main">
+		<div class="card-header">
+
+			<h2>
+				需求管理 <small>录入需求，拆分任务 </small>
+			</h2>
+
+
+			<div class="actions">
+				<a href="" title="导出需求文档，暂未实现，敬请期待">
+					<i class="md md-import-export"></i>
+				</a>
+			</div>
+			
+			<button class="btn bgm-blue btn-float waves-effect" ng-click="create()">
+				<i class="md md-add"></i>
+			</button>
+
+		</div>
+
+		<div class="card-body clearfix">
+			<div class="listview lv-bordered lv-lg">
+				<div class="lv-header-alt">
+					<!-- <label class="checkbox checkbox-inline m-l-15 m-t-10" title="显示已打开的需求">
+		                <input type="checkbox" ng-model="search.opened"/>
+		                <i class="input-helper"></i> 打开
+		            </label>
+		            <label class="checkbox checkbox-inline m-l-20 m-t-10" title="显示已确认的需求">
+		                <input type="checkbox" ng-model="search.confirm"/>
+		                <i class="input-helper"></i> 确认
+		            </label>
+		            <label class="checkbox checkbox-inline m-l-20 m-t-10" title="显示已逾期的需求">
+		                <input type="checkbox" ng-model="search.timeout"/>
+		                <i class="input-helper"></i> 逾期
+		            </label>
+		            <label class="checkbox checkbox-inline m-l-20 m-t-10" title="显示已关闭的需求">
+		                <input type="checkbox" ng-model="search.closed"/>
+		                <i class="input-helper"></i> 关闭
+		            </label> -->
+					<i class="md md-search" style="font-size: 18px;color: #A9A9A9;position: relative;top: -5px;left: 18px;"></i>
+					<input type="text" ng-model="search.title" class="form-search" placeholder="标题">
+
+					<c2-dropdown class="animate" style="margin-top: 3px;margin-left:10px;" bind-data="search.status" items="allStatusList" item-name="title"
+					 max-height="200" clean-button="true">
+						<div class="picker picker-white text-overflow" style="max-width:140px;">
+							<!-- <i class="md md-av-timer"></i> -->
+							<span ng-if="!search.status">选择状态
+								<i class="caret"></i>
+							</span>{{search.status.title}}
+						</div>
+					</c2-dropdown>
+
+					<c2-dropdown class="animate" style="margin-top: 3px;margin-left:10px;" bind-data="search.milestone" items="allMileList" item-name="title"
+					 max-height="200" filter="true" clean-button="true">
+						<div class="picker picker-white text-overflow" style="max-width:140px;">
+							<!-- <i class="md md-av-timer"></i> -->
+							<span ng-if="!search.milestone">选择里程碑
+								<i class="caret"></i>
+							</span>{{search.milestone.title}}
+						</div>
+					</c2-dropdown>
+
+					<c2-dropdown style="margin-top: 3px;margin-left:10px;" bind-date="module" tree-options="treeOptions" id="modTree" tree-nodes="zTreeNodes">
+						<div class="picker picker-white">
+							<!-- <i class="md md-extension"></i> -->{{module.name}} &nbsp;
+							<span class="caret"></span>
+						</div>
+					</c2-dropdown>
+
+					<c2-dropdown class="animate" style="margin-top: 3px;margin-left:10px;" bind-data="search.pri" items="allPriList" item-name="title"
+					 max-height="200" clean-button="true">
+						<div class="picker picker-white text-overflow" style="max-width:160px;">
+							<!-- <i class="md md-sort"></i>  -->
+							<span ng-if="!search.pri">选择优先级
+								<i class="caret"></i>
+							</span>{{search.pri.title}}
+						</div>
+					</c2-dropdown>
+
+					<c2-dropdown class="animate" style="margin-top: 3px;margin-left:10px;" bind-data="search.labels" items="allLabelList" item-name="name"
+					 multiple=true max-height="200" filter="true" clean-button="true">
+						<div class="picker picker-white text-overflow" style="max-width:140px;">
+							<!-- <i class="md md-bookmark-outline"></i> -->
+							<span ng-if="search.labels.length==0">选择标签
+								<i class="caret"></i>
+							</span>
+							<span class="p-l-5 p-r-5 m-l-5 label-show" ng-style="label.backgroundStyle" ng-repeat="label in search.labels">{{label.name}}</span>
+						</div>
+						<dropdown-item-template>
+							<div>
+								<span class="label-color" style="background-color: {{item.color}}">&nbsp;</span>
+								<span class="text">{{item.name}}</span>
+								<span class="md md-check check-mark"></span>s
+							</div>
+						</dropdown-item-template>
+					</c2-dropdown>
+				</div>
+
+				<div class="lv-body">
+					<div ng-if="sList.length==0" class="lv-item no-animate text-center p-20">没有查到任何需求。</div>
+					<div class="lv-item no-animate media" ng-repeat='s in sList'>
+
+						<div class="media-body">
+							<div class="lv-title">
+								<a data-ui-sref="project.boardstory.storyList.storyComment({storyid:s.id})">{{s.title}}</a>
+								<span class="p-l-10 p-r-10 m-r-5 label-show" ng-repeat="label in s.labels" ng-click="search.labels=[label]" style="cursor:pointer;background-color: {{label.color}};color:{{getTextColor(label.color)}};border-radius:2px;">{{label.name}}</span>
+							</div>
+							<!-- <small class="lv-small">{{s.spec|limitTo:150}}</small> -->
+
+							<ul class="lv-attrs">
+								<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #6cc644;margin-right: 5px;"
+								 ng-if="s.status=='1'">已打开</span>
+								<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #999;margin-right: 5px;"
+								 ng-if="s.status=='0'">已关闭</span>
+								<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #FF4F3E;margin-right: 5px;"
+								 ng-if="s.status=='2'">已逾期</span>
+								<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #6cc644;margin-right: 5px;"
+								 ng-if="s.status=='3'">已确认</span>
+								<li style=" border: 0;">
+									<i class="md md-today" title="创建时间"></i> {{s.openeddate|date:'yyyy/MM/dd'}}</li>
+								<li style=" border: 0;">
+									<i class="md md-person" title="提出人"></i> {{s.proposer.userRealname}}</li>
+								<li style=" border: 0;">
+									<i class="md md-person-outline" title="负责人"></i> {{s.assignedTo.userRealname}}</li>
+								<li style=" border: 0;">
+									<i class="md md-sort" title="优先级"></i>
+									<span ng-if="s.pri==1">高</span>
+									<span ng-if="s.pri==2">中</span>
+									<span ng-if="s.pri==3">低</span>
+								</li>
+								<li style=" border: 0;" ng-if="s.taskInfo">
+									<i class="md md-format-list-bulleted" title="任务"></i>
+									<span style="font-weight: normal;color: green;">{{s.taskInfo.doneNum}}</span>
+									<span style="margin:0 2px;">/</span>{{s.taskInfo.doneNum+s.taskInfo.undoneNum}}</li>
+								<li style=" border: 0;" ng-if="s.milestone">
+									<i class="md md-av-timer" title="里程碑"></i> {{s.milestone.title}}</li>
+									<li style=" border: 0;">
+										<i class="md md-sort" title="完成度"></i>
+										<span ng-if="s.completes==0">0%</span>
+										<span ng-if="s.completes==1">25%</span>
+										<span ng-if="s.completes==2">50%</span>
+										<span ng-if="s.completes==3">75%</span>
+										<span ng-if="s.completes==4">100%</span>
+									</li>
+							</ul>
+
+							<div class="lv-actions actions dropdown" data-ng-show="((subject.userName==s.openedby||subject.userName==s.assignedTo.userName) && s.status!='0') || 
+								((subject.userName==s.proposer.userName || subject.userName==s.openedby) && s.status !='0' && s.status !='1')">
+								<a href="" data-toggle="dropdown" aria-expanded="true">
+									<i class="md md-more-vert"></i>
+								</a>
+
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li data-ng-if="s.status!=0 && (subject.userName==s.openedby||subject.userName==s.assignedTo.userName)">
+										<a data-ui-sref="project.story.storyComment({storyid:{{s.id}},edit:1})">编辑</a>
+									</li>
+									<li data-ng-if="(s.status==3 || s.status==2) && (subject.userName==s.proposer.userName || subject.userName==s.openedby)">
+										<a ng-click="closeStoryFun(s)">关闭</i>
+										</a>
+									</li>
+									<li data-ng-if="s.status==1 && subject.userName==s.openedby">
+										<a data-ng-click="delStory(s)" href="javascript:void(0);">删除</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<c2-pagination id="pageEle" total="total" page-size="10" on-page-change="refreshList(pageIndex)"></c2-pagination>
+		</div>
+	</div>
+
+</div>
+
+<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;top:113px">
+	<ui-view onload="stateOnload()"></ui-view>
+</aside>
+
+<script type="text/javascript">
+	angular.module("project").registerCtrl(
+		'storyCtrl',
+		function ($scope, $http, $state, $stateParams, $rootScope, $timeout, Messenger,
+			Modal) {
+			$scope.subject = $rootScope.subject;
+			$scope.search = {
+				labels: [],
+				milestone: undefined,
+				status: undefined,
+				pri: undefined
+			}
+
+			$scope.module = { id: $stateParams.moduleId };
+
+			$scope.getTextColor = function (color) {
+				return getTextColorByBackColor(color);
+			};
+
+			$scope.$watch("search", function (v) {
+				$scope.refreshList(1);
+			}, true);
+
+			var refreshList = function (pageIndex) {
+				//处理参数为空字符串的情况
+				var mileid = ($scope.search.milestone && $scope.search.milestone.id != "") ? $scope.search.milestone.id : undefined;
+				var projectId = ($stateParams.project && $stateParams.project != "") ? $stateParams.project : undefined;
+				var statusList = [];
+				pageIndex = pageIndex ? pageIndex : 1;
+
+				if ($scope.search.status) {
+					statusList.push($scope.search.status.id);
+				}
+
+				$http.post("ws/getStoryList", {
+					condition: {
+						statusList: statusList,
+						project: {
+							id: projectId
+						},
+						milestone: {
+							id: mileid
+						},
+						module: $scope.module,
+						title: $scope.search.title != "" ? $scope.search.title : null,
+						pri: $scope.search.pri ? $scope.search.pri.id : null,
+						labels: $scope.search.labels
+					},
+					pageable: {
+						pageIndex: pageIndex
+					}
+				}).success(function (data) {
+					$scope.sList = data.result.contents;
+					var total = data.result.total;
+					$scope.total = total;
+					$timeout(function () {
+						$("#pageEle").controller("c2Pagination").goPage(pageIndex);
+					}, 0);
+				});
+			};
+			$scope.refreshList = refreshList;
+			$scope.mileMenuClick = function (item) {
+				refreshList(1);
+			};
+			$scope.moduleMenuClick = function (item) {
+				refreshList(1);
+			};
+			var projectId = $stateParams.project;//alert(projectId)
+			$scope.mileList = [{
+				title: "所有里程碑",
+				id: ''
+			}];
+			$scope.mile = $scope.mileList[0];
+
+			$scope.allPriList = [{ id: "1", title: "高" }, { id: "2", title: "中" }, { id: "3", title: "低" }];
+			$scope.allStatusList = [{ id: "1", title: "打开" }, { id: "3", title: "确认" }, { id: "2", title: "逾期" }, { id: "0", title: "关闭" }];
+
+			$http.post("ws/getAllLabelAndMilestone", {
+				"projectId": projectId
+			}).success(function (data) {
+				if (data.result.allLabelList) $scope.allLabelList = data.result.allLabelList;
+				if (data.result.allMilestoneList) $scope.allMileList = data.result.allMilestoneList;
+			});
+
+
+			$scope.treeOptions = {
+				view: {
+					selectedMulti: false
+				},
+				data: {
+					simpleData: {
+						idKey: "id",
+						pIdKey: "parent",
+						rootPId: 0,
+						enable: true
+					}
+				},
+				callback: {
+					onClick: function (event, treeId, treeNode, clickFlag) {
+						$scope.$apply(function () {
+							$scope.module = treeNode;
+						});
+						//收拢下拉框
+						//$scope.moduleDropdownController.toggle();
+						console.log($("#modTreeEdit"));
+						$("#modTree").controller("c2-dropdown").toggle();
+						refreshList(1);
+					}
+				}
+			};
+
+			$http.post("ws/getModuleListByProject", {
+				projectId: projectId
+			}).success(function (data) {
+				var modList = [{ id: 0, parent: undefined, name: "所有模块" }];
+				$scope.zTreeNodes = modList.concat(data.result);
+				$scope.module = $scope.zTreeNodes[0];
+				$timeout(function () {
+					if ($stateParams.moduleId != '0') {
+						for (var i = 0; i < $scope.zTreeNodes.length; i++) {
+							if ($stateParams.moduleId == $scope.zTreeNodes[i].id) {
+								$('#mileName')[0].innerHTML=$scope.zTreeNodes[i].name;
+								$scope.module = $scope.zTreeNodes[i];
+							}
+						}
+					} else {
+						$scope.module = $scope.zTreeNodes[0];
+						$('#mileName')[0].innerHTML='研发看板';
+					}
+				}, 100);
+			});
+
+			$scope.delStory = function (s) {
+
+				var title = "";
+				if (s.title && s.title.length > 25) {
+					title = s.title.substr(0, 24) + "...";
+				} else {
+					title = s.title;
+				}
+
+				Modal.openConfirm({
+					title: "删除确认",
+					message: "是否删除需求【" + title + "】？",
+					btnText: "删除",
+					btnClass: "btn-block bgm-lightblue simple-shadow",
+					onClose: function () {
+						$http.post("ws/delStoryById", {
+							storyid: s.id
+						}).success(function (data) {
+							Messenger.post({
+								'message': "操作成功"
+							});
+							refreshList();
+						});
+					}
+				});
+			};
+
+			$scope.create = function () {
+				Modal.open("project/addStory.html", {
+					title: '',
+					animation: true,
+					size: "middle"
+				});
+				//				$state.go("project.addStory");
+			};
+
+			$scope.$on("createNewStory", function (data) {
+				refreshList();
+			});
+
+			if ($stateParams.init == 'add') {
+				$scope.create();
+			}
+
+			$http.post("ws/isProjectPermitedByBatch", { projectId: $stateParams.project, permExprs: ["story_cud", "advancedSet_menu"] })
+				.success(function (data, status, headers, config) {
+					$scope.storyCUD = data.result["story_cud"];
+					$scope.advancedSetMenu = data.result["advancedSet_menu"];
+				});
+
+
+			$scope.closeStoryFun = function (story) {
+				$http.post("ws/updateStoryStatus", {
+					"storyId": story.id,
+					"status": 0
+				}).success(function () {
+					story.status = 0;
+				});
+			}
+
+			$scope.openStoryFun = function (story) {
+				$http.post("ws/updateStoryStatus", {
+					"storyId": story.id,
+					"status": 1
+				}).success(function () {
+					story.status = 1;
+				});
+			}
+		});
+</script>

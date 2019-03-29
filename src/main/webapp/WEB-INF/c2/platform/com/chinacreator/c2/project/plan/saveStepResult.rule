@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="saveStepResult" log="false" className="com.chinacreator.c2.project.plan.StepResultService" method="saveStepResult">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>保存测试步骤实际结果</name>
+  <desc>添加测试步骤实际结果</desc>
+  <inputs>
+    <input collection="false" desc="" id="result" required="true" type="java.util.Map"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="步骤实际结果  @param result" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.result" name="result" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

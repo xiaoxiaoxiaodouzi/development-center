@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="wl/getDepartMentTree" log="false" className="com.chinacreator.c2.project.service.WorkLogService" method="getDepartMentTree">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取组织结构树</name>
+  <inputs>
+    <input collection="false" desc="" id="orgId" required="false"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.orgId" name="orgId" signature="QString;" type="java.lang.String"/>
+  </params>
+  <return signature="QList&lt;QWorkLogDeptTreeNode;>;" type="java.util.List"/>
+</CustomRule>

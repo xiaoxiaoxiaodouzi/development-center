@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="searchInstanceInfo" log="false" className="com.chinacreator.c2.project.plan.InstanceService" method="searchInstanceInfo">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>搜索满足条件的实例信息</name>
+  <desc>搜索满足条件的实例信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="name" required="true" type="String"/>
+    <input collection="false" desc="" id="level" required="true" type="String"/>
+    <input collection="false" desc="" id="result" required="true" type="String"/>
+    <input collection="false" desc="@param" id="planId" required="true" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.name" name="name" signature="QString;" type="String"/>
+    <param autoValue="Input.level" name="level" signature="QString;" type="String"/>
+    <param autoValue="Input.result" name="result" signature="QString;" type="String"/>
+    <param autoValue="Input.planId" name="planId" signature="QString;" type="String"/>
+  </params>
+  <return signature="QList&lt;QString;>;" type="java.util.List"/>
+</CustomRule>

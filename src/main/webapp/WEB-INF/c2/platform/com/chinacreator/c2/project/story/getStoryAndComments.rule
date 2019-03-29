@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getStoryAndComments" log="false" className="com.chinacreator.c2.project.story.StoryService" method="getStoryAndComments">
+  <name>获取需求和评论</name>
+  <desc>获取需求和相关评论</desc>
+  <inputs>
+    <input collection="false" desc="" id="storyId" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.storyId" name="storyId" signature="I" type="int"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

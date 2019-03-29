@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="bug/addBug" log="false" className="com.chinacreator.c2.project.bug.BugService" method="addBug">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>创建bug</name>
+  <inputs>
+    <input collection="false" desc="" id="bug" required="true" type="com.chinacreator.c2.project.bug.Bug"/>
+    <input collection="false" desc="" id="labelList" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.project.bug.Bug"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.bug" name="bug" signature="QBug;" type="com.chinacreator.c2.project.bug.Bug"/>
+    <param autoValue="Input.labelList" name="labelList" signature="QList&lt;QLabel;>;" type="java.util.List"/>
+  </params>
+  <return signature="QBug;" type="com.chinacreator.c2.project.bug.Bug"/>
+</CustomRule>

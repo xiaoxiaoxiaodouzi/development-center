@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.workbench.WhiteNameMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_whitelist.user_name ,
+		  c2_whitelist.user_realname ,
+		  c2_whitelist.org_id 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="userName != null">and c2_whitelist.user_name = #{userName}</if>
+	    <if test="userRealname != null">and c2_whitelist.user_realname = #{userRealname}</if>
+	    <if test="orgId != null">and c2_whitelist.org_id = #{orgId}</if>
+</sql>
+
+
+<!-- ElementID:WhiteNameResult,Generated=true -->
+<resultMap id="WhiteNameResult" type="com.chinacreator.c2.workbench.WhiteName">
+	<id property="userName" column="user_name"/>
+	<result property="userRealname" column="user_realname"/>
+	<result property="orgId" column="org_id"/>
+</resultMap>
+
+
+
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.workbench.WhiteName">
+	insert into c2_whitelist(
+	         <if test="userName != null">user_name</if>
+	         <if test="userRealname != null">,user_realname</if>
+	         <if test="orgId != null">,org_id</if>
+	 	 	 )
+	 values (
+	         <if test="userName != null">#{userName,jdbcType=CHAR}</if>
+	         <if test="userRealname != null">,#{userRealname,jdbcType=VARCHAR}</if>
+	         <if test="orgId != null">,#{orgId,jdbcType=VARCHAR}</if>
+	 	 	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.workbench.WhiteName" resultType="int">
+	select count(*) from c2_whitelist 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.workbench.WhiteName">
+	update c2_whitelist
+<set>
+	<if test="userRealname != null">user_realname=#{userRealname,jdbcType=VARCHAR},</if>
+	<if test="orgId != null">org_id=#{orgId,jdbcType=VARCHAR}</if>
+</set>
+<where>
+	<choose>
+        <when test="userName != null">and user_name = #{userName}</when>
+        <otherwise>and user_name = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_whitelist
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="userRealname==null">user_realname = null,</if>
+		    <if test="orgId==null">org_id = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="userName != null">and user_name = #{userName}</when>
+			<otherwise>and user_name = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.workbench.WhiteName">
+    delete from c2_whitelist where 1=1 and user_name = #{userName}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.workbench.WhiteName" resultMap="WhiteNameResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_whitelist 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list">
+	insert into c2_whitelist (user_name,user_realname,org_id) 
+<foreach collection="list" item="entity" index="index" separator="union all">
+		select 
+		#{entity.userName,jdbcType = CHAR},
+				#{entity.userRealname,jdbcType = VARCHAR},
+				#{entity.orgId,jdbcType = VARCHAR}
+		from dual
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_whitelist where user_name in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.userName}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="WhiteNameResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_whitelist 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.String" resultMap="WhiteNameResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_whitelist 
+		 where c2_whitelist.user_name = #{userName,jdbcType=CHAR}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.workbench.WhiteName" resultMap="WhiteNameResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_whitelist 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="WhiteNameResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_whitelist 
+	where c2_whitelist.user_name in (
+		select distinct user_name from c2_whitelist inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct user_name
+			from c2_whitelist 
+			<where>
+	        <if test="entity.userName != null">and c2_whitelist.user_name = #{entity.userName}</if>
+	        <if test="entity.userRealname != null">and c2_whitelist.user_realname = #{entity.userRealname}</if>
+	        <if test="entity.orgId != null">and c2_whitelist.org_id = #{entity.orgId}</if>
+			</where>
+		) ${entity.tableAlias} using (user_name)
+</foreach>
+)
+</select>
+
+<select id="selectWhiteNameByNameList" parameterType="list" resultMap="WhiteNameResult">
+	select 
+		<include refid="column_sql"/>
+	from c2_whitelist 
+		where c2_whitelist.user_name in (
+			<foreach collection="list" item="wname" separator=",">
+			<if test="wname!=null and wname!=''">
+				#{wname,jdbcType=VARCHAR}
+			</if>
+			</foreach>
+		)
+</select>
+
+<select id="selectWhiteNameListInUsers" parameterType="list" resultType="string">
+	select 
+		c2_whitelist.user_name
+	from c2_whitelist 
+		where c2_whitelist.user_name in (
+			<foreach collection="list" item="user" separator=",">
+			<if test="user!=null">
+				#{user,jdbcType=VARCHAR}
+			</if>
+			</foreach>
+		)
+</select>
+</mapper>

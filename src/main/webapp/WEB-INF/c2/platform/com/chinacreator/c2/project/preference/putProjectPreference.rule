@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="putProjectPreference" log="false" className="com.chinacreator.c2.project.preference.ProjectPreferenceService" method="put">
+  <name>新增/修改项目偏好</name>
+  <desc>若偏好已存在则更新,若不存在则新增</desc>
+  <inputs>
+    <input collection="false" desc="" id="prefer" required="true" type="com.chinacreator.c2.project.preference.Preference"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.prefer" name="prefer" signature="QPreference;" type="com.chinacreator.c2.project.preference.Preference"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

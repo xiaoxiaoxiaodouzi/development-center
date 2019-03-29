@@ -1,0 +1,230 @@
+<style>
+<!--
+
+#addTaskTemplate #addTaskDiv {
+    padding: 5px 15px 5px 0px;
+}
+
+#addTaskTemplate p {
+	margin-bottom: 0px;
+}
+
+
+#addTaskTemplate .btn {
+	padding: 6px 6px
+}
+
+#addTaskTemplate .form-group {
+	margin-bottom: 15px;
+}
+
+#addTaskTemplate .media>.pull-left {
+	padding-right: 5px;
+}
+
+#add-task-button.x i {
+	transform: rotate(315deg);
+}
+
+#add-task-button {
+	top: 5px;
+	right: 70px;
+	z-Index: 22;
+	height: 40px;
+	width: 40px;
+}
+
+#addTaskTemplate .btn-float i {
+	font-size: 22px;
+}
+
+#addTaskTemplate #taskErrorMsg {
+	opacity: 0;
+	transition-duration: 800ms;
+}
+
+#addTaskTemplate #taskErrorMsg.see {
+	opacity: 1;
+}
+
+#addTaskTemplate .user-head {
+	width: 68px;
+	text-align: center;
+}
+
+#addTaskTemplate .rotate.md-expand-more {
+	transform: none;
+	transition: transform 500ms;
+}
+
+#addTaskTemplate .rotate.md-expand-more.turn {
+	transform: rotate(180deg);
+}
+
+#addTaskTemplate .animate-show-expend {
+	display: none;
+}
+
+#addTaskTemplate .animate-show-expend .editor-toolbar {
+	margin-top: 0;
+}
+
+#addTaskTemplate #addTaskEstimateDiv {
+	height: 35px;
+	padding-top: 3px;
+	margin-top: 2px;
+}
+
+#addTaskTemplate #addEstimateButton {
+  box-shadow: 0 0 0 0;
+  border: 1px solid #eee;
+  cursor: help;
+  border-radius: 2px 0 0 2px;
+}
+
+#addTaskTemplate #addTaskEstimateDiv div {
+	width: 16px;
+	float: right;
+	line-height: 16px;
+}
+
+#addTaskTemplate #addTaskEstimateDiv div i {
+	cursor: pointer;
+	background-color: #eee;
+}
+
+#addTaskTemplate #addTaskEstimateDiv div i.md-add {
+	border-radius: 0 2px 0 0;
+}
+
+#addTaskTemplate #addTaskEstimateDiv div i.md-remove {
+	border-radius: 0 0 2px 0;
+}
+
+#addTaskTemplate .fg-line:not(.form-group) {
+  width: 97%;
+}
+#addTaskTemplate .lv-item .lv-small{
+	width: 87%;
+}
+#addTaskTemplate .lv-item .lv-small.ng-enter{
+	max-height: 0px;
+	overflow: hidden;
+	transition: 500ms cubic-bezier(0.5,0, 1, 1 ) all;
+}
+#addTaskTemplate .lv-item .lv-small.ng-enter.ng-enter-active{
+	max-height: 500px;
+}
+#addTaskTemplate .lv-item .lv-small.ng-leave{
+	max-height: 500px;
+	overflow: hidden;
+	transition: 500ms cubic-bezier(0,1,0,1) all;
+}
+#addTaskTemplate .lv-item .lv-small.ng-leave.ng-leave-active{
+	max-height: 0px;
+}
+#addTaskTemplate .lv-item .lv-small p img{
+	max-width: 100%;
+}
+
+
+
+#addTaskTemplate #addTaskDiv .fg-float.has-feedback .form-control-feedback {
+    top: 5px;
+    pointer-events: auto;
+}
+
+@media (min-width: 480px)
+#addTaskTemplate .listview.lv-lg .lv-item {
+    padding: 17px 40px 17px 40px;
+}
+
+-->
+</style>
+<div class="listview lv-bordered lv-lg" id="addTaskTemplate">
+	<div class="lv-body">
+            	<!-- 添加任务 -->
+                <div id="addTaskDiv">
+                    <div class="pull-left c-gray user-head">
+                        <c2-dropdown class="animate" id="taskUser" bind-data="taskInfo.taskObj.taskUser" items="taskUsers" item-name="name" ng-class="{'bgm-red':!taskInfo.taskObj.taskUser.name&&taskInfo.taskObj.taskUserRed}" max-height="200" filter="true">
+							<img class="lv-img-sm ng-scope" ng-src="{{taskInfo.taskObj.taskUser.icon}}">
+							<div>{{taskInfo.taskObj.taskUser.name}}</div>
+						</c2-dropdown>
+                    </div>
+                    <div class="media-body" style="overflow: visible;margin-left: 70px;">
+						<div class="form-group fg-float has-feedback" ng-class="{'has-error':!taskInfo.taskObj.name&&taskInfo.taskObj.taskNameRed}" style="width: 90%;display: inline-block;">
+			                <div class="fg-line">
+			                    <input id="taskInput" ng-model="taskInfo.taskObj.name" type="text" class="form-control fg-input" />
+			                </div>
+			                <label class="fg-label">任务</label>
+			                <span ng-click="addTaskDescExpend=!addTaskDescExpend" class="md md-expand-more rotate form-control-feedback" title="任务描述" style="cursor: pointer;" ng-class="{turn:addTaskDescExpend}"></span>
+			            </div>
+			            
+						<!-- <div id="addTaskEstimateDiv" title="工时" class="pull-right c-indigo f-16">
+							<button id="addEstimateButton" class="btn btn-default btn-icon-text c-indigo">
+								<i class="md md-history"></i> <span style="width: 16px;display: inline-block;">{{taskInfo.taskObj.estimate}}</span>
+							</button>
+							<div><i class="md md-add c-black" ng-click="taskInfo.taskObj.estimate=taskInfo.taskObj.estimate+1"></i><i class="md md-remove c-black" ng-click="taskInfo.taskObj.estimate=taskInfo.taskObj.estimate>0?taskInfo.taskObj.estimate-1:taskInfo.taskObj.estimate"></i></div>
+						</div> -->
+			          <div id="addTaskEstimateDiv" title="工时" class="pull-right c-indigo f-16">
+						<button id="addEstimateButton" class="btn btn-default btn-icon-text c-indigo">
+							<i class="md md-history"></i> <span style="width: 16px;display: inline-block;">{{taskInfo.taskObj.estimate}}</span>
+						</button>
+						<div class="adjust-bar"><i class="md md-add c-black" ng-click="taskInfo.taskObj.estimate=taskInfo.taskObj.estimate+1;hideEstimatePopover($index);"></i><i class="md md-remove c-black" ng-click="taskInfo.taskObj.estimate=taskInfo.taskObj.estimate>0?taskInfo.taskObj.estimate-1:taskInfo.taskObj.estimate;hideEstimatePopover($index);"></i></div>
+					 </div>
+			            <div class="animate-show-expend" ng-show="addTaskDescExpend">
+			            <textarea c2-markdown-editor height="100" ng-model="taskInfo.taskObj.description"></textarea>
+			            </div>
+                        <div class="m-t-0">
+                            <c2-dropdown bind-data="taskInfo.taskObj.taskWeek" items="teskWeeks">
+								<button class="btn btn-default btn-icon-text picker-shadow" ng-class="{'btn-danger':!taskInfo.taskObj.taskWeek&&taskInfo.taskObj.taskWeekRed}">
+										<i class="md md-today"></i> <span ng-if="!taskInfo.taskObj.taskWeek">时间</span>{{taskInfo.taskObj.taskWeek.value}} &nbsp;<span class="caret"></span>
+								</button>
+							</c2-dropdown>
+							<c2-dropdown bind-data="taskInfo.taskObj.taskProject" items="projects" item-name="name" max-height="200" item-click="projectClick(taskInfo.taskObj.taskProject,$index)">
+								<button class="btn btn-default btn-icon-text picker-shadow text-overflow" style="max-width:160px;" ng-class="{'btn-danger':!taskInfo.taskObj.taskProject&&taskInfo.taskObj.taskProjectRed}">
+										<i class="md md-view-module"></i> <span ng-if="!taskInfo.taskObj.taskProject">项目</span>{{taskInfo.taskObj.taskProject.name}} &nbsp;<span class="caret"></span>
+								</button>
+							</c2-dropdown>
+                            <c2-dropdown bind-data="taskInfo.taskObj.taskMilestone" items="milestones" max-height="200" item-name="title" clean-button="true">
+								<button class="btn btn-default btn-icon-text picker-shadow text-overflow" style="max-width:160px;">
+										<i class="md md-av-timer"></i> <span ng-if="!taskInfo.taskObj.taskMilestone">里程碑</span>{{taskInfo.taskObj.taskMilestone.title}} &nbsp;<span class="caret"></span>
+								</button>
+							</c2-dropdown>
+                            <c2-dropdown bind-data="taskInfo.taskObj.taskStory" items="storys" item-name="title" max-height="200" clean-button="true">
+								<button class="btn btn-default btn-icon-text picker-shadow text-overflow" style="max-width:160px;">
+										<i class="md md-content-paste"></i> <span ng-if="!taskInfo.taskObj.taskStory">需求</span>{{taskInfo.taskObj.taskStory.title}} &nbsp;<span class="caret"></span>
+								</button>
+							</c2-dropdown>
+							<c2-dropdown id="teamPlan" tree-options="taskInfo.treeOptions" tree-nodes="taskInfo.zTreeNodes" max-height="200" clean-button="true">
+								<button class="btn btn-default btn-icon-text  picker-shadow text-overflow" style="max-width:160px;" ng-class="{'btn-danger':!taskInfo.taskObj.taskPlan&&taskInfo.taskObj.taskPlanRed}">
+										<i class="md md-extension"></i> <span ng-if="!taskInfo.taskObj.taskPlan">计划</span>{{taskInfo.taskObj.taskPlan.name}}&nbsp;<span class="caret"></span>
+								</button>
+							</c2-dropdown>
+                            <c2-dropdown id="addTaskTagDropdown" bind-data="taskInfo.taskObj.taskTag" items="tags" multiple=true item-name="name" max-height="200" last-item-button="dropdownAddTag(e)" >
+								<div class="picker text-overflow" style="max-width:160px;">
+									<i class="md md-bookmark-outline"></i> <span ng-if="taskInfo.taskObj.taskTag.length==0">标签 &nbsp;<i class="caret"></i></span><span class="p-l-5 p-r-5 m-l-5 label-show" ng-style="tag.backgroundStyle" ng-repeat="tag in taskInfo.taskObj.taskTag">{{tag.name}}</span>
+								</div>
+								<dropdown-item-template>
+									<div>
+									<span class="label-color" style="background-color: {{item.color}};">&nbsp;</span>
+									<span class="text">{{item.name}}</span>
+									<span class="md md-check check-mark"></span>
+									</div>
+								</dropdown-item-template>
+							</c2-dropdown>
+							
+					<div class="m-t-5 pull-right" style="display: inline-block;">
+						<span id="taskErrorMsg" class="c-red m-r-10 m-t-10">请完善任务</span>
+						<button class="btn btn-success btn-icon-text waves-effect" ng-click="creatTask($index)">
+							<i class="md md-check"></i>保存
+						</button>
+						<button class="btn btn-link btn-sm m-l-5" ng-click="cancelCreatTask($index)">取消</button>
+					</div>
+                        </div>
+                    </div>
+                </div>
+
+	</div>
+</div>
+

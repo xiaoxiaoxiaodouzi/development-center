@@ -1,0 +1,787 @@
+<link href="css/task/detail.css" rel="stylesheet">
+<link href="css/testcase.css" rel="stylesheet">
+
+	<div class="m-t-10" ng-if="testMenu">
+		<div class="clearfix ng-isolate-scope" justified="true">
+			<ul class="tab-nav tn-justified ng-scope" style="overflow: hidden; outline: none;" tabindex="2">
+			<li class="btn-wave ng-scope active" id="info">
+			<a ng-click="select('info')" href="" style="font-weight: bold;">用例详情</a>
+			</li>
+			<li class="btn-wave ng-scope" id="result">
+			<a ng-click="select('result')" href="" style="font-weight: bold;">执行结果</a>
+			</li>
+			</ul>
+			<div>
+				<div ng-show="infoShow">
+					<div class="card-body clearfix">
+					<div class="timeline" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
+					<form class="form-horizontal ng-pristine ng-valid">
+					<h4 class="f-16" style="padding:0 20px">基本信息</h4>
+					<div class="tv-body p-10 p-b-30 m-b-30" style="border-bottom: 1px dashed #ddd;">
+						<div>
+							<div class="row m-b-10">
+								<label class="col-sm-2 control-label p-t-12 confirm-label">用例名称：</label>
+								<div class="col-sm-10">
+									<div class="fg-line" ng-class="{'has-error':!caseInstance.name&&formCheck}">
+										<input autofocus="" type="text" placeholder="用例名称" data-ng-model="caseInstance.name"
+											class="form-control ng-pristine ng-valid ng-touched">
+									</div>
+								</div>
+							</div>
+							
+							<div class="row m-b-10">
+								<label class="col-sm-2 control-label p-t-12 confirm-label">用例编号：</label>
+								<div class="col-sm-3">
+									<div class="fg-line" ng-class="{'has-error':!caseInstance.no&&formCheck}">
+										<input autofocus="" type="text" placeholder="用例编号" data-ng-model="caseInstance.no"
+											class="form-control ng-pristine ng-valid ng-touched">
+									</div>
+								</div>
+								<label class="col-sm-2 control-label p-t-12 confirm-label">用例等级：</label>
+								<div class="col-sm-5" style="position: relative;top: 5px;padding-right: 0;">
+									<ul class="grade-list m-0 p-0">
+										<li ng-click="selectLevel('L0')"><a id="L0" href="javascript:void(0)">L0</a></li>
+										<li ng-click="selectLevel('L1')"><a id="L1" href="javascript:void(0)">L1</a></li>
+										<li ng-click="selectLevel('L2')"><a id="L2" href="javascript:void(0)">L2</a></li>
+										<li ng-click="selectLevel('L3')"><a id="L3" href="javascript:void(0)">L3</a></li>
+										<li ng-click="selectLevel('L4')"><a id="L4" href="javascript:void(0)">L4</a></li>
+									</ul>
+									<a href class="md md-help f-20 text-center c-gray" title="用例等级定义" ng-click="showLevelInfo()" style="position: relative;top: 3px;"></a>
+								</div>
+							</div>
+							
+							<div class="row m-b-10">
+								<label class="col-sm-2 control-label p-t-12 confirm-label">关联需求：</label>
+								<div class="col-sm-3" style="position: relative;top:5px">
+									<c2-dropdown class="animate" title="需求" bind-data="caseInstance.story"
+									items="allStorys" multiple=false item-name="title"
+									max-height="200" filter="true" clean-button="true">
+								<button
+									class="btn btn-default btn-icon-text picker-shadow text-overflow"
+									style="padding-left: 0px;max-width:220px">
+									<i class="md md-view-module"> </i> <span
+										ng-if="caseInstance.story==undefined">需求&nbsp;<i
+										class="caret"></i></span> <span ng-if="caseInstance.story!=undefined"
+										class="p-l-5 p-r-5 m-l-5 label-show">{{caseInstance.story.title}}</span>
+								</button>
+								<dropdown-item-template>
+								<div>
+									<span class="text">{{item.title}}</span> <span
+										class="md md-check check-mark"></span>
+								</div>
+								</dropdown-item-template> </c2-dropdown>
+								</div>
+								<div class="col-sm-4" style="position: relative;top:8px">
+								<label class="checkbox checkbox-inline m-l-10 m-t-5" title="是否为公共用例" style="padding-top: 0px;">
+					                <input type="checkbox" id="isCommon" class="ng-pristine ng-untouched ng-valid ng-empty">
+					                <i class="input-helper"></i> 公共用例
+					            </label>
+								</div>
+							</div>
+							
+							<div class="row m-b-10">
+								<label class="col-sm-2 control-label p-t-12 confirm-label">前置条件：</label>
+								<div class="col-sm-10">
+									<div class="detail-infos-note-view on-bottom" ng-class="{'on-top':$params.precondition}">
+										<div class="note-adder-set" title="点击编辑" style="min-height: 20px;width: 100%; padding-top: 12px;"
+											ng-show="hideUEditor" ng-class="{'note-input-hide':hideUEditor==false}"  ng-mousedown="ueMousedown($event)" ng-mouseup="ueMouseup($event)">
+											<div class="add-note-handler c2lightbox"><div id="markdowntext"></div></div>
+										</div>
+										<div id="task-desc-editor" data-ng-if="!hideUEditor" style="padding-top: 6px;">
+											<textarea c2-markdown-editor height="150" id="task-description" ng-model="$params.precondition" ></textarea>
+						       			 </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				<h4 class="f-16" style="padding:0 20px">测试操作</h4>
+				<div class="actions cursor-pointer" style="margin-top: -34px;margin-left: 90px;">
+					<a style="padding-top: 2px;" data-toggle="tooltip" data-placement="left" title="拖动步骤行上下移动可以进行排序">
+						<i class="md md-info"></i>
+					</a>
+		    	</div>
+				<!-- 步骤列表 -->
+				<div style="margin:30px 20px 20px">
+				<table class="table table-hover border-e m-b-0" class="teamGroupTable">
+					<thead>
+						<tr style="border-top: 1px solid #eee;background-color: #F7F7F7;">
+							<th style="width: 20px; text-align: left;border-bottom: 1px solid #f0f0f0;"></th>
+							<th style="width: 120px; text-align: left;border-bottom: 1px solid #f0f0f0;">测试步骤</th>
+							<th style="width: 120px; text-align: left;border-bottom: 1px solid #f0f0f0;">预期结果</th>
+							<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">实际结果</th>
+							<th style="width: 120px; text-align: center;border-bottom: 1px solid #f0f0f0;">操作</th>
+						</tr>
+					</thead>
+					
+					<tbody id="sortable">
+						<tr class="stepContent" ng-repeat-start="step in tempStepList" id="step{{step.id}}">
+							<td class="column" style="text-align: center;">step{{$index+1}}</td>
+							<td class="column">
+								<div class="case-detail-test-card-description" title="{{step.step}}">
+                                     <div ng-repeat="ts in step.testStepArr track by $index">{{ts}}</div>
+                                </div>
+							</td>
+							<td class="column">
+								<div class="case-detail-test-card-description" title="{{step.expectResult}}">
+                                     <div ng-repeat="ts in step.expectResultArr track by $index">{{ts}}</div>
+                                </div>
+							</td>
+							<td class="column" style="text-align: center;">{{step.result}}</td>
+							
+							<td class="column" style="text-align: center;">
+							<button class="btn btn-link btn-sm" ng-click="editStep(step)" title="编辑步骤" style="padding: 5px 3px;font-size: 14px;">
+								<i class="md md-mode-edit f-16"></i>
+							</button>
+							<button class="btn btn-link" ng-click="copyStep(step)" title="复制步骤" style="padding: 5px 3px;font-size: 14px;">
+								<i class="md md-content-copy f-16"></i>
+							</button>
+							<button class="btn btn-link btn-sm" ng-click="delStep(step,$index+1)" title="删除步骤" style="padding: 5px 3px;font-size: 14px;">
+								<i class="md md-delete f-16"></i>
+							</button>
+							<button ng-if="step.id>0" class="btn btn-link btn-sm" ng-click="setResult(step)" title="设置结果" style="padding: 5px 3px;font-size: 14px;">
+								<i class="md md-settings f-16"></i>
+							</button>
+							<button ng-if="step.id>0" class="btn btn-link btn-sm"  ng-click="addBug(step)" title="新建BUG" style="padding: 5px 3px;font-size: 14px;">
+								<i class="md md-bug-report f-16"></i>
+							</button>
+							<span class="pull-right" ng-show="!step.show && step.id>0" ng-click="step.show=true"><i class="md md-expand-more c-blue f-20"></i></span>
+							<span class="pull-right" ng-show="step.show && step.id>0" ng-click="step.show=false"><i class="md md-expand-less c-blue f-20"></i></span>
+							</td>
+						</tr>
+						<tr ng-repeat-end ng-show="step.show && step.id>0" id="result{{step.id}}">
+							<td colspan="5" style="background-color: #edecec;"> 
+								<table class="table table-hover m-b-0" style="background-color: white;">
+										<thead>
+											<tr style="border-top: 1px solid #eee;">
+												<th style="width: 20px; text-align: center;border-bottom: 1px solid #f0f0f0;">结果</th>
+												<th style="width: 120px; text-align: left;border-bottom: 1px solid #f0f0f0;">备注</th>
+												<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">创建人</th>
+												<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">创建时间</th>
+											</tr>
+										</thead>
+										<tbody>
+										<tr ng-repeat="r in step.resultList">
+										<td class="column" style="text-align: center;">{{r.result}}</td>
+										<td class="column">
+											<div class="case-detail-test-card-description" title="{{r.remark}}">
+			                                    <div ng-repeat="ts in r.remarkArr track by $index">{{ts}}</div>
+			                                </div>
+										</td>
+										<td class="column" style="text-align: center;">{{r.user_name}}</td>
+										<td colspan="2" class="column" style="text-align: center;">{{r.ctime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+										</tr>
+										
+										</tbody>
+									</table>
+							</td> 
+						</tr>
+						
+					</tbody>
+				</table>
+				</div>
+				<br>
+					<div id="addStep" class="row m-b-10 p-l-10 p-r-10">
+						<label class="col-sm-2 control-label confirm-label">测试步骤：</label>
+						<div class="col-sm-4 m-t-10">
+						<textarea ng-model="caseStep.step" wrap="hard" style="border: 1px solid #e0e0e0;"
+								class="form-control" rows="4" cols="25" height="100"
+								placeholder="测试步骤"></textarea>
+						</div>
+						<label class="col-sm-2 control-label confirm-label">预期结果：</label>
+						<div class="col-sm-4 m-t-10">
+						<textarea ng-model="caseStep.expectResult" wrap="hard" style="border: 1px solid #e0e0e0;"
+								class="form-control" rows="4" cols="25" height="100"
+								placeholder="预期结果"></textarea>
+						</div>
+						<button class="btn btn-link f-20 c-blue" ng-click="saveStep(caseStep)">
+							<i class="md md-add-circle f-30"></i>
+						</button>
+					</div>
+					<br>
+					<div class="col-sm-12">
+							<button class="btn btn-primary btn-sm pull-right" data-ng-click="reImport();" style="width: 70px;">重新导入</button>
+							<button class="btn btn-primary btn-sm pull-right m-r-10" data-ng-click="delInstance();">删除</button>
+							<button class="btn btn-primary btn-sm pull-right m-r-10" data-ng-click="saveAndSyn();">同步</button>
+							<button class="btn btn-primary btn-sm pull-right m-r-10" data-ng-click="saveCase();">保存</button>
+						</div>
+				</form>
+			</div>
+					
+				</div>
+				</div>
+				<div ng-hide="infoShow">
+				<div class="card-body clearfix">
+					<div class="timeline" style="padding-left: 20px; padding-top: 20px; padding-right: 20px;">
+					<form class="form-horizontal ng-pristine ng-valid">
+					<h4 class="f-16" style="padding:0 20px">基本信息</h4>
+					<div class="tv-body p-10 p-b-30 m-b-30" style="border-bottom: 1px dashed #ddd;">
+						<div class="row m-b-10">
+							<label class="col-sm-2 control-label confirm-label">设置结果：</label>
+							<div class="col-sm-10">
+						    <label class="radio radio-inline m-r-5 m-t-10 p-t-0">
+				                <input type="radio" ng-model="instanceResult.result" ng-value="成功" value="成功">
+				                <i class="input-helper"></i>成功
+				            </label>
+				            <label class="radio radio-inline m-r-5 m-t-10 p-t-0">
+				                <input type="radio" ng-model="instanceResult.result" ng-value="失败" value="失败">
+				                <i class="input-helper"></i>失败
+				            </label>
+				            <label class="radio radio-inline m-r-5 m-t-10 p-t-0">
+				                <input type="radio" ng-model="instanceResult.result" ng-value="待核查" value="待核查">
+				                <i class="input-helper"></i>待核查
+				            </label>
+				            <label class="radio radio-inline m-r-5 m-t-10 p-t-0">
+				                <input type="radio" ng-model="instanceResult.result" ng-value="不可用" value="不可用">
+				                <i class="input-helper"></i>不可用
+				            </label>
+				            <label class="radio radio-inline m-r-5 m-t-10 p-t-0">
+				                <input type="radio" ng-model="instanceResult.result" ng-value="阻塞" value="阻塞">
+				                <i class="input-helper"></i>阻塞
+				            </label>
+							</div>
+						</div>
+						<div class="row m-b-10">
+							<label class="col-sm-2 control-label confirm-label">备注：</label>
+							<div class="col-sm-4 m-t-10">
+							<textarea ng-model="instanceResult.remark" wrap="hard"
+								class="form-control" rows="4" cols="20"  style="border: 1px solid #e0e0e0;"
+								placeholder="备注"></textarea>
+							</div>
+						</div>
+						<div class="col-sm-12 stage-commit">
+							<button class="btn btn-link btn-sm pull-right" data-ng-click="addBug(null);">新建BUG</button>
+							<button id="submit" class="btn btn-primary btn-sm pull-right" data-ng-click="addResult();" style="width:60px">确定</button>
+						</div>
+					</div>
+					</form>
+				<h4 class="f-16" style="padding:0 20px">历史记录</h4>
+				<div style="margin:30px 20px 20px">
+				<table class="table table-hover border-e m-b-0" class="teamGroupTable">
+					<thead>
+						<tr style="border-top: 1px solid #eee;background-color: #F7F7F7;">
+							<th style="text-align: center;width: 150px;border-bottom: 1px solid #f0f0f0;">测试结果</th>
+							<th style="text-align: center;width: 150px;border-bottom: 1px solid #f0f0f0;">测试员</th>
+							<th style="text-align: center;width: 150px;border-bottom: 1px solid #f0f0f0;">创建时间</th>
+							<th style="text-align: left;width: 150px;border-bottom: 1px solid #f0f0f0;">备注</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="r in resultList">
+							<td class="column" style="text-align: center;width: 150px;">{{r.result}}</td>
+							<td class="column" style="text-align: center;width: 150px;">{{r.userName}}</td>
+							<td class="column" style="text-align: center;width: 150px;">{{r.ctime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+							<td class="column">
+								<div class="case-detail-test-card-description" title="{{r.remark}}">
+	                               <div ng-repeat="ts in r.remarkArr track by $index">{{ts}}</div>
+	                            </div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+				<c2-pagination id="pageEle" total="page.total" page-size="5" on-page-change="refreshList(pageIndex)"></c2-pagination>
+				
+			</div>
+					
+				</div>
+				</div>
+			</div>
+		</div> 
+		
+			</div>
+
+			
+	<div class="container m-t-20 m-l-10" ng-if="!testMenu">
+    <div class="unauthorized">
+            <h2>对不起!</h2>
+            <small>您没有权限访问测试执行!</small>
+            
+            <footer>
+                <a href="javascript:void(0)" onClick="history.go(-1);return true;" title="返回"><i class="md md-arrow-back"></i></a>
+                <a data-ui-sref="project.home" title="项目首页"><i class="md md-home"></i></a>
+            </footer>
+     </div>
+</div>
+
+<script>
+$('.board-group').animate({scrollTop:0});
+angular.module("project").registerCtrl('instanceDetailController',
+	function($scope, $http, $state, $stateParams,$location,$compile, $timeout,Messenger,Modal, $rootScope,$ocLazyLoad){
+	$scope.testMenu = true;
+	$scope.results = [{name:'成功'},{name:'失败'},{name:'待核查'},{name:'不可用'},{name:'阻塞'}];
+	
+	$http.post("ws/isPermitedMap",{permExprs:[$stateParams.project+"##test_menu"]})
+	.success(function(data){
+		$scope.testMenu = data.result[$stateParams.project+"##test_menu"];
+		if($scope.testMenu){
+			 //查询实例详情
+			$http.post("ws/getCaseInstanceById",{id:$stateParams.instanceId}).success(function(data){
+				$scope.caseInstance = data.result.instance;
+				if($scope.caseInstance.isCommon=='0'){
+					$('#isCommon').prop("checked",false);;
+				}else{
+					$('#isCommon').prop('checked',true);
+				}
+				if(angular.isDefined($scope.caseInstance.precondition) && !angular.equals($.trim($scope.caseInstance.precondition),"")){
+					$('#markdowntext').replaceWith('<div id="markdowntext" ng-bind-html="caseInstance.precondition | markdown" class="pmbb-view"></div>');
+					$compile($('#markdowntext'))($scope) ;
+				}else{
+					$('#markdowntext').replaceWith('<div id="markdowntext">添加前置条件</div>') ;
+				}
+				$params.precondition = $scope.caseInstance.precondition;
+				$("#"+$scope.caseInstance.level).parent().addClass('select-grade');
+				$scope.tempStepList = data.result.stepList;
+				$scope.originalOrderTaskList = angular.copy($scope.tempStepList);
+				$( "#sortable" ).sortable({
+					revert:200,
+					cursor: "-webkit-grabbing",
+					cancel: "a,input,[ng-click]",
+					placeholder: "sortable-placeholder",
+					forceHelperSize: true,forcePlaceholderSize: true,
+					update:function(event, ui){
+						for(var i=0;i<$scope.tempStepList.length;i++){
+							$("#result"+$scope.tempStepList[i].id).insertAfter($("#step"+$scope.tempStepList[i].id));
+						}
+						var tempList = new Array($scope.tempStepList.length);
+						$('.stepContent').each(function(i,th) {
+							for(var j=0;j<$scope.tempStepList.length;j++){
+								if("step"+$scope.tempStepList[j].id==th.id){
+									tempList.splice(i,1,$scope.tempStepList[j]);
+								}
+							}
+						});
+						$timeout(function(){
+							$scope.tempStepList = tempList;
+			 				$scope.originalOrderTaskList = angular.copy($scope.tempStepList);
+							//Messenger.success("操作成功！");
+						})
+					},
+					helper:function(event, ui){
+						ui.children().each(function() {  
+							$(this).width($(this).width());  //在拖动时，拖动行的cell（单元格）宽度会发生改变。在这里做了处理就没问题了   
+						});  
+						return ui;
+					},
+					change:function(event, ui){}
+				});
+			});
+		}
+	});
+	
+	var $params=$scope.$params={} ;
+	$scope.hideUEditor = true ;
+	$scope.caseInstance = {};
+	$scope.instanceResult = {};
+	$scope.caseStep = {};
+	$scope.allStorys = [];//所有需求
+	$scope.infoShow = true;
+	initAllStorys();
+	
+	$scope.selectLevel = function(id){
+		$(".grade-list li").removeClass('select-grade');
+		$("#"+id).parent().addClass('select-grade');
+		$scope.caseInstance.level = id;
+	}
+	//实例结果列表
+	$scope.page = {pageSize:5};
+	$scope.refreshList = function(pageIndex) {
+		$http.post("ws/getInstanceResultList", {
+			instanceId : $stateParams.instanceId,
+			pageable : {pageIndex : pageIndex,pageSize:5}
+		}).success(
+			function(data) {
+				$scope.resultList = data.result.contents;
+				var total = data.result.total;
+				$scope.page.total = total;
+				$timeout(function() {
+					$("#pageEle").controller("c2Pagination").goPage(pageIndex);
+				}, 0);
+		});
+	}
+	
+	$scope.refreshList(1);
+	getInstanceResult();
+	//需求
+	function initAllStorys(){
+		$http.post("ws/getAllStory",{projectId:$stateParams.project}).success(function(data){
+			if(data.result.length>0){
+				$scope.allStorys = data.result;
+			}
+		})
+	}
+	
+	//保存用例基本信息
+	$scope.saveCase = function(){
+		check();
+		$scope.tempStepList = [];
+		$http.post("ws/updateInstanceBasicInfo", {
+			"caseInstance" : $scope.caseInstance,
+			"stepList" : stepList
+		}).success(function(data) {
+			var ztree = $.fn.zTree.getZTreeObj("instanceTree");
+			var node = ztree.getNodeByParam("tid", 'c_'+$scope.caseInstance.id, null);
+			node.name=$scope.caseInstance.name;
+			ztree.updateNode(node);
+			$scope.hideUEditor = true;//markdown显示
+			if(angular.equals($.trim($scope.caseInstance.precondition),"")){
+				$('#markdowntext').replaceWith('<div id="markdowntext">添加前置条件</div>') ;
+			}else{
+				$('#markdowntext').replaceWith('<div id="markdowntext" ng-bind-html="caseInstance.precondition | markdown" class="pmbb-view"></div>');
+				$compile($('#markdowntext'))($scope) ;
+			}
+			$scope.caseStep = {};
+			Messenger.post("保存成功");
+			$scope.tempStepList = data.result;
+			$scope.originalOrderTaskList = angular.copy($scope.tempStepList);
+		});
+		
+	};
+	
+	var stepList = [];
+	function check(){
+		$scope.formCheck=true;
+		if(!$scope.caseInstance.name){
+			Messenger.error("实例名称不能为空！");
+			return;	
+		}
+		if(!$scope.caseInstance.no){
+			Messenger.error("实例编号不能为空！");
+			return;
+		}
+		
+		if(!$scope.caseInstance.level){
+			Messenger.error("请选择实例等级！");
+			return;
+		}
+		$scope.caseInstance.storyId = $scope.caseInstance.story?$scope.caseInstance.story.id:null;
+		$scope.caseInstance.typeId = $scope.typeId;
+		$scope.caseInstance.projectId = $stateParams.project;
+		if(!$scope.hideUEditor){
+			$scope.caseInstance.precondition = $params.precondition;
+		}
+		$scope.caseInstance.isCommon = $('#isCommon').is(':checked');
+		
+		stepList = $scope.tempStepList;
+		if(angular.isDefined($scope.caseStep)&&angular.isDefined($scope.caseStep.step)&&$scope.caseStep.step!=''){
+			if(angular.isDefined($scope.caseStep.id)){
+				for(var i=0;i<stepList.length;i++){
+					if(stepList[i].id==$scope.caseStep.id){
+						stepList[i].step = $scope.caseStep.step;
+						stepList[i].expectResult = $scope.caseStep.expectResult;
+					}
+				}
+			}else{
+				$scope.caseStep.instanceId = $scope.caseInstance.id;
+				$scope.caseStep.id = (id--);
+				stepList.push($scope.caseStep);
+			}
+			
+		}
+	}
+	
+	//保存并同步至用例
+	$scope.saveAndSyn = function(){
+		check();
+		$http.post("ws/updateAndSynInfo", {
+			"caseInstance" : $scope.caseInstance,
+			"stepList" : $scope.tempStepList
+		}).success(function(data) {
+			var node = $scope.instanceTree.getNodeByParam("id", $scope.caseInstance.id, null);
+			node.name=$scope.caseInstance.name;
+			$scope.instanceTree.updateNode(node);
+			$scope.formCheck=true;
+			$scope.hideUEditor = true;//markdown显示
+			if(angular.equals($.trim($scope.caseInstance.precondition),"")){
+				$('#markdowntext').replaceWith('<div id="markdowntext">添加前置条件</div>') ;
+			}else{
+				$('#markdowntext').replaceWith('<div id="markdowntext" ng-bind-html="caseInstance.precondition | markdown" class="pmbb-view"></div>');
+				$compile($('#markdowntext'))($scope) ;
+			}
+			Messenger.post("同步完成");
+			$scope.tempStepList = data.result;
+			$scope.originalOrderTaskList = angular.copy($scope.tempStepList);
+		});
+	}
+	
+	var id = 0;
+	//保存测试步骤信息
+	$scope.saveStep = function(caseStep){
+		$("#addStep").find("textarea").css("border","1px solid #e0e0e0");
+		if(angular.isUndefined(caseStep.step)||caseStep.step==''){
+			Messenger.error("请填写测试步骤！");
+			return;
+		}
+		if(angular.isUndefined(caseStep.id)){
+			caseStep.instanceId = $scope.caseInstance.id;
+			var ss = caseStep.step.split('\n');
+			caseStep.testStepArr = [];
+			for(var i=0;i<ss.length;i++){
+				caseStep.testStepArr.push(ss[i]);
+			}
+			if(angular.isDefined(caseStep.expectResult)&&caseStep.expectResult!=''){
+				var ss = caseStep.expectResult.split('\n');
+				caseStep.expectResultArr = [];
+				for(var i=0;i<ss.length;i++){
+					caseStep.expectResultArr.push(ss[i]);
+				}
+			}
+			caseStep.id = (id--);
+			$scope.tempStepList.push(caseStep);
+			$scope.caseStep = {};
+		}else{
+			var index = $scope.tempStepList.indexOf(caseStep);
+			var ss = caseStep.step.split('\n');
+			caseStep.testStepArr = [];
+			for(var i=0;i<ss.length;i++){
+				caseStep.testStepArr.push(ss[i]);
+			}
+			if(angular.isDefined(caseStep.expectResult)){
+				var ss = caseStep.expectResult.split('\n');
+				caseStep.expectResultArr = [];
+				for(var i=0;i<ss.length;i++){
+					caseStep.expectResultArr.push(ss[i]);
+				}
+			}
+			$scope.tempStepList.splice(index,1,caseStep);
+			$scope.caseStep = {};
+		}
+	};
+	
+	//编辑测试步骤信息
+	$scope.editStep = function(step){
+		$scope.caseStep = step;
+		$('.board-group').animate({scrollTop:$("#addStep")[0].offsetTop});
+		$("#addStep").find("textarea").css("border","1px solid red");
+	}
+	
+	//复制步骤
+	$scope.copyStep = function(step){
+		$scope.caseStep.step = step.step;
+		$scope.caseStep.expectResult = step.expectResult;
+		$('.board-group').animate({scrollTop:$("#addStep")[0].offsetTop});
+		$("#addStep").find("textarea").css("border","1px solid red");
+	}
+	
+	//删除测试步骤信息
+	$scope.delStep = function(caseStep,no){
+		Modal.delOpenConfirm({
+			title:"删除确认",
+			message:"是否删除【step"+no+"】测试步骤？",
+			btnText:"删除",
+			btnClass:"bgm-lightblue simple-shadow",
+			qxText:"取消",
+			qxClass:"bgm-lightblue simple-shadow",
+			onClose:function(){
+				var index = $scope.tempStepList.indexOf(caseStep);
+				$scope.tempStepList.splice(index,1);
+			}
+		});
+	};
+	
+	$scope.select = function(v){
+		if(v=='info'){
+			$('#'+v).addClass('active');
+			$('#result').removeClass('active');
+			$scope.infoShow = true;
+		}else{
+			$('#'+v).addClass('active');
+			$('#info').removeClass('active');
+			$scope.infoShow = false;
+		}
+	}
+	//添加用例结果记录
+	$scope.addResult = function(){
+		//将按钮失效几秒钟避免重复提交数据
+		timer(5);
+		$scope.instanceResult.instanceId = $scope.caseInstance.id;
+		$http.post("ws/addResultInfo", {result : $scope.instanceResult}).success(function(data){
+			Messenger.post("结果【"+$scope.instanceResult.result+"】设置成功");
+			$scope.instanceResult.remark = "";
+			$scope.refreshList(1);
+			var ztree = $.fn.zTree.getZTreeObj("instanceTree");
+			var node = ztree.getNodeByParam("tid", 'c_'+$scope.caseInstance.id, null);
+			if($scope.instanceResult.result=='成功'){
+				node.iconSkin = "success";
+			}
+			if($scope.instanceResult.result=='失败'){
+				node.iconSkin = "fail";
+			}
+			if($scope.instanceResult.result=='待核查'){
+				node.iconSkin = "examine";
+			}
+			if($scope.instanceResult.result=='阻塞'){
+				node.iconSkin = "test";
+			}
+			if($scope.instanceResult.result=='不可用'){
+				node.iconSkin = "disable";
+			}
+			ztree.updateNode(node);
+		})
+	}
+	
+	function timer(time) {
+		var btn = $("#submit");
+		 btn.attr("disabled", true);  //按钮禁止点击
+		 var hander = setInterval(function() {
+		  if (time <= 0) {
+		   clearInterval(hander); //清除倒计时
+		   btn.attr("disabled", false);
+		   return false;
+		  }else {
+			time--;
+		  }
+		 }, 1000);
+	}
+	
+	//添加bug记录
+	$scope.addBug = function(step){
+		Modal.open('project/bug/add.html',{instance:$scope.caseInstance,step:step,tempStepList:$scope.tempStepList})
+	}
+	
+	function getInstanceResult(){
+		$http.post("ws/getInstanceResult",{instanceId:$stateParams.instanceId}).success(function(data){
+			if(data.result!='0'){
+				$scope.instanceResult.result = "失败";
+			}else{
+				$scope.instanceResult.result = "成功";
+			}
+		})
+	}
+	
+	//设置步骤实际结果
+	$scope.setResult = function(step){
+		Modal.open('project/plan/resultSetting.html',{step:step},{onClose:function(data){
+			step.result = data.result;
+			step.resultList.splice(0,0,{result:data.result,remark:data.remark,remarkArr:data.remarkArr,user_name:data.userName,ctime:data.ctime});
+		}}
+		);
+	}
+	
+	function startEditing($event){
+		if($($event.target).is('a')||$($event.target).is('img')){
+			return;
+		} 
+		$scope.hideUEditor=false;
+	}
+	
+	var mousedownPostion=undefined;
+	
+	$scope.ueMousedown=function($event){
+		mousedownPostion={x:$event.clientX,y:$event.clientY};
+	}
+
+	$scope.ueMouseup=function($event){
+		if(mousedownPostion){
+			var moved=Math.abs($event.clientX-mousedownPostion.x)+Math.abs($event.clientY-mousedownPostion.y);
+			if(moved<10){
+				startEditing($event);
+			}
+			mousedownPostion=undefined;
+		}
+	}
+	$scope.showLevelInfo = function(){
+		Modal.open("project/testcase/levelInfo.html",{},{title : '用例等级定义',animation : true,size : "middle"});
+	}
+	
+	//重新导入  用例信息同步至实例
+	$scope.reImport = function(){
+		var flag = false;
+		for(var i=0;i<$scope.tempStepList.length;i++){
+			if($scope.tempStepList[i].resultList.length>0){
+				flag = true;
+				break;
+			}
+		}
+		if($scope.page.total>0 || flag){
+			Modal.delOpenConfirm({
+				title:"导入确认",
+				message:"已设置的步骤结果或者实例结果信息将被清空，确定重新导入吗？",
+				btnText:"导入",
+				btnClass:"bgm-lightblue simple-shadow",
+				qxText:"取消",
+				qxClass:"bgm-lightblue simple-shadow",
+				onClose:function(){
+					 $http.post("ws/reImportInstanceInfo", {caseId:$scope.caseInstance.caseId,instanceId:$scope.caseInstance.id}).success(function(){
+							$state.reload("project.instanceTree.instance");
+							Messenger.post("导入成功");
+					 }) 
+				}
+			});
+		}else{
+			$http.post("ws/reImportInstanceInfo", {caseId:$scope.caseInstance.caseId,instanceId:$scope.caseInstance.id}).success(function(){
+				$state.reload("project.instanceTree.instance");
+				Messenger.post("导入成功");
+		 	}) 
+		}
+	};
+	
+	//删除实例信息
+	$scope.delInstance = function(){
+		Modal.delOpenConfirm({
+			title:"删除确认",
+			message:"是否删除【"+$scope.caseInstance.name+"】实例信息？",
+			btnText:"删除",
+			btnClass:"bgm-lightblue simple-shadow",
+			qxText:"取消",
+			qxClass:"bgm-lightblue simple-shadow",
+			onClose:function(){
+				 $http.post("ws/delInstanceInfo", {instanceId:$scope.caseInstance.id}).success(function(){
+						$state.go("project.instanceTree");
+						var ztree = $.fn.zTree.getZTreeObj("instanceTree");
+						var node = ztree.getNodeByParam("tid", 'c_'+$scope.caseInstance.id, null);
+						ztree.removeNode(node);
+						var allNodes = ztree.transformToArray(ztree.getNodes());
+						ztree.hideNodes(allNodes);
+						var nodes = ztree.getNodesByParam("type", "case", null);
+						var shouldShowNodes = [];
+				    	angular.forEach(nodes,function(node,n){
+				    		expandNodeCascade(node);
+				    		nodeParents(shouldShowNodes,node);
+				    	});
+				    	ztree.showNodes(shouldShowNodes.concat(nodes));
+						Messenger.post("删除成功");
+				 }) 
+			}
+		});
+	};
+	
+	//展开节点
+    function expandNodeCascade(node){
+    	var pn = node.getParentNode();
+        if(pn){
+        	if(!pn.open){
+        		$scope.instanceTree.expandNode(pn,true,true,false);
+        	}else{
+        		expandNodeCascade(pn);
+        	}
+        }
+    }
+    //节点的所有父节点
+    function nodeParents(nodeArray,node){
+    	var parentNode = node.getParentNode();
+    	if(parentNode!=null){
+    		nodeArray.push(parentNode);
+    		nodeParents(nodeArray,parentNode);
+    	}
+    }
+    
+    $scope.$on('$locationChangeStart', function (event, next, current) {
+    	var flag = false;
+    	for(var i=0;i<$scope.tempStepList.length;i++){
+    		if($scope.tempStepList[i].id<=0){
+    			flag = true;
+    			break;
+    		}
+    	}
+    	if(flag){
+    		if(!confirm("未保存的步骤信息会被清空，是否确认跳转？")){
+    			event.preventDefault();
+    		}
+    	}
+    	
+	});
+
+    
+})
+</script>

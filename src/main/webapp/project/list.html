@@ -1,0 +1,235 @@
+<style>
+.star-active{
+	color:#ff9800 !important;
+	opacity:1 !important;
+}
+.pv-list-left{
+	
+}
+.pv-list-left img{
+	width:70px;
+	height:50px;
+	border-radius: 3px;
+}
+.pv-list-right{
+    width: calc(100% - 100px);
+	margin-left: 30px;
+}
+.simple-star-overflow{
+    float: right;
+	margin-top: 15px;
+	text-shadow: none;
+    opacity: 0.5;
+    color: #ff9800;
+}
+.simple-content-list{
+	margin: 0 22px;
+	height: 70px;
+	border-bottom: 1px solid #f0f0f0;
+}
+.simple-content-list a:hover{
+	cursor: pointer;
+    opacity: 1;
+    color: #ff9800;
+}
+.no-padding{
+	padding: 0 !important;
+}
+.block-header .simple-actions {
+    position: absolute;
+    right: 10px;
+    top: -5px;
+    z-index: 3;
+    letter-spacing: 2px;
+}
+.flag,.container .simple-content-list{
+	cursor:pointer
+}
+.container .simple-content-list:hover{
+	color: #2196f3;
+}
+</style>
+
+<div class="container" ng-show="projectViewMode=='simple'">
+ <div class="card m-t-20" >
+	<div class="block-header">
+		<h2 class="m-t-20 p-t-20">星标项目</h2>
+		<div class="simple-actions f-14" style="width: 130px; margin-top: 25px; cursor: pointer; color:rgb(95, 95, 95);">切换 -  <a href="javascript:void(0)" ng-click="switchViewMode()">图形视图</a></div>
+	</div>
+	<div class="row" style="margin:0;" ng-if="starProjects.length>0">
+		<div class="col-sm-6 col-md-6 m-b-20 no-padding" ng-repeat="project in starProjects| filter:{arcStatus:'1'}">
+			<div class="simple-content-list" ui-sref="project.boardstory({project:project.id,moduleId:0})">
+				<div class="pv-list-left pull-left">
+					<img ng-src="{{project.pic}}" alt="">
+				</div>
+				 <div class="pv-list-right pull-left">
+					    <div class="text-overflow ng-binding pull-left t-o-8 f-18" style="line-height: 50px; vertical-align: middle;">{{project.name}}</div>
+					    <div class="simple-project-sketch">
+					    	<a class="stop-propagate md md md-star simple-star-overflow pull-right f-16" ng-click="projectStar(project);"  ng-class="{'star-active':project.star}"></a>
+						</div>
+					<ul class="pv-follow" ng-if="!loaded">
+						<li>统计信息加载中...</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="block-header p-t-20">
+		<h2>我的项目</h2>
+		<ul class="actions m-t-20" style="margin-right: 5px;">
+	      <li>
+                <a href ng-click="createproject()">
+                    <i class="md md-playlist-add"></i>
+                </a>
+            </li>
+	    </ul>
+	</div>
+	<div class="row" style="margin:0;">
+		<div class="col-sm-6 col-md-6 m-b-20 no-padding" ng-repeat="project in myProjects| filter:{arcStatus:'1'}">
+			<div  class="simple-content-list" ui-sref="project.boardstory({project:project.id,moduleId:0})">
+				<div class="pv-list-left pull-left">
+					<img ng-src="{{project.pic}}" alt="">
+				</div>
+				<div class="pv-list-right pull-left">
+				   <div class="text-overflow t-o-8 ng-binding pull-left f-18" style="line-height: 50px; vertical-align: middle;">{{project.name}}</div>
+				   <div class="simple-project-sketch"> 
+					    <a class="stop-propagate md md md-star simple-star-overflow pull-right f-16" ng-click="projectStar(project);" ng-class="{'star-active':project.star}"></a>
+	               </div>
+					<ul class="pv-follow" ng-if="!loaded">
+						<li>统计信息加载中...</li>
+					</ul>
+	
+					<!--<a ui-sref="project.home({project:project.id})" class="pv-follow-btn">进入</a>  -->
+				</div>	 
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-4"  ng-if="!myProjects || myProjects.length==0">
+			<div class="card">
+				<div class="card-header text-center">
+					您目前没有参与任何项目
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="block-header" ng-class="{'p-b-20':flag=='显示'}" >
+		<h2>已归档的项目 - <a class="flag" ng-click="viewToggle()">{{flag}}</a>
+		</h2>
+	</div>
+	<div class="row" style="margin:0;" ng-show="visible">
+		<div class="col-sm-6 col-md-6 m-b-20 no-padding" ng-repeat="project in myProjects| filter:{arcStatus:'0'}">
+			<!-- <div  class="simple-content-list" ng-click="viewTip(project);"> -->
+			<div  class="simple-content-list" ui-sref="project.boardstory({project:project.id,moduleId:0})">
+				<div class="pv-list-left pull-left">
+					<img ng-src="{{project.pic}}" alt="">
+				</div>
+				<div class="pv-list-right pull-left">
+				   <div class="text-overflow t-o-8 ng-binding pull-left f-18" style="line-height: 50px; vertical-align: middle;">{{project.name}}</div>
+				</div>	 
+			</div>
+		</div>
+	</div>
+	</div>
+</div>
+
+<div class="container" ng-show="projectViewMode=='default'">
+	<div class="block-header">
+		<h2 class="m-t-20">星标项目</h2>
+		<div class="simple-actions f-14" style="width: 130px; margin-top: 15px; cursor: pointer; color:rgb(95, 95, 95);">切换 -  <a href="javascript:void(0)" ng-click="switchViewMode()">列表视图</a></div>
+	</div>
+	<div class="row" style="margin:0;" ng-if="starProjects.length>0">
+		<div class="col-sm-6 col-md-4" ng-repeat="project in starProjects">
+			<div class="card project-view" style="height:150px;" ui-sref="project.boardstory({project:project.id,moduleId:0})">
+				<div class="pv-header" ng-style="{'background-image':'url('+project.pic+')'}"></div>
+				 <div class="pv-body">
+				   <div class="project-sketch">
+					    <h2 class="text-overflow ng-binding pull-left t-o-8">{{project.name}}</h2>
+					    <a class="stop-propagate md md md-star star-overflow pull-right f-18" ng-click="projectStar(project);"  ng-class="{'star-active':project.star}"></a>
+					    <small class="text-overflow t-o-9" title="{{project.brief}}">{{project.brief?project.brief:'没有任何项目描述'}}</small>
+	               </div>
+					<ul class="pv-follow" ng-if="loaded">
+						<li><a ui-sref="project.settings.members({project:project.id})" class="stop-propagate">成员 <span ng-bind="getProjectStatistic(project.id,'memberNum')"><span></a></li>
+						<li><a ui-sref="project.boardtask({project:project.id,moduleId:0})" class="stop-propagate">任务 <span ng-bind="getProjectStatistic(project.id,'finishedTaskNum')"></span> | <span ng-bind="getProjectStatistic(project.id,'taskNum')"></span></a></li>
+						<li><a ui-sref="project.boardbug({project:project.id,moduleId:0})" class="stop-propagate">BUG <span ng-bind="getProjectStatistic(project.id,'closedBugNum')"></span> | <span ng-bind="getProjectStatistic(project.id,'bugNum')"></span></a></li>
+					</ul>
+	
+					<ul class="pv-follow" ng-if="!loaded">
+						<li>统计信息加载中...</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="block-header">
+		<h2>我的项目</h2>
+		<ul class="actions">
+	      <li>
+                <a href ng-click="createproject()">
+                    <i class="md md-playlist-add"></i>
+                </a>
+            </li>
+	    </ul>
+	</div>
+	<div class="row" style="margin:0;">
+		<div class="col-sm-6 col-md-4" ng-repeat="project in myProjects| filter:{arcStatus:'1'}">
+			<div class="card project-view" style="height:150px;" ui-sref="project.boardstory({project:project.id,moduleId:0})">
+				<div class="pv-header" ng-style="{'background-image':'url('+project.pic+')'}"></div>
+				<div class="pv-body">
+				   <div class="project-sketch">
+					    <h2 class="text-overflow t-o-8 ng-binding pull-left">{{project.name}}</h2>
+					    <a class="stop-propagate md md md-star star-overflow pull-right f-18" ng-click="projectStar(project);" ng-class="{'star-active':project.star}"></a>
+					    <small class="text-overflow t-o-9" title="{{project.brief}}">{{project.brief?project.brief:'没有任何项目描述'}}</small>
+	               </div>
+					<ul class="pv-follow" ng-if="loaded">
+						<li><a ui-sref="project.settings.members({project:project.id})" class="stop-propagate">成员 <span ng-bind="getProjectStatistic(project.id,'memberNum')"><span></a></li>
+						<li><a ui-sref="project.boardtask({project:project.id,moduleId:0})" class="stop-propagate">任务 <span ng-bind="getProjectStatistic(project.id,'finishedTaskNum')"></span> | <span ng-bind="getProjectStatistic(project.id,'taskNum')"></span></a></li>
+						<li><a ui-sref="project.boardbug({project:project.id,moduleId:0})" class="stop-propagate">BUG <span ng-bind="getProjectStatistic(project.id,'closedBugNum')"></span> | <span ng-bind="getProjectStatistic(project.id,'bugNum')"></span></a></li>
+					</ul>
+	
+					<ul class="pv-follow" ng-if="!loaded">
+						<li>统计信息加载中...</li>
+					</ul>
+	
+					<!--<a ui-sref="project.home({project:project.id})" class="pv-follow-btn">进入</a>  -->
+				</div>	 
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-4"  ng-if="!myProjects || myProjects.length==0">
+			<div class="card">
+				<div class="card-header text-center">
+					您目前没有参与任何项目
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="block-header">
+		<h2>已归档的项目 - <a class="flag" ng-click="viewToggle()">{{flag}}</a>
+		</h2>
+	</div>
+	<div class="row" style="margin:0;" ng-show="visible">
+		<div class="col-sm-6 col-md-4" ng-repeat="project in myProjects| filter:{arcStatus:'0'}">
+			<!-- <div class="card project-view" style="height:150px;" ng-click="viewTip(project);"> -->
+			<div class="card project-view" style="height:150px;" ui-sref="project.boardstory({project:project.id,moduleId:0})">
+				<div class="pv-header" ng-style="{'background-image':'url('+project.pic+')'}"></div>
+				<div class="pv-body">
+				   <div class="project-sketch">
+					    <h2 class="text-overflow t-o-8 ng-binding pull-left">{{project.name}}</h2>
+					    <a class="stop-propagate md md md-star star-overflow pull-right f-18" ng-click="projectStar(project);" ng-class="{'star-active':project.star}"></a>
+					    <small class="text-overflow t-o-9" title="{{project.brief}}">{{project.brief?project.brief:'没有任何项目描述'}}</small>
+	               </div>
+					<ul class="pv-follow" ng-if="loaded">
+						<li><a class="stop-propagate">成员 <span ng-bind="getProjectStatistic(project.id,'memberNum')"><span></a></li>
+						<li><a class="stop-propagate">任务 <span ng-bind="getProjectStatistic(project.id,'finishedTaskNum')"></span> | <span ng-bind="getProjectStatistic(project.id,'taskNum')"></span></a></li>
+						<li><a class="stop-propagate">BUG <span ng-bind="getProjectStatistic(project.id,'closedBugNum')"></span> | <span ng-bind="getProjectStatistic(project.id,'bugNum')"></span></a></li>
+					</ul>
+	
+					<ul class="pv-follow" ng-if="!loaded">
+						<li>统计信息加载中...</li>
+					</ul>
+	
+					<!--<a ui-sref="project.home({project:project.id})" class="pv-follow-btn">进入</a>  -->
+				</div>	 
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="updateTypeNoByInner" log="false" className="com.chinacreator.c2.project.testcase.TypeService" method="updateTypeNoByInner">
+  <name>分类被拖拽至另一分类下的排序</name>
+  <desc>某分类被拖拽至另一分类下时</desc>
+  <inputs>
+    <input collection="false" desc="" id="typeId" required="true" type="int"/>
+    <input collection="false" desc="" id="pid" required="true" type="int"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.typeId" name="typeId" signature="I" type="int"/>
+    <param autoValue="Input.pid" name="pid" signature="I" type="int"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

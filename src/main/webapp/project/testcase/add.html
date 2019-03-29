@@ -1,0 +1,365 @@
+<link href="css/testcase.css" rel="stylesheet">
+<link href="css/task/detail.css" rel="stylesheet">
+<div class="container m-t-10 w-100 p-0">
+	<div>
+				<div class="card-header m-l-20">
+			<h3>新增用例</h3>
+		</div>
+				<div class="card-body clearfix">
+					<div class="timeline" style="padding-left: 20px; padding-top: 0px; padding-right: 20px;">
+					<form class="form-horizontal ng-pristine ng-valid">
+					<h4 class="f-16" style="padding:0 20px">基本信息</h4>
+					<div class="tv-body p-10 p-b-30 m-b-30" style="border-bottom: 1px dashed #ddd;">
+						<div>
+							<div class="row m-b-10">
+								<label class="col-sm-2 control-label p-t-12 confirm-label">用例名称：</label>
+								<div class="col-sm-10">
+									<div class="fg-line" ng-class="{'has-error':!testcase.name&&formCheck}">
+										<input autofocus="" type="text" placeholder="用例名称" data-ng-model="testcase.name"
+											class="form-control ng-pristine ng-valid ng-touched">
+									</div>
+								</div>
+							</div>
+							
+							<div class="row m-b-10">
+								<label class="col-sm-2 control-label p-t-12 confirm-label">用例编号：</label>
+								<div class="col-sm-3">
+									<div class="fg-line" ng-class="{'has-error':!testcase.no&&formCheck}">
+										<input autofocus="" type="text" placeholder="用例编号" data-ng-model="testcase.no"
+											class="form-control ng-pristine ng-valid ng-touched">
+									</div>
+								</div>
+								<label class="col-sm-2 control-label p-t-12 confirm-label">用例等级：</label>
+								<div class="col-sm-5" style="position: relative;top: 5px;padding-right: 0;">
+									<ul class="grade-list m-0 p-0">
+										<li ng-click="selectLevel('L0')"><a id="L0" href="javascript:void(0)">L0</a></li>
+										<li ng-click="selectLevel('L1')"><a id="L1" href="javascript:void(0)">L1</a></li>
+										<li ng-click="selectLevel('L2')"><a id="L2" href="javascript:void(0)">L2</a></li>
+										<li ng-click="selectLevel('L3')"><a id="L3" href="javascript:void(0)">L3</a></li>
+										<li ng-click="selectLevel('L4')"><a id="L4" href="javascript:void(0)">L4</a></li>
+									</ul>
+									<a href class="md md-help f-20 text-center c-gray" title="用例等级定义" ng-click="showLevelInfo()" style="position: relative;top: 3px;"></a>
+								</div>
+							</div>
+							
+							<div class="row m-b-10">
+								<label class="col-sm-2 control-label p-t-12 confirm-label">关联需求：</label>
+								<div class="col-sm-3" style="position: relative;top:5px">
+									<c2-dropdown class="animate" title="需求" bind-data="testcase.story"
+									items="allStorys" multiple=false item-name="title"
+									max-height="200" filter="true" clean-button="true">
+								<button
+									class="btn btn-default btn-icon-text picker-shadow text-overflow"
+									style="padding-left: 0px;max-width:220px">
+									<i class="md md-view-module"> </i> <span
+										ng-if="testcase.story==undefined">需求&nbsp;<i
+										class="caret"></i></span> <span ng-if="testcase.story!=undefined"
+										class="p-l-5 p-r-5 m-l-5 label-show">{{testcase.story.title}}</span>
+								</button>
+								<dropdown-item-template>
+								<div>
+									<span class="text">{{item.title}}</span> <span
+										class="md md-check check-mark"></span>
+								</div>
+								</dropdown-item-template> </c2-dropdown>
+								</div>
+								<div class="col-sm-4" style="position: relative;top:8px">
+								<label class="checkbox checkbox-inline m-l-10 m-t-5 p-t-0" title="是否为公共用例" style="padding-top: 0px;">
+					                <input type="checkbox" ng-model="testcase.isCommon"><i class="input-helper"></i> 公共用例
+					            </label>
+								</div>
+							</div>
+							
+							<div class="row m-b-10">
+								<label class="col-sm-2 control-label p-t-12 confirm-label">前置条件：</label>
+								<div class="col-sm-10">
+									<div class="detail-infos-note-view on-bottom" ng-class="{'on-top':$params.precondition}">
+										<div class="note-adder-set" title="点击编辑" style="min-height: 20px;width: 100%; padding-top: 12px;"
+											ng-show="hideUEditor" ng-class="{'note-input-hide':hideUEditor==false}"  ng-mousedown="ueMousedown($event)" ng-mouseup="ueMouseup($event)">
+											<div class="add-note-handler c2lightbox"><div id="markdowntext"></div></div>
+										</div>
+										<div id="task-desc-editor" data-ng-if="!hideUEditor" style="padding-top: 6px;">
+											<textarea c2-markdown-editor height="150" id="task-description" ng-model="$params.precondition"></textarea>
+						       			 </div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<h4 class="f-16" style="padding:0 20px">测试操作</h4>
+					<div class="actions cursor-pointer" style="margin-top: -34px;margin-left: 90px;">
+						<a style="padding-top: 2px;" data-toggle="tooltip" data-placement="left" title="拖动步骤行上下移动可以进行排序">
+							<i class="md md-info"></i>
+						</a>
+			    	</div>
+			    	<!-- 步骤列表 -->
+				<div style="margin:30px 20px 20px">
+				<table class="table table-hover border-e m-b-0" class="teamGroupTable">
+					<thead>
+						<tr style="border-bottom: 2px solid #f0f0f0;border-top: 1px solid #eee;background-color: #F7F7F7;">
+							<th style="width: 20px; text-align: left;"></th>
+							<th style="width: 120px; text-align: left;">测试步骤</th>
+							<th style="width: 120px; text-align: left;">预期结果</th>
+							<th style="width: 60px; text-align: center;">操作</th>
+						</tr>
+					</thead>
+					<tbody ui-sortable="sortableOptions" ng-model="tempStepList">
+						<tr ng-repeat="step in tempStepList" class="stepContent">
+							<td class="column" style="text-align: center;">step{{$index+1}}</td>
+							<td class="column">
+								<div class="case-detail-test-card-description" title="{{step.step}}">
+                                     <div ng-repeat="ts in step.testStepArr track by $index">{{ts}}</div>
+                                </div>
+							</td>
+							<td class="column">
+								<div class="case-detail-test-card-description" title="{{step.expectResult}}">
+                                     <div ng-repeat="ts in step.expectResultArr track by $index">{{ts}}</div>
+                                </div>
+							</td>
+							<td class="column" style="text-align: center;">
+							<button class="btn btn-link" ng-click="editStep(step)" title="编辑步骤" style="padding: 5px 3px;font-size: 14px;">
+								<i class="md md-mode-edit f-16"></i>
+							</button>
+							<button class="btn btn-link" ng-click="copyStep(step)" title="复制步骤" style="padding: 5px 3px;font-size: 14px;">
+								<i class="md md-content-copy f-16"></i>
+							</button>
+							<button class="btn btn-link" ng-click="delStep(step,$index+1)" title="删除步骤" style="padding: 5px 3px;font-size: 14px;">
+								<i class="md md-delete f-16"></i>
+							</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+					</div>
+					<br>
+					<div id="addStep" class="row m-b-10 p-l-10 p-r-10">
+						<label class="col-sm-2 control-label confirm-label">测试步骤：</label>
+						<div class="col-sm-4 m-t-10">
+						<textarea ng-model="caseStep.step" wrap="hard"  style="border: 1px solid #e0e0e0;"
+								class="form-control" rows="4" cols="5" height="100"
+								placeholder="测试步骤"></textarea>
+						</div>
+						<label class="col-sm-2 control-label confirm-label">预期结果：</label>
+						<div class="col-sm-4 m-t-10">
+						<textarea ng-model="caseStep.expectResult" wrap="hard"  style="border: 1px solid #e0e0e0;"
+								class="form-control" rows="4" cols="5" height="100"
+								placeholder="预期结果"></textarea>
+						</div>
+						<button class="btn btn-link f-20 c-blue" ng-click="saveStep(caseStep)">
+							<i class="md md-add-circle f-30"></i>
+						</button>
+					</div>
+					<br>
+					<div class="col-sm-12">
+							<button class="btn btn-link btn-sm pull-right" data-ng-click="cancleAdd();">取消</button>
+							<button class="btn btn-primary btn-sm pull-right" data-ng-click="saveCase();" style="width:60px">保存</button>
+					</div>
+					</form>
+			</div>
+					
+				</div>
+			</div>
+</div>
+
+<script>
+$('.board-group').animate({scrollTop:0});
+angular.module("project").registerCtrl('caseAddController',
+	function($scope, $http, $state, $stateParams,Upload,ModelFactory, Modal,$timeout,Messenger, $rootScope,$ocLazyLoad){
+	$scope.testcase = {isCommon:false,no:'TestCase_'};
+	var $params=$scope.$params={} ;
+	$scope.hideUEditor = true ;
+	$('#markdowntext').replaceWith('<div id="markdowntext">添加前置条件</div>') ;
+	$scope.tempStepList = [];
+	$scope.caseStep = {};
+	$scope.allStorys = [];//所有需求
+	initAllStorys();
+	
+	$scope.selectLevel = function(id){
+		$(".grade-list li").removeClass('select-grade');
+		$("#"+id).parent().addClass('select-grade');
+		$scope.testcase.level = id;
+	}
+	
+	//需求
+	function initAllStorys(){
+		$http.post("ws/getAllStory",{projectId:$stateParams.project}).success(function(data){
+			if(data.result.length>0){
+				$scope.allStorys = data.result;
+			}
+		})
+	}
+	
+	//取消编辑或新增
+	$scope.cancleAdd = function(){
+		$state.go("project.case.caseList",{project:$stateParams.project,typeId:$scope.typeId});
+	}
+	//保存用例基本信息
+	$scope.saveCase = function(){
+		$scope.formCheck=true;
+		
+		if(!$scope.testcase.name){
+			Messenger.error("用例名称不能为空！");
+			return;	
+		}
+		
+		if(!$scope.testcase.no){
+			Messenger.error("用例编号不能为空！");
+			return;
+		}
+		
+		if(!$scope.testcase.level){
+			Messenger.error("请选择用例等级！");
+			return;
+		}
+		
+		if($scope.testcase.story){
+			$scope.testcase.storyId = $scope.testcase.story.id;
+		}
+		$scope.testcase.typeId = $scope.typeId;
+		$scope.testcase.projectId = $stateParams.project;
+		
+		var stepList = $scope.tempStepList;
+		if(angular.isDefined($scope.caseStep)&&angular.isDefined($scope.caseStep.step)&&$scope.caseStep.step!=''){
+			$scope.caseStep.caseId = $scope.testcase.id;
+			$scope.caseStep.id = 0;
+			stepList.push($scope.caseStep);
+		}
+		
+		if(!$scope.hideUEditor){
+			$scope.testcase.precondition = $params.precondition;
+		}
+		
+		$scope.tempStepList = [];
+		$http.post("ws/addCaseBasicInfo", {
+			"testcase" : $scope.testcase,
+			"stepList" : stepList
+		}).success(function(data) {
+			var ztree = $.fn.zTree.getZTreeObj("caseTree");
+			var parentNode = ztree.getNodeByParam("tid", 't_'+data.result.typeId, null);
+			var newNodes = {"id":data.result.id,"tid":"c_"+data.result.id,"tpid":data.result.typeId,"name":data.result.name,"type":"case"};
+			ztree.addNodes(parentNode, newNodes);
+			$state.go("project.case.detail",{caseId:data.result.id});
+			Messenger.post("用例【"+data.result.name+"】添加成功");
+		});
+		
+	};
+		$scope.showLevelInfo = function(){
+			Modal.open("project/testcase/levelInfo.html",{},{title : '用例等级定义',animation : true,size : "middle"});
+		}
+	
+		//保存测试步骤信息
+		$scope.saveStep = function(caseStep){
+			$("#addStep").find("textarea").css("border","1px solid #e0e0e0");
+			if(angular.isUndefined(caseStep.step)||caseStep.step==''){
+				Messenger.error("请填写测试步骤！");
+				return;
+			}
+			if(angular.isUndefined(caseStep.id)){
+				caseStep.caseId = $scope.testcase.id;
+				var ss = caseStep.step.split('\n');
+				caseStep.testStepArr = [];
+				for(var i=0;i<ss.length;i++){
+					caseStep.testStepArr.push(ss[i]);
+				}
+				if(angular.isDefined(caseStep.expectResult)&&caseStep.expectResult!=''){
+					var ss = caseStep.expectResult.split('\n');
+					caseStep.expectResultArr = [];
+					for(var i=0;i<ss.length;i++){
+						caseStep.expectResultArr.push(ss[i]);
+					}
+				}
+				caseStep.id = 0;
+				$scope.tempStepList.push(caseStep);
+				$scope.caseStep = {};
+			}else{
+				var index = $scope.tempStepList.indexOf(caseStep);
+				var ss = caseStep.step.split('\n');
+				caseStep.testStepArr = [];
+				for(var i=0;i<ss.length;i++){
+					caseStep.testStepArr.push(ss[i]);
+				}
+				if(angular.isDefined(caseStep.expectResult)){
+					var ss = caseStep.expectResult.split('\n');
+					caseStep.expectResultArr = [];
+					for(var i=0;i<ss.length;i++){
+						caseStep.expectResultArr.push(ss[i]);
+					}
+				}
+				$scope.tempStepList.splice(index,1,caseStep);
+				$scope.caseStep = {};
+				
+			}
+		};
+		//删除测试步骤信息
+		$scope.delStep = function(caseStep,no){
+			Modal.delOpenConfirm({
+				title:"删除确认",
+				message:"是否删除【step"+no+"】测试步骤？",
+				btnText:"删除",
+				btnClass:"bgm-lightblue simple-shadow",
+				qxText:"取消",
+				qxClass:"bgm-lightblue simple-shadow",
+				onClose:function(){
+					var index = $scope.tempStepList.indexOf(caseStep);
+					$scope.tempStepList.splice(index,1);
+				}
+			});
+		};
+		//编辑测试步骤信息
+		$scope.editStep = function(step){
+			$scope.caseStep = step;
+			$('.board-group').animate({scrollTop:$("#addStep")[0].offsetTop});
+			$("#addStep").find("textarea").css("border","1px solid red");
+		}
+		//复制步骤
+		$scope.copyStep = function(step){
+			$scope.caseStep.step = step.step;
+			$scope.caseStep.expectResult = step.expectResult;
+			$('.board-group').animate({scrollTop:$("#addStep")[0].offsetTop});
+			$("#addStep").find("textarea").css("border","1px solid red");
+		}
+		
+		//排序配置
+		$scope.sortableOptions = {revert:200,cursor: "-webkit-grabbing",cancel: "a,input,[ng-click]",
+			placeholder: "sortable-placeholder",items:".stepContent",
+			update:function(event, ui){
+				var sortTop = ui.position.top-ui.originalPosition.top;
+				$timeout(function(){
+					$scope.originalOrderTaskList = angular.copy($scope.tempStepList);
+					//Messenger.success("操作成功！");
+				});
+			},
+			helper:function(event, ui){
+				ui.children().each(function() {  
+					$(this).width($(this).width());  //在拖动时，拖动行的cell（单元格）宽度会发生改变。在这里做了处理就没问题了   
+				});  
+				return ui;
+			},
+			change:function(event, ui){}
+		};
+		
+		function startEditing($event){
+			if($($event.target).is('a')||$($event.target).is('img')){
+				return;
+			} 
+			$scope.hideUEditor=false;
+		}
+		
+		var mousedownPostion=undefined;
+		
+		$scope.ueMousedown=function($event){
+			mousedownPostion={x:$event.clientX,y:$event.clientY};
+		}
+
+		$scope.ueMouseup=function($event){
+			if(mousedownPostion){
+				var moved=Math.abs($event.clientX-mousedownPostion.x)+Math.abs($event.clientY-mousedownPostion.y);
+				if(moved<10){
+					startEditing($event);
+				}
+				mousedownPostion=undefined;
+			}
+		}
+		
+})
+</script>

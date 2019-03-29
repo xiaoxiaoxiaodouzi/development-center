@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="editIssueStatus" log="false" className="com.chinacreator.c2.project.issue.IssueService" method="editIssueStatus">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>修改问题状态</name>
+  <desc>修改问题状态</desc>
+  <inputs>
+    <input collection="false" desc="" id="issueId" required="true" type="int"/>
+    <input collection="false" desc="" id="status" required="true"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.issueId" name="issueId" signature="I" type="int"/>
+    <param autoValue="Input.status" name="status" signature="QString;" type="java.lang.String"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

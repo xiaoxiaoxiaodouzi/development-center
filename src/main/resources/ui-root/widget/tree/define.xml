@@ -1,0 +1,757 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Template xmlns="http://www.chinacreator.com/c2/ui/template"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.chinacreator.com/c2/ui/template template_config.xsd ">
+    <name>树</name>
+    <description><![CDATA[
+		基于[zTree](http://www.ztree.me)开发，所有的特性可以参考[zTree官方文档](http://www.ztree.me/v3/api.php)。  
+		控件本身只开放了zTree本身的部分配置，如果有需要额外的zTree的配置，可以在**beforeInit**事件中自定义zTree配置。具体可以参考zTree官方API的**setting 配置详解**。
+		      
+		可以通过`getZtree()`获取到zTree对象，调用zTree自己的原生方法。  控件本身已经有zTree的所有方法（除了`refresh`和`reAsyncChildNodes`）。  
+		所有的方法的节点参数（node）必须是树节点（通过`getXxxNode()`等方法获取的节点对象）。注意：如果节点的状态有所变动，那么以前获取的该节点对象不再为此节点对象。
+		 
+		树控件数据一般是从**树形数据源**中获取，在*数据绑定*属性中设置树形数据源后，树控件会从数据绑定的**$url**属性中得到获取远程数据的链接地址，放到zTree配置的`setting.async.url`中。  
+		  
+		如果想设置同步数据，可以参考**初始化树控件之前**事件。  
+
+		@attention 树控件所有的方法和事件中标注为`node`的参数类型或者返回类型均表示*树节点对象*。
+    	]]></description>
+    <excepts>container/toolbar*,container/table*</excepts>
+    <catalog>form-control</catalog>
+    <params>
+    	<group name="数据设置">
+            <param id="otherParam" name="初始化参数" required="false">
+                <description>异步加载时请求提交的静态参数键值对。直接用 JSON 格式制作键值对，例如：{ key1:"value1" }。支持`$params`动态参数，{"aa",$params.aa}注：只能使用双引号！</description>
+                <defaultValue></defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="autoParam" name="节点参数" required="false">
+                <description>异步加载时需要自动提交父节点属性的参数。格式为数据属性名称组成的数组，可以设置提交是的参数名。例如：["id=zid","name"]。注：只能使用双引号！</description>
+                <defaultValue>["id"]</defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="nodeName" name="名称" required="false">
+                <description>定义数据的属性名称作为节点名称。</description>
+                <defaultValue>name</defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+    	</group>
+        <group name="显示设置">
+            <param id="span" name="占位数" required="false">
+                <description>网格布局中占位数</description>
+                <defaultValue>6</defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="height" name="高度" required="false">
+                <description>定义树的高度，必须加单位(px)。如果树展开高度超出，则出现滚动条。</description>
+                <defaultValue>auto</defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="computeHeight" name="自动计算高度" required="false">
+                <description>是否开启自动计算表格高度。开启后，会根据表格当前页面所在位置计算出最佳表格高度(在保证不出现滚动条的情况下，撑满屏幕)。在不同的分辨率下，会计算出不同的高度值。</description>
+                <defaultValue>false</defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+                <onChange>
+					<case value="false">
+						<hide param="computeHeightFix" value="true" />
+						<hide param="height" value="false" />
+					</case>
+					<case value="true">
+						<hide param="computeHeightFix" value="false" />
+						<hide param="height" value="true" />
+					</case>
+				</onChange>
+            </param>
+            <param id="computeHeightFix" name="高度修正" required="false">
+                <description>修正自动计算表格高度误差。如果表格下方有其他控件或者可见元素，或者容器边距的影响，可能导致计算高度错误，需要手动修正表格高度。
+                @attention 表格高度公式：页面主体容器高度-表格顶部距页面顶部高度-高度修正值。所以，高度修正值越大，表格越短。
+                </description>
+                <defaultValue>12</defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="selectedMulti" name="多选" required="true">
+                <description><![CDATA[是否允许同时选中多个节点。设置为 true时，按下 Ctrl 或 Cmd 键可以选中多个节点。]]></description>
+                <defaultValue><![CDATA[true]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+            </param>
+            <param id="showIcon" name="显示图标" required="true">
+                <description><![CDATA[是否显示节点图标]]></description>
+                <defaultValue><![CDATA[true]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+            </param>
+            <param id="showTitle" name="悬停提示" required="true">
+                <description><![CDATA[是否悬停提示。]]></description>
+                <defaultValue><![CDATA[true]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+                <onChange>
+					<case value="false">
+						<hide param="nodeTitle" value="true" />
+					</case>
+					<case value="true">
+						<hide param="nodeTitle" value="false" />
+					</case>
+				</onChange>
+            </param>
+            <param id="nodeTitle" name="悬停提示属性" required="false">
+                <description>定义数据的属性名称作为节点标题。鼠标浮空显示的名称</description>
+                <defaultValue>name</defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="nameIsHtml" name="支持HTML" required="true">
+                <description><![CDATA[name属性是否支持 HTML 脚本。]]></description>
+                <defaultValue><![CDATA[false]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+            </param>
+            <param id="expendAll" name="默认展开所有层级" required="false">
+                <description>加载数据成功后展开所有父节点，包括异步加载的父节点。</description>
+                <defaultValue>false</defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+                <onChange>
+               		<case value="false">
+						<hide param="expendLevel" value="false" />
+					</case>
+               		<case value="true">
+						<hide param="expendLevel" value="true" />
+					</case>
+               </onChange>
+            </param>
+            <param id="expendLevel" name="默认展开级数" required="false">
+                <description>加载数据成功后展开节点的层级。如果有异步加载数据同样也能加载。</description>
+                <defaultValue>0</defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+        </group>
+        <group name="勾选设置">
+        	<param id="checkEnable" name="勾选框" required="true">
+                <description><![CDATA[设置节点上是否显示 checkbox / radio。]]></description>
+                <defaultValue><![CDATA[false]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+                <onChange>
+               		<case value="false">
+						<hide param="checkStyle" value="true" />
+						<hide param="chkboxType" value="true" />
+						<hide param="autoCheckTrigger" value="true" />
+					</case>
+               		<case value="true">
+						<hide param="checkStyle" value="false" />
+						<hide param="chkboxType" value="false" />
+						<hide param="autoCheckTrigger" value="false" />
+					</case>
+               </onChange>
+            </param>
+            <param id="checkStyle" name="勾选框类型" required="true">
+                <description><![CDATA[checkbox / radio]]></description>
+                <defaultValue><![CDATA[checkbox]]></defaultValue>
+                <editor name="select" colSpan="1">
+                    <item name="checkbox" value="checkbox"/>
+                    <item name="radio" value="radio"/>
+                </editor>
+                <onChange>
+               		<case value="radio">
+						<hide param="chkboxType" value="true" />
+					</case>
+               		<case value="checkbox">
+						<hide param="chkboxType" value="false" />
+					</case>
+               </onChange>
+            </param>
+            <param id="chkboxType" name="父子节点关联" required="true">
+                <description><![CDATA[勾选 checkbox 对于父子节点的关联关系。只有checkbox类型有效。默认值：{ "Y": "ps", "N": "ps" }。Y 属性定义 checkbox 被勾选后的情况；N 属性定义 checkbox 取消勾选后的情况； "p" 表示操作会影响父级节点； "s" 表示操作会影响子级节点。]]></description>
+                <defaultValue><![CDATA[{ "Y": "ps", "N": "ps" }]]></defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="autoCheckTrigger" name="关联触发" required="true">
+                <description><![CDATA[设置自动关联勾选时是否触发 beforeCheck / onCheck 事件回调函数。]]></description>
+                <defaultValue><![CDATA[false]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+            </param>
+        </group>
+        <group name="搜索设置">
+        	<param id="searchEnable" name="搜索" required="true">
+                <description><![CDATA[是否显示搜索功能]]></description>
+                <defaultValue><![CDATA[true]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+                <onChange>
+               		<case value="false">
+						<hide param="searchPlaceholder" value="true" />
+						<hide param="searchHide" value="true" />
+					</case>
+               		<case value="true">
+						<hide param="searchPlaceholder" value="false" />
+						<hide param="searchHide" value="false" />
+					</case>
+               </onChange>
+            </param>
+            <param id="searchPlaceholder" name="搜索框占位符" required="false">
+                <description><![CDATA[搜索框内的占位字符]]></description>
+                <defaultValue><![CDATA[搜索 ...]]></defaultValue>
+                <editor name="text" colSpan="1"></editor>
+            </param>
+            <param id="searchHide" name="搜索过滤" required="false">
+                <description><![CDATA[是否启用搜索过滤，如果为true，则只显示结果节点和其父节点。]]></description>
+                <defaultValue><![CDATA[true]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+            </param>
+        </group>
+        <group name="其他设置">
+            <param id="editorEnable" name="编辑" required="true">
+                <description><![CDATA[设置是否处于编辑状态;设置为true：时点击节点时，不会打开 node.url 指定的 URL。]]></description>
+                <defaultValue><![CDATA[false]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+                <onChange>
+               		<case value="false">
+						<hide param="dragEnable" value="true" />
+						<hide param="dragMoveable" value="true" />
+						<hide param="dragInner" value="true" />
+						<hide param="showRenameBtn" value="true" />
+						<hide param="showRemoveBtn" value="true" />
+					</case>
+               		<case value="true">
+						<hide param="dragEnable" value="false" />
+						<hide param="dragMoveable" value="false" />
+						<hide param="dragInner" value="false" />
+						<hide param="showRenameBtn" value="false" />
+						<hide param="showRemoveBtn" value="false" />
+					</case>
+               </onChange>
+            </param>
+            <param id="dragMove" name="拖拽移动" required="true">
+                <description><![CDATA[节点是否可拖拽，只有当*编辑*为true才能生效。]]></description>
+                <defaultValue><![CDATA[false]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+            </param>
+            <param id="dragCopy" name="拖拽复制" required="true">
+                <description><![CDATA[节点是否可复制，只有当*编辑*为true才能生效。
+                
+                @attention 拖拽移动和拖拽复制选中任意一个都可以开启拖拽功能。具体规则如下：
+                1、isCopy = true; isMove = true 时，拖拽节点按下 **Ctrl** 或 **Cmd** 键表示 copy; 否则为 move
+				2、isCopy = true; isMove = false 时，所有拖拽操作都是 copy
+				3、isCopy = false; isMove = true 时，所有拖拽操作都是 move
+				4、isCopy = false; isMove = false 时，禁止拖拽操作
+                ]]></description>
+                <defaultValue><![CDATA[false]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+            </param>
+            <param id="dragMoveable" name="拖拽到节点前后" required="true">
+                <description><![CDATA[拖拽到目标节点时，设置是否允许移动到目标节点前后的操作。
+                @param treeId[String] 对应 zTree 的 treeId，便于用户操控（多棵树拖拽时，是目标节点所在树的 treeId）。 
+                @param treeNodes [Array(node)] 被拖拽的节点 JSON 数据集合。
+                @param targetNode [node] 拖拽时的目标节点 JSON 数据对象。
+                @return Boolean true表示可以移动到目标节点前后，false表示不可以。
+                ]]></description>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="treeId,treeNodes,targetNode"></item>
+                </editor>
+            </param>
+            <param id="dragInner" name="拖拽为子节点" required="true">
+                <description><![CDATA[拖拽到目标节点时，设置是否允许成为目标节点的子节点。
+                @param treeId[String] 对应 zTree 的 treeId，便于用户操控（多棵树拖拽时，是目标节点所在树的 treeId）。 
+                @param treeNodes [Array(node)] 被拖拽的节点 JSON 数据集合。
+                @param targetNode [node] 拖拽时的目标节点 JSON 数据对象。
+                @return Boolean true表示可以拖拽为子节点，false表示不可以。
+                ]]></description>
+                <defaultValue><![CDATA[]]></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="treeId,treeNodes,targetNode"></item>
+                </editor>
+            </param>
+            <param id="showRenameBtn" name="重命名" required="true">
+                <description><![CDATA[节点是否能够重命名节点名称，可编辑为true才能生效。]]></description>
+                <defaultValue><![CDATA[false]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+            </param>
+            <param id="showRemoveBtn" name="删除" required="true">
+                <description><![CDATA[节点是否能够删除，可编辑为true才能生效。]]></description>
+                <defaultValue><![CDATA[false]]></defaultValue>
+                <editor name="checkbox" colSpan="1"></editor>
+            </param>
+        </group>
+        <group name="事件设置">
+            <param id="beforeInit" name="初始化树控件之前" required="false" hidden="false">
+                <description>初始化树控件之前执行，可以自定义修改[zTree配置](http://www.ztree.me/v3/api.php)。控件会根据修改后的zTree配置初始化zTree。
+                @param zTreeOptions 树控件的zTree配置。
+                
+                @attention 控件本身是基于zTree开发的，开放大部分zTree本身的功能，同时也扩展了一些功能。但并非所有zTree可配置的地方都开放出来了，所以如果有zTree可配置而控件没有提供的，都可以通过`beforeInit(zTreeOptions)`来修改。
+                
+                ```
+                tree_beforeInit:function(zTreeOptions){
+					//修改radio的分组范围。
+					zTreeOptions.check.radioType = "level";
+					//添加捕获节点被折叠/展开的事件回调函数
+					zTreeOptions.callback.onCollapse = function(event, treeId, treeNode){
+						alert("嗷嘁！");
+					}
+				}
+                ```
+                
+                @attention 控件只支持异步调用数据。如果需要调用同步数据，则需要通过`beforeInit`方法设置`zTreeOptions.async.enable=false;`,然后在**数据源加载前事件**中将*数据绑定*中设置节点数据。
+                	必须保证节点数据为实时数据，如果是异步获取，则还是使用控件本身的异步调用吧。
+                ```
+                //定义树控件数据绑定属性为"$params.treeData",然后在**数据源加载前事件**中给"$params.treeData"赋值。
+                page_beforeDataSourceLoad:function($params){
+					$params.treeData = [
+						{id:1,pid:0,name:"aa"},
+						{id:2,pid:0,name:"bb"},
+						{id:2,pid:1,name:"aa1"},
+						{id:3,pid:1,name:"aa2"}
+					];
+				},
+				//然后改变zTree配置为同步数据。
+				tree_beforeInit:function(zTreeOptions){
+					zTreeOptions.async.enable=false;
+				}
+                ```
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="zTreeOptions"></item>
+                </editor>
+            </param>
+            <param id="beforeAsync" name="异步获取数据前" required="false" hidden="true">
+                <description>异步获取数据前的事件回调函数，并且根据返回值true和false确定是否异步获取数据。
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 进行异步加载的父节点对象。
+                @return Boolean false将阻止异步加载数据。</description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="treeId,treeNode"></item>
+                </editor>
+            </param>
+            <param id="beforeCheck" name="选中前" required="false" hidden="true">
+                <description>捕获 勾选 或 取消勾选 之前的事件回调函数，并且根据返回值true和false确定是否允许 勾选 或 取消勾选。
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 进行 勾选 或 取消勾选 的节点 JSON 数据对象。
+                @return Boolean 如果返回 false，将不会改变勾选状态，并且无法触发 onCheck 事件回调函数。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="treeId,treeNode"></item>
+                </editor>
+            </param>
+            <param id="beforeClick" name="单击前" required="false" hidden="true">
+                <description>捕获单击节点之前的事件回调函数，并且根据返回值确定是否允许单击操作。可以查看[官方示例](http://www.ztree.me/v3/demo.php#_111)。
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 被单击的节点 JSON 数据对象。
+                @param clickFlag[Number] 节点被点击后的选中操作类型，详细看*勾选*事件`clickFlag`属性说明。
+                @return Boolean 如果返回 false，zTree 将不会选中节点，也无法触发 onClick 事件回调函数。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="treeId,treeNode,clickFlag"></item>
+                </editor>
+            </param>
+            <param id="beforeDblClick" name="双击前" required="false" hidden="true">
+                <description>捕获鼠标双击之前的事件回调函数，并且根据返回值确定触发 onDblClick 事件回调函数。
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 鼠标双击时所在节点的 JSON 数据对象。
+                @return Boolean 如果返回 false，将仅仅无法触发 onDblClick 事件回调函数，对其他操作无任何影响。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="treeId,treeNode"></item>
+                </editor>
+            </param>
+            <param id="beforeDrag" name="拖拽前" required="false" hidden="true">
+                <description>捕获节点被拖拽之前的事件回调函数，并且根据返回值确定是否允许开启拖拽操作。
+                @param treeId[String] 树控件的id属性。
+                @param treeNodes[Array(node)] 要被拖拽的节点 JSON 数据集合。
+                @return Boolean 如果返回 false，zTree 将终止拖拽，也无法触发 onDrag / beforeDrop / onDrop 事件回调函数。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="treeId,treeNodes"></item>
+                </editor>
+            </param>
+            <param id="beforeDrop" name="拖拽结束前" required="false" hidden="true">
+                <description>捕获节点拖拽操作结束之前的事件回调函数，并且根据返回值确定是否允许此拖拽操作。
+                @param treeId[String] 树控件的id属性。
+                @param treeNodes[Array(node)] 要被拖拽的节点 JSON 数据集合。
+                @param targetNode[node] treeNodes被拖拽放开的目标节点 JSON 数据对象。
+                @param moveType[String] 指定移动到目标节点的相对位置。"inner"：成为子节点，"prev"：成为同级前一个节点，"next"：成为同级后一个节点。
+                @param isCopy[Boolean] 拖拽节点操作是 复制 或 移动。true：复制；false：移动。
+                @return Boolean 如果返回 false，zTree 将恢复被拖拽的节点，也无法触发 onDrop 事件回调函数。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="treeId,treeNodes,targetNode,moveType,isCopy"></item>
+                </editor>
+            </param>
+            <param id="beforeRemove" name="删除前" required="false" hidden="true">
+                <description>捕获节点被删除之前的事件回调函数，并且根据返回值确定是否允许删除操作。
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 将要删除的节点 JSON 数据对象。
+                @return Boolean 如果返回 false，zTree 将不删除节点，也无法触发 onRemove 事件回调函数。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="treeId,treeNode"></item>
+                </editor>
+            </param>
+            <param id="beforeRename" name="重命名前" required="false" hidden="true">
+                <description>用于捕获节点编辑名称结束（Input 失去焦点 或 按下 Enter 键）之后，更新节点名称数据之前的事件回调函数，并且根据返回值确定是否允许更改名称的操作。节点进入编辑名称状态后，按 ESC 键可以放弃当前修改，恢复原名称，取消编辑名称状态。
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 将要删除的节点 JSON 数据对象。
+                @param newName[String] 修改后的新名称。
+                @param isCancel[Boolean] 是否取消操作。 true 表示取消编辑操作（按下 ESC 或 使用 cancelEditName 方法）， false 表示确认修改操作。
+                @return Boolean 如果返回 false，zTree 将保持名称编辑状态，无法触发 onRename 事件回调函数，并且会导致屏蔽其它事件，直到修改名称使得 beforeRename 返回 true。如果返回 false，不会让 input 输入框获取焦点，避免由于警告信息而导致反复触发 beforeRename。 请在关闭提示警告信息后，利用 editName 方法让 input 重新获取焦点。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="treeId,treeNode,newName,isCancel"></item>
+                </editor>
+            </param>
+            <param id="beforeRightClick" name="右击前" required="false" hidden="true">
+                <description>捕获鼠标右键点击之前的事件回调函数，并且根据返回值确定触发 onRightClick 事件回调函数。
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 鼠标右键点击时所在节点的 JSON 数据对象。如果不在节点上，则返回 null。
+                @return Boolean 如果返回 false，将仅仅无法触发 onRightClick 事件回调函数，对其他操作无任何影响。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="treeId,treeNode"></item>
+                </editor>
+            </param>
+            <param id="onAsyncError" name="异步加载失败" required="false" hidden="true">
+                <description>用于捕获异步加载出现异常错误的事件回调函数。
+                @param event[event] 标准的 js event 对象
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 进行异步加载的父节点 JSON 数据对象。
+                @param XMLHttpRequest[String] 标准 XMLHttpRequest 对象，请参考 JQuery API 文档。
+                @param textStatus[String] 请求状态：success，error，请参考 JQuery API 文档。
+                @param errorThrown[String] errorThrown 只有当异常发生时才会被传递，请参考 JQuery API 文档。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="event,treeId,treeNode,XMLHttpRequest,textStatus,errorThrown"></item>
+                </editor>
+            </param>
+            <param id="onAsyncSuccess" name="异步加载成功" required="false">
+                <description>用于捕获异步加载正常结束的事件回调函数。
+                @param event[event] 标准的 js event 对象
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 进行异步加载的父节点 JSON 数据对象。
+                @param msg[String/Object] 异步获取的节点数据字符串，主要便于用户调试使用。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="event,treeId,treeNode,msg"></item>
+                </editor>
+            </param>
+            <param id="nodeCheck" name="勾选" required="false">
+                <description>用于捕获 checkbox / radio 被勾选 或 取消勾选的事件回调函数。
+                @param event[event] 标准的 js event 对象
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 被勾选 或 取消勾选的节点 JSON 数据对象。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="event,treeId,treeNode"></item>
+                </editor>
+            </param>
+            <param id="nodeClick" name="单击" required="false">
+                <description>用于捕获节点被点击的事件回调函数。
+                @param event[event] 标准的 js event 对象
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 被点击的节点 JSON 数据对象。
+                @param clickFlag[Number] 节点被点击后的选中操作类型，详细看下表：
+                
+                @table
+                @th clickFlag;是否开启多选;使用多选操作;isSelected;选中操作
+                @td 1;true;false;false;普通选中
+                @td 1;true;false;true;普通选中
+                @td 2;true;true;false;追加选中
+                @td 0;true;true;true;取消选中
+                @td 1;false;false;false;普通选中
+                @td 1;false;false;true;普通选中
+                @td 1;false;true;false;普通选中
+                @td 0;false;true;true;取消选中
+                @endTable
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="event,treeId,treeNode,clickFlag"></item>
+                </editor>
+            </param>
+            <param id="nodeDblClick" name="双击" required="false" hidden="true">
+                <description>捕获鼠标双击之后的事件回调函数。
+                @param event[event] 标准的 js event 对象
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 鼠标双击时所在节点的 JSON 数据对象。如果不在节点上，则返回 null。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="event,treeId,treeNode"></item>
+                </editor>
+            </param>
+            <param id="nodeRightClick" name="右键" required="false" hidden="true">
+                <description>鼠标右键点击之后的事件回调函数。
+                @param event[event] 标准的 js event 对象
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 鼠标右键点击时所在节点的 JSON 数据对象。如果不在节点上，则返回 null。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="event,treeId,treeNode"></item>
+                </editor>
+            </param>
+            <param id="nodeDrag" name="拖拽" required="false" hidden="true">
+                <description>捕获节点被拖拽的事件回调函数。
+                @param event[event] 标准的 js event 对象
+                @param treeId[String] 树控件的id属性。
+                @param treeNodes[Array(node)] 要被拖拽的节点 JSON 数据集合。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="event,treeId,treeNodes"></item>
+                </editor>
+            </param>
+            <param id="nodeDrop" name="拖拽结束" required="false" hidden="true">
+                <description>捕获节点拖拽操作结束的事件回调函数。
+                @param event[event] 标准的 js event 对象
+                @param treeId[String] 树控件的id属性。
+                @param treeNodes[Array(node)] 要被拖拽的节点 JSON 数据集合。
+                @param targetNode[node] treeNodes被拖拽放开的目标节点 JSON 数据对象。
+                @param moveType[String] 指定移动到目标节点的相对位置。"inner"：成为子节点，"prev"：成为同级前一个节点，"next"：成为同级后一个节点，如果 moveType = null，表明拖拽无效。
+                @param isCopy[Boolean] 拖拽节点操作是 复制 或 移动。true：复制；false：移动。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="event,treeId,treeNodes,targetNode,moveType,isCopy"></item>
+                </editor>
+            </param>
+            <param id="nodeRemove" name="删除" required="false" hidden="true">
+                <description>捕获删除节点之后的事件回调函数。
+                @param event[event] 标准的 js event 对象
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 将要删除的节点 JSON 数据对象。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="event,treeId,treeNode"></item>
+                </editor>
+            </param>
+            <param id="nodeRename" name="重命名" required="false" hidden="true">
+                <description>节点编辑名称结束之后的事件回调函数。
+                @param event[event] 标准的 js event 对象
+                @param treeId[String] 树控件的id属性。
+                @param treeNode[node] 将要删除的节点 JSON 数据对象。
+                @param idCancel[Boolean] 是否取消操作。 true 表示取消编辑操作（按下 ESC 或 使用 cancelEditName 方法）；false 表示确认修改操作。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="event,treeId,treeNode,isCancel"></item>
+                </editor>
+            </param>
+            <param id="dataFilter" name="数据过滤" required="false" hidden="true">
+                <description>用于对 Ajax 返回数据进行预处理的函数。
+                @param treeId[String] 树控件的id属性。
+                @param parentNode[node] 进行异步加载的父节点 JSON 数据对象。
+                @param responseData[Array(JSON)/JSON/String] 异步加载获取到的数据转换后的数据对象。
+                @return Array(JSON)/JSON zTree支持的JSON 数据结构。
+                </description>
+                <defaultValue></defaultValue>
+                <editor name="event" colSpan="1">
+                	<item name="params" value="treeId,parentNode,responseData"></item>
+                </editor>
+            </param>
+        </group>
+    </params>
+    <interfaces>
+    	<interface name="getDom" return="Object">
+    		<desc>获取生成树的dom元素。
+    		@return 生成树的DOM元素。</desc>
+    	</interface>
+    	<interface name="getZtree" return="Object">
+    		<desc><![CDATA[获取zTree对象。可以调用[zTree](http://www.ztree.me/v3/api.php)的所有方法。
+    		@return zTree对象。 ]]></desc>
+    	</interface>
+    	<interface name="getZtreeOptions" return="JSON">
+    		<desc><![CDATA[获取zTree的选项。可以到[zTree官方文档](http://www.ztree.me/v3/api.php)查看属性具体含义。
+    		@return zTree对象。 ]]></desc>
+    	</interface>
+    	<interface name="getParams" return="JSON">
+    		<desc><![CDATA[获取树的初始化参数，通过`refresh`或者`refresh2`方法更新参数后，获取的初始化参数同样获得变更。
+    		@return JSON对象。 ]]></desc>
+    	</interface>
+    	<interface name="refresh">
+    		<desc><![CDATA[刷新异步加载树。
+    		@param isSameState 是否刷新后保持选中，勾选中，展开状态。
+    		@param url 更新树url。
+    		@param param 更新树的初始化参数。如果为空，则不更改已设置的初始化参数。。
+    		@param node 指定刷新的树节点。]]></desc>
+    		<param name="isSameState" type="Boolean"></param>
+    		<param name="url" type="Object"></param>
+    		<param name="param" type="String"></param>
+    		<param name="node" type="node"></param>
+    	</interface>
+    	<interface name="refresh2">
+    		<desc><![CDATA[新的刷新方法（推荐）。除了可以重设树的参数，并且更精细控制勾选状态，选中状态和展开状态。
+    		@param params 更新树的初始化参数。如果为空，则不更改已设置的初始化参数。
+    		@param openState 是否刷新后保持树节点的展开状态，默认为否。
+    		@param checkState 是否刷新后保持树节点的勾选状态，默认为否。
+    		@param selectedState 是否刷新后保持树节点的选中状态，默认为否。
+    		@param node 指定刷新的树节点。]]></desc>
+    		<param name="params" type="JSON"></param>
+    		<param name="openState" type="boolean"></param>
+    		<param name="checkState" type="boolean"></param>
+    		<param name="selectedState" type="boolean"></param>
+    		<param name="node" type="node"></param>
+    	</interface>
+    	<interface name="deleteSelectedNode">
+    		<desc><![CDATA[删除选中节点。可以选择多个节点。
+    		@param callbackFlag 是否触发 beforeRemove & onRemove 事件回调函数。
+    		@return 删除的节点数组。
+    		]]></desc>
+    		<param name="callbackFlag" type="Boolean"></param>
+    	</interface>
+    	<interface name="setAsyncExpandNodeLevel">
+    		<desc><![CDATA[设置树初始展开异步节点的层级。
+    		@param levelNum 需要展开的层级。]]></desc>
+    		<param name="levelNum" type="int"></param>
+    	</interface>
+    	<interface name="setAsyncExpandNodeAll">
+    		<desc><![CDATA[设置树是否初始展开所有异步节点。
+    		@param isExpand 是否展开。
+    		@attention `setAsyncExpandNodeLevel`和`setAsyncExpandNodeAll`方法都只是用来设置树属性，并不能真正展开树节点。如果需要展开，在设置完成之后调用`refresh()`或者`addParams()`方法。]]></desc>
+    		<param name="isExpand" type="boolean"></param>
+    	</interface>
+    	<interface name="reAsyncChildNodes">
+    		<desc><![CDATA[强行异步加载父节点的子节点(zTree原生方法重写,修改reloadType默认为"refresh")。
+    		@param parentNode 父节点对象,为空时加载根节点数据。
+    		@param reloadType "refresh" 表示清空后重新加载，其他表示追加子节点处理。
+    		@param isSilent 是否展开父节点，true为不展开，默认展开。]]></desc>
+    		<param name="parentNode" type="node"></param>
+    		<param name="reloadType" type="String"></param>
+    		<param name="isSilent" type="Boolean"></param>
+    	</interface>
+    	<interface name="getNodesByParam" return="Array">
+    		<desc><![CDATA[根据节点数据的属性搜索(zTree原生方法)。
+    		@param key 属性名称。
+    		@param value 属性值。
+    		@param parentNode 指定父节点，空搜索全部。
+    		@return 节点数组。]]></desc>
+    		<param name="key" type="String"></param>
+    		<param name="value" type="String"></param>
+    		<param name="parentNode" type="node"></param>
+    	</interface>
+    	<interface name="getNodesByParamFuzzy" return="Array">
+    		<desc><![CDATA[根据节点数据的属性模糊搜索(zTree原生方法)。
+    		@param key 属性名称。
+    		@param value 属性值。
+    		@param parentNode 指定父节点，空搜索全部。
+    		@return 节点数组。]]></desc>
+    		<param name="key" type="String"></param>
+    		<param name="value" type="String"></param>
+    		<param name="parentNode" type="node"></param>
+    	</interface>
+    	<interface name="getNodesByFilter">
+    		<desc><![CDATA[根据自定义规则搜索节点数据(zTree原生方法)。
+    		@param filter 自定义过滤器函数`function filter(node) {...}`,返回true 表示符合搜索条件；false 表示不符合搜索条件。
+    		@param isSingle true 表示只查找单个节点，方法返回查到的第一个节点， false 表示查找节点集合，返回节点集合。
+    		@param parentNode 指定父节点，空则查询全部。
+    		@param invokeParam 用户自定义的数据对象，用于 filter 中进行计算。
+    		@return 节点数组]]></desc>
+    		<param name="filter" type="Function"></param>
+    		<param name="isSingle" type="Boolean"></param>
+    		<param name="parentNode" type="node"></param>
+    		<param name="invokeParam" type="any"></param>
+    	</interface>
+    	<interface name="getNodes">
+    		<desc><![CDATA[获取 zTree的根节点的数组(zTree原生方法)。
+    		@return 节点数组]]></desc>
+    	</interface>
+    	<interface name="getSelectedNodes">
+    		<desc><![CDATA[获取 zTree 当前被选中的节点数据集合(zTree原生方法)。
+    		@return 节点数组。]]></desc>
+    	</interface>
+    	<interface name="getCheckedNodes">
+    		<desc><![CDATA[获取输入框被勾选 或 未勾选的节点集合(zTree原生方法)。
+    		@param checked true 表示获取 被勾选 的节点集合; false 表示获取 未勾选 的节点集合。默认true
+    		@return 节点数组。]]></desc>
+    		<param name="checked" type="Boolean"></param>
+    	</interface>
+    	<interface name="getChangeCheckedNodes">
+    		<desc><![CDATA[获取输入框勾选状态被改变的节点集合（与原始数据 checkedOld 对比）(zTree原生方法)。
+    		@return 节点数组。]]></desc>
+    	</interface>
+    	<interface name="selectNode">
+    		<desc><![CDATA[选中指定节点(zTree原生方法)。
+    		@param treeNode 需要被选中的节点数据。
+    		@param addFlag true 表示追加选中，会出现多点同时被选中的情况； false 表示单独选中，原先被选中的节点会被取消选中状态。]]></desc>
+    		<param name="treeNode" type="node"></param>
+    		<param name="addFlag" type="Boolean"></param>
+    	</interface>
+    	<interface name="cancelSelectedNode">
+    		<desc><![CDATA[取消节点的选中状态(zTree原生方法)。
+    		@param treeNode 需要取消选中状态的节点。]]></desc>
+    		<param name="treeNode" type="node"></param>
+    	</interface>
+    	<interface name="checkAllNodes">
+    		<desc><![CDATA[勾选 或 取消勾选 全部节点(zTree原生方法)。
+    		@param checked  true 表示勾选全部节点;false 表示全部节点取消勾选。]]></desc>
+    		<param name="checked" type="Boolean"></param>
+    	</interface>
+    	<interface name="checkNode">
+    		<desc><![CDATA[勾选 或 取消勾选 单个节点(zTree原生方法)。
+    		@param treeNode 需要取消选中状态的节点。
+    		@param checked true 表示勾选节点; false 表示节点取消勾选；省略此参数，则根据对此节点的勾选状态进行 toggle 切换。
+    		@param checkType true 表示进行父子节点的勾选联动操作； false 表示只修改此节点勾选状态，无任何勾选联动操作。
+    		@param callback true 表示执行此方法时触发 beforeCheck & onCheck 事件回调函数；false 表示执行此方法时不触发事件回调函数。默认false。
+    		]]></desc>
+    		<param name="treeNode" type="node"></param>
+    		<param name="checked" type="Boolean"></param>
+    		<param name="checkType" type="Boolean"></param>
+    		<param name="callback" type="Boolean"></param>
+    	</interface>
+    	<interface name="removeNode">
+    		<desc><![CDATA[删除节点。
+    		@param treeNode 需要被删除的节点数据(zTree原生方法)。
+    		@param callbackFlag true 表示执行此方法时触发 beforeRemove & onRemove 事件回调函数； false 表示执行此方法时不触发事件回调函数。]]></desc>
+    		<param name="treeNode" type="node"></param>
+    		<param name="callbackFlag" type="Boolean"></param>
+    	</interface>
+    	<interface name="removeChildNodes">
+    		<desc><![CDATA[清空某父节点的子节点(zTree原生方法)。
+    		@param parentNode 需要清空子节点的父节点数据。
+    		@return 将该父节点的子节点数据返回，如果不存在则返回 null。]]></desc>
+    		<param name="parentNode" type="node"></param>
+    	</interface>
+    	<interface name="updateNode">
+    		<desc><![CDATA[更新某节点数据，主要用于该节点显示属性的更新。可针对 name、target、 url、icon、 iconSkin、checked、nocheck 等这几个用于显示效果的参数进行更新(zTree原生方法)。
+    		@param node 需要更新的节点]]></desc>
+    		<param name="node" type="node"></param>
+    	</interface>
+    	<interface name="addNodes">
+    		<desc><![CDATA[添加节点。
+    		@param parentNode 指定的父节点，如果增加根节点，请设置 parentNode 为 null 即可。
+    		@param newNodes 需要增加的节点数据 JSON 对象集合。
+    		@param isSilent 设定增加节点后是否自动展开父节点。 true 时，不展开父节点，其他值或缺省状态都自动展开。
+    		@return 树最终添加的节点数据集合。]]></desc>
+    		<param name="parentNode" type="node"></param>
+    		<param name="newNodes" type="JSON/Array(JSON)"></param>
+    		<param name="isSilent" type="Boolean"></param>
+    	</interface>
+    	<interface name="expandAll">
+    		<desc><![CDATA[展开 / 折叠 全部节点(zTree原生方法)。
+    		@param expandFlag true表示 展开 全部节点；false表示 折叠 全部节点。
+    		@return 返回值表示最终实际操作情况。true 表示 展开 全部节点；false 表示 折叠 全部节点；null 表示 不存在任何父节点。]]></desc>
+    		<param name="expandFlag" type="Boolean"></param>
+    	</interface>
+    	<interface name="expandNode">
+    		<desc><![CDATA[展开 / 折叠 指定的节点(zTree原生方法)。
+    		@param treeNode 需要 展开 / 折叠 的节点数据。
+    		@param expandFlag true 表示 展开 节点；false 表示 折叠 节点。省略此参数，则根据对此节点的展开状态进行 toggle 切换。
+    		@param sonSign  true 表示 全部子孙节点 进行与 expandFlag 相同的操作；false 表示 只影响此节点，对于其 子孙节点无任何影响。默认false。
+    		@param focus  true 表示 展开 / 折叠 操作后，通过设置焦点保证此焦点进入可视区域内; false 表示 展开 / 折叠 操作后，不设置任何焦点。默认false。
+    		@param callbackFlag true 表示执行此方法时触发 beforeExpand / onExpand 或 beforeCollapse / onCollapse 事件回调函数； false 表示执行此方法时不触发事件回调函数。默认false。
+    		@return 返回值表示最终实际操作情况。true 表示 展开 节点；false 表示 折叠 节点；null 表示 不是父节点。
+    		]]></desc>
+    		<param name="treeNode" type="node"></param>
+    		<param name="expandFlag" type="Boolean"></param>
+    		<param name="sonSign" type="Boolean"></param>
+    		<param name="focus" type="Boolean"></param>
+    		<param name="callbackFlag" type="Boolean"></param>
+    	</interface>
+    </interfaces>
+</Template>

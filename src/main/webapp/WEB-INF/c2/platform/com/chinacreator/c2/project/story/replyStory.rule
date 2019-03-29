@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="replyStory" log="false" className="com.chinacreator.c2.project.story.StoryService" method="replyStory">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>评论需求</name>
+  <desc>评论需求</desc>
+  <inputs>
+    <input collection="false" desc="@param" id="projectId" required="true" type="java.lang.Integer"/>
+    <input collection="false" desc="" id="storyId" required="true" type="java.lang.Integer"/>
+    <input collection="false" desc="" id="content" required="true"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="QInteger;" type="java.lang.Integer"/>
+    <param autoValue="Input.storyId" name="storyId" signature="QInteger;" type="java.lang.Integer"/>
+    <param autoValue="Input.content" name="content" signature="QString;" type="java.lang.String"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

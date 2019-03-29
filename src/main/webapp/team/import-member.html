@@ -1,0 +1,240 @@
+<style>
+.col-sm-6.col-xs-6{
+	position:inherit !important;
+}
+</style>
+<div class="container" style="width: 100%"
+	data-ng-controller="teamMemberCtrl">	
+	<div class="card">
+		<div class="listview lv-bordered lv-lg">
+					<div class="lv-header-alt">
+						<h2 class="lvh-label hidden-xs">成员列表</h2>		
+						<div class="m-t-30 right_btn" ng-show="team.owner==$parent.subject.userName">
+							<button class="btn btn-primary btn-sm btn-save" ng-click="save()">保存</button>
+						</div>		
+					</div>
+		
+					<div class="lv-body" style="min-height: 129px; overflow-y: auto; max-height: 129px; margin-top: 10px; margin-left: 10px;">				
+		
+						<div class="contacts clearfix m-r-0 row" style="overflow:hidden">
+							<div class="col-md-list col-sm-6 col-xs-6"
+								ng-repeat="checkedMember in addMemberChecked">
+								<div class="c-item c-item-selected" style="position: relative;" ng-click="selectedMember(checkedMember)">
+									<a href="" class="img-border ci-avatar-list" style="position: relative;"> <img
+										ng-src="{{checkedMember.remark1}}" alt="">
+										<i class="md-choice md-done" style="left:88px"></i>
+									</a>
+		
+									<div class="c-info" style="height: 100%;">
+										<strong title="{{checkedMember.userRealname}}">{{checkedMember.userRealname}}</strong>								
+										<small title="{{checkedMember.orgShowName}}">{{checkedMember.orgShowName}}</small>
+									</div>
+								</div>
+							</div>
+		
+						</div>
+		
+					</div>
+				</div>
+				
+				<div class="listview lv-bordered lv-lg">
+					<div class="lv-header-alt">
+						<h2 class="lvh-label hidden-xs">待选成员列表</h2>			
+						
+						<div class="pull-right">
+						<c2-dropdown id="deptDropdown" class="m-r-20" tree-options="deptTreeOptions" tree-nodes="deptTree" max-height="200" class="pull-right" clean-button="true" after-clean-event="treeClean()">
+							<div class="picker">
+								<i class="md md-account-balance" title="部门/组选择"></i> {{deptName?"":"指定部门/组  "}}{{deptName}}<span class="caret"></span>
+							</div>
+						</c2-dropdown>
+						<ul class="lv-actions actions">
+							<li class="pm-search">
+								<div class="pms-inner">
+									<i class="md md-search f-15 m-f-w p-l-5 c-search"></i> <input type="text"
+										ng-model="condition.name" ng-model-options="{updateOn:'default blur',debounce:{'default':600,'blur':0}}" placeholder="姓名" class="b-none">
+								</div>
+							</li>
+						</ul>
+						</div>
+					</div>
+		
+					<div class="lv-body">				
+						
+						<div class="contacts clearfix m-r-0 row"
+							style="min-height: 140px; overflow-y: auto; max-height: 250px; margin-top: 10px; margin-left: 10px;">
+							
+							<div ng-if="isLoad" align="center" style="font-size: 14px;margin-top: 10px;">正在加载，请稍等...</div>
+							
+							<div ng-if="isShowNull" align="center" style="font-size: 14px;color: red;margin-top: 10px;">未查询到相关人员！</div>
+							
+							<div class="col-md-list col-sm-6 col-xs-6" ng-repeat="addmember in addMembers">
+								<div ng-class="{'c-item':!addmember.selected,'c-item c-item-selected':addmember.selected}" ng-click="selectedMember(addmember)">
+		
+									<a href="" class="img-border ci-avatar-list" style="position: relative;"> <img
+										ng-src="{{addmember.remark1}}" alt="">
+										<i class="md-choice md-done" ng-if="addmember.selected" ng-class="{'bgm-green':addmember.choosed}" style="left:88px"></i>
+									</a>
+		
+									<div class="c-info" style="height: 100%;">
+										<strong title="{{addmember.userRealname}}">{{addmember.userRealname}}</strong>
+										<small title="{{addmember.orgShowName}}">{{addmember.orgShowName}}</small>								
+									</div>
+								</div>
+							</div>
+		
+						</div>
+		
+					</div>
+				</div>
+	</div>
+	<div class="m-t-30 right_btn">
+		<button class="btn btn-primary btn-sm" ng-click="save()">保存</button>
+		<button class="btn btn-link btn-sm" ng-click="close()">关闭</button>
+	</div>
+</div>
+
+<script>
+angular.module("developmentCenter").registerCtrl('teamMemberCtrl',
+	function ($scope, $rootScope, $http, $state, $stateParams,debounce,$timeout, Messenger, Modal,$ocLazyLoad) {
+	
+	$scope.addMemberChecked = {};
+	
+	$scope.condition = {orgId:'',name:''};
+	
+	$scope.deptName = null;
+	
+	$scope.$watch("condition",function(v,o){
+		$scope.getAddMembers();
+	},true);
+	
+	$scope.getAddMembers = function(){
+		$scope.addMembers = [];
+		$scope.isLoad = true;
+		$scope.isShowNull = false;
+		$scope.chooseAllColor = false;
+		
+		$http.get("team/v1/getMembers?orgId="+$scope.condition.orgId+"&name="+$scope.condition.name).success(function(data, status, headers, config){
+			$scope.isLoad = false;
+			if(data.length==0 && ($scope.condition.orgId!='' || $scope.condition.name!=''))
+				$scope.isShowNull = true;
+			$scope.addMembers = data;
+		});
+	}
+	
+	$http.get("team/v1/"+$scope.team.id+"/users").success(function(data){
+		$scope.addMemberChecked={};
+		$scope.condition = {orgId:'',name:''};
+		$scope.deptName = null;
+		$scope.oldMembers = [];
+			
+		$.each(data, function(i,v) {
+			if(v.userName!=$scope.team.owner){
+				$scope.addMemberChecked[v.userId] = {
+					userName: v.userName,
+					userRealname: v.userRealname,
+					remark1: v.icon,
+					userId: v.userId,
+					selected: true,
+					isOld: true,
+					orgId: v.orgId,
+					orgShowName: v.orgShowName
+				} 					
+			}
+		});
+	})
+		
+	$scope.selectedMember = function(addMember){
+		if(addMember.userName==$scope.team.owner){
+			Messenger.error("【"+addMember.userRealname+"】已是团队创建者，无需重复添加")
+			return;
+		}
+		addMember.selected = !addMember.selected;
+		if(addMember.selected){
+			$scope.addMemberChecked[addMember.userId]=addMember;
+		}else if(addMember.isOld){		
+			$scope.oldMembers.push({
+				userName: addMember.userName,
+				userRealname: addMember.userRealname,
+				orgId: addMember.orgId,
+				orgName: addMember.orgShowName
+			});
+			delete $scope.addMemberChecked[addMember.userId];
+		}else {
+			delete $scope.addMemberChecked[addMember.userId];
+		}
+	}
+	
+	$scope.deptTreeOptions = {
+		data: {
+			simpleData: {
+				enable: true,
+				idKey: "id",
+				pIdKey: "pId",
+				rootPId: 0
+			}
+		},
+		callback: {
+			onClick: zTreeOnClick
+		}
+	} ;
+	
+	function zTreeOnClick(event, treeId, treeNode){
+		$scope.deptName = treeNode.name;
+		$scope.condition.orgId = treeNode.id;
+		$("#deptDropdown").controller("c2Dropdown").toggle();
+	}
+	
+	$scope.treeClean = function(){
+		$scope.deptName = null;
+		$scope.condition.orgId = null;
+		$("#deptDropdown").controller("c2Dropdown").toggle();
+	}
+	
+	$http.get("ws/dept/getCurrentUserDeptTree").success(function(data){
+		$scope.deptTree = data.result ;
+	});
+	
+	//保存团队成员
+	$scope.save = function(){
+		var addTeamNames = [];
+		angular.forEach($scope.addMemberChecked, function (value, key) {
+			if(!value.isOld) {
+				addTeamNames.push(value.userName);					
+			}
+		});
+			
+		if(0 != $scope.oldMembers.length) {
+			var deleteNames = [];
+			angular.forEach($scope.oldMembers, function (value, key) {
+				deleteNames.push(value.userName);					
+			});
+			$http.put("team/v1/"+$scope.team.id+"/users",deleteNames).success(function(data){
+				Messenger.success("保存成功！")
+				Modal.close();
+			});
+		}
+			
+		if(0 != addTeamNames.length){
+			$http.post("team/v1/"+$scope.team.id+"/users",addTeamNames)
+			.success(function(data){
+				angular.forEach($scope.addMemberChecked, function (value, key) {
+					value.isOld = true;
+				});			
+				Messenger.success("保存成功！")
+				Modal.close();
+			});
+		}
+			
+		if(addTeamNames.length==0&&$scope.oldMembers.length==0){
+			Messenger.error("请选择团队成员！");
+			return;
+		}
+	}
+
+
+	$scope.close = function () {
+		Modal.dismiss();
+	}
+
+})
+</script>

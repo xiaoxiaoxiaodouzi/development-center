@@ -1,0 +1,92 @@
+<style>
+<!--
+.contacts .c-item-selected {
+border-color: mediumseagreen;
+}
+-->
+</style>
+
+<div class="container" style="width: 100%"
+	data-ng-controller="selectUserCtrl">	
+	<div class="card">
+		<div class="listview" >
+			<div class="lv-header-alt">
+				<h2 class="lvh-label hidden-xs">用户列表</h2>
+
+				<ul class="lv-actions actions">
+					<li class="pm-search">
+						<div class="pms-inner">
+							<i class="md md-search"></i> <input type="text"
+								ng-model="user_realname"
+								ng-model-options="{updateOn:'default blur',debounce:{'default':300,'blur':0}}"
+								placeholder="Search..." class="ng-pristine ng-valid ng-touched">
+						</div>
+					</li>
+				</ul>
+			</div>
+			<div class="lv-body">				
+				<div class="row" style="margin-top: 15px;">
+					<div ng-if="selectUserList.length==0" class="lv-item list-show-animate text-center p-20 ng-scope">没有查到任何数据。</div>
+					<div class="col-md-list col-sm-3" style="text-align: center;" ng-repeat="user in selectUserList">
+						<div class="c-item c-item-selected" ng-click="selectOk(user)">
+							<a href="" class="img-border ci-avatar-list"> <img style="width: 60px;height: 60px;"
+								ng-src="{{user.remark1}}" alt="">
+							</a>
+							
+							<div class="c-info">
+								<strong>{{user.user_realname}}</strong>								
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+		
+		<c2-pagination total="pagination.totalRow" page-size="16" on-page-change="loadSelectUser(pageIndex,16,userRealname)"></c2-pagination>	
+	</div>
+	<div class="modal-footer">
+		<button type="button" type="button" class="btn btn-link" ng-click="cancelSelect()">取消</button>
+	</div>
+</div>
+<script>
+angular.module("developmentCenter").registerCtrl('selectUserCtrl',function($rootScope,$scope, $element, $state, $stateParams, $timeout,$http, Messenger, Modal) {
+	
+	$scope.initSelecUser = function(){
+		$scope.loadSelectUser(1,16);
+	};
+	 
+	$scope.loadSelectUser=function(pageIndex,pageSize,userName){
+		var condition={
+				pageIndex:pageIndex,
+				pageSize:pageSize,
+				userName:userName
+		};
+		
+		
+		$http.post("ws/message/getUserListByPage",condition).success(function(data){
+		   $scope.selectUserList=data.result.contents;
+		   $scope.pagination.totalRow=data.result.total;
+		});
+	}
+	
+	
+	$scope.selectOk=function(user){
+		Modal.close(user);
+	}
+
+	$scope.cancelSelect = function() {
+		Modal.dismiss();
+	};
+	
+	$scope.initSelecUser();
+	
+	$scope.$watch("user_realname",function(v,o){
+		if(angular.isUndefined(v)){
+			return;
+		}
+		$scope.loadSelectUser(1,16,v);
+	},true);
+});
+</script>

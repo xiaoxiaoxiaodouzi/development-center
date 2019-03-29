@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="addCaseBasicInfo" log="false" className="com.chinacreator.c2.project.testcase.CaseService" method="addCaseBasicInfo">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>新增用例基本信息</name>
+  <desc>添加用例基本信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="testcase" required="true" type="com.chinacreator.c2.project.testcase.Case"/>
+    <input collection="false" desc="@param" id="stepList" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="基本信息  @param testcase  @param labelList" id="result" name="方法返回值" type="com.chinacreator.c2.project.testcase.Case"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.testcase" name="testcase" signature="QCase;" type="com.chinacreator.c2.project.testcase.Case"/>
+    <param autoValue="Input.stepList" name="stepList" signature="QList&lt;QCaseStep;>;" type="java.util.List"/>
+  </params>
+  <return signature="QCase;" type="com.chinacreator.c2.project.testcase.Case"/>
+</CustomRule>

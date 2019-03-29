@@ -1,0 +1,898 @@
+<style>
+.wr-view {
+	padding: 0px 23px 0px 20px;
+}
+
+.wr-view .table .column {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: center;
+}
+
+.wr-view .table>thead>tr>th,.wr-view .table>tbody>tr>td {
+	padding: 10px 4px;
+	border-bottom: 1px solid #f0f0f0;
+}
+
+.wr-view .table>tbody>tr>td>a:hover {
+	color: #2196F3;
+}
+
+.wr-view .table>tbody>tr>td>a,.wr-view .table>thead>tr>th>label{
+	color: #000000;
+}
+
+.wr-view .table>thead>tr>th>label:hover{
+	color: #2196f3;
+}
+
+.wr-view .require {
+	border-color: red;
+}
+
+.red {
+	color:red ;
+}
+
+.p-members {
+    float: left;
+    margin: 15px 0 11px;
+    width: 100%;
+    padding: 1px 0 10px;
+    border-bottom: 1px solid #EFEFEF;
+    border-top: 1px solid #eeeeee;
+    background-color: #FFFFFF;
+}
+.p-members li:not(.hide-list){
+    float: left;
+    width: 70px;
+    text-align: center;
+    margin-right: 24px;
+    margin-top: 20px;
+    list-style: none;
+    padding: 8px 0;
+    border-radius: 5px;
+}
+.p-members li a{
+	color: #2F2F2F;
+}
+.p-members li a:hover{
+	color: #ffffff;
+}
+.p-members span {
+    background-color: #E2E2E2;
+    width: 100%;
+    display: block;
+    line-height: 3em;
+    vertical-align: middle;
+}
+
+.w-width{
+	width: 60px;
+}
+.w-title {
+    clear: both;
+    border-bottom: 1px solid #F0F0F0;
+    padding: 8px 10px 8px 10px;
+    background-color: #F7F7F7;
+}
+.w-title span{
+	letter-spacing: 1px;
+	vertical-align: middle;
+}
+.ts{
+	border: 1px solid #00BCD4 !important;
+}
+.zc{
+	border: 1px solid #4CAF50 !important;
+}
+.yq{
+	border: 1px solid #ff9800 !important;
+}
+
+.zc.selected{
+	background-color: #4CAF50;	
+}
+.yq.selected{
+	background-color: #ff9800;	
+}
+.ts.selected{
+	background-color: #00BCD4;
+}
+.zc.selected>a{
+	color: white !important;
+}
+.yq.selected>a{
+    color: white !important;
+}
+.ts.selected>a{
+    color: white !important;
+}
+.zc:hover {
+    background-color: #4CAF50;
+}
+.yq:hover {
+    background-color: #ff9800;
+}
+.ts:hover {
+    background-color: #00BCD4;
+}
+
+.pp1 {
+    clear: both;
+    float: left;
+    padding-left: 0 !important;
+    margin-left: 10px;
+}
+.cross-week-task{
+	background-color: #00BCD4;
+}
+
+.normal-task{
+	background-color: #4CAF50; 
+}
+
+.delay-task{
+	background-color:#ff9800;
+}
+
+.p-members .dropdown-menu {
+	min-width:90px ;
+}
+
+.p-members .dropdown-menu .item{
+	margin: 0px 10px 5px 10px;
+    border-radius: 5px;
+    padding:0;
+}
+
+.p-members .dropdown-menu .item a{
+	text-align: center;
+}
+
+.rf-summary {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.rf-content .table .column {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: center;
+}
+
+.rf-summary p{
+	margin-bottom:0;
+    font-size: 14px;
+}
+.wr-open.ng-enter{
+  transition:500ms 500ms linear all;
+  opacity:0;
+}
+.wr-open.ng-enter.ng-enter-active{
+  opacity:1;
+} 
+.wr-open.ng-leave{
+  transition:500ms linear all;
+  opacity:1;
+}
+.wr-open.ng-leave.ng-leave-active{
+  opacity:0;
+}
+.p-b-40{
+	padding-bottom:40px !important ;
+}
+</style>
+<div class="container">
+	<div class="block-header">
+	  <!--  <h2 >
+	    {{currentProject.name}}
+	    <small class="text-overflow" style="width:60%;" title="{{currentProject.brief}}" ng-bind="currentProject.brief"></small>
+	  </h2>-->
+	</div>
+    <div class="card wr-open" ng-include="weekReportMainPageTemplateUrl" >
+	</div>
+</div>
+<aside id="detail-panel" state-aside-container class="cOverflow" style="top:114px;background-color: #fafafa;width:660px">
+    <ui-view onload="stateOnload()"></ui-view>
+</aside>
+
+<script>
+angular.module("developmentCenter").registerCtrl('teamReportController',
+	function ($scope, $rootScope, $http, $state, $stateParams,debounce,$timeout, Messenger, Modal,$ocLazyLoad) {
+		var $params = $scope.$params = {};
+		$scope.reportStart = "";
+		$scope.reportEnd = "";
+		$params.isShowCurrentWeek = true;
+		$scope.teamId = $stateParams.teamId;
+		$params.startParam = {};
+		$params.endParam = {};
+		
+		$http.get("team/v1/getTeam?owner="+$rootScope.subject.userName).success(function(data){
+			$scope.teams = data;
+			$scope.currentTeam = data.find(d=>d.id==$stateParams.teamId);
+		})
+		
+		//切换tab顄1�7
+		$scope.changeTab = function(label){
+			$scope.recordNullMsg=false;
+			if(label=='task'){
+				$params.isShowCurrentWeek = true;
+				$scope.memberList = $params.taskList;
+				$http.get("team/v1/"+$stateParams.teamId+"/reports/"+$params.weekReport.id+"/taskSnapshots?belongToNextWeek=false").success(function (result) {
+					$params.taskList = $params.currentWeekTaskList = $scope.memberList = result;
+					if($params.taskList.length==0)$scope.recordNullMsg=true;
+				})
+			}else{
+				logsList();
+			}
+		}
+		/**
+		 * 模块栄1�7
+		 */
+
+		//树数据加载完之后再去查看周报内容
+		$http.get("team/v1/"+$stateParams.teamId+"/reports/"+$stateParams.reportId).success(function (data) {
+			if (angular.equals(data.weeklyReport.status, '缺失')) {
+				$params.weekReport = data.weeklyReport;
+				$params.startParam.year = $params.weekReport.year;
+				$params.startParam.week = $params.weekReport.week;
+				$params.endParam.year = $params.weekReport.year;
+				$params.endParam.week = $params.weekReport.week;
+				$scope.weekReportMainPageTemplateUrl = 'team/create.html';
+				initSubmitDS();
+			} else {
+				$params.weekReport = initWeekReportDetail(data.weeklyReport);
+				$params.weekReport.preSummary = data.preSummary;
+				$scope.projectId = $params.weekReport.projectId;
+				$params.startParam.year = $params.weekReport.year;
+				$params.startParam.week = $params.weekReport.week;
+				$params.endParam.year = $params.weekReport.year;
+				$params.endParam.week = $params.weekReport.week;
+
+				$scope.reportStart = $params.startParam.year+'-'+$params.startParam.week;
+				$scope.reportEnd = $params.endParam.year+'-'+$params.endParam.week;
+				$scope.weekReportMainPageTemplateUrl = 'team/detail.html';
+				initDetailDS();
+			}
+			var thisWeek = {
+				value: "本周完成",
+				estStartDate: moment().year($params.weekReport.year).week($params.weekReport.week).startOf('week').valueOf(),
+				deadline: moment().year($params.weekReport.year).week($params.weekReport.week).endOf('week').valueOf(),
+				time: moment().year($params.weekReport.year).week($params.weekReport.week).startOf('week').format("YYYY/MM/DD") + " 1�7" + moment().year($params.weekReport.year).week($params.weekReport.week).endOf('week').format("YYYY/MM/DD")
+			};
+			var nextWeek = {
+				value: "下周完成",
+				estStartDate: moment().year($params.weekReport.year).week($params.weekReport.week + 1).startOf('week').valueOf(),
+				deadline: moment().year($params.weekReport.year).week($params.weekReport.week + 1).endOf('week').valueOf(),
+				time: moment().year($params.weekReport.year).week($params.weekReport.week + 1).startOf('week').format("YYYY/MM/DD") + " 1�7" + moment().year($params.weekReport.year).week($params.weekReport.week + 1).endOf('week').format("YYYY/MM/DD")
+			};
+			var unknow = { value: "暂不安排", estStartDate: null, deadline: null, time: "暂不安排" };
+			$scope.teskWeeks = [thisWeek, nextWeek, unknow];
+		})
+
+		$scope.teamSwitch = function (team) {
+			if (!angular.equals($params.weekReport.teamId, team.id)) {
+				$params.isShowCurrentWeek = true;
+				var oldReportId = $params.weekReport.id;
+				$http.get("team/v1/"+$stateParams.teamId+"/reports/"+$stateParams.reportId).success(function (data) {
+					$params.weekReport = initWeekReportDetail(data.weeklyReport);
+					$params.weekReport.preSummary = data.preSummary;
+					$scope.teamId = $params.weekReport.teamId;
+
+					$params.startParam.year = $params.weekReport.year;
+					$params.startParam.week = $params.weekReport.week;
+					$params.endParam.year = $params.weekReport.year;
+					$params.endParam.week = $params.weekReport.week;
+
+					$state.go('home.team.report', { reportId: project.reportId }, { notify: true });
+					$http.get("team/v1/"+$stateParams.teamId+"/reports/"+$params.weekReport.id+"/taskSnapshots?belongToNextWeek=false").success(function (data) {
+						$params.taskList = $params.currentWeekTaskList = $scope.memberList = data;
+						if($params.taskList.length==0)$scope.recordNullMsg=true;
+						$params.nextWeekTaskList = undefined;
+					});
+				});
+			}
+		}
+
+
+		function initDetailDS() {
+			
+			$http.get("team/v1/"+$stateParams.teamId+"/reports/"+$params.weekReport.id+"/taskSnapshots?belongToNextWeek=false").success(function (data) {
+				$params.taskList = $params.currentWeekTaskList = $scope.memberList = data;
+				$( "#tabs" ).tabs();
+			});
+			
+			//查询当前团队成员参与的所有项目
+			$http.get("team/v1/"+$params.weekReport.id+"/projects?belongToNextWeek=false").success(function(data){
+				$params.projects = $params.currentWeekProjectList = data;
+			})
+
+		}
+		
+		$scope.projectClick= function(project){
+			$params.project = project;
+		}
+		
+		$scope.projectFilter = function(task){
+			if(angular.isUndefined($params.project) || $params.project == null){
+				return true;
+			}
+			if(task.projectId == $params.project.id){
+				return true;
+			}else{
+				return false;
+			}
+			
+		}
+
+		$scope.togglevalue = 0;
+		$scope.weekIsShow = true;
+		$scope.dayIsShow = false;
+		$scope.radioValue=1;
+
+		$scope.search = { task: true, lack: false, week: { name: "choose" } };
+		$scope.project = {};
+
+		$scope.showDayly2 = function () {
+			if ($scope.togglevalue == 0) {
+				$scope.togglevalue = 1;
+				$scope.weekIsShow = !$scope.weekIsShow;
+				$scope.dayIsShow = !$scope.dayIsShow;
+				logsList();
+			} else {
+				$scope.togglevalue = 0;
+				$scope.weekIsShow = !$scope.weekIsShow;
+				$scope.dayIsShow = !$scope.dayIsShow;
+				initDetailDS();
+			}
+		}
+
+		$scope.RadioChange=function(e){
+			$scope.radioValue=e
+		}
+
+
+
+
+		$scope.switchWeekReportSubmitView = function () {
+			if ($params.isShowCurrentWeek == true) {
+				$scope.memberList = $params.taskList = $params.currentWeekTaskList;
+			} else {
+				$scope.memberList = $params.taskList = $params.nextWeekTaskList;
+			}
+			$scope.memberSelect();
+		}
+		$scope.switchWeekReportDetailView = function () {
+			if ($params.isShowCurrentWeek == true) {
+				$scope.memberList = $params.taskList = $params.currentWeekTaskList;
+				$params.projects = $params.currentWeekProjectList;
+				$params.project = undefined;
+			} else {
+				if (angular.isUndefined($params.nextWeekTaskList)) {
+					var start = $params.weekReport.year+"-"+($params.weekReport.week+ 1)
+					var end = $params.weekReport.year+"-"+($params.weekReport.week+ 1)
+
+					$http.get("team/v1/"+$stateParams.teamId+"/reports/"+$stateParams.reportId+"/nextWeekTask?startParam="+start+"&endParam="+end).success(function (data) {
+						$scope.memberList = $params.taskList = $params.nextWeekTaskList = data;
+					});
+					
+					$http.get("team/v1/"+$stateParams.teamId+"/reports/"+$stateParams.reportId+"/nextWeekProjects?startParam="+start+"&endParam="+end).success(function (data) {
+						$params.projects = $params.nextWeekProjectList = data;
+					});
+				} else {
+					$scope.memberList = $params.taskList = $params.nextWeekTaskList;
+					$params.projects = $params.nextWeekProjectList;
+				}
+				$params.project = undefined;
+			}
+			$scope.memberSelect();
+		}
+
+		function initWeekReportDetail(report) {
+			switch (report.status) {
+				case "超前": report.statusClass = 'report-label-earlier'; break;
+				case "正常": report.statusClass = 'report-label-normal'; break;
+				case "逾期": report.statusClass = 'report-label-latter'; break;
+				case "缺失": report.statusClass = 'report-label-lose'; break;
+			}
+
+			if (angular.isDefined(report.statistics)) {
+				var statistics = report.statistics;
+				var total = statistics.total;
+				var normal = statistics.completed + statistics.crossWeek;
+				var canceled = statistics.canceled;
+				var consumed = statistics.consumed;
+				var estimate = statistics.estimate;
+				var member = statistics.member;
+				var delayed = statistics.delayed;
+				if (angular.equals(statistics.delayed, 0)) {
+					delayed = total - normal;
+				}
+				var worked = statistics.worked;
+				if (angular.isUndefined(worked)) {
+					worked = 0;
+				}
+
+				var normalRate = normal / total * 100;
+				var canceledRate = canceled / total * 100;
+				var delayedRate = delayed / total * 100;
+
+				report.statistics.normalRate = normalRate;
+				report.statistics.delayedRate = delayedRate;
+				report.statistics.delayed = delayed;
+				report.statistics.normal = normal;
+
+				report.statisticsDesc = "人数：" + member + "\n正常：" + normal + "\n取消：" + canceled + "\n逾期：" + delayed + "\n总任务：" + total + "\n周工时：" + worked + "\n总工时：" + consumed + "/" + estimate + "\n";
+			}
+			return report;
+		}
+
+		function initSubmitDS() {
+
+			$params.evals = ['超前', '正常', '逾期'];
+
+			$params.reasonItems = [{ name: "工作量大", group: "执行问题" },
+			{ name: "复杂度高", group: "执行问题" }, { name: "效率低", group: "执行问题" },
+			{ name: "被阻塞", group: "执行问题" }, { name: "任务取消", group: "其他" },
+			{ name: "请假", group: "其他" }, { name: "临时任务干扰", group: "其他" }];
+
+			$params.visibleRanges = [{ name: "项目成员可见", id: "member" }, { name: "项目管理人可见", id: "manager" }];
+
+			$params.handleItems = [{ name: "延期下周" }, { name: "任务取消" }, { name: "加班完成" }, { name: "修订计划" }, { name: "需要支持" }];
+
+			//进度评价必填警告
+			$params.evalWarning = false;
+			
+			$http.get("team/v1/"+$stateParams.teamId+"/reports/"+$stateParams.reportId+"/tasks?startParam="+
+			($params.startParam.year+"-"+$params.startParam.week)+"&endParam="+($params.endParam.year+"-"+$params.endParam.week)).success(function(data){
+				$params.taskDs = data;
+				$scope.memberList = $params.taskList = $params.currentWeekTaskList = $params.taskDs.currentWeekTasks;
+
+				$params.nextWeekTaskList = $params.taskDs.nextWeekTasks;
+			})
+			
+			//团队周报提交者  周报可见范围
+			$http.get("team/v1/"+$stateParams.teamId+"/submit").success(function(data){
+				$params.submit2 = data;
+			})
+			
+			$http.get("team/v1/"+$stateParams.teamId+"/preference").success(function(data){
+				if(angular.isDefined(data.visibleRange)){
+					switch (data.visibleRange.preferContent) {
+						case "manager": $params.visibleRange = { name: "项目管理人可见", id: "manager" }; $params.weekReport.visibleRange = "manager"; break;
+						case "member": $params.visibleRange = { name: "项目成员可见", id: "member" }; $params.weekReport.visibleRange = "member"; break;
+					}
+				} else {
+					$params.visibleRange = { name: "周报可见范围", id: "default" };
+				}
+			})
+			
+			initAddTaskParams();
+
+		}
+
+		$scope.taskDetailSideBarToggle = function (taskId) {
+			if ($state.includes("home.team.**")) {//团队周报页面
+				if (angular.equals($params.weekReport.status, '缺失') && !$params.isShowCurrentWeek) {//缺失页面的任务详情才允许编辑
+					$state.go('.taskDetail', { taskId: taskId, editable: true });
+				} else {
+					$state.go('.taskDetail', { taskId: taskId, editable: false });
+				}
+			}
+		}
+
+		//棄1�7查任务是否在下周计划中存圄1�7
+		function isTaskExist(taskId) {
+			var pathParams = {};
+			angular.forEach($params.taskList, function (ele, nameIndex) {
+				angular.forEach(ele.taskSnapShotList, function (task, taskIndex) {
+					if (angular.equals(task.taskId, taskId)) {
+						pathParams.nameIndex = nameIndex;
+						pathParams.taskIndex = taskIndex;
+						pathParams.taskId = taskId;
+					}
+				});
+			});
+			return pathParams;
+		}
+
+		$scope.hidedMemberSelected = function (member) {
+			if (angular.isDefined($params.selectedHideMember)) {
+				$params.selectedHideMember.selected = false;
+			}
+			member.selected = true;
+			$scope.memberSelect(member);
+			$params.selectedHideMember = member;
+		}
+
+		$scope.focusSelectedHideMemberIfExist = function () {
+			if (angular.isDefined($params.selectedHideMember)) {
+				$params.selectedHideMember.selected = true;
+				$scope.memberSelect($params.selectedHideMember);
+			}
+		}
+
+		$scope.memberSelect = function (member) {
+			if (angular.isUndefined(member)) {
+				if (angular.isDefined($params.memberFilter)) {
+					angular.forEach($params.memberFilter, function (value, key) {
+						value.selected = false;
+					});
+				}
+				$params.memberFilter = undefined;
+				$params.selectedHideMember = undefined;
+			} else {
+				if (angular.isDefined($params.memberFilter) && angular.isUndefined($params.memberFilter[member.userDTO.userName])) {
+					angular.forEach($params.memberFilter, function (value, key) {
+						value.selected = false;
+					});
+				}
+				var filter = {};
+				member.selected = true;
+				filter[member.userDTO.userName] = member;
+				$params.memberFilter = filter;
+			}
+		}
+
+		$scope.taskInfoFilter = function (taskInfo) {
+			if($params.project){
+				var flag = true;
+				$.each(taskInfo.taskSnapShotList,function(index,t){
+					if(t.projectId == $params.project.id){
+						flag = false;
+					}
+				})
+				if(flag){
+					return false;
+				}
+			}
+			//memberFilter未定义表示�1�7�择了全部成呄1�7
+			if (angular.isUndefined($params.memberFilter)) {
+				return true;
+				//若memberFilter定义亄1�7,则只显示定义的那个成员的任务信息
+			} else if (angular.isDefined($params.memberFilter[taskInfo.userDTO.userName])) {
+				return true;
+			}
+			return false;
+		}
+
+
+
+		$scope.visibleRangeClick = function (item) {
+			$params.weekReport.visibleRange = item.id;
+		}
+
+		$scope.saveWeekReport = function () {
+			if (weekReportCheck()) {
+				var taskSnapshotList = [];
+				$.each($params.taskDs.currentWeekTasks, function (index, task) {
+					taskSnapshotList = taskSnapshotList.concat(task.taskSnapShotList);
+				});
+				$http.post("team/v1/"+$stateParams.teamId+"/reports", { report: $params.weekReport, tasks: taskSnapshotList }).success(function (data) {
+					$state.go('home.team.reports');
+				});
+			}
+		}
+
+
+		function logsList() {
+			$http.get("team/v1/"+$stateParams.teamId+"/reports/"+$stateParams.reportId+"/logs?st="+$scope.reportStart+"&et="+$scope.reportEnd).success(function (data) {
+				$scope.teamLogs = $scope.memberList = $params.taskList = data;
+				if($scope.teamLogs.length==0)$scope.recordNullMsg=true;
+			});
+		}
+
+
+
+		function weekReportCheck() {
+			$scope.memberSelect();
+			var isSuccess = true;
+			var filter = {};
+			$.each($params.currentWeekTaskList, function (index, task) {
+				//本项目任务中若有逾期任务没有处理的则check不通过
+				//这个remark1起始就是这个成员的总体任务状态
+				if (angular.equals(task.userDTO.remark1, '3')) {
+					$.each(task.taskSnapShotList, function (index, ele) {
+						//遍历任务集合,本项目任务中若有任务状态等于3(逾期)并且它的逾期处理信息没有则不保存
+						if (angular.equals(ele.status, '3')) {
+							if (angular.isUndefined(ele.reason)) {
+								ele.reasonWarning = true;
+								isSuccess = false;
+								filter[task.userDTO.userName] = task.userDTO;
+							}
+							if (angular.isUndefined(ele.handle)) {
+								ele.handleWarning = true;
+								isSuccess = false;
+								filter[task.userDTO.userName] = task.userDTO;
+							}
+						}
+					});
+				}
+			});
+			if (!angular.equals(filter, {})) {
+				$params.memberFilter = filter;
+			}
+			if (angular.equals($params.weekReport.status, '缺失')) {
+				$params.evalWarning = true;
+				isSuccess = false;
+			} else {
+				$params.evalWarning = false;
+			}
+			return isSuccess;
+		}
+
+		//工时选择
+
+		$scope.hideEstimatePopover = function (index) {
+			$("#taskDiv_" + index + "#addEstimateButton").popover('hide');
+		};
+
+		$ocLazyLoad.load(['assets/js/jquery.mousewheel.js']);
+
+		function initAddTaskParams() {
+			if (!$scope.addTaskParamsInitiated) {
+
+				$http.get("team/v1/"+$stateParams.teamId+"/users").success(function (data) {
+					var taskMembers = [];
+					angular.forEach(data, function (v, n) {
+						taskMembers.push({
+							name: v.userRealname,
+							icon: v.icon,
+							userName: v.userName,
+							id: v.userId
+						});
+					});
+					$scope.taskUsers = taskMembers;
+					$scope.projectUsers = angular.copy(taskMembers);
+				});
+				
+				$scope.addTaskParamsInitiated = true;
+			}
+		}
+
+		function getDefaultTask() {
+			var defaultTask = {
+				estimate: 8,
+				taskUserRed: false,
+				taskNameRed: false,
+				taskWeekRed: false,
+				taskUserRed: false,
+				taskEstmateRed: false,
+				taskWeek: $scope.teskWeeks[1],//获取nextweek
+				//projectId: $stateParams.project,
+				belongToNextWeek: true,
+				//crossProject: false,
+				worked: 0
+			}
+			return defaultTask;
+		}
+
+
+		$scope.openNewTask = function (index) {
+			
+			$scope.taskDown = !$scope.taskDown;
+
+			if (angular.isUndefined($params.taskList[index].taskObj)) {
+				$params.taskList[index].templateUrlOfAddTask = 'team/task-add.html';
+				$params.taskList[index].taskObj = getDefaultTask();
+			}
+
+			$.each($scope.taskUsers, function (i, ele) {
+				if (angular.equals($params.taskList[index].userDTO.userRealname, ele.name)) {
+					$params.taskList[index].taskObj.taskUser = ele;
+					//加载当前人所在的项目
+					$http.post("ws/getProjects",{userId:ele.id}).success(function(data){
+						$scope.projects = data.result;
+					})
+				}
+			});
+
+			//模块
+			if (!$params.taskList[index].zTreeNodes) {
+				$params.taskList[index].treeOptions = {
+					view: {
+						selectedMulti: false
+					},
+					data: {
+						simpleData: {
+							enable: true,
+							pIdKey: "parent"
+						}
+					},
+					callback: {
+						onClick: function (event, treeId, treeNode, clickFlag) {
+							$scope.$apply(function () {
+								if ($params.taskList[index].taskObj.taskPlan == treeNode) $params.taskList[index].taskObj.taskPlan = null;
+								else $params.taskList[index].taskObj.taskPlan = treeNode;
+							});
+							$("#taskDiv_" + index + " #moduleDropdown").controller("c2-dropdown").toggle();
+						}
+					}
+				};
+			}
+
+			$("#taskDiv_" + index).slideToggle(true);
+
+			//工时滑轮控制
+			$timeout(function () {
+				$("#taskDiv_" + index + " #addEstimateButton").popover({ content: "滚动鼠标滚轮快速调整工时", placement: "top", container: "#taskDiv_" + index + " #addTaskDiv" });
+				$("#taskDiv_" + index + " #addEstimateButton").mousewheel(function (event, delta) {
+					if (delta > 0) $params.taskList[index].taskObj.estimate++;
+					if (delta < 0 && $params.taskList[index].taskObj.estimate > 0) $params.taskList[index].taskObj.estimate--;
+					$("#taskDiv_" + index + " #addEstimateButton").popover('hide');
+					$scope.$apply();
+					return false;
+				});
+			}, 500);
+		}
+		
+		//点击项目
+		$scope.projectClick = function(project,index){
+			$params.taskList[index].taskObj.taskTag=undefined;
+			$params.taskList[index].taskObj.taskStory=undefined;
+			$params.taskList[index].taskObj.taskMilestone=undefined;
+			$params.taskList[index].taskObj.taskPlan=undefined;
+			
+			//查询该项目是否需要确认任务
+			$http.post("ws/getProjectPreference", { projectId: project.id, preferNames: ["projectTaskConfirmState"] })
+				.success(function (data, status, headers, config) {
+					if (!angular.isUndefined(data.result)
+						&& !angular.isUndefined(data.result.projectTaskConfirmState)
+						&& !angular.isUndefined(data.result.projectTaskConfirmState.preferContent)) {
+						$params.taskList[index].taskObj.taskConfirm = "true" == data.result.projectTaskConfirmState.preferContent;
+					} else {
+						$params.taskList[index].taskObj.taskConfirm = false;
+					}
+			});
+			//标签
+			$http.post("e/label/op/selectLabel", {
+					project: project.id
+				}).success(function (data) {
+					angular.forEach(data.result, function (v, n) {
+						v.backgroundStyle = {
+							"background-color": v.color,
+							"border-radius": "2px",
+							"color": getTextColorByBackColor(v.color)
+						};
+					});
+					$scope.tags = data.result;
+				});
+			
+			//里程碑
+			$http.post("ws/milestone/selectAllUnclosedMilestone", { milestone: { "projectId": project.id } }).success(function (data) {
+					$scope.milestones = data.result;
+			});
+			
+			//需求
+			$http.post("ws/getAllStory", { projectId: project.id }).success(function (data) {
+					$scope.storys = data.result;
+			});
+			
+			//计划
+			$http.get("ProjectPlan/all/project?projectId="+project.id).success(function(data){
+				data.push({id:0,name:project.name});
+				$params.taskList[index].zTreeNodes = data;
+				$timeout(function(){
+					var ztree = $("#teamPlan").controller("c2-dropdown").getTree();
+					ztree.expandNode(ztree.getNodes()[0], true, false, true);
+				},400)
+			})
+			
+		}
+
+
+
+		$scope.cancelCreatTask = function (index) {
+			$("#taskDiv_" + index).slideToggle(true);
+		}
+
+		$scope.creatTask = function (index) {
+
+			var task = $params.taskList[index].taskObj;
+
+			var taskCheck = true;
+			if (angular.isUndefined(task.taskUser.name)) {
+				task.taskUserRed = true;
+				taskCheck = false;
+			}
+			if (angular.isUndefined(task.name)) {
+				task.taskNameRed = true;
+				taskCheck = false;
+			}
+			if (angular.isUndefined(task.taskWeek)) {
+				task.taskWeekRed = true;
+				taskCheck = false;
+			}
+			if (angular.isUndefined(task.taskProject)) {
+				task.taskProjectRed = true;
+				taskCheck = false;
+			}
+			if (angular.isUndefined(task.taskPlan)) {
+				task.taskPlanRed = true;
+				taskCheck = false;
+			}
+
+			if (taskCheck) {
+				task.estStartDate = task.taskWeek.estStartDate;
+				task.deadline = task.taskWeek.deadline;
+				task.assignedTo = task.taskUser.userName;
+				task.userRealname = task.taskUser.name;
+				task.userId = task.taskUser.id;
+				task.userIcon = task.taskUser.icon;
+				task.left = task.estimate;
+				task.consumed = 0;
+				task.milestoneId = task.taskMilestone ? task.taskMilestone.id : task.taskMilestone;
+				task.milestoneTitle = task.taskMilestone ? task.taskMilestone.title : task.taskMilestone;
+				task.projectPlan = task.taskPlan;
+				task.labels = task.taskTag;
+				task.labelTask = [];
+				task.status = '1';
+				angular.forEach(task.taskTag, function (tag) {
+					task.labelTask.push({ "labelId": tag.id });
+				});
+				if (angular.isDefined(task.taskStory)) {
+					task.storyId = task.taskStory.id;
+					task.storyName = task.taskStory.title
+				}
+				task.projectId = task.taskProject.id;
+				task.isNew = true;
+
+				$http.post("ws/creatTask", { task: task, stageName: null,taskConfirm:task.taskConfirm }).success(function (data) {
+					task.taskId = data.result.id;
+
+					var newTask = angular.copy(task);
+					newTask.isNewTask = true;
+					newTask.projectName = task.taskProject.name;
+					//选择的成员还没有任务
+					var isUserExist = false;
+					$.each($params.taskList, function (i, ele) {
+						if (angular.equals(ele.userDTO.userRealname, newTask.userRealname)) {
+							$params.taskList[i].taskSnapShotList.unshift(newTask);
+							isUserExist = true;
+						}
+					});
+					if (!isUserExist) {
+						$params.taskList.splice(index + 1, 0, {
+							currentProjectEstimateCount: 0,
+							otherProjectEstimateCount: 0,
+							taskSnapShotList: [newTask],
+							userDTO: {
+								remark1: '1',
+								userName: newTask.assignedTo,
+								userRealname: newTask.userRealname
+							}
+						});
+					}
+
+					$timeout(function () {
+						newTask.isNewTask = false;
+						newTask.nomalAnimate = true;
+					}, 2000);
+
+					if (task.userId != $rootScope.subject.userId) {
+						$http.post("ws/pushSystem", {
+							msgTo: task.userId,
+							msgContent: "[" + $rootScope.subject.userRealname + "]分配了你任务[" + task.name + "]",
+							link: "tasks/" + task.id,
+							isPersistent: true
+						});
+					}
+					$http.post("message/" + task.userId + "/pushTask", {});
+					$http.post("message/$all/taskDetailUpdate", { id: newTask.id, to: task.userId, type: "add", socketId: $rootScope.socketId });
+
+					task.name = undefined;
+					task.description = null;
+				});
+
+			} else {
+				$("#taskDiv_" + index + "#taskErrorMsg").addClass("see");
+				$timeout(function () {
+					$("#taskDiv_" + index + "#taskErrorMsg").removeClass("see");
+				}, 2000);
+			}
+		}	
+})
+</script>

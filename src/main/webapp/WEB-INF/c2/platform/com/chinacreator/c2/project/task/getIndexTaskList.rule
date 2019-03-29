@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getIndexTaskList" log="false" className="com.chinacreator.c2.project.task.TaskService" method="getIndexTaskList">
+  <name>首页任务列表</name>
+  <inputs>
+    <input collection="false" desc="" id="search" required="true" type="java.util.Map"/>
+    <input collection="false" desc="" id="pageable" required="true" type="com.chinacreator.c2.dao.mybatis.enhance.Pageable"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.dao.mybatis.enhance.Page"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.search" name="search" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+    <param autoValue="Input.pageable" name="pageable" signature="QPageable;" type="com.chinacreator.c2.dao.mybatis.enhance.Pageable"/>
+  </params>
+  <return signature="QPage&lt;QTask;>;" type="com.chinacreator.c2.dao.mybatis.enhance.Page"/>
+</CustomRule>

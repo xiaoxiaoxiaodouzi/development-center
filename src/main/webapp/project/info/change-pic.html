@@ -1,0 +1,28 @@
+<style>
+    .p-item{
+        cursor: pointer;
+    }
+    .pic-upload-item{
+        border: 1px #ccc dotted;
+        text-align:center;
+    }
+    .pic-upload-btn{
+        font-size:50px;
+        line-height:107px;
+    }
+</style>
+<div class="pmb-block clearfix photos ng-scope" ng-controller="projectPicController">
+        <div class="lightbox">
+            <div class="col-md-2" ng-repeat="pic in pics">
+                <div class="lightbox-item p-item" ng-click="picSelected(pic)">
+                    <img ng-src="{{pic.disSrc}}" width="107" height="107" alt="">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="lightbox-item p-item pic-upload-item" ngf-select="true" accept="image/*"  ngf-max-size="10240000" ngf-change="uploadStart($files, $file, $event, $rejectedFiles)">
+                    <i class="md md-file-upload pic-upload-btn"></i>
+                </div>
+            </div>
+        </div>
+</div>
+<script src="js/controllers/project/picture.js"/>

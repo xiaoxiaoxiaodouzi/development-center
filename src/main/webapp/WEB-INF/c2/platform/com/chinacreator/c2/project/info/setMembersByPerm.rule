@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="setMembersByPerm" log="false" className="com.chinacreator.c2.project.info.MembersMgt" method="setMembersByPerm">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>成员授权</name>
+  <inputs>
+    <input collection="false" desc="" id="projectId" required="true" type="int"/>
+    <input collection="false" desc="" id="userId" required="true" type="String"/>
+    <input collection="false" desc="" id="jobId" required="true" type="String"/>
+    <input collection="false" desc="" id="state" required="true" type="boolean"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+    <param autoValue="Input.userId" name="userId" signature="QString;" type="String"/>
+    <param autoValue="Input.jobId" name="jobId" signature="QString;" type="String"/>
+    <param autoValue="Input.state" name="state" signature="Z" type="boolean"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

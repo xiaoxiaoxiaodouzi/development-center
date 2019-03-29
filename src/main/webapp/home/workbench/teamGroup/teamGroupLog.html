@@ -1,0 +1,178 @@
+<link href="home/workbench/teamGroup/teamGroup.css" rel="stylesheet">
+<style>
+.card-header{
+	position:relative;
+}
+#whiteListBtn {
+	position:absolute;
+	right:3%;
+	top:30%;
+}
+#whiteListBtn ul li a {
+	text-align:left;
+}
+#whiteListBtn ul li a i {
+	margin-right:3px;
+}
+#detail-panel {
+    height: calc(100% - 113px);
+}
+</style>
+<div class="container m-t-10">
+    <div id="teamGroupLogPage" class="card wr-open">
+    	<div class="card-header">
+			<h2>团队日志统计</h2>
+			<div id="whiteListBtn" class="lv-actions actions dropdown" ng-show="roleAssist || logAdmin">
+					<a href="" data-toggle="dropdown" aria-expanded="true"><i class="md md-more-vert"></i></a>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li>
+							<a ng-click="openManageWhiteModal();">
+								<i class="md md-person-outline"></i>白名单管理
+							</a>
+						</li>
+						<li>
+							<a ng-click="downLoadWorkLog()" >
+								<i class="md md-get-app"></i>工作量日志
+							</a>
+						</li>
+						<li>
+							<a ng-click="downLoadLackLog()">
+								<i class="md md-get-app"></i>部门缺失清单
+							</a>
+						</li>
+						<li>
+							<a ng-click="downLoadProjectTask()" >
+								<i class="md md-get-app"></i>任务统计
+							</a>
+						</li>
+						<li data-ng-if="roleAssist">
+							<a ng-click="downLoadOverLog()" >
+								<i class="md md-get-app"></i>加班日志
+							</a>
+						</li>
+						<li>
+							<a ng-click="downLoadOverdue()" >
+								<i class="md md-get-app"></i>逾期日志
+							</a>
+						</li>
+						<li>
+							<a ng-click="downLoadProjectsLog() ">
+								<i class="md md-get-app"></i>工作日志
+							</a>
+						</li>	
+					</ul>
+			</div>
+			<div id="whiteListBtn" class="lv-actions actions dropdown" ng-show="!(roleAssist || logAdmin)">
+					<a href="" data-toggle="dropdown" aria-expanded="true"><i class="md md-more-vert"></i></a>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li data-ng-if="roleAssist">
+							<a ng-click="downLoadOverLog()" >
+								<i class="md md-get-app"></i>加班日志
+							</a>
+						</li>
+						<li>
+							<a ng-click="downLoadProjectsLog() ">
+								<i class="md md-get-app"></i>工作日志
+							</a>
+						</li>	
+					</ul>
+			</div>
+		</div>
+		<div class="card-body p-b-40">
+		<div class="wr-view">
+			<div class="wkr-tasklist clearfix" >
+				<c2-dropdown id="deptDrop" tree-options="deptTreeOptions" tree-nodes="deptTree" max-height="200">
+					<div class="picker picker-white text-overflow" style="max-width:500px;">
+						<i class="md md-account-balance" title="部门/组选择"></i> {{selectedDeptNode?"":"指定部门  "}}{{selectedDeptNode.name}}<span class="caret"></span>
+					</div>
+				</c2-dropdown>
+				<c2-date-range-dropdown date-range="dateRange" date-buttons="dateButtons" default-button="thisWeek" buttom-message="未完成的任务按计划结束时间过滤，已完成的按完成时间过滤；入职时间在结束时间之后或者离职时间在开始时间之前的人会自动过滤。">
+	           		<div class="picker picker-white">
+						<i class="md md-today" title="日期选择"></i> {{dateRange.show}}<span class="caret"></span>
+					</div>
+	           	</c2-date-range-dropdown>
+	           	<c2-dropdown class="animate" bind-data="search.users" items="deptUsers" item-name="userRealname" item-id="userName" item-click="selectUser(item)" multiple="true" max-height="200" clean-button="true" after-clean-event="cleanUsers()" filter="true">
+						<div class="picker"><i class="md md-account-child" title="成员选择"></i> {{search.users.length>0?'人员数:'+search.users.length:'选择人员'}}<span class="caret"></span></div>
+				</c2-dropdown>
+				
+				<c2-dropdown class="animate" bind-data="search.projects" items="projectOptions" item-name="name" multiple="true" max-height="200" clean-button="true" filter="true">
+					<!-- <div class="picker"><i class="md md-apps" title="项目选择"></i> {{search.projects.length>0?'项目数:'+search.projects.length:'选择项目'}}<span class="caret"></span></div> -->
+					<button class="btn btn-default btn-icon-text picker-shadow" id="projectDisabled">
+							<i class="md md-apps" title="项目选择"></i>{{search.projects.length>0?'项目数:'+search.projects.length:'选择项目'}}<span class="caret"></span>
+					</button>
+				</c2-dropdown>				
+				
+                <label class="checkbox checkbox-inline m-l-20">
+	                <input type="checkbox" ng-model="search.task"/>
+	                <i class="input-helper"></i> 任务日志
+	            </label>
+	            <label class="checkbox checkbox-inline m-l-10">
+	                <input type="checkbox" ng-model="search.lack"/>
+	                <i class="input-helper"></i> 缺失日志
+	            </label>
+	            <label class="checkbox checkbox-inline m-l-10">
+	                <input type="checkbox" ng-model="search.overtime"/>
+	                <i class="input-helper"></i> 加班日志
+	            </label>
+	            <label class="checkbox checkbox-inline m-l-10">
+	                <input type="checkbox" ng-model="search.overdue"/>
+	                <i class="input-helper"></i> 逾期日志
+	            </label>
+                
+				<table class="table table-hover m-b-0" id="teamLog" >
+					<thead ng-show="!search.overdue">
+						<tr style="border-bottom: 2px solid #f0f0f0;border-top: 1px solid #eee;">
+							<th style="width: 110px;text-align: center;">日期</th>
+							<th style="text-align: center;">任务描述</th>
+							<th style="width: 120px; text-align: center;">所属项目</th>
+							<th id="overTitle" style="width: 85px; text-align: center;">工时</th>
+						</tr>
+					</thead>
+					<thead ng-show="search.overdue">
+						<tr style="border-bottom: 2px solid #f0f0f0;border-top: 1px solid #eee;">
+							<th style="width: 110px;text-align: center;">工作日期</th>
+							<th style="width: 110px;text-align: center;">实际填写日期</th>
+							<th style="width: 110px;text-align: center;">逾期天数</th>
+							<th style="text-align: center;">任务描述</th>
+							<th style="width: 170px; text-align: center;">所属项目</th>
+						</tr>
+					</thead>
+					<tbody ng-repeat="logsGroup in teamLogs" ng-show="!search.overtime && !search.overdue">
+						<tr><td colspan="4" class="w-title p-l-10"><strong class="f-14 m-r-15 pull-left w-width">{{logsGroup.userRealname}}<span ng-if="logsGroup.userIsvalid!=1" title="离职日期：{{logsGroup.leaveDate | date:'yyyy-MM-dd'}}">(离职)</span></strong> <span ng-if="search.task">使用工时<span class="num c-teal">{{logsGroup.consumed}}</span></span> <span ng-if="search.lack">缺失工时<span class="num c-red">{{logsGroup.lackEstimate}}</span></span></td></tr>
+						<tr ng-repeat="estimateLog in logsGroup.logs" ng-class="{'miss-tr':estimateLog.lackEstimate}">
+							<td class="column">{{estimateLog.workDate | date:"yyyy-MM-dd"}}</td>
+							<td class="column text-left"><a class="text-line-hidden" data-ui-sref="home.workbench.teamLog.detail({taskId:'{{estimateLog.taskId}}'})" ng-if='estimateLog.taskId' title="{{estimateLog.description}}">{{estimateLog.description}}</a><span ng-if='!estimateLog.taskId'>{{estimateLog.description}}</span></td>
+							<td class="column"><span class="text-line-hidden">{{estimateLog.projectName}}</span></td>
+							<td class="column"><span ng-if="estimateLog.lackEstimate")>{{estimateLog.lackEstimate}}</span><span ng-if='estimateLog.consumed'>{{estimateLog.consumed}}</span></td>
+						</tr>
+						<tr ng-show="logsGroup.lacklogs.length>0"><td class="column text-left p-l-20" colspan="3"><div ng-repeat="lackInfo in logsGroup.lacklogs" width="120" style="color:#555;" class="pull-left m-r-10 m-t-5" title="{{lackInfo.workDate | date:'yyyy-MM-dd'}}">{{lackInfo.workDate | date:"MM-dd"}}（<span class="c-red ">{{lackInfo.lackEstimate}}</span>）</div></td></tr>
+					</tbody>
+					<tbody ng-repeat="logsGroup in teamLogs" ng-show="search.overtime">
+						<tr><td colspan="4" class="w-title p-l-10"><strong class="f-14 m-r-15 pull-left w-width">{{logsGroup.userRealname}}<span ng-if="logsGroup.userIsvalid!=1" title="离职日期：{{logsGroup.leaveDate | date:'yyyy-MM-dd'}}">(离职)</span></strong> <span ng-if="search.overtime">总加班工时<span class="num c-red">{{logsGroup.overestimate}}</span></span> </td></tr>
+						<tr ng-repeat="estimateLog in logsGroup.logs" ng-class="{'miss-tr':estimateLog.lackEstimate}">
+							<td class="column" ng-show="estimateLog.flag" rowspan="{{estimateLog.count}}">{{estimateLog.workDate | date:"yyyy-MM-dd"}}</td>
+							<td class="column text-left"><a class="text-line-hidden" data-ui-sref="home.workbench.teamLog.detail({taskId:'{{estimateLog.taskId}}'})" ng-if='estimateLog.taskId' title="{{estimateLog.description}}">{{estimateLog.description}}</a><span ng-if='!estimateLog.taskId'>{{estimateLog.description}}</span></td>
+							<td class="column"><span class="text-line-hidden">{{estimateLog.projectName}}</span></td>
+							<td class="column" ng-show="estimateLog.flag" rowspan="{{estimateLog.count}}"><span class="c-red">{{estimateLog.overestimate}}</span>（<span>{{estimateLog.GZSC}}</span>）</td>
+						</tr>
+					</tbody>
+					<tbody ng-repeat="logsGroup in teamLogs" ng-show="search.overdue">
+						<tr><td colspan="5" class="w-title p-l-10"><strong class="f-14 m-r-15 pull-left w-width">{{logsGroup.userRealname}}<span ng-if="logsGroup.userIsvalid!=1" title="离职日期：{{logsGroup.leaveDate | date:'yyyy-MM-dd'}}">(离职)</span></strong> </span> </td></tr>
+						<tr ng-repeat="estimateLog in logsGroup.logs" ng-class="{'miss-tr':estimateLog.lackEstimate}">
+							<td class="column">{{estimateLog.workDate | date:"yyyy-MM-dd"}}</td>
+							<td class="column">{{estimateLog.recordDate | date:"yyyy-MM-dd"}}</td>
+							<td class="column"><span style="color: #FF9800;">{{estimateLog.overDay}}</span></td>
+							<td class="column text-left"><a class="text-line-hidden" data-ui-sref="home.workbench.teamLog.detail({taskId:'{{estimateLog.taskId}}'})" ng-if='estimateLog.taskId' title="{{estimateLog.description}}">{{estimateLog.description}}</a><span ng-if='!estimateLog.taskId'>{{estimateLog.description}}</span></td>
+							<td class="column"><span class="text-line-hidden">{{estimateLog.projectName}}</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		</div>
+	</div>
+</div>
+
+<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;top:113px">
+    <ui-view onload="stateOnload()"></ui-view>
+</aside>

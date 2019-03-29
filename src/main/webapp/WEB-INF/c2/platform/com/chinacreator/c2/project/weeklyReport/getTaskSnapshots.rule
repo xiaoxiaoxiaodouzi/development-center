@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="wr/getTaskSnapshots" log="false" className="com.chinacreator.c2.project.weeklyReport.WeeklyReportService" method="getTaskSnapshots">
+  <name>查询任务快照</name>
+  <inputs>
+    <input collection="false" desc="" id="snapshot" required="true" type="com.chinacreator.c2.project.weeklyReport.TaskSnapshot"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.snapshot" name="snapshot" signature="QTaskSnapshot;" type="com.chinacreator.c2.project.weeklyReport.TaskSnapshot"/>
+  </params>
+  <return signature="QList&lt;QTaskSnapshot;>;" type="java.util.List"/>
+</CustomRule>

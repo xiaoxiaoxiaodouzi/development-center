@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="bug/changeBugMan" log="false" className="com.chinacreator.c2.project.bug.BugService" method="changeBugMan">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>bug任务负责人变动</name>
+  <inputs>
+    <input collection="false" desc="" id="bugId" required="true" type="Integer"/>
+    <input collection="false" desc="" id="man" required="true" type="String"/>
+    <input collection="false" desc="" id="changeMan" required="true" type="String"/>
+    <input collection="false" desc="" id="manRealname" required="true" type="String"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.bugId" name="bugId" signature="QInteger;" type="Integer"/>
+    <param autoValue="Input.man" name="man" signature="QString;" type="String"/>
+    <param autoValue="Input.manRealname" name="manRealname" signature="QString;" type="String"/>
+    <param autoValue="Input.changeMan" name="changeMan" signature="QString;" type="String"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

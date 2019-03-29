@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.doc.DocMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_comunity_doc.id ,
+		  c2_comunity_doc.name ,
+		  c2_comunity_doc.desc_ ,
+		  c2_comunity_doc.project ,
+		  c2_comunity_doc.visit_count ,
+		  c2_comunity_doc.public_static ,
+		  c2_comunity_doc.content ,
+		  c2_comunity_doc.author_id ,
+		  c2_comunity_doc.createtime 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_comunity_doc.id = #{id}</if>
+	    <if test="name != null">and c2_comunity_doc.name = #{name}</if>
+	    <if test="desc != null">and c2_comunity_doc.desc_ = #{desc}</if>
+	    <if test="project != null">and c2_comunity_doc.project = #{project}</if>
+	    <if test="visitCount != null">and c2_comunity_doc.visit_count = #{visitCount}</if>
+	    <if test="publicStatic != null">and c2_comunity_doc.public_static = #{publicStatic}</if>
+	    <if test="authorId != null">and c2_comunity_doc.author_id = #{authorId}</if>
+	    <if test="createtime != null">and c2_comunity_doc.createtime = #{createtime}</if>
+</sql>
+
+
+<!-- ElementID:DocResult,Generated=true -->
+<resultMap id="DocResult" type="com.chinacreator.c2.project.doc.Doc">
+	<id property="id" column="id"/>
+	<result property="name" column="name"/>
+	<result property="desc" column="desc_"/>
+	<result property="project" column="project"/>
+	<result property="visitCount" column="visit_count"/>
+	<result property="publicStatic" column="public_static"/>
+	<result property="content" column="content"/>
+	<result property="authorId" column="author_id"/>
+	<result property="createtime" column="createtime"/>
+</resultMap>
+
+
+
+
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.doc.Doc" resultType="int">
+	select count(*) from c2_comunity_doc 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.doc.Doc">
+	update c2_comunity_doc
+<set>
+	<if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
+	<if test="desc != null">desc_=#{desc,jdbcType=VARCHAR},</if>
+	<if test="project != null">project=#{project,jdbcType=NUMERIC},</if>
+	<if test="visitCount != null">visit_count=#{visitCount,jdbcType=NUMERIC},</if>
+	<if test="publicStatic != null">public_static=#{publicStatic,jdbcType=CHAR},</if>
+	<if test="content != null">content=#{content,jdbcType=CLOB},</if>
+	<if test="authorId != null">author_id=#{authorId,jdbcType=VARCHAR},</if>
+	<if test="createtime != null">createtime=#{createtime,jdbcType=TIMESTAMP}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:update,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_comunity_doc
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="name==null">name = null,</if>
+		    <if test="desc==null">desc_ = null,</if>
+		    <if test="project==null">project = null,</if>
+		    <if test="visitCount==null">visit_count = null,</if>
+		    <if test="publicStatic==null">public_static = null,</if>
+		    <if test="content==null">content = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.doc.Doc">
+    delete from c2_comunity_doc where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.doc.Doc" resultMap="DocResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_doc 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_comunity_doc where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="DocResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_doc 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="DocResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_doc 
+		 where c2_comunity_doc.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.doc.Doc" resultMap="DocResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_doc 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="DocResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_doc 
+	where c2_comunity_doc.id in (
+		select distinct id from c2_comunity_doc inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_comunity_doc 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_doc.id = #{entity.id}</if>
+	        <if test="entity.name != null">and c2_comunity_doc.name = #{entity.name}</if>
+	        <if test="entity.desc != null">and c2_comunity_doc.desc_ = #{entity.desc}</if>
+	        <if test="entity.project != null">and c2_comunity_doc.project = #{entity.project}</if>
+	        <if test="entity.visitCount != null">and c2_comunity_doc.visit_count = #{entity.visitCount}</if>
+	        <if test="entity.publicStatic != null">and c2_comunity_doc.public_static = #{entity.publicStatic}</if>
+	        <if test="entity.authorId != null">and c2_comunity_doc.author_id = #{entity.authorId}</if>
+	        <if test="entity.createtime != null">and c2_comunity_doc.createtime = #{entity.createtime}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.doc.Doc" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_comunity_doc(
+		<trim prefixOverrides=",">
+		    <if test="name != null">name</if>
+		    <if test="desc != null">,desc_</if>
+		    <if test="project != null">,project</if>
+		    <if test="visitCount != null">,visit_count</if>
+		    <if test="publicStatic != null">,public_static</if>
+		    <if test="content != null">,content</if>
+		    <if test="authorId != null">,author_id</if>
+		    <if test="createtime != null">,createtime</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="name != null">#{name,jdbcType=VARCHAR}</if>
+		    <if test="desc != null">,#{desc,jdbcType=VARCHAR}</if>
+		    <if test="project != null">,#{project,jdbcType=NUMERIC}</if>
+		    <if test="visitCount != null">,#{visitCount,jdbcType=NUMERIC}</if>
+		    <if test="publicStatic != null">,#{publicStatic,jdbcType=CHAR}</if>
+		    <if test="content != null">,#{content,jdbcType=CLOB}</if>
+		    <if test="authorId != null">,#{authorId,jdbcType=VARCHAR}</if>
+		    <if test="createtime != null">,#{createtime,jdbcType=TIMESTAMP}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_comunity_doc (name,desc_,project,visit_count,public_static,content,author_id,createtime)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.name,jdbcType = VARCHAR},
+		         #{entity.desc,jdbcType = VARCHAR},
+		         #{entity.project,jdbcType = NUMERIC},
+		         #{entity.visitCount,jdbcType = NUMERIC},
+		         #{entity.publicStatic,jdbcType = CHAR},
+		         #{entity.content,jdbcType = CLOB},
+		         #{entity.authorId,jdbcType = VARCHAR},
+		         #{entity.createtime,jdbcType = TIMESTAMP}
+				)
+</foreach>
+</insert>
+
+<select id="selectDocList" parameterType="int" resultMap="DocListResult">
+SELECT
+	d.*,u.user_realname userName,u.remark1 userIcon
+FROM
+	c2_comunity_doc d
+	left join td_sm_user u on d.AUTHOR_ID = u.user_id
+WHERE
+	d.project = #{projectId}
+ORDER BY d.id desc
+</select>
+<select id="selectDocView" parameterType="int" resultMap="DocListResult">
+SELECT
+	d.*,u.user_realname userName,u.remark1 userIcon
+FROM
+	c2_comunity_doc d
+	left join td_sm_user u on d.AUTHOR_ID = u.user_id
+WHERE
+	d.id = #{docId}
+ORDER BY d.id desc
+</select>
+
+<resultMap id="DocListResult" type="map">
+	<id property="id" column="id"/>
+	<result property="name" column="name"/>
+	<result property="desc" column="desc_"/>
+	<result property="project" column="project"/>
+	<result property="visitCount" column="visit_count"/>
+	<result property="publicStatic" column="public_static"/>
+	<result property="content" column="content"/>
+	<result property="authorId" column="author_id"/>
+	<result property="createtime" column="createtime"/>
+	<collection property="files" column="id" select="docFiles"/>
+</resultMap>
+<select id="docFiles" parameterType="int" resultType="com.chinacreator.c2.project.doc.DocFile">
+	select * from c2_comunity_doc_file where doc_id = #{id}
+</select>
+</mapper>

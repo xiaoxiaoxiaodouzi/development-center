@@ -1,0 +1,68 @@
+<style>
+#taskListDiv .lv-item {
+	padding: 12px 20px;
+}
+
+#taskListDiv .report-title:hover {
+	cursor: pointer;
+    text-decoration: underline;
+}
+
+.report-label-earlier{
+	background-color: #4caf50;
+}
+
+.report-label-normal{
+	background-color: #7FDC82;
+}
+
+.report-label-latter{
+	background-color: #ff9800;
+}
+
+.report-label-lose{
+	background-color: #f44336;
+}
+</style>
+
+<div class="container m-t-10">
+	<!-- <div class="block-header">
+	 </div> -->
+	<div class="card">
+		<div class="card-header">
+			<h2>
+				项目周报管理 
+				<small>下方会列出从项目创建时起到当前时间段中的所有周报，请点击状态为<span class="c-red">缺失</span>的记录进行填报；周报一旦提交将无法进行修改，提交前请仔细核对任务信息及总结!</small>
+				<small data-ng-if="weekReportSubmit">填写完成的周报会被提交给：<strong class="m-r-5 c-black" ng-if="$params.submit2.length!=0" ng-repeat="user in $params.submit2">{{user.userRealname}}{{$index==5||$index==$params.submit2.length-1?"":","}}</strong><a href="javascript:void(0)" ng-click="addWeekReportSendTo()">编辑...</a></small>
+			</h2>			
+		</div>
+
+		<div id="taskListDiv" class="card-body clearfix">
+			<div class="listview lv-bordered lv-lg ">
+				<div class="lv-body" style="border-top: 1px solid #eee;">
+					<!-- 周报列表 -->
+					<div class="lv-item media no-animate" ng-repeat="report in reportList" ng-init="initWeekReport(report)"
+						ng-click="weekReportClick(report)">
+						<div class="pull-left report-title">
+							{{report.year}}年第{{report.week}}周 ({{report.startDate}}~{{report.endDate}})
+						</div>
+						<div class="progress" title="{{report.statisticsDesc}}" style="width:350px;margin-bottom: 0px;float:left">
+							<div class="progress-bar progress-bar-success" style="width:{{report.statistics.normalRate}}%;">
+							{{report.statistics.normal}}
+							</div>
+							<div class="progress-bar progress-bar-warning" style="width:{{report.statistics.delayedRate}}%;">
+							{{report.statistics.delayed}}
+							</div>
+						</div>
+						<span class="label pull-right {{report.statusClass}}" style="width: 70px;font-size:12px" >
+							<div title="创建周报"><i class="md md-add-circle-outline" ng-if="report.statusClass=='label-lose'"></i>{{report.status}}</div>
+						</span>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<c2-pagination total="$params.page.total" page-size="10" on-page-change="pageList(pageIndex)"></c2-pagination>
+	</div>
+</div>

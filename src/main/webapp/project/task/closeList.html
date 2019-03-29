@@ -1,0 +1,89 @@
+<link href="css/task/list.css" rel="stylesheet">
+<style>
+.listview.lv-lg .lv-item {
+    padding: 15px 0px 0px 10px;
+}
+.modal-body{
+	height:500px;
+	overflow-y:auto
+}
+</style>
+
+<div ng-controller="taskCloseListController">
+	<div class="card-body clearfix">
+		<div id="taskListDiv" class="listview lv-bordered lv-lg">
+        
+            <div class="lv-body">
+
+                <div class="lv-item media" ng-repeat="task in taskList" ui-sref-active="active-shadow" ng-class="{'list-add-animate':task.isNewTask,'list-update-animate':task.isUpdateTask,'list-show-animate':task.nomalAnimate,'list-remove-animate':task.removeAnimate,'ui-sort-disabled':task.isDone==1}">
+                    <!-- <div class="checkbox pull-left">
+                        <label>
+                            <input ng-model="task.isDone" disabled="disabled" type="checkbox" title="是否完成" />
+                            <i class="input-helper"></i>
+                        </label>
+                    </div> -->
+                    <div class="pull-left user-head">
+                        <img class="lv-img-sm" ng-src="{{task.userIcon}}">
+                        <div>{{task.userRealname}}</div>
+                    </div>
+                    <div class="media-body">
+                        <div class="lv-title pull-left" style="width: 70%;">
+	                        <i ng-if="task.bugId" class="md md-bug-report c-indigo"></i>
+	                        <a ng-class="{'c-gray':task.isDone,'text-del':task.isDone}">{{task.name}}</a>
+	                        <span class="p-l-10 p-r-10 m-r-5 label-show" style="cursor:pointer;" ng-style="label.backgroundStyle" ng-repeat="label in task.labels">{{label.name}}</span>  
+                        </div>
+                        <div title="工时" class="pull-right c-darkgrey f-16" style="width:104px;cursor: pointer;margin-bottom: 3px;"><i class="md md-history m-f-w m-r-5"></i> <span class="f-14 l-s-2">{{task.consumed}}/{{task.estimate}}</span></div>
+                        <div class="clearfix"></div>
+                        <ul class="lv-attrs">
+                            <li title="完成时间"><i class="md md-today"></i> {{task.finishedDate | date:"yyyy-MM-dd"}} </li>
+                            <li title="模块" ng-if="task.moduleName"><i class="md md-extension"></i> {{task.moduleName}}</li>
+                            <li title="里程碑" ng-if="task.milestoneTitle"><i class="md md-av-timer"></i> {{task.milestoneTitle}}</li>
+                            <li title="bug编号" ng-if="task.bugId">
+                            	<a ng-if="isProjectTasks" class="c-purple">#{{task.bugNo}}</a>
+                            </li>
+                            <li ng-if="task.description" ng-click="task.exDesc=!task.exDesc;task.expandText=task.exDesc?'收起':'展开'" ng-init="task.expandText='展开'" style="cursor: pointer;"><i class="md md-view-headline"></i> {{task.expandText}}描述</li>
+                        </ul>
+                        <small ng-if="task.description&&task.exDesc" class="lv-small lv-text-normal" ng-bind-html="task.description | markdown"></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <c2-pagination id="pageEle" total="page.total" page-size="10" on-page-change="refreshList(pageIndex)"></c2-pagination>
+		</div>
+
+</div>
+
+<script>
+angular.module("project").registerCtrl('taskCloseListController',
+		function($scope, $http, $state, $stateParams,Messenger,$timeout, Modal) {
+	$scope.page = {pageSize:10};	
+	
+	$scope.refreshList = function(pageIndex) {
+		$scope.taskList = [];
+		$scope.page.total = 0;
+		$timeout(function(){
+			var searchParam = {Closed : true,
+					projects:[{id:$scope.projectId}]
+					};
+			$http.post("ws/taskList",{search:searchParam,pageable:{pageSize:$scope.page.pageSize,pageIndex:pageIndex}}).success(function(data){
+				if(data.result.total==0){
+					Messenger.post("暂无归档任务");
+				}else{
+					angular.forEach(data.result.contents,function(task){
+		    			angular.forEach(task.labels,function(label){
+		    				label.backgroundStyle = {"background-color":label.color,"border-radius":"2px","color":getTextColorByBackColor(label.color)};
+		    			});
+		    		});
+					$scope.taskList = data.result.contents;
+					$scope.page.total = data.result.total;
+				}
+			});
+			
+		},200)
+	}
+
+	$scope.refreshList(1);
+});
+</script>
+
+

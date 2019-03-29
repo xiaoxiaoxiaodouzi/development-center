@@ -1,0 +1,292 @@
+<style>
+.btn-save {
+	width:60px;
+	font-size:14px;
+	margin-right:100px;
+}
+.md-choice{
+	top:40px;
+	left:120px;
+}
+#report-form-list .lv-item {
+	padding: 12px 20px;
+}
+
+#report-form-list .lv-item:hover{
+	background-color:#EFF4F9;
+}
+
+#report-form-list .report-title:hover {
+	cursor: pointer;
+}
+
+#report-form-list .report-title {
+	max-width: 30%;
+    width: 30%;
+    text-align:left !important;;
+}
+
+.report-form-detail .card{
+	box-shadow:none;
+	margin-bottom:0px;
+}
+
+#report-form-list .report-open-content {
+    background-color: white;
+    border-bottom: 1px solid white;
+    margin:0px -3px 3px -3px ;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+#report-form-list .report-open-title {
+	background-color: #EFF4F9;
+	font-weight: bold;
+}
+
+#report-form-list .report-title .report-title-name {
+	color:#69aa46;
+	margin-left:30px;
+	width:100px;
+	max-width:100px;
+}
+
+#report-form-list .lv-item .turn{
+	transform:rotate(180deg);
+}
+
+#report-form-list .lv-item .md-keyboard-arrow-down{
+	transition: transform 500ms;
+}
+
+#report-form-list .lv-pagination{
+	border-top: 0px;
+}
+
+.report-label-earlier{
+	background-color: #4caf50;
+}
+
+.report-label-normal{
+	background-color: #7FDC82;
+}
+
+.report-label-latter{
+	background-color: #ff9800;
+}
+
+.report-label-lose{
+	background-color: #f44336;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+	cursor: pointer;
+}
+
+.report-form-title-green {
+	color: #69aa46 ;
+}
+
+.rf-summary {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.rf-content .table .column,
+#report-form-list .lv-item .column{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: clip;
+	text-align: center;
+}
+
+.rf-content .table {
+	margin-bottom:0px;
+}
+
+.rf-content .table .column >a {
+	color:#161617;
+}
+
+.rf-content .table .column >a:hover {
+	color:#2196f3;
+	cursor:pointer;
+}
+
+.report-form-detail .card .rf-content .lv-header-alt {
+	padding: 5px 12px 12px 20px;
+	border-bottom: 0px;
+	background-color: #eee;
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 10px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 0px; 
+}
+
+.table > thead > tr > th {
+  border-bottom: 0px;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+   background-color: inherit;
+}
+
+.report-form-detail{
+	display:block !important ;
+	overflow: hidden;
+	transition: max-height 0.3s ;
+	transition-delay:0s;
+	max-height:0px;
+}
+
+.report-form-detail.open{
+	transition: max-height 0.3s ;
+	transition-delay:0s;
+	max-height:20000px;
+}
+
+.w-report p:first {
+    margin-top: 15px;
+    line-height: 2em;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.divider{
+	display: inline-block;
+    height: .9em;
+    width: 1px;
+    vertical-align: middle;
+    position: relative;
+    font-size: 16px;
+    margin: 0;
+    background: #eee;
+}
+</style>
+<div id="report-form-list" data-ng-controller="teamUsersController" class="container m-t-10 w-100 p-0">
+	<div class="card">
+		<div class="card-header">
+			<h2>
+				成员设置<small>设置团队成员</small>
+			</h2>
+			
+			<button title="新增团队" id="add-task-button" class="btn bgm-blue btn-float " ng-click="addTeam()" style="bottom:5px">
+				<i class="md md-add"></i>
+			</button>
+		</div>
+
+		<div class="card-body clearfix">
+			<div  class="listview lv-bordered lv-lg " style="padding: 0px 23px 0px 20px;">
+
+				<!-- 搜索 -->
+				<!-- <div id="searchBarPosition">
+					<div class="lv-header-alt" id="searchBar">
+
+						<c2-dropdown class="animate" id="projectDropdown" bind-data="team" items="teams"
+						 item-name="name" class="m-l-10" max-height="200" filter="true">
+							<div class="picker picker-white text-overflow" style="max-width:160px;">
+								<i class="md md-apps"></i>
+								<span ng-if="!team">选择团队
+									<i class="caret"></i>
+								</span>{{team.name}}
+							</div>
+						</c2-dropdown>
+
+					</div>
+				</div> -->
+
+				<div class="lv-body">				
+					<div class="media-body">
+						<table class="table table-hover m-b-0">
+							<thead>
+								<tr style="border-bottom: 1px solid #f0f0f0;border-top: 1px solid #EEE;">
+									<th style="text-align: center;">团队名称</th>
+									<th style="text-align: center;">成员数量</th>
+									<th style="text-align: center;">创建人</th>
+									<th style="text-align: center;">创建时间</th>
+									<th id="overTitle" style="width: 160px; text-align: center;">操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="team in teams">
+									<td class="column"style="text-align: center;">{{team.name}}</td>
+									<td class="column"style="text-align: center;">{{team.users.length}}</td>
+									<td class="column"style="text-align: center;">{{team.ownerRealname}}</td>
+									<td class="column"style="text-align: center;">{{team.createTime | date:"yyyy-MM-dd"}}</td>
+									<td class="column"style="text-align: center;">
+										<span ng-if="team.owner==$parent.subject.userName">
+											<a style="cursor: pointer" ng-click="addMember(team)">导入成员</a>
+											<div class="divider"></div>
+											<a style="cursor: pointer" ng-click="setTeam(team)">设置</a>
+											<!-- <div class="divider"></div>
+											<a style="cursor: pointer" ng-click="delTeam(team)">删除</a> -->
+										</span>
+										<a ng-if="team.owner!=$parent.subject.userName" style="cursor: pointer" ng-click="viewTeam(team)">查看</>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			
+			<c2-pagination total="page.total" page-size="10"
+			on-page-change="pageList(pageIndex)"></c2-pagination>
+		</div>
+
+	</div>
+</div>
+
+<script>
+angular.module("developmentCenter").registerCtrl('teamUsersController',
+	function ($scope, $rootScope, $http, $state, $stateParams,debounce,$timeout, Messenger, Modal) {
+	
+	$scope.page = {
+		pageSize: 10,
+		pageIndex: 1
+	}
+	
+	//获取当前登录者的所有团队
+	$scope.getTeams = function(pageIndex){
+		$http.get("team/v1/teams?owner="+$rootScope.subject.userName+"&page="+pageIndex).success(function(data){
+			$scope.teams = data.contents;
+			$scope.page.total = data.total;
+		})
+	}
+	
+	$scope.getTeams(1);
+	
+	$scope.pageList = function(pageIndex){
+		$scope.page.pageIndex = pageIndex;
+		$scope.getTeams(pageIndex);
+	}
+	
+	//新增团队
+	$scope.addTeam = function(e){
+		Modal.open('team/addTeam.html',{},{size:'big',onClose:function(data){
+			$scope.pageList(1);
+		}})
+	}
+	
+	//导入成员
+	$scope.addMember = function(team){
+		Modal.open("team/import-member.html",{team:team},{title:'导入成员',size:'big',onClose:function(data){
+			$scope.pageList($scope.page.pageIndex);
+		}})
+	}
+	
+	//编辑团队名称、转让团队等操作
+	$scope.setTeam = function(team){
+		/*Modal.open("team/setTeam.html",{team:team},{title:'团队设置',size:'big',onClose:function(data){
+			$scope.pageList($scope.page.pageIndex);
+		}})*/
+		$state.go("home.team.setting",{teamId:team.id});
+	}
+	
+	//允许普通成员查看团队内的其他成员信息
+	$scope.viewTeam = function(team){
+		Modal.open("team/viewTeam.html",{users:team.users},{title:'成员列表',size:'big'})
+	}
+	
+})
+</script>

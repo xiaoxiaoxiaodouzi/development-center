@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="task/getMembersForAdd" log="false" className="com.chinacreator.c2.project.task.TaskService" method="getMembersForAdd">
+  <name>获取新建任务的分配人</name>
+  <desc>用于新建任务的 分配人列表</desc>
+  <inputs>
+    <input collection="false" desc="任务所在的项目id" id="projectId" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+  </params>
+  <return signature="QList&lt;QUserDTO;>;" type="java.util.List"/>
+</CustomRule>

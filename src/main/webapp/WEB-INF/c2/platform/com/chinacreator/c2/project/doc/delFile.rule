@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="delFile" log="false" className="com.chinacreator.c2.project.doc.DocFileService" method="delFile">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>删除文件</name>
+  <inputs>
+    <input collection="false" desc="" id="path" required="true"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.path" name="path" signature="QString;" type="java.lang.String"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

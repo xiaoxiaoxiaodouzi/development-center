@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="workbench/getLabelByProjects" log="false" className="com.chinacreator.c2.workbench.MyBugBoardService" method="getLabelByProjects">
+  <name>我的bug关联的标签</name>
+  <desc>获取我的项目bug中的所有标签</desc>
+  <inputs>
+    <input collection="false" desc="" id="projects" required="true" type="java.util.List"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.projects" name="projects" signature="QList&lt;QProject;>;" type="java.util.List"/>
+  </params>
+  <return signature="QList&lt;QLabel;>;" type="java.util.List"/>
+</CustomRule>

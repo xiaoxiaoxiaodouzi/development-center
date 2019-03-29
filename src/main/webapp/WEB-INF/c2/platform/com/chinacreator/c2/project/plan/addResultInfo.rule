@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="addResultInfo" log="false" className="com.chinacreator.c2.project.plan.InstanceResultService" method="addResultInfo">
+  <name>添加实例结果信息</name>
+  <desc>添加结果记录信息</desc>
+  <inputs>
+    <input collection="false" desc="" id="result" required="true" type="java.util.Map"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.result" name="result" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

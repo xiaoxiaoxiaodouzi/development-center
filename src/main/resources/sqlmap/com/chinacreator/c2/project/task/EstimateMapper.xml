@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.task.EstimateMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_comunity_task_estimate.id ,
+		  c2_comunity_task_estimate.task_id ,
+		  c2_comunity_task_estimate.work_date ,
+		  c2_comunity_task_estimate.record_date ,
+		  c2_comunity_task_estimate.left_ ,
+		  c2_comunity_task_estimate.consumed ,
+		  c2_comunity_task_estimate.account ,
+		  c2_comunity_task_estimate.description 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_comunity_task_estimate.id = #{id}</if>
+	    <if test="taskId != null">and c2_comunity_task_estimate.task_id = #{taskId}</if>
+	    <if test="workDate != null">and c2_comunity_task_estimate.work_date = #{workDate}</if>
+	    <if test="recordDate != null">and c2_comunity_task_estimate.record_date = #{recordDate}</if>
+	    <if test="left != null">and c2_comunity_task_estimate.left_ = #{left}</if>
+	    <if test="consumed != null">and c2_comunity_task_estimate.consumed = #{consumed}</if>
+	    <if test="account != null">and c2_comunity_task_estimate.account = #{account}</if>
+	    <if test="description != null">and c2_comunity_task_estimate.description = #{description}</if>
+</sql>
+
+
+<!-- ElementID:EstimateResult,Generated=true -->
+<resultMap id="EstimateResult" type="com.chinacreator.c2.project.task.Estimate">
+	<id property="id" column="id"/>
+	<result property="taskId" column="task_id"/>
+	<result property="workDate" column="work_date"/>
+	<result property="recordDate" column="record_date"/>
+	<result property="left" column="left_"/>
+	<result property="consumed" column="consumed"/>
+	<result property="account" column="account"/>
+	<result property="description" column="description"/>
+</resultMap>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.task.Estimate" resultType="int">
+	select count(*) from c2_comunity_task_estimate 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.task.Estimate">
+	update c2_comunity_task_estimate
+<set>
+	<if test="taskId != null">task_id=#{taskId,jdbcType=NUMERIC},</if>
+	<if test="workDate != null">work_date=#{workDate,jdbcType=DATE},</if>
+	<if test="recordDate != null">record_date=#{recordDate,jdbcType=TIMESTAMP},</if>
+	<if test="left != null">left_=#{left,jdbcType=NUMERIC},</if>
+	<if test="consumed != null">consumed=#{consumed,jdbcType=NUMERIC},</if>
+	<if test="account != null">account=#{account,jdbcType=VARCHAR},</if>
+	<if test="description != null">description=#{description,jdbcType=VARCHAR}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:update,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_comunity_task_est
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="task==null">task = null,</if>
+		    <if test="workDate==null">work_date = null,</if>
+		    <if test="recordDate==null">record_date = null,</if>
+		    <if test="left==null">left_ = null,</if>
+		    <if test="consumed==null">consumed = null,</if>
+		    <if test="account==null">account = null,</if>
+		    <if test="description==null">description = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.task.Estimate">
+    delete from c2_comunity_task_estimate where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.task.Estimate" resultMap="EstimateResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_task_estimate 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_comunity_task_estimate where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="EstimateResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_task_estimate 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="EstimateResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_task_estimate 
+		 where c2_comunity_task_estimate.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.task.Estimate" resultMap="EstimateResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_task_estimate 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="EstimateResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_task_estimate 
+	where c2_comunity_task_estimate.id in (
+		select distinct id from c2_comunity_task_estimate inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_comunity_task_estimate 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_task_estimate.id = #{entity.id}</if>
+	        <if test="entity.taskId != null">and c2_comunity_task_estimate.task_id = #{entity.taskId}</if>
+	        <if test="entity.workDate != null">and c2_comunity_task_estimate.work_date = #{entity.workDate}</if>
+	        <if test="entity.recordDate != null">and c2_comunity_task_estimate.record_date = #{entity.recordDate}</if>
+	        <if test="entity.left != null">and c2_comunity_task_estimate.left_ = #{entity.left}</if>
+	        <if test="entity.consumed != null">and c2_comunity_task_estimate.consumed = #{entity.consumed}</if>
+	        <if test="entity.account != null">and c2_comunity_task_estimate.account = #{entity.account}</if>
+	        <if test="entity.description != null">and c2_comunity_task_estimate.description = #{entity.description}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.task.Estimate" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_comunity_task_estimate(
+		<trim prefixOverrides=",">
+		    <if test="taskId != null">task_id</if>
+		    <if test="workDate != null">,work_date</if>
+		    <if test="recordDate != null">,record_date</if>
+		    <if test="left != null">,left_</if>
+		    <if test="consumed != null">,consumed</if>
+		    <if test="account != null">,account</if>
+		    <if test="description != null">,description</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="taskId != null">#{taskId,jdbcType=NUMERIC}</if>
+		    <if test="workDate != null">,#{workDate,jdbcType=DATE}</if>
+		    <if test="recordDate != null">,#{recordDate,jdbcType=TIMESTAMP}</if>
+		    <if test="left != null">,#{left,jdbcType=NUMERIC}</if>
+		    <if test="consumed != null">,#{consumed,jdbcType=NUMERIC}</if>
+		    <if test="account != null">,#{account,jdbcType=VARCHAR}</if>
+		    <if test="description != null">,#{description,jdbcType=VARCHAR}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_comunity_task_estimate (task_id,work_date,record_date,left_,consumed,account,description)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.taskId,jdbcType = NUMERIC},
+		         #{entity.workDate,jdbcType = DATE},
+		         #{entity.recordDate,jdbcType = TIMESTAMP},
+		         #{entity.left,jdbcType = NUMERIC},
+		         #{entity.consumed,jdbcType = NUMERIC},
+		         #{entity.account,jdbcType = VARCHAR},
+		         #{entity.description,jdbcType = VARCHAR}
+				)
+</foreach>
+</insert>
+
+<select id="getEstEventsOfOneMonth" parameterType="map" resultMap="calenderResult2" useCache="false">
+	select est.consumed title,est.work_date start,est.record_date record,(select 'est-event' from dual) className 
+		from c2_comunity_task_estimate est 
+		where est.account =#{assignedTo}
+			  and est.work_date <![CDATA[>=]]> STR_TO_DATE(#{start},'%Y-%m-%d') 
+			  and est.work_date <![CDATA[<=]]> STR_TO_DATE(#{end},'%Y-%m-%d')
+		 <!-- GROUP BY est.work_date  -->
+</select>
+
+
+<resultMap type="map" id="calenderResult2">
+	<result property="title" column="title" javaType="string"/>
+	<result property="start" column="start" javaType="string"/>
+	<result property="className" column="className" javaType="string"/>
+</resultMap>
+
+
+
+
+
+<select id="getEstEventsOfSpecificTask" parameterType="map" resultMap="calenderResult">
+	select est.id,est.consumed title,est.work_date start,est.record_date record,est.description
+		from c2_comunity_task_estimate est
+ 		where est.task_id = #{taskId}
+ 		order by est.work_date
+</select>
+
+<resultMap type="map" id="calenderResult">
+	<id property="id" column="id" javaType="int"/>
+	<result property="title" column="title" javaType="string"/>
+	<result property="description" column="description" javaType="string"/>
+	<result property="start" column="start" javaType="string"/>
+</resultMap>
+
+<select id="getEstimatesInfo" parameterType="com.chinacreator.c2.project.task.Estimate" resultMap="getEstimatesInfoResult">
+		select 
+		  c2_comunity_task_estimate.task_id ,
+		  c2_comunity_task_estimate.consumed ,
+		  c2_comunity_task_estimate.work_date ,
+		  c2_comunity_task.name_,
+		  c2_comunity_task.description
+	    from c2_comunity_task_estimate 
+	    left join c2_comunity_task on c2_comunity_task_estimate.task_id = c2_comunity_task.id
+		 <where>
+			    <if test="taskId != null">and c2_comunity_task_estimate.task_id != #{taskId}</if>
+			    <if test="workDate != null">and c2_comunity_task_estimate.work_date = #{workDate}</if>
+			    <if test="account != null">and c2_comunity_task_estimate.account = #{account}</if>
+		</where>
+</select>
+
+<resultMap type="map" id="getEstimatesInfoResult">
+	<result property="taskId" column="task_id" javaType="int"/>
+	<result property="workDate" column="work_date" javaType="java.sql.Date"/>
+	<result property="consumed" column="consumed" javaType="double"/>
+	<result property="taskName" column="name_" javaType="string"/>
+	<result property="taskDesc" column="description" javaType="string"/>
+</resultMap>
+
+<select id="getSumEstimates" parameterType="com.chinacreator.c2.project.task.Estimate" resultType="float">
+		select 
+		  sum(binary(c2_comunity_task_estimate.consumed))
+	    from c2_comunity_task_estimate 
+	    left join c2_comunity_task on c2_comunity_task_estimate.task_id = c2_comunity_task.id
+		 <where>
+		 		<if test="taskId != null">and c2_comunity_task_estimate.task_id != #{taskId}</if>
+			    <if test="workDate != null">and c2_comunity_task_estimate.work_date = #{workDate}</if>
+			    <if test="account != null">and c2_comunity_task_estimate.account = #{account}</if>
+		</where>
+</select>
+
+<delete id="deleteEstimateByTaskId" parameterType="int">
+	delete from c2_comunity_task_estimate where task_id = #{_parameter}
+</delete>
+
+<select id="selectRangeEstimateInfos" parameterType="map" resultMap="taskEstResult">
+	select sum(binary(est.consumed)) sum,est.task_id taskId
+		from c2_comunity_task_estimate est 
+		left join c2_comunity_task task on task.id = est.task_id
+		where est.work_date <![CDATA[>=]]> #{start,jdbcType=DATE} 
+			  and est.work_date <![CDATA[<=]]> #{end,jdbcType=DATE}
+			and est.account in (
+								select 
+									td_sm_user.user_name
+							    from c2_projectuser left join td_sm_user on c2_projectuser.user_id = td_sm_user.user_id 
+									where c2_projectuser.project_id = #{projectId,jdbcType=NUMERIC}  
+								union 
+								select 
+									td_sm_user.user_name 
+								from td_sm_user INNER JOIN zt_project on td_sm_user.user_id = zt_project.`owner` and zt_project.id = #{projectId,jdbcType=NUMERIC}  
+								)
+		GROUP BY est.task_id
+</select>
+
+<select id="selectTeamRangeEstimateInfos" parameterType="map" resultMap="taskEstResult">
+	select sum(binary(est.consumed)) sum,est.task_id taskId
+		from c2_comunity_task_estimate est 
+		left join c2_comunity_task task on task.id = est.task_id
+		where est.work_date <![CDATA[>=]]> #{start,jdbcType=DATE} 
+			  and est.work_date <![CDATA[<=]]> #{end,jdbcType=DATE}
+			and est.account in (
+				select user_name from c2_comunity_teamuser where team_id=#{teamId}
+				union
+				select owner user_name from c2_comunity_team where id=#{teamId}
+			)
+		GROUP BY est.task_id
+</select>
+
+<resultMap type="map" id="taskEstResult">
+	<result property="taskId" column="taskId" javaType="int"/>
+	<result property="sum" column="sum" javaType="double"/>
+</resultMap>
+
+<select id="selectOldestEstimateWorkDate" parameterType="int" resultType="java.sql.Date">
+	select min(est.work_date) from c2_comunity_task_estimate est 
+	where est.task_id = #{_parameter}
+</select>
+
+<select id="teamLogEstimate" parameterType="map" resultMap="teamLogResult"  useCache="false">
+	select
+		  e.task_id ,
+		  e.work_date ,
+		  e.record_date ,
+		  e.consumed ,
+		  e.account ,
+		  e.description,
+		  p.name_ 
+	 FROM c2_comunity_task_estimate e
+	 LEFT JOIN c2_comunity_task t ON e.task_id = t.id
+	 LEFT JOIN zt_project p ON t.project_id = p.id	
+	 <where>
+	 <if test="users != null">and e.account in 
+		<foreach item="u" collection="users" open="(" separator="," close=")">
+	        #{u.userName,jdbcType=VARCHAR}
+	    </foreach>
+      </if>
+	 <if test="moduleId!= null">and t.module_id=#{moduleId}</if>
+	 <if test="week.name == 'choose'">and e.work_date between #{week.st,jdbcType=DATE} and #{week.et,jdbcType=DATE}</if>
+	 <if test="projects!=null and projects.size()!=0">and t.project_id in 
+		<foreach item="p" collection="projects" open="(" separator="," close=")">
+	        #{p.id,jdbcType=NUMERIC}
+	    </foreach>
+      </if>
+	 </where>
+	 order by e.work_date
+</select>
+
+<select id="teamGroupEstimateOverdue" parameterType="map" resultMap="teamLogResult"  useCache="false">
+	select
+		  e.task_id ,
+		  e.work_date ,
+		  e.record_date ,
+		  e.consumed ,
+		  e.account ,
+		  e.description,
+		  p.name_ 
+	 FROM c2_comunity_task_estimate e
+	 LEFT JOIN c2_comunity_task t ON e.task_id = t.id
+	 LEFT JOIN zt_project p ON t.project_id = p.id	
+	 <where>
+	 <if test="users != null">and e.account in 
+		<foreach item="u" collection="users" open="(" separator="," close=")">
+	        #{u.userName,jdbcType=VARCHAR}
+	    </foreach>
+      </if>
+	 <if test="moduleId!= null">and t.module_id=#{moduleId}</if>
+	 <if test="week.name == 'choose'">and e.work_date between #{week.st,jdbcType=DATE} and #{week.et,jdbcType=DATE}</if>
+	 <if test="projects!=null and projects.size()!=0">and t.project_id in 
+		<foreach item="p" collection="projects" open="(" separator="," close=")">
+	        #{p.id,jdbcType=NUMERIC}
+	    </foreach>
+      </if>
+      and date_add(e.work_date, interval 1 day)<![CDATA[<]]>str_to_date(DATE_FORMAT(e.record_date,'%Y-%m-%d'),'%Y-%m-%d')
+	 </where>
+	 order by e.work_date
+</select>
+
+<select id="teamLogEstimateForReport" parameterType="map" resultMap="teamLogResultForReport"  useCache="false">
+	select
+		  e.task_id ,
+		  e.work_date ,
+		  e.record_date ,
+		  e.consumed ,
+		  e.account ,
+		  e.description,
+		  p.name_ ,
+		  u.user_realname 
+	 FROM c2_comunity_task_estimate e
+	 LEFT JOIN c2_comunity_task t ON e.task_id = t.id
+	 LEFT JOIN td_sm_user u ON e.account = u.user_name
+	 LEFT JOIN zt_project p ON t.project_id = p.id	
+	 <where>
+	 <if test="users != null">and e.account in 
+		<foreach item="u" collection="users" open="(" separator="," close=")">
+	        #{u.userName,jdbcType=VARCHAR}
+	    </foreach>
+      </if>
+	 <if test="week.name == 'choose'">and e.work_date between #{week.st,jdbcType=DATE} and #{week.et,jdbcType=DATE}</if>
+	 <if test="projects!=null">and t.project_id = #{projects,jdbcType=NUMERIC}
+      </if>
+      <if test="moduleId!=null and moduleId!=0">and t.module_id =#{moduleId}</if>
+	 </where>
+	 order by e.work_date
+</select>
+
+<select id="teamLogEstimateForTeam" parameterType="map" resultMap="teamLogResultForReport"  useCache="false">
+	select
+		  e.task_id ,
+		  e.work_date ,
+		  e.record_date ,
+		  e.consumed ,
+		  e.account ,
+		  e.description,
+		  p.name_ ,
+		  u.user_realname 
+	 FROM c2_comunity_task_estimate e
+	 LEFT JOIN c2_comunity_task t ON e.task_id = t.id
+	 LEFT JOIN td_sm_user u ON e.account = u.user_name
+	 LEFT JOIN zt_project p ON t.project_id = p.id	
+	 <where>
+	 and e.work_date between #{st,jdbcType=DATE} and #{et,jdbcType=DATE}
+	 and e.account in (
+	 	select user_name from c2_comunity_teamuser where team_id=#{teamId}
+	 	union
+	 	select owner from c2_comunity_team where id=#{teamId}
+	 )
+	 </where>
+	 order by e.work_date
+</select>
+
+<resultMap type="map" id="teamLogResultForReport">
+	<result property="taskId" column="task_id" javaType="int"/>
+	<result property="workDate" column="work_date" jdbcType="TIMESTAMP"/>
+	<result property="recordDate" column="record_date" jdbcType="TIMESTAMP"/>
+	<result property="consumed" column="consumed" javaType="int"/>
+	<result property="account" column="account"/>
+	<result property="description" column="description"/>
+	<result property="projectName" column="name_"/>
+	<result property="userRealname" column="user_realname "/>
+</resultMap>
+
+<resultMap type="map" id="teamLogResult">
+	<result property="taskId" column="task_id" javaType="int"/>
+	<result property="workDate" column="work_date" jdbcType="TIMESTAMP"/>
+	<result property="recordDate" column="record_date" jdbcType="TIMESTAMP"/>
+	<result property="consumed" column="consumed"/>
+	<result property="account" column="account"/>
+	<result property="description" column="description"/>
+	<result property="projectName" column="name_"/>
+</resultMap>
+
+<select id="selectEvents" parameterType="map" resultMap="EstimateResult">
+	SELECT
+		  e.id ,
+		  e.task_id ,
+		  e.work_date ,
+		  e.consumed ,
+		  e.description 
+	FROM
+		c2_comunity_task_estimate e
+	WHERE
+		e.work_date BETWEEN #{startDate,jdbcType=DATE} AND #{endDate,jdbcType=DATE}
+		AND e.account = #{userName,jdbcType=VARCHAR}
+</select>
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="update/task" log="false" className="com.chinacreator.c2.project.task.TaskService" method="updateTask">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>修改任务</name>
+  <desc>修改任务</desc>
+  <inputs>
+    <input collection="false" desc="" id="task" required="true" type="com.chinacreator.c2.project.task.Task"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.project.task.Task"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.task" name="task" signature="QTask;" type="com.chinacreator.c2.project.task.Task"/>
+  </params>
+  <return signature="QTask;" type="com.chinacreator.c2.project.task.Task"/>
+</CustomRule>

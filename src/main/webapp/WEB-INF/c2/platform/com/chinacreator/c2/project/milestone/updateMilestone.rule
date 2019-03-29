@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="updateMilestone" log="false" className="com.chinacreator.c2.project.milestone.MilestoneService" method="updateMilestone">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>修改里程碑</name>
+  <desc>修改</desc>
+  <inputs>
+    <input collection="false" desc="@return" id="milestone" required="true" type="com.chinacreator.c2.project.milestone.Milestone"/>
+    <input collection="false" desc="@return" id="comment" required="false" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="@throws Exception" id="result" name="方法返回值" type="boolean"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.milestone" name="milestone" signature="QMilestone;" type="com.chinacreator.c2.project.milestone.Milestone"/>
+    <param autoValue="Input.comment" name="comment" signature="QString;" type="String"/>
+  </params>
+  <return signature="Z" type="boolean"/>
+</CustomRule>

@@ -1,0 +1,205 @@
+<link href="css/task/addTask.css" rel="stylesheet">
+
+<div data-ng-controller="addPlanCtrl" class="base-body">
+    <div class="task-new-header">
+    	    
+        <div class="task-tasklist-stage-wrap">
+        	<button type="button" class="close btn-close-new" ng-click="modalOptions.X()"><span aria-hidden="true">&times;</span></button>
+           	<h4 class="title-top-module">
+           	<span ng-if="plan.id==undefined">创建计划</span><span ng-if="plan.id!=undefined">修改计划</span>至{{ project.name}}
+            </h4>
+            
+        </div>
+        <ng-form name="aform">
+            <div class="task">
+                <input id="plan-name" name="planName" type="text" placeholder="计划名称"
+                                ng-model="plan.name" ng-required="true" class="form-control"
+                                data-ng-class="{'has-error-border':!plan.name&&taskNameRed}"
+                                ng-model-options="{updateOn:'blur'}" ng-keypress="blurIfEnterKeyWasPressed($event)"/>
+            </div>
+            <div class="task">
+                <input id="plan-version" name="planVersion" type="text" placeholder="版本"
+                                ng-model="plan.version" ng-required="true" class="form-control"
+                                data-ng-class="{'has-error-border':!plan.version&&taskNameRed}"
+                                ng-model-options="{updateOn:'blur'}" ng-keypress="blurIfEnterKeyWasPressed($event)"/>
+            </div>
+        </ng-form>
+    </div>
+     <div class="new-white-card task-new-handler-warp">
+        <div class="task-new-handler-set bgm-gray-f">
+           <div class="task-new-handler" style="width: auto;">
+                <h6 class="task-info-title">里程碑</h6>
+                   <c2-dropdown bind-data="planMilestone" id="milestone"
+                             items="milestones"
+                             item-name="title"
+                             max-height="200" 
+                             clean-button="true"
+                             item-click="mileStoneMenuClick(planMilestone)" 
+                              after-clean-event="cleanMilstone()" >
+                    <a class="dropdown-toggle" ng-class="{'have-value':plankMilestone.title}">
+                        <div class="md md-place"></div>
+                        <span ng-if="planMilestone==undefined">请选择里程碑<i class="label-show"></i></span>
+						<span ng-if="planMilestone!=undefined" class="p-l-5 p-r-5 m-l-5 label-show" style="background-color: {{tag.color}}" >{{planMilestone.title}}</span>
+                    </a>
+                    <dropdown-item-template>
+						<span class="text">{{item.title}}</span>
+						<span class="md md-check check-mark"></span>
+					</dropdown-item-template>
+                </c2-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="task-new-infos-wrap">
+        <div class="new-infos-view">
+               <div>
+               <div class="detail-infos-note-view on-bottom" ng-class="{'on-top':$params.desc}">
+					<div class="note-adder-set" title="点击编辑" style="min-height: 20px;width: 100%; padding-top: 10px;"
+						ng-show="hideUEditor" ng-class="{'note-input-hide':hideUEditor==false}"  ng-mousedown="ueMousedown($event)" ng-mouseup="ueMouseup($event)">
+						<div class="add-note-handler c2lightbox"><div id="markdowntext"></div></div>
+					</div>
+					<div id="task-desc-editor" data-ng-if="!hideUEditor">
+						<textarea c2-markdown-editor height="200" id="task-description" ng-model="$params.desc"></textarea>
+					</div>
+				</div>
+                <!-- <textarea ng-model="plan.desc" c2-markdown-editor class="form-control has-error" rows="5" rows="5" height="200"  placeholder="版本说明"></textarea> -->
+				<span id="planAddErrorMsg" class="c-red m-r-10 m-l-10 m-t-10">{{planAddErrorMsg}}</span>
+    
+            </div>
+        </div>
+    </div>
+    <div class="task-new-footer">
+    	<hr />
+        <form id="new-task-save">
+            <div style="margin:0 20px 10px 0; float:right;">
+                <button class="btn btn-link btn-sm" data-ng-click="cancelAdd()">取消</button>
+                <button class="btn btn-primary btn-save-task" data-ng-click="savePlan()">提交</button>
+            </div>
+ 		 <div style="clear:both; float:none; height:0; overflow:hidden"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+angular.module("project").registerCtrl('addPlanCtrl', 
+	function($scope, $rootScope, $http,$state,$compile, $stateParams, $timeout, Modal) {
+	var $params=$scope.$params={} ;
+	$scope.hideUEditor = true ;
+	var isEdit = true;//新增与编辑为相同页面
+	if(angular.isUndefined($scope.plan)){
+		$scope.plan = {};
+		$scope.planMilestone = null;
+		isEdit = false;
+		$scope.hideUEditor = false ;
+	}else{
+		$scope.planMilestone = $scope.plan.milestone;
+		if(angular.equals($.trim($scope.plan.desc),"")){
+			$('#markdowntext').replaceWith('<div id="markdowntext">添加版本说明</div>') ;
+		}else{
+			$('#markdowntext').replaceWith('<div id="markdowntext" ng-bind-html="plan.desc | markdown"></div>');
+			$compile($('#markdowntext'))($scope) ;
+		}
+		$params.desc = $scope.plan.desc;
+	}
+	$scope.milestones = [];
+
+	$http.post("ws/task/getMyDoingProjects", {
+		userId : $rootScope.subject.userId
+	}).success(
+		function(data) {
+			$.each(data.result, function(index, ele) {
+				// 若从项目详情页加载，且该项目的项目id存在与用户参与的项目中，则默认选择当前项目
+				if ($state.includes("project")&& $stateParams.project == ele.id) {
+					$scope.plan.projectId = $stateParams.project;
+					$scope.project = {id : ele.id,name : ele.name,owner : ele.owner};
+					//获取某项目下未关闭的里程碑
+					$http.post("ws/milestone/selectAllUnclosedMilestone", {
+						milestone : {
+							"projectId" : $scope.plan.projectId
+						}
+					}).success(function(data) {
+						if (data.result)
+							$scope.milestones = data.result;
+					});
+				}
+			})
+		}
+	);
+	
+	//保存测试计划
+	$scope.savePlan = function() {
+
+		$scope.formCheck = true;
+		$scope.planAddErrorMsg = "";
+	
+		if (!$scope.plan.name) {
+			$scope.planAddErrorMsg = "计划名称不能为空！"
+			return;
+		}
+		
+		if (!$scope.plan.version) {
+			$scope.planAddErrorMsg = "版本不能为空！"
+			return;
+		}
+		
+		if($scope.planMilestone!=null){
+			$scope.plan.milestoneId = $scope.planMilestone.id;
+		}
+		
+		if(!$scope.hideUEditor){
+			$scope.plan.desc = $params.desc;
+		}
+		
+		if(isEdit){//编辑
+			$http.post("ws/editPlan", {plan : $scope.plan}).success(function(data) {
+				$state.go("project.plan");
+			});
+		}else{//新增
+			$http.post("ws/addPlan", {plan : $scope.plan}).success(function(data) {
+				$state.go("project.plan");
+			});
+		}
+		Modal.close(); 
+
+	}
+
+	//里程碑点击事件
+	$scope.mileStoneMenuClick = function (mileStone) {
+        $scope.planMilestone = mileStone;
+        if(!isEdit){
+       		$scope.plan.desc = mileStone.description;
+        }
+    }
+	//清空已选择的里程碑 
+	$scope.cleanMilstone = function(){
+		$scope.planMilestone = null;
+	}
+	//取消 关闭新增弹出框
+	$scope.cancelAdd = function() {
+		Modal.dismiss();
+	}
+	
+	function startEditing($event){
+		if($($event.target).is('a')||$($event.target).is('img')){
+			return;
+		} 
+		$scope.hideUEditor=false;
+	}
+	
+	var mousedownPostion=undefined;
+	
+	$scope.ueMousedown=function($event){
+		mousedownPostion={x:$event.clientX,y:$event.clientY};
+	}
+
+	$scope.ueMouseup=function($event){
+		if(mousedownPostion){
+			var moved=Math.abs($event.clientX-mousedownPostion.x)+Math.abs($event.clientY-mousedownPostion.y);
+			if(moved<10){
+				startEditing($event);
+			}
+			mousedownPostion=undefined;
+		}
+	}
+
+});
+</script>

@@ -1,0 +1,468 @@
+<link href="assets/fonts/iconfont.css" rel="stylesheet">
+<style>
+	.container-layout {
+		margin-right: auto;
+		margin-left: auto;
+	}
+
+	.board-view {
+		position: fixed;
+		top: 65px;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		padding: 0;
+		overflow: hidden;
+		transition: all 218ms ease;
+		box-shadow: none !important;
+		margin-bottom: 0;
+		background-color: #eee;
+	}
+
+	@media (max-width: 1200px) {
+		.board-view {
+			left: 0;
+		}
+	}
+
+	.group-nav {
+		position: fixed;
+		width: 100%;
+		z-index: 10;
+		display: flex;
+		background: #eee;
+		height: 50px;
+		line-height: 50px;
+		padding: 0 26px;
+		border: 1px solid #d7d7d7;
+	}
+
+	.group-nav-project {
+		margin: 0;
+		line-height: 100%;
+		font-size: 16px;
+		font-weight: 600;
+		color: #010101;
+		display: flex;
+		flex: 0 0 auto;
+		align-items: center;
+		/*  width: 315px; */
+		height: 50px;
+	}
+
+	.group-nav-body {
+		display: flex;
+		flex: 1 1 auto;
+		justify-content: center;
+	}
+
+	.group-nav-body>ul>li {
+		float: left;
+		list-style: none;
+		display: flex;
+		margin-right: 40px;
+		font-size: 15px;
+	}
+
+	.group-nav-body>ul>li:last-child {
+		margin-right: 0;
+	}
+
+	.group-nav-body>ul>li>a {
+		color: #000;
+		height: 49px;
+		padding: 0 5px;
+	}
+
+	.group-nav-body>ul>li>a:hover {
+		border-bottom: 3px solid #03a9f4;
+	}
+
+	.select-item>a {
+		border-bottom: 3px solid #03a9f4;
+	}
+
+	.right-team-content {
+		position: relative;
+		/*  background: #ffffff; */
+		padding: 0 20px;
+		/*  min-height: 880px;
+    height: auto; */
+	}
+
+	@media only screen and (min-width: 1200px) {
+		.right-team-content {
+			width: 1170px;
+		}
+	}
+
+	.container-layout {
+		margin-right: auto;
+		margin-left: auto;
+		display: flex;
+		justify-content: center;
+	}
+
+	.display-center {
+		display: flex;
+		justify-content: center;
+	}
+
+	.team-content-location {
+		position: relative;
+		padding: 0;
+		top: 50px;
+		margin-top: 20px;
+	}
+
+	.group-menu-right {
+		display: flex;
+		flex: 0 0 auto;
+		/* width: 315px; */
+		justify-content: flex-end;
+	}
+
+	.group-menu-handle>li {
+		list-style: none;
+		font-size: 14px;
+		float: right;
+		margin-left: 30px;
+		display: inline-table;
+
+	}
+
+	.group-menu-handle>li a {
+		color: #666;
+	}
+
+	.group-menu-handle>li a.on-active {
+		color: #03a9f4;
+	}
+
+	.group-menu-handle>li a:hover {
+		color: #03a9f4;
+	}
+
+	.group-menu-handle>li:not(:first-child):after {
+		position: relative;
+		content: '';
+		border-right: 1px solid #9E9E9E;
+		right: -35px;
+		top: -50px;
+	}
+
+	.tasklist-pop-handler {
+		position: relative;
+		margin-left: 10px;
+		margin-right: -17px;
+		float: right;
+		cursor: pointer;
+	}
+
+	.tasklist-pop-handler:before {
+		position: absolute;
+		content: '';
+		width: 1px;
+		left: 0;
+		top: 18px;
+		bottom: 18px;
+		background-color: #A6A6A6;
+	}
+
+	.tasklist-icon {
+		line-height: 50px;
+		-webkit-transform: scale(0.75);
+		transition: all ease 128ms;
+		padding: 0 3px;
+	}
+
+	.board-group {
+		display: flex;
+		position: relative;
+		height: calc(100% - 60px);
+		/* margin-left: 3px; */
+		background-color: #eee;
+		border-style: solid;
+		border-width: 0;
+		border-color: #E5E5E5;
+		top: 50px;
+		/*  margin-top:5px; */
+		/* overflow-y: hidden; */
+	}
+
+	.tasklist-bar .tasklist-bar-header {
+		position: relative;
+		width: 100%;
+		height: 46px;
+	}
+
+	.tasklist-bar .tasklist-bar-header>a {
+		display: block;
+		padding: 10px 15px 9px 15px;
+		font-size: 15px;
+		color: #383838;
+		transition: all 218ms ease;
+	}
+
+	.tasklist-bar .tasklist-bar-header .md-add-circle {
+		color: #3da8f5;
+		margin-right: 10px;
+	}
+
+	.tasklist-tab {
+		width: 100%;
+		float: left;
+		padding: 0px 15px;
+		cursor: pointer;
+		transition: background-color 218ms ease;
+		list-style: none;
+	}
+
+	.tasklist-tab:hover {
+		background: #f7f7f7;
+	}
+
+	.tasklist-tab .tasklist-title {
+		font-size: 15px;
+		margin: 0;
+		font-weight: 600;
+	}
+
+	.tasklist-bar-tasklists {
+		padding: 0;
+		width: 450px;
+	}
+
+	.topprogress {
+		height: 5px;
+		margin-top: -5px;
+		margin-bottom: 2px;
+		overflow: hidden;
+		background-color: #f5f5f5;
+		border-radius: 2px;
+		-webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+		box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+	}
+
+	.tasklist-bar-header {
+		font-size: 15px;
+		height: 46px;
+		line-height: 46px;
+	}
+
+	.tasklist-bar-header:hover {
+		background: #f7f7f7;
+	}
+
+	.tasklist-bar-header a {
+		color: #333;
+	}
+
+	.tasklist-smart-group {
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+	}
+
+	.smart-group>a {
+		display: block;
+		padding: 10px 15px;
+		font-size: 15px;
+		font-weight: bold;
+		color: #383838;
+		transition: background-color 218ms ease;
+	}
+
+	.tasklist-smart-link {
+		cursor: pointer;
+	}
+
+	#milstoneList::-webkit-scrollbar {
+		width: 6px;
+		background-color: #e5e5e5;
+	}
+
+	#milstoneList::-webkit-scrollbar-thumb {
+		background-color: #a6a6a6;
+	}
+</style>
+
+<section id="content">
+	<div class="container-layout board-view">
+		<div class="board-view c-overflow">
+			<div class="group-nav m-b-5">
+				<div class="group-nav-project">
+					<c2-dropdown items="myProjects" bind-data="project" bind-data-id="currentProjectId" item-name="name" item-id="id"
+					 item-click="itemClick(item)" max-height="300">
+						<div class=" f-16 cursor-pointer" style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;max-width: 300px;">
+							<span title="{{project.name}}">{{project.name}}
+								<i class="md md-keyboard-arrow-down f-22"></i>
+							</span>
+						</div>
+						<dropdown-item-template>
+							<div>
+								<img ng-src="{{item.pic}}" style="width:40px" />
+								<span class="text">{{item.name}}</span>
+								<span class="md md-check check-mark"></span>
+							</div>
+						</dropdown-item-template>
+					</c2-dropdown>
+				</div>
+
+				<div class="group-nav-body hidden-xs">
+					<ul class="p-0">
+						<!-- <li data-ui-sref-active="select-item">
+			            <a data-ui-sref="project.tasks">任务</a>
+			        </li> -->
+						<li data-ui-sref-active="select-item">
+							<a id="mileName" ng-click="srefClick(this)" style="cursor: pointer;">研发看板</a>
+							<!-- <span id="mileId" ng-hide="true"></span>
+							<span class=" tasklist-pop-handler dropdown">
+								<i data-toggle="dropdown" aria-expanded="true" class="md md-keyboard-arrow-down f-20 m-l-10"></i>
+								<div id="milstoneList" class="dropdown-menu dm-icon pull-right" style="max-height: 300px;overflow-y:auto">
+									<ul class="tasklist-bar-tasklists">
+										<li class="tasklist-tab" ng-repeat="module in projectModules" ng-click="moduleClick(module)">
+											<div class="tasklist-container">
+												<span class="tasklist-title">{{module.name}}</span>
+												<div class="topprogress">
+													<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0"
+													 aria-valuemax="100" style="width: {{milestone.percent}}%">
+													</div>
+												</div>
+												<div class="col-sm-12 p-0" style="line-height:30px;">
+													<span class="m-r-5">
+														<span style="font-weight: normal;color: #999;">任务：</span>
+														 <span style="font-weight: normal;color: green;">{{module.taskNum.doneNum}}</span>/ 
+														<span style="font-weight: normal;color:#050505;">{{module.taskNum}}</span>
+													</span>
+													<span class="m-r-5">
+														<span style="font-weight: normal;color: #999;">需求：</span>
+													 <span style="font-weight: normal;color: green;">{{module.moduleStorys}}</span>/ 
+														<span style="font-weight: normal;color:#050505;">{{module.storyNum}}</span>
+													</span>
+													<span class="m-r-5">
+														<span style="font-weight: normal;color: #999;">BUG：</span>
+														 <span style="font-weight: normal;color: green;">{{milestone.milestoneBugReport.closed}}</span>/ 
+														<span style="font-weight: normal;color:#050505;">{{module.bugNum}}</span>
+													</span>
+													 <span class="m-r-5">
+														<span style="font-weight: normal;color: #999;">完成率：</span>
+														<span style="font-weight: normal;color: #050505;">{{module.completes}}%</span>
+													</span> 
+												</div>
+											</div>
+										</li>
+									</ul>
+									 			            	<div class="tasklist-bar-header col-sm-12" perm-res="{{project.id}}##milestone_cud"  ng-click="dropdownAddMile()"> 
+			            		<a href=""><i class="md md-add-circle m-r-5 f-20 c-blue"></i>添加里程碑</a>
+			            	</div>
+			            	<div class="tasklist-bar-header col-sm-12 tasklist-smart-group" ng-click="closeMilestone()"> 
+			            		<span class="tasklist-smart-link"><i class="md md-av-timer m-r-5 f-20"></i>已关闭的里程碑</span>
+			            	</div>
+								</div>
+							</span> -->
+						</li>
+						<!-- <li data-ui-sref-active="select-item">
+							<div class="scrum-filter-executor p-l-20 p-r-20 m-t-0">
+								<c2-dropdown class="animate" bind-data="module" items="projectModules" item-name="name" max-height="200" filter="true" clean-button="true">
+									<div class="screen-title p-l-0 p-r-0 text-overflow">
+										<span ng-if="!module.name">所有模块</span>
+										<span class="p-r-5">{{module.name}} </span>
+										<span class="ico-drop pull-right">
+											<i class="md md-expand-more f-18"></i>
+										</span>
+									</div>
+								</c2-dropdown>
+							</div>
+						</li> -->
+
+						<!-- <li data-ui-sref-active="select-item">
+			            <a data-ui-sref="project.milestones">里程碑</a>
+			        </li> -->
+						<li data-ui-sref-active="select-item">
+							<a data-ui-sref="project.bugs">BUG</a>
+						</li>
+						<!-- <li data-ui-sref-active="select-item">
+							<a data-ui-sref="project.bugs">BUG</a>
+						</li> -->
+						<li data-ui-sref-active="select-item">
+							<a data-ui-sref="project.modules">模块与需求</a>
+						</li>
+						<li data-ui-sref-active="select-item">
+							<a data-ui-sref="project.planOfProject">项目计划</a>
+						</li>
+						<!-- <li data-ui-sref-active="select-item">
+							<a data-ui-sref="project.gantt">甘特图</a>
+						</li> -->
+						<li data-ui-sref-active="select-item">
+							<a data-ui-sref="project.weeklyReports">周报</a>
+						</li>
+						<!--  <li data-ui-sref-active="select-item">
+			            <a data-ui-sref="project.story">需求</a>
+							</li> -->
+						<li class="dropdown">
+							<a data-toggle="dropdown" aria-expanded="true">
+								测试
+							</a>
+							<ul class="dropdown-menu dm-icon pull-right">
+								<li>
+									<a data-ui-sref="project.case" perm-res="{{project.id}}##testcase_menu">测试用例</a>
+								</li>
+								<li data-ui-sref-active="select-item">
+									<a data-ui-sref="project.plan" perm-res="{{project.id}}##testplan_menu">测试执行</a>
+								</li>
+							</ul>
+						</li>
+						<!-- <li data-ui-sref-active="select-item">
+			            <a data-ui-sref="project.teamLog">日志</a>
+			        </li> -->
+						<li data-ui-sref-active="select-item">
+							<a data-ui-sref="project.docs">共享</a>
+						</li>
+						<li class="dropdown">
+							<a data-toggle="dropdown" aria-expanded="true">
+								系统设置
+							</a>
+							<ul class="dropdown-menu dm-icon pull-right">
+								<li>
+									<a data-ui-sref="project.home">
+										<i class="md md-home"></i>项目信息</a>
+								</li>
+								<!-- <li>
+													<a data-ui-sref="project.settings.modules"><i class="md md-extension"></i>模块</a>
+											</li> -->
+								<li>
+									<a data-ui-sref="project.settings.labels">
+										<i class="md md-bookmark-outline"></i>标签</a>
+								</li>
+								<li perm-res="{{project.id}}##advancedSet_menu">
+									<a data-ui-sref="project.settings.management">
+										<i class="md md-settings"></i>高级设置</a>
+								</li>
+								<li>
+									<a data-ng-click="closeView()">
+										<i class="md md-assignment-returned"></i>查看归档</a>
+								</li>
+								<li>
+									<a data-ui-sref="project.settings.members">
+										<i class="md md-account-child f-20"></i>成员
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+
+				<div class="group-menu-right">
+					<ul class="p-0 group-menu-handle">
+						<li ng-show="eyeShow">
+							<a href="" data-target="chat" data-toggle-sidebar="" data-model-right="showView">
+								<i class="ace-icon fa-shaixuan" title="视图"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+
+			</div>
+
+			<div class="board-group clearfix" data-ui-view style="padding-top:5px;width:100%;"></div>
+		</div>
+</section>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getUserInfo" log="false" className="com.chinacreator.c2.project.service.LocalUserService" method="getUserInfo">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取当前登录者信息</name>
+  <inputs/>
+  <outputs>
+    <output autoValue="Result" desc="" id="" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params/>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

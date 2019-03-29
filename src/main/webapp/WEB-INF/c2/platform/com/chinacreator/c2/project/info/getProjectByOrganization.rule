@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getProjectByOrganization" log="false" className="com.chinacreator.c2.project.service.ProjectOrganizationService" method="getProjectsByOrganization">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取各事业部门项目统计信息</name>
+  <desc>统计各部门创建的项目数据</desc>
+  <inputs>
+    <input collection="false" desc="" id="year" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.year" name="year" signature="I" type="int"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

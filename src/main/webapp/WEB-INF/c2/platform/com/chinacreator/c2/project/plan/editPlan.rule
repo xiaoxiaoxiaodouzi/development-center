@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="editPlan" log="false" className="com.chinacreator.c2.project.plan.PlanService" method="editPlan">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>编辑测试计划</name>
+  <desc>编辑测试计划</desc>
+  <inputs>
+    <input collection="false" desc="" id="plan" required="true" type="com.chinacreator.c2.project.plan.Plan"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.plan" name="plan" signature="QPlan;" type="com.chinacreator.c2.project.plan.Plan"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

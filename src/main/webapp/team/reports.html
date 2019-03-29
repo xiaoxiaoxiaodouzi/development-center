@@ -1,0 +1,318 @@
+<style>
+#report-form-list .lv-item {
+	padding: 12px 20px;
+}
+
+#report-form-list .lv-item:hover{
+	background-color:#EFF4F9;
+}
+
+#report-form-list .report-title:hover {
+	cursor: pointer;
+}
+
+#report-form-list .report-title {
+	max-width: 30%;
+    width: 30%;
+    text-align:left !important;;
+}
+
+.report-form-detail .card{
+	box-shadow:none;
+	margin-bottom:0px;
+}
+
+#report-form-list .report-open-content {
+    background-color: white;
+    border-bottom: 1px solid white;
+    margin:0px -3px 3px -3px ;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+
+#report-form-list .report-open-title {
+	background-color: #EFF4F9;
+	font-weight: bold;
+}
+
+#report-form-list .report-title .report-title-name {
+	color:#69aa46;
+	margin-left:30px;
+	width:100px;
+	max-width:100px;
+}
+
+#report-form-list .lv-item .turn{
+	transform:rotate(180deg);
+}
+
+#report-form-list .lv-item .md-keyboard-arrow-down{
+	transition: transform 500ms;
+}
+
+#report-form-list .lv-pagination{
+	border-top: 0px;
+}
+
+.report-label-earlier{
+	background-color: #4caf50;
+}
+
+.report-label-normal{
+	background-color: #7FDC82;
+}
+
+.report-label-latter{
+	background-color: #ff9800;
+}
+
+.report-label-lose{
+	background-color: #f44336;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+	cursor: pointer;
+}
+
+.report-form-title-green {
+	color: #69aa46 ;
+}
+
+.rf-summary {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.rf-content .table .column,
+#report-form-list .lv-item .column{
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: clip;
+	text-align: center;
+}
+
+.rf-content .table {
+	margin-bottom:0px;
+}
+
+.rf-content .table .column >a {
+	color:#161617;
+}
+
+.rf-content .table .column >a:hover {
+	color:#2196f3;
+	cursor:pointer;
+}
+
+.report-form-detail .card .rf-content .lv-header-alt {
+	padding: 5px 12px 12px 20px;
+	border-bottom: 0px;
+	background-color: #eee;
+}
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 10px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 0px; 
+}
+
+.table > thead > tr > th {
+  border-bottom: 0px;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+   background-color: inherit;
+}
+
+.report-form-detail{
+	display:block !important ;
+	overflow: hidden;
+	transition: max-height 0.3s ;
+	transition-delay:0s;
+	max-height:0px;
+}
+
+.report-form-detail.open{
+	transition: max-height 0.3s ;
+	transition-delay:0s;
+	max-height:20000px;
+}
+
+.w-report p:first {
+    margin-top: 15px;
+    line-height: 2em;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+</style>
+<div data-ng-controller="teamReportsController" id="report-form-list" class="container">
+	<div class="card m-t-20">
+		<div class="card-header">
+			<h2>
+				周报列表
+				<small>下方会列出从团队创建时起到当前时间段中的所有周报，请点击状态为<span class="c-red">缺失</span>的记录进行填报；周报一旦提交将无法进行修改，提交前请仔细核对任务信息及总结!</small>
+				<small data-ng-if="weekReportSubmit">填写完成的周报会被提交给：<strong class="m-r-5 c-black" ng-if="$params.submit2.length!=0" ng-repeat="user in $params.submit2">{{user.userRealname}}{{$index==5||$index==$params.submit2.length-1?"":","}}</strong><a href="javascript:void(0)" ng-click="addWeekReportSendTo()">编辑...</a></small>
+			</h2>
+		</div>
+
+		<div class="card-body clearfix">
+			<div  class="listview lv-bordered lv-lg ">
+				<!-- 搜索 -->
+				<div class="lv-header-alt">
+					<c2-dropdown class="animate" bind-data="$params.selectedTeam" 
+						items="$params.teams" item-name="name" item-click="teamClick(item)">
+						<div class="picker"><i class="md md-visibility"></i> 
+						{{$params.selectedTeam.name}}&nbsp;<span class="caret"></span></div>
+					</c2-dropdown>
+				</div>
+
+				<div ng-class="{'report-open-content':report.open}" ng-repeat="report in reportList" ng-init="initWeekReport(report);report.open=false;report.isShowCurrentWeek=true;report.index=$index;">
+					<!-- 周报列表 -->
+					<div index="{{report.index}}" class="lv-item media no-animate" ng-class="{'report-open-title':report.open}" style=" border-bottom: 1px solid #f0f0f0;"
+					data-ng-click="reportClick(report)">
+							<div class="pull-left report-title column">{{report.year}}年第<span style="color:#69aa46">{{report.week}}</span>周&nbsp;{{report.start}}-{{report.end}}<span title="{{report.teamName}}" class="column report-title-name">{{report.teamName}}</span>
+							</div>
+							<div class="progress" title="{{report.statisticsDesc}}"
+								style="width: 350px; margin-bottom: 0px; float: left;margin-left:30px">
+								<div class="progress-bar progress-bar-success"
+									style="width: {{report.statistics.normalRate}}%">
+									{{report.statistics.normal}}</div>
+								<div class="progress-bar progress-bar-warning"
+									style="width: {{report.statistics.delayedRate}}%">
+									{{report.statistics.delayed}}</div>
+							</div>
+							<span class="label pull-right {{report.statusClass}}"
+								style="width: 70px; font-size: 12px">
+									{{report.status}}
+							</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<c2-pagination total="$params.page.total" page-size="10"
+			on-page-change="pageList(pageIndex)"></c2-pagination>
+	</div>
+</div>
+
+<script>
+angular.module("developmentCenter").registerCtrl('teamReportsController',
+	function ($scope, $rootScope, $http, $state, $stateParams,debounce,$timeout, Messenger, Modal) {
+	
+	var $params = $scope.$params = {};
+
+	$params.isShowCurrentWeek = true;
+
+	$params.page = {
+		pageSize: 10,
+		pageIndex: 1
+	}
+	
+	
+	$scope.addWeekReportSendTo = function () {
+		Modal.open('team/submit-to.html', {teamId:$params.selectedTeam.id}, {
+			title: "周报提交给",
+			size: 'big',
+			onClose: function (data) {
+				getSubmitMembers();
+			}
+		});
+	}
+	
+	function getSubmitMembers(){
+		$http.get("team/v1/"+$params.selectedTeam.id+"/submit").success(function(data){
+			$params.submit2 = data;
+		})
+	}
+	
+	//所有团队
+	$http.get("team/v1/getAuthTeam?owner="+$rootScope.subject.userName).success(function(data){
+		$params.teams = data;
+		if(data.length>0){
+			$params.selectedTeam = data[0];
+			$scope.weekReportSubmit = data[0].owner == $rootScope.subject.userName;
+			getSubmitMembers();
+			//所有团队周报
+			$http.get("team/v1/"+$params.selectedTeam.id+"/reports?owner="+$rootScope.subject.userName+"&page="+$params.page.pageIndex).success(function(data){
+				$scope.reportList = data.contents;
+				$params.page.total = data.total;
+			})
+		}else{
+			$params.selectedTeam = {name:'选择团队'};
+		}
+	})
+	
+
+	function getWeeklyReports(teamId) {
+		$params.page.pageIndex = 1;
+		$http.get("team/v1/"+$params.selectedTeam.id+"/reports?owner="+$rootScope.subject.userName+"&page="+$params.page.pageIndex).success(function(data){
+			$scope.reportList = data.contents;
+			$params.page.total = data.total;
+		})
+	}
+
+	$scope.pageList = function (pageIndex) {
+		if (!angular.equals(pageIndex, $params.page.pageIndex)) {
+			$params.page.pageIndex = pageIndex;
+			$http.get("team/v1/"+$params.selectedTeam.id+"/reports?owner="+$rootScope.subject.userName+"&page="+pageIndex).success(function(data){
+				$scope.reportList = data.contents;
+				$params.page.total = data.total;
+			})
+		}
+	}
+
+	$scope.initWeekReport = function (report) {
+
+		switch (report.status) {
+			case "超前": report.statusClass = 'report-label-earlier'; break;
+			case "正常": report.statusClass = 'report-label-normal'; break;
+			case "逾期": report.statusClass = 'report-label-latter'; break;
+			case "缺失": report.statusClass = 'report-label-lose'; break;
+		}
+		if (angular.isDefined(report.statistics)) {
+			var statistics = report.statistics;
+			var total = statistics.total;
+			var normal = statistics.completed + statistics.crossWeek;
+			var canceled = statistics.canceled;
+			var consumed = statistics.consumed;
+			var estimate = statistics.estimate;
+			var member = statistics.member;
+			var delayed = statistics.delayed;
+			if (angular.equals(statistics.delayed, 0)) {
+				delayed = total - normal;
+			}
+			var worked = statistics.worked;
+			if (angular.isUndefined(worked)) {
+				worked = 0;
+			}
+
+			var normalRate = normal / total * 100;
+			var canceledRate = canceled / total * 100;
+			var delayedRate = delayed / total * 100;
+
+			report.statistics.normalRate = normalRate;
+			report.statistics.delayedRate = delayedRate;
+			report.statistics.delayed = delayed;
+			report.statistics.normal = normal;
+
+			report.statisticsDesc = "人数：" + member + "\n正常：" + normal + "\n取消：" + canceled + "\n逾期：" + delayed + "\n总任务：" + total + "\n周工时：" + worked + "\n总工时：" + consumed + "/" + estimate + "\n";
+		}
+
+	}
+
+	$scope.teamClick = function (team) {
+		$params.selectedTeam = team;
+		getWeeklyReports(team.id);
+		getSubmitMembers();
+		$scope.weekReportSubmit = team.owner == $rootScope.subject.userName;
+	}
+	
+	$scope.reportClick = function(report){
+		if(report.status=='缺失' && $rootScope.subject.userName != $params.selectedTeam.owner){
+			Messenger.error("您暂无编辑权限");
+			return;
+		}
+		$state.go("home.team.report",{teamId:$params.selectedTeam.id,reportId:report.id});
+	}
+
+});
+</script>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="addIssueComment" log="false" className="com.chinacreator.c2.project.issue.IssueService" method="addIssueComment">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>新增问题回复</name>
+  <desc>新增问题回复</desc>
+  <inputs>
+    <input collection="false" desc="" id="issueCommentMap" required="true" type="java.util.Map"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.issueCommentMap" name="issueCommentMap" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.bug.BugCommentMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_community_bug_comments.id ,
+		  c2_community_bug_comments.bug_id ,
+		  c2_community_bug_comments.user_id ,
+		  c2_community_bug_comments.create_time ,
+		  c2_community_bug_comments.type ,
+		  c2_community_bug_comments.bug_version ,
+		  c2_community_bug_comments.content 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_community_bug_comments.id = #{id}</if>
+	    <if test="bugId != null">and c2_community_bug_comments.bug_id = #{bugId}</if>
+	    <if test="userId != null">and c2_community_bug_comments.user_id = #{userId}</if>
+	    <if test="createTime != null">and c2_community_bug_comments.create_time = #{createTime}</if>
+	    <if test="type != null">and c2_community_bug_comments.type = #{type}</if>
+	    <if test="bugVersion != null">and c2_community_bug_comments.bug_version = #{bugVersion}</if>
+</sql>
+
+
+<!-- ElementID:BugCommentResult,Generated=true -->
+<resultMap id="BugCommentResult" type="com.chinacreator.c2.project.bug.BugComment">
+	<id property="id" column="id"/>
+	<result property="bugId" column="bug_id"/>
+	<result property="userId" column="user_id"/>
+	<result property="createTime" column="create_time"/>
+	<result property="type" column="type"/>
+	<result property="bugVersion" column="bug_version"/>
+	<result property="content" column="content"/>
+</resultMap>
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.bug.BugComment" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_community_bug_comments(
+		<trim prefixOverrides=",">
+		    <if test="bugId != null">bug_id</if>
+		    <if test="userId != null">,user_id</if>
+		    <if test="createTime != null">,create_time</if>
+		    <if test="type != null">,type</if>
+		    <if test="bugVersion != null">,bug_version</if>
+		    <if test="content != null">,content</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="bugId != null">#{bugId,jdbcType=NUMERIC}</if>
+		    <if test="userId != null">,#{userId,jdbcType=VARCHAR}</if>
+		    <if test="createTime != null">,#{createTime,jdbcType=TIMESTAMP}</if>
+		    <if test="type != null">,#{type,jdbcType=NUMERIC}</if>
+		    <if test="bugVersion != null">,#{bugVersion,jdbcType=VARCHAR}</if>
+		    <if test="content != null">,#{content,jdbcType=CLOB}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.bug.BugComment" resultType="int">
+	select count(*) from c2_community_bug_comments 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.bug.BugComment">
+	update c2_community_bug_comments
+<set>
+	<if test="bugId != null">bug_id=#{bugId,jdbcType=NUMERIC},</if>
+	<if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
+	<if test="createTime != null">create_time=#{createTime,jdbcType=TIMESTAMP},</if>
+	<if test="type != null">type=#{type,jdbcType=NUMERIC},</if>
+	<if test="bugVersion != null">bug_version=#{bugVersion,jdbcType=VARCHAR},</if>
+	<if test="content != null">content=#{content,jdbcType=CLOB}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:update,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_community_bug_comments
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="bugId==null">bug_id = null,</if>
+		    <if test="userId==null">user_id = null,</if>
+		    <if test="createTime==null">create_time = null,</if>
+		    <if test="content==null">content = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.bug.BugComment">
+    delete from c2_community_bug_comments where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.project.bug.BugComment" resultMap="BugCommentResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_bug_comments 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_community_bug_comments (bug_id,user_id,create_time,type,bug_version,content)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.bugId,jdbcType = NUMERIC},
+		         #{entity.userId,jdbcType = VARCHAR},
+		         #{entity.createTime,jdbcType = TIMESTAMP},
+		         #{entity.type,jdbcType = NUMERIC},
+		         #{entity.bugVersion,jdbcType = VARCHAR},
+		         #{entity.content,jdbcType = CLOB}
+				)
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_community_bug_comments where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="BugCommentResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_bug_comments 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="BugCommentResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_bug_comments 
+		 where c2_community_bug_comments.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.bug.BugComment" resultMap="BugCommentResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_community_bug_comments 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="BugCommentResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_community_bug_comments 
+	where c2_community_bug_comments.id in (
+		select distinct id from c2_community_bug_comments inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_community_bug_comments 
+			<where>
+	        <if test="entity.id != null">and c2_community_bug_comments.id = #{entity.id}</if>
+	        <if test="entity.bugId != null">and c2_community_bug_comments.bug_id = #{entity.bugId}</if>
+	        <if test="entity.userId != null">and c2_community_bug_comments.user_id = #{entity.userId}</if>
+	        <if test="entity.createTime != null">and c2_community_bug_comments.create_time = #{entity.createTime}</if>
+	        <if test="entity.type != null">and c2_community_bug_comments.type = #{entity.type}</if>
+	        <if test="entity.bugVersion != null">and c2_community_bug_comments.bug_version = #{entity.bugVersion}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+
+<select id="zendaoBugs" resultType="map">
+select id,if(project=20,17,project) project,title,severity,steps,status,openedBy,openedDate,assignedTo,resolvedBy from zt_bug
+where openedDate > '2015-01-01' and project !=8 ORDER BY id
+</select>
+<select id="zendaoProjects" resultType="int">
+select DISTINCT project from zt_bug
+where openedDate > '2015-01-01' and project !=8
+</select>
+<select id="zendaoBugFile" parameterType="int" resultType="map">
+select * from zt_file where objectId = #{bugId}
+</select>
+<select id="maxProjectNo" parameterType="int" resultType="int">
+select MAX(no) from c2_community_bug where project = #{projectId}
+</select>
+<insert id="insertZendaoBug">
+insert into c2_community_bug (no,project,title,pri,spec,status_,create_by,create_time,init_assigned_to,last_update_time)
+values(#{no},#{project},#{title},#{pri},#{spec},#{status},#{createBy},#{createTime},#{initAssignedTo},#{lastUpdateTime})
+</insert>
+
+
+</mapper>

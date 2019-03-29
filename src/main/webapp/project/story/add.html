@@ -1,0 +1,223 @@
+<style>
+	.dropdown-menu .label-color {
+		width: 13px;
+		height: 13px;
+		display: inline-block;
+		border-radius: 3px;
+		vertical-align: middle;
+		margin: 0 3px 2px 0;
+	}
+</style>
+<div id="addStoryMainBody" class="container" ng-controller="addStoryCtrl">
+	<!-- 	<div class="block-header"> -->
+	<!-- 		<h2 class="ng-binding"> -->
+	<!-- 			<a data-ui-sref="project.story"> <i -->
+	<!-- 				class="md md-keyboard-backspace">返回需求列表</i> -->
+	<!-- 			</a> -->
+	<!-- 		</h2> -->
+	<!-- 	</div> -->
+	<div id="addStoryCard" class="card m-t-20" id="profile-main">
+
+		<div ng-if="!judgePageUnderMilestone" class="card-header">
+			<h2>新增需求</h2>
+		</div>
+
+		<div class="card-body card-padding">
+
+
+			<div class="fg-line" ng-class="{'has-error':!story.title&&formCheck}">
+				<input autofocus="" type="text" data-ng-model="story.title" placeholder="标题" class="form-control ng-pristine ng-valid ng-touched">
+			</div>
+
+			<div style="margin-top: 20px;">
+				<c2-dropdown title="优先级" bind-data="story.selectPrioritys" items="allPriorityList" multiple=false item-name="title" max-height="200">
+					<button class="btn btn-default btn-icon-text picker-shadow text-overflow" style="padding-left:0px;">
+						<i class="md md-sort"></i>
+						<span ng-if="story.selectPrioritys==undefined">优先级&nbsp;
+							<i class="caret"></i>
+						</span>
+						<span ng-if="story.selectPrioritys!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{story.selectPrioritys.title}}</span>
+					</button>
+					<dropdown-item-template>
+						<div>
+							<span class="text">{{item.title}}</span>
+							<span class="md md-check check-mark"></span>
+						</div>
+					</dropdown-item-template>
+				</c2-dropdown>
+
+				<c2-dropdown class="animate" title="模块" bind-data="story.module" items="allModuleList" multiple=false item-name="name" max-height="200"
+				 filter="true" clean-button="true">
+					<button class="btn btn-default btn-icon-text picker-shadow text-overflow">
+						<i class="md md-view-module"> </i>
+						<span ng-if="story.module==undefined">模块&nbsp;
+							<i class="caret"></i>
+						</span>
+						<span ng-if="story.module!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{story.module.name}}</span>
+					</button>
+					<dropdown-item-template>
+						<div>
+							<span class="text">{{item.name}}</span>
+							<span class="md md-check check-mark"></span>
+						</div>
+					</dropdown-item-template>
+				</c2-dropdown>
+
+				<c2-dropdown title="里程碑" bind-data="story.milestone" items="allMilestoneList" multiple=false item-name="title" max-height="200"
+				 clean-button="true">
+					<button class="btn btn-default btn-icon-text picker-shadow text-overflow">
+						<i class="md md-av-timer"> </i>
+						<span ng-if="story.milestone==undefined">里程碑&nbsp;
+							<i class="caret"></i>
+						</span>
+						<span ng-if="story.milestone!=undefined" class="p-l-5 p-r-5 m-l-5 label-show" style="background-color: {{tag.color}}">{{story.milestone.title}}</span>
+					</button>
+					<dropdown-item-template>
+						<div>
+							<span class="text">{{item.title}}</span>
+							<span class="md md-check check-mark"></span>
+						</div>
+					</dropdown-item-template>
+				</c2-dropdown>
+
+				<c2-dropdown class="animate" title="标签" bind-data="story.selectLabels" max-width="200px;" items="allLabelList" multiple=true
+				 item-name="name" max-height="200" filter="true" clean-button="true">
+					<div class="picker picker-white text-overflow" style="max-width:500px;">
+						<i class="md md-bookmark-outline"> </i>
+						<span style="color: #000000;" ng-if="story.selectLabels==0">标签
+							<i class="caret"></i>
+						</span>
+						<span class="p-l-5 p-r-5 m-l-5 label-show" style="background-color: {{label.color}};color:{{getTextColor(label.color)}}"
+						 ng-repeat="label in story.selectLabels">{{label.name}}</span>
+					</div>
+					<dropdown-item-template>
+						<div>
+							<span class="label-color" style="background-color: {{item.color}};">&nbsp;</span>
+							<span class="text">{{item.name}}</span>
+							<span class="md md-check check-mark"></span>
+						</div>
+					</dropdown-item-template>
+				</c2-dropdown>
+
+				
+
+			</div>
+
+			<div>
+				<textarea ng-model="story.spec" c2-markdown-editor class="form-control has-error" rows="5" rows="5" height="300" placeholder="需求描述"></textarea>
+				<div style="margin-left:82%;">
+					<button class="btn btn-primary btn-sm" type="button" data-ng-click="saveStory();">提交</button>
+					<button class="btn btn-link btn-sm" ng-click="cancelAdd()">取消</button>
+				</div>
+				<span id="storyAddErrorMsg" class="c-red m-r-10 m-l-10 m-t-10">{{storyAddErrorMsg}}</span>
+
+			</div>
+
+		</div>
+
+	</div>
+</div>
+
+<script type="text/javascript">
+	angular.module("project").registerCtrl(
+		'addStoryCtrl',
+		function ($scope, $rootScope, $http, $state, $stateParams, $timeout, Messenger,
+			Modal) {
+
+			$scope.story = { project: { id: $stateParams.project } };
+			$scope.story.selectLabels = [];
+			$scope.allLabelList = [];
+
+			$scope.story.milestone = undefined;
+			$scope.allMilestoneList = [];
+
+			$scope.story.selectPrioritys = { title: 3 };
+			$scope.allPriorityList = [{ title: 1 }, { title: 2 }, { title: 3 }];
+
+			$scope.story.module = undefined;
+			$scope.allModuleList = [];
+
+			//判断是否在里程碑页面
+			$scope.judgePageUnderMilestone = $state.includes("project.milestoneDetail");
+			var initAddStory = function () {
+				loadAllLabelAndMilestone();
+				loadAllModule();
+
+				if ($scope.judgePageUnderMilestone) {
+					$("#addStoryMainBody").removeClass("container");
+					$("#addStoryCard").removeClass("card");
+				}
+			}
+
+			var loadAllLabelAndMilestone = function () {
+				$http.post("ws/getAllLabelAndMilestone", {
+					"projectId": $stateParams.project,
+					"isUnclosed": true
+				}).success(function (data) {
+					if (data.result.allLabelList) $scope.allLabelList = data.result.allLabelList;
+					if (data.result.allMilestoneList) $scope.allMilestoneList = data.result.allMilestoneList;
+					//若在里程碑详情页新建需求
+					if ($scope.judgePageUnderMilestone) {
+						$.each(data.result.allMilestoneList, function (index, val) {
+							if (val.id == $stateParams.milestoneId) $scope.story.milestone = val;
+						})
+					}
+				});
+			}
+
+			var loadAllModule = function () {
+				$http.post("ws/getModuleListByProject", {
+					projectId: $stateParams.project
+				}).success(function (data) {
+					$scope.allModuleList = data.result;
+				});
+			}
+
+			$scope.getTextColor = function (color) {
+				return getTextColorByBackColor(color);
+			};
+
+
+			initAddStory();
+
+			$scope.saveStory = function () {
+
+				$scope.formCheck = true;
+				$scope.storyAddErrorMsg = "";
+
+				if (!$scope.story.title) {
+					$scope.storyAddErrorMsg = "需求标题不能为空！"
+					return;
+				}
+
+				if (!$scope.story.spec) {
+					$scope.storyAddErrorMsg = "需求内容不能为空！"
+					return;
+				}
+
+				$scope.story.pri = $scope.story.selectPrioritys.title;
+
+				$http.post("ws/addStory", {
+					story: $scope.story,
+					labelList: $scope.story.selectLabels
+				}).success(function (data) {
+					if ($scope.judgePageUnderMilestone) {
+						Modal.close();
+					} else {
+						$state.go("project.story");
+					}
+				});
+
+			}
+
+			$scope.cancelAdd = function () {
+				if ($scope.judgePageUnderMilestone) {
+					Modal.dismiss();
+				} else {
+					$state.go("project.story");
+				}
+
+			}
+
+		});
+</script>

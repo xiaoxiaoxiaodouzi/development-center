@@ -1,0 +1,127 @@
+<link href="home/workbench/teamGroup/teamGroup.css" rel="stylesheet">
+<link href="css/task/board.css" rel="stylesheet">
+<style>
+.board-group{
+	background:#fff;
+	height:auto;
+	min-height: 100%;
+}
+
+.panel-tab-location{
+	position:fixed;
+}
+
+.card{
+	border: 2px solid #F5F5F5;
+	box-shadow: none;
+}
+.card-header{
+	position:relative;
+}
+#whiteListBtn {
+	position:absolute;
+	right:3%;
+	top:30%;
+}
+#whiteListBtn ul li a {
+	text-align:left;
+}
+#whiteListBtn ul li a i {
+	margin-right:3px;
+}
+#detail-panel {
+    height: calc(100% - 113px);
+}
+</style>
+
+<div class="panel-tab-location">
+	<div class="panel-tab">
+		<ul class="panel-tab-list p-0 m-0">
+			<li data-ng-click="toBoardStory()"><a href="">需求</a></li>
+			<li data-ng-click="toBoardtask()"><a href="">任务</a></li>
+			<li class="select-vertical-nav"><a href="">日志</a></li>
+			<li data-ng-click="toBoardbug()"><a href="">缺陷</a></li>
+			<!-- <li data-ui-sref="project.board.plan"><a href="">测试计划</a></li> -->
+		</ul>
+	</div>
+</div>
+
+<div class="container m-t-10">
+    <div id="teamGroupLogPage" class="card wr-open">
+    	<div class="card-header">
+			<h2>项目日志统计</h2>
+			<!-- 隐藏 -->
+			<!-- perm-res="{{project.id}}##milestone_cud" -->
+			<div id="whiteListBtn" class="lv-actions actions dropdown" >
+					<a href="" data-toggle="dropdown" aria-expanded="true"><i class="md md-more-vert"></i></a>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li>
+							<a ng-click="downLoadWorkLog()" >
+								<i class="md md-get-app"></i>工作日志
+							</a>
+						</li>
+						<!-- <li>
+							<a ng-click="downLoadOverLog()" >
+								<i class="md md-get-app"></i>加班日志
+							</a>
+						</li> -->
+					</ul>
+			</div>
+		</div>
+		<div class="card-body p-b-40">
+		<div class="wr-view">
+			<div class="wkr-tasklist clearfix" >
+				<c2-date-range-dropdown date-range="dateRange" date-buttons="dateButtons" default-button="thisWeek" buttom-message="未完成的任务按计划结束时间过滤，已完成的按完成时间过滤；入职时间在结束时间之后或者离职时间在开始时间之前的人会自动过滤。">
+	           		<div class="picker picker-white">
+						<i class="md md-today" title="日期选择"></i> {{dateRange.show}}<span class="caret"></span>
+					</div>
+	           	</c2-date-range-dropdown>
+	           	<c2-dropdown class="animate" bind-data="dept" items="depts" item-name="name" item-id="id" item-click="selectDept(item)" max-height="200" clean-button="true" after-clean-event="cleanDept()" filter="true">
+						<div class="picker"><i class="md md md-account-balance" title="部门选择"></i> {{dept?dept.name:'选择部门'}}<span class="caret"></span></div>
+				</c2-dropdown>
+	           	<c2-dropdown class="animate" bind-data="search.users" items="projectUsers" item-name="userRealname" item-id="userName" item-click="selectUser(item)" multiple="true" max-height="200" clean-button="true" after-clean-event="cleanUsers()" filter="true">
+						<div class="picker"><i class="md md-account-child" title="成员选择"></i> {{search.users.length>0?'人员数:'+search.users.length:'选择人员'}}<span class="caret"></span></div>
+				</c2-dropdown>
+				
+                <!-- <label class="checkbox checkbox-inline m-l-20">
+	                <input type="checkbox" ng-model="search.task"/>
+	                <i class="input-helper"></i> 任务日志
+	            </label>
+	            <label class="checkbox checkbox-inline m-l-10">
+	                <input type="checkbox" ng-model="search.lack"/>
+	                <i class="input-helper"></i> 缺失日志
+	            </label>
+	            <label class="checkbox checkbox-inline m-l-10">
+	                <input type="checkbox" ng-model="search.overtime"/>
+	                <i class="input-helper"></i> 加班日志
+	            </label> -->
+                
+				<table class="table table-hover m-b-0" id="teamLog" >
+					<thead>
+						<tr style="border-bottom: 2px solid #f0f0f0;border-top: 1px solid #eee;">
+							<th style="width: 110px;text-align: center;">日期</th>
+							<th style="text-align: center;">任务描述</th>
+							<th style="width: 120px; text-align: center;">所属项目</th>
+							<th id="overTitle" style="width: 85px; text-align: center;">工时</th>
+						</tr>
+					</thead>
+					<tbody ng-repeat="logsGroup in teamLogs">
+						<tr><td colspan="4" class="w-title p-l-10"><strong class="f-14 m-r-15 pull-left w-width">{{logsGroup.userRealname}}<span ng-if="logsGroup.userIsvalid!=1" title="离职日期：{{logsGroup.leaveDate | date:'yyyy-MM-dd'}}">(离职)</span></strong> <span ng-if="search.task">使用工时<span class="num c-teal">{{logsGroup.consumed}}</span></span> <span ng-if="search.lack">缺失工时<span class="num c-red">{{logsGroup.lackEstimate}}</span></span></td></tr>
+						<tr ng-repeat="estimateLog in logsGroup.logs" ng-class="{'miss-tr':estimateLog.lackEstimate}">
+							<td class="column">{{estimateLog.workDate | date:"yyyy-MM-dd"}}</td>
+							<td class="column text-left"><a class="text-line-hidden" data-ui-sref="project.teamLog.detail({taskId:'{{estimateLog.taskId}}'})" ng-if='estimateLog.taskId' title="{{estimateLog.description}}">{{estimateLog.description}}</a><span ng-if='!estimateLog.taskId'>{{estimateLog.description}}</span></td>
+							<td class="column"><span class="text-line-hidden">{{estimateLog.projectName}}</span></td>
+							<td class="column"><span ng-if="estimateLog.lackEstimate")>{{estimateLog.lackEstimate}}</span><span ng-if='estimateLog.consumed'>{{estimateLog.consumed}}</span></td>
+						</tr>
+						<tr ng-show="logsGroup.lacklogs.length>0"><td class="column text-left p-l-20" colspan="3"><div ng-repeat="lackInfo in logsGroup.lacklogs" width="120" style="color:#555;" class="pull-left m-r-10 m-t-5" title="{{lackInfo.workDate | date:'yyyy-MM-dd'}}">{{lackInfo.workDate | date:"MM-dd"}}（<span class="c-red ">{{lackInfo.lackEstimate}}</span>）</div></td></tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		</div>
+	</div>
+</div>
+
+<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;top:113px">
+    <ui-view onload="stateOnload()"></ui-view>
+</aside>

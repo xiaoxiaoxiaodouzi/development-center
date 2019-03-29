@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="message/getUserListByPage" log="false" className="com.chinacreator.c2.project.message.MessageService" method="getUserListByPage">
+  <name>获取用户列表</name>
+  <desc>分页获取用户</desc>
+  <inputs>
+    <input collection="false" desc="" id="userName" required="false"/>
+    <input collection="false" desc="" id="pageIndex" required="true" type="int"/>
+    <input collection="false" desc="" id="pageSize" required="true" type="int"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.dao.mybatis.enhance.Page"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.userName" name="userName" signature="QString;" type="java.lang.String"/>
+    <param autoValue="Input.pageIndex" name="pageIndex" signature="I" type="int"/>
+    <param autoValue="Input.pageSize" name="pageSize" signature="I" type="int"/>
+  </params>
+  <return signature="QPage;" type="com.chinacreator.c2.dao.mybatis.enhance.Page"/>
+</CustomRule>

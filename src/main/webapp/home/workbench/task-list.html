@@ -1,0 +1,279 @@
+<link href="css/task/list.css" rel="stylesheet">
+<style>
+@media (min-width: 1200px){
+.container {
+    width: 100%;
+}
+}
+.container {
+    padding-left: 0;
+    padding-right: 0;
+}
+#taskListDiv .lv-item .media-body .lv-title {
+    width: 70%;
+}
+</style>
+
+<div class="container">
+<div class="card">
+    	<div class="card-header">
+			<h2>
+				{{isProjectTasks?'任务管理':'我的任务'}} <small><span ng-if="isProjectTasks">项目</span><span ng-if="!isProjectTasks">我</span>总计<span class="num">{{totalProjectTask}}</span>个任务 &nbsp; 已完成<span class="num">{{doneProjectTask}}</span> &nbsp;使用工时<span class="num">{{sumConsumedProjectTask}}</span></small>
+			</h2> 
+			<button ng-if="isProjectTasks&&cuTask" title="添加任务" id="add-task-button" class="btn bgm-blue btn-float" ng-click="openNewTask()">
+				<i class="md md-add"></i>
+			</button>
+		</div>
+		
+		<div class="card-body clearfix">
+        <div id="taskListDiv" class="listview lv-bordered lv-lg">
+        
+        	<!-- 搜索 -->
+        	<div id="searchBarPosition" >
+            <div class="lv-header-alt" id="searchBar">
+            	<label class="radio radio-inline m-r-5 m-t-10">
+	                <input type="radio" ng-model="searchTime" ng-value="1" ng-click="searchGroup(1)"/>
+	                <i class="input-helper"></i>全部
+	            </label>
+				<label class="radio radio-inline m-r-5 m-t-10">
+	                <input type="radio" ng-model="searchTime" ng-value="2" ng-click="searchGroup(2)"/>
+	                <i class="input-helper"></i>未分配
+	            </label>
+<!-- 	            <label id="timeSearch" class="radio radio-inline picker picker-white dropdown" ng-class="{open:timeSearchOpen}"> -->
+<!-- 	                <input type="radio" ng-model="searchTime" ng-value="3" ng-click="searchGroup(3)"/> -->
+<!-- 	                <i class="input-helper"></i><span ng-bind="chooseTimeName"></span> -->
+<!-- 	                <div class="dropdown-menu p-5" style="width:460px;"> -->
+<!-- 	                <div class="timeSearchButtonBar p-5"> -->
+<!-- 	                <button ng-repeat="db in dateChooseButtons" ng-click="buttonDate(db)" ng-class="{'btn-primary':db.active}" class="btn btn-default picker-shadow">{{db.name}}</button> -->
+<!-- 	                </div> -->
+<!-- 	                <div class="row"> -->
+<!-- 	                	<div class="col-sm-6"><div id="datetimepickerFrom"></div></div> -->
+<!-- 	                	<div class="col-sm-6"><div id="datetimepickerTo"></div></div> -->
+<!-- 	                </div> -->
+<!-- 	                <div class="buttom-message c-white"><i class="md md-error m-r-5"></i>未完成的任务按计划结束时间过滤，已完成的按完成时间过滤。</div> -->
+<!-- 	                </div> -->
+<!-- 	            </label> -->
+	            <label id="rangeDate" class="radio radio-inline picker picker-white" c2-date-range-dropdown date-range="dateRange" date-buttons="dateButtons" buttom-message="未完成的任务按计划结束时间过滤，已完成的按完成时间过滤。">
+	            	<input type="radio" ng-model="searchTime" ng-value="4" ng-click="searchGroup(4)"/>
+	                <i class="input-helper"></i><span ng-bind="dateRange.show"></span>
+	            </label>
+	            
+	            <label class="checkbox checkbox-inline m-l-20 m-t-10" title="显示未完成的任务">
+	                <input type="checkbox" ng-model="search.NotDone"/>
+	                <i class="input-helper"></i> 未完成
+	            </label>
+	            <label class="checkbox checkbox-inline m-l-10 m-t-10" title="显示已完成未关闭的任务">
+	                <input type="checkbox" ng-model="search.Done"/>
+	                <i class="input-helper"></i> 已完成
+	            </label>
+	            <label class="checkbox checkbox-inline m-l-10 m-t-10" title="显示已完成关闭了的任务">
+	                <input type="checkbox" ng-model="search.Closed"/>
+	                <i class="input-helper"></i> 已关闭
+	            </label>
+	            
+                <div id="bug-task-switch" class="toggle-switch">
+                    <label for="ts1" class="ts-label"><i class="md md-bug-report f-17 c-gray m-l-10" ng-class="{'c-indigo':search.bug}" title="只显示bug任务"></i></label>
+                    <input id="ts1" type="checkbox" ng-model="search.bug">
+                    <label for="ts1" class="ts-helper"></label>
+                </div>
+                
+                <div ng-show="!isProjectTasks" id="bug-task-switch" class="toggle-switch">
+                    <label for="ts1" class="ts-label m-l-10"><i class="md md-person-outline f-17 c-gray" ng-class="{'c-indigo':search.creator}" title="只显示我创建的任务"></i></label>
+                    <input id="ts1" type="checkbox" ng-model="searchCreatorCondition">
+                    <label for="ts1" class="ts-helper"></label>
+                </div>
+                
+                <c2-dropdown class="animate" ng-if="!isProjectTasks"  id="projectDropdown" bind-data="debounce.projects" items="projects" item-name="name" class="m-l-10" max-height="200" multiple=true filter="true" >
+					<div class="picker picker-white text-overflow" style="max-width:160px;">
+						<i class="md md-apps"></i> <span ng-if="debounce.projects.length==0">选择项目 <i class="caret"></i></span><span class="p-l-5 p-r-5 m-l-5" ng-repeat="p in debounce.projects">{{p.name}}</span>
+					</div>
+				</c2-dropdown>
+				<c2-dropdown class="animate" ng-if="isProjectTasks" bind-data="debounce.users" items="projectUsers" item-name="name" multiple=true class="m-l-10" max-height="200" filter="true" filter-pinyin="true" clean-button="true">
+					<div class="picker picker-white text-overflow" style="max-width:160px;">
+						<i class="md md-account-child"></i> <span ng-if="debounce.users.length==0">选择成员</span><span ng-repeat="user in debounce.users">{{user.name}} </span> <span class="caret"></span>
+					</div>
+				</c2-dropdown>
+				<c2-dropdown class="animate" ng-if="isProjectTasks" bind-data="search.milestone" items="projectMilestones" item-name="title" max-height="200" filter="true" clean-button="true">
+					<div class="picker picker-white text-overflow" style="max-width:160px;">
+						<i class="md md-av-timer"></i> <span ng-if="!search.milestone">选择里程碑 <i class="caret"></i></span>{{search.milestone.title}}
+					</div>
+				</c2-dropdown>
+				<c2-dropdown class="animate" ng-if="isProjectTasks" bind-data="debounce.labels" items="projectLabels" item-name="name" multiple=true max-height="200" filter="true" clean-button="true">
+					<div class="picker picker-white text-overflow" style="max-width:160px;">
+						<i class="md md-bookmark-outline"></i> <span ng-if="debounce.labels.length==0">选择标签 <i class="caret"></i></span><span class="p-l-5 p-r-5 m-l-5 label-show" ng-style="label.backgroundStyle" ng-repeat="label in debounce.labels">{{label.name}}</span>
+					</div>
+					<dropdown-item-template>
+						<div>
+						<span class="label-color" style="background-color: {{item.color}};">&nbsp;</span>
+						<span class="text">{{item.name}}</span>
+						<span class="md md-check check-mark"></span>
+						</div>
+					</dropdown-item-template>
+				</c2-dropdown>
+            </div>
+            </div>
+
+            <div class="lv-body">
+            	<div id="bugs-info" style="padding:10px 0;background-color:#D6EEFF">
+            		<div title="点击查看bug" style="color:#31928E;padding-left: 37px;cursor:pointer;" ng-click="bugsView=!bugsView">
+            		还未处理的BUG:
+            		<i class="md md-bug-report f-16 bug-new-color m-l-10" title="新的bug"></i> <span ng-bind="newBugCount" class="bug-num c-deeporange"></span> &nbsp;
+            		<i class="md md-bug-report f-16 bug-reopen-color m-l-10" title="重新打开的bug"></i> <span ng-bind="reopenBugCount" class="bug-num c-deeporange"></span> &nbsp;
+            		<i class="md md-bug-report f-16 bug-fixlater-color m-l-10" title="延后的bug"></i> <span ng-bind="delayBugCount" class="bug-num c-deeporange"></span> &nbsp;
+            		<button ng-show="bugsTaskButton" class="btn btn-success simple-shadow btn-xs pull-right m-r-10" title="暂未实现"><i class="md md-play-arrow"></i> 合并开始(暂未实现)</button>
+            		</div>
+            		<div class="row" id="bugs-view" ng-show="bugsView">
+            		<c2-listview id="bugListview" url="ws/simpleSelectPage" row-name="bug" params="bugsParams" load-success="bugsSuccess" page-size=5 page-way="more">
+            		<listview-row class="p-lr-40 b-1-e clearfix">
+            				<div class="head pull-left">
+            				<label class="checkbox checkbox-inline m-r-20 m-t-15">
+				                <input type="checkbox" data-ng-model="bug.selected" ng-click="selectedBug()" title="暂时没啥卵用">
+				                <i class="input-helper"></i>    
+				            </label>
+            				</div>
+            				<div class="body">
+	            				<div class="title" style="height:50px;">
+	            				    <div class="text-overflow pull-left" style="width: calc(100% - 450px);">
+		            					<i ng-show="bug.bugStatus == 1" class="md md-bug-report bug-new-color" title="新的bug"></i> 
+		            					<i ng-show="bug.bugStatus == 3" class="md md-bug-report bug-reopen-color" title="重新打开的bug"></i> 
+		            					<i ng-show="bug.bugStatus == 4" class="md md-bug-report bug-fixlater-color" title="延后的bug"></i>
+		            					<b style="display: inline-block;min-width: 32px;" title="bug编号">#{{bug.bugNo}}</b>
+<!-- 		            					<i ng-show="bug.spec" class="md md-event-note c-gray" title="有内容"></i> -->
+		            					<a ng-show="isProjectTasks" data-ui-sref="project.tasks.bug({bugNo:'{{bug.bugNo}}',project:'{{bug.bugProject}}'})" title="{{bug.bugTitle}}">{{bug.bugTitle}}</a>
+		            					<a ng-show="!isProjectTasks" data-ui-sref="home.workbench.myTasks.bug({bugNo:'{{bug.bugNo}}',project:'{{bug.bugProject}}'})" title="{{bug.bugTitle}}">{{bug.bugTitle}}</a>
+		            				</div>	            	 		            					
+	            					<div class="pull-left m-l-15" style="width: 235px;">
+	            						<button ng-show="bug.bugStatus == 1 || bug.bugStatus == 3 || bug.bugStatus == 4" class="btn btn1 simple-shadow btn-xs m-l-5 m-b-5" ng-click="acceptBug(bug)"><i class="md md-play-arrow"></i> 开始</button> 
+	            						<button ng-show="bug.bugStatus == 1 || bug.bugStatus == 3" class="btn btn2 simple-shadow btn-xs m-b-5" ng-click="delayBug(bug)"><i class="md md-pause"></i> 推迟</button> 
+	            						<button class="btn btn3 simple-shadow btn-xs m-b-5" ng-click="rejectBug(bug)"><i class="md md-stop"></i> 拒绝</button>
+	            						<button class="btn btn4 simple-shadow btn-xs m-b-5" ng-click="fixedBug(bug)"><i class="md md-panorama-fisheye"></i> 解决</button>
+	            					</div>
+	            					
+	            					<div class="info m-l-20 pull-left" style=" width:150px;">
+		            					<span style="display: inline-block;min-width: 38px;">{{bug.cuserRealname}}</span><i class="md md-forward m-l-5"></i>
+		            					<span ng-show="!isProjectTasks">{{bug.userRealname}}</span>
+		            					<c2-dropdown class="animate" ng-if="isProjectTasks" directive-killer class="m-r-10" style="line-height: 16px;" bind-data-id="bug.userRealname" items="bugUsers" item-name="name" item-click="changeBugMan(item,bug)" max-height="200" filter="true">
+		            					<span>{{bug.userRealname}}</span>
+		            					</c2-dropdown>
+	            					</div>
+	            					<div class="pull-left" ng-show="bug.spec||bug.commentCount>0"><i class="md md-comment c-gray" title="有内容或评论"></i></div>
+	            					
+	            				</div>
+            				</div>
+						</listview-row>
+            		</c2-listview>
+<!--             		<div class="cleanfix"></div> -->
+            		</div>
+            	</div>
+            	<!-- 添加任务 -->
+                <div id="addTaskDiv" ng-show="newTaskOpenState">
+                    <div class="c-gray user-head">
+                        <c2-dropdown class="animate" id="taskUser" bind-data="taskUser" items="taskUsers" item-name="name" ng-class="{'bgm-red':!taskUser.name&&taskUserRed}" max-height="200" filter="true">
+							<img class="lv-img-sm ng-scope" ng-src="{{taskUser.icon}}">
+							<div>{{taskUser.name}}</div>
+						</c2-dropdown>
+                    </div>
+                    <div class="media-body">
+						<div class="form-group fg-float has-feedback" ng-class="{'has-error':!task.name&&taskNameRed}">
+			                <div class="fg-line">
+			                    <input id="taskInput" ng-model="task.name" type="text" class="form-control fg-input" />
+			                </div>
+			                <label class="fg-label">任务</label>
+			                <span ng-click="addTaskDescExpend=!addTaskDescExpend" class="md md-expand-more rotate form-control-feedback" title="任务描述" style="cursor: pointer;" ng-class="{turn:addTaskDescExpend}"></span>
+			            </div>
+                    </div>
+                    <div id="addTaskEstimateDiv" title="工时" class="c-indigo f-16">
+						<button id="addEstimateButton" class="btn btn-default btn-icon-text c-indigo">
+							<i class="md md-history"></i> <span style="width: 16px;display: inline-block;">{{task.estimate}}</span>
+						</button>
+						<div class="adjust-bar"><i class="md md-add c-black" ng-click="task.estimate=task.estimate+1;hideEstimatePopover();"></i><i class="md md-remove c-black" ng-click="task.estimate=task.estimate>0?task.estimate-1:task.estimate;hideEstimatePopover();"></i></div>
+					</div>
+			            
+		            <div class="animate-show-expend" ng-show="addTaskDescExpend" style="margin-left: 105px;">
+		            <textarea c2-markdown-editor height="100" ng-model="task.description"></textarea>
+		            </div>
+                    <div style="margin-left: 105px;">
+                        <c2-dropdown bind-data="taskWeek" items="taskWeeks">
+							<button class="btn btn-default btn-icon-text picker-shadow" ng-class="{'btn-danger':!taskWeek&&taskWeekRed}">
+									<i class="md md-today"></i> <span ng-if="!taskWeek">时间</span>{{taskWeek.value}} &nbsp;<span class="caret"></span>
+							</button>
+						</c2-dropdown>
+                           <c2-dropdown id="moduleDropdown" class="m-l-20" tree-options="treeOptions" tree-nodes="zTreeNodes" max-height="200" clean-button="true">
+							<button class="btn btn-default btn-icon-text picker-shadow text-overflow" style="max-width:160px;" ng-class="{'btn-danger':!taskModule&&taskModuleRed}">
+									<i class="md md-extension"></i> <span ng-if="!taskModule">模块</span>{{taskModule.name}}&nbsp;<span class="caret"></span>
+							</button>
+						</c2-dropdown>
+                           <c2-dropdown bind-data="taskMilestone" items="milestones" class="m-l-20" item-name="title" clean-button="true">
+							<button class="btn btn-default btn-icon-text picker-shadow text-overflow" style="max-width:160px;">
+									<i class="md md-av-timer"></i> <span ng-if="!taskMilestone">里程碑</span>{{taskMilestone.title}} &nbsp;<span class="caret"></span>
+							</button>
+						</c2-dropdown>
+                           <c2-dropdown id="addTaskTagDropdown" bind-data="taskTag" items="tags" class="m-l-20" multiple=true item-name="name" max-height="200" last-item-button="dropdownAddTag(e)" >
+							<div class="picker text-overflow" style="max-width:160px;">
+								<i class="md md-bookmark-outline"></i> <span ng-if="taskTag.length==0">标签 &nbsp;<i class="caret"></i></span><span class="p-l-5 p-r-5 m-l-5 label-show" ng-style="tag.backgroundStyle" ng-repeat="tag in taskTag">{{tag.name}}</span>
+							</div>
+							<dropdown-item-template>
+								<div>
+								<span class="label-color" style="background-color: {{item.color}};">&nbsp;</span>
+								<span class="text">{{item.name}}</span>
+								<span class="md md-check check-mark"></span>
+								</div>
+							</dropdown-item-template>
+						</c2-dropdown>
+						<button class="btn btn-link pull-right" style="margin-right: -55px;" ng-click="newTaskOpenState=false">取消</button>
+						<button class="btn btn-success btn-icon-text pull-right" style="width: 82px;" ng-click="creatTask()" ng-class="{disabled:addTaskButtonDisabled}"><i class="md md-check"></i> 保存</button>
+						<span id="taskErrorMsg" class="c-red pull-right m-r-10 m-t-10">请完善任务</span>
+                    </div>
+                </div>
+
+				<!-- 任务列表 -->
+                <div class="lv-item media" ui-sref-active="active-shadow" ng-class="{'list-add-animate':task.isNewTask,'list-update-animate':task.isUpdateTask,'list-show-animate':task.nomalAnimate,'list-remove-animate':task.removeAnimate}" ng-repeat="task in taskList">
+                    <div class="checkbox pull-left">
+                        <label>
+                            <input ng-model="task.isDone" type="checkbox" ng-change="taskDone(task)" title="是否完成" />
+                            <i class="input-helper"></i>
+                        </label>
+                    </div>
+                    <div class="pull-left user-head">
+                        <img class="lv-img-sm" ng-src="{{task.userIcon}}">
+                        <div>{{task.userRealname}}</div>
+                    </div>
+                    <div class="media-body">
+                        <div class="lv-title pull-left">
+	                        <i ng-if="task.bugId" class="md md-bug-report c-indigo"></i>
+	                        <a ng-class="{'c-gray':task.isDone,'text-del':task.isDone}" ng-if="isProjectTasks" data-ui-sref="project.tasks.detail({taskId:'{{task.id}}'})">{{task.name}}</a>
+	                        <a ng-class="{'c-gray':task.isDone,'text-del':task.isDone}" ng-if="!isProjectTasks" data-ui-sref="home.workbench.myTasks.detail({taskId:'{{task.id}}'})">{{task.name}}</a>
+<!-- 	                        <i class="md md-expand-more rotate f-14" ng-if="task.description" ng-class="{turn:task.exDesc}" title="展开描述" data-ng-click="task.exDesc=!task.exDesc"></i> -->
+	                        <span class="p-l-10 p-r-10 m-r-5 label-show" style="cursor:pointer;" ng-style="label.backgroundStyle" ng-repeat="label in task.labels" ng-click="search.labels=[label]">{{label.name}}</span>  
+                        </div>
+                        <div title="工时" class="pull-right c-darkgrey f-16" style="width:104px;cursor: pointer;margin-bottom: 3px;" ng-click="openEstimateEditModal(task)"><i class="md md-history m-f-w m-r-5"></i> <span class="f-14 l-s-2">{{task.consumed}}/{{task.estimate}}</span></div>
+                        <div class="clearfix"></div>
+                        <ul class="lv-attrs">
+                            <li ng-if="!task.isDone" ng-class="{'task-progress-delayed':task.deplayed,'task-progress':task.progress}" style="background-size:{{task.timeProgress}} 13% !important;background-position-y: 100% !important;"><i class="md md-today" title="截止日期"></i> <span ng-if="task.estStartDate" title="{{task.residueDate}}">{{task.deadline | date:"yyyy-MM-dd"}}</span><span ng-if="!task.estStartDate" title="任务结束时间">未分配</span></li>
+                            <li title="完成时间" ng-if="task.isDone"><i class="md md-today"></i> {{task.finishedDate | date:"yyyy-MM-dd"}} </li>
+                            <li title="项目" ng-if="!isProjectTasks"><i class="md md-apps"></i> {{task.projectName}}</li>
+                            <li title="模块" ng-if="task.moduleName"><i class="md md-extension"></i> {{task.moduleName}}</li>
+                            <li title="里程碑" ng-if="task.milestoneTitle"><i class="md md-av-timer"></i> {{task.milestoneTitle}}</li>
+                            <li title="bug编号" ng-if="task.bugId">
+                            	<a ng-if="!isProjectTasks" data-ui-sref="home.workbench.myTasks.bug({bugNo:'{{task.bugNo}}',project:'{{task.projectId}}'})" class="c-purple">#{{task.bugNo}}</a>
+                            	<a ng-if="isProjectTasks" data-ui-sref="project.tasks.bug({bugNo:'{{task.bugNo}}'})" class="c-purple">#{{task.bugNo}}</a>
+                            </li>
+                            <li id="close-task" ng-if="task.isDone&&!task.closed&&taskClose&&!task.bugId" ng-click="closeTask(task)"><i class="md md-settings-power"></i> 关闭任务</li>
+                            <li title="关闭状态" ng-if="task.isDone&&task.closed"><i class="md md-settings-power"></i> 已关闭</li>
+                            <li ng-if="task.description" ng-click="task.exDesc=!task.exDesc;task.expandText=task.exDesc?'收起':'展开'" ng-init="task.expandText='展开'" style="cursor: pointer;"><i class="md md-view-headline"></i> {{task.expandText}}描述</li>
+                        </ul>
+                        <small ng-if="task.description&&task.exDesc" class="lv-small lv-text-normal" ng-bind-html="task.description | markdown"></small>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        </div>
+
+        <c2-pagination id="pageEle" total="page.total" page-size="10" on-page-change="pageList(pageIndex)"></c2-pagination>
+    </div>
+</div>
+
+<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;">
+    <ui-view onload="stateOnload()"></ui-view>
+</aside>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="task/myTaskOrder" log="false" className="com.chinacreator.c2.project.task.TaskService" method="myTaskOrder">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>我的任务排序</name>
+  <inputs>
+    <input collection="false" desc="" id="moveTaskId" required="true" type="Integer"/>
+    <input collection="false" desc="" id="targetTaskId" required="true" type="Integer"/>
+    <input collection="false" desc="" id="direction" required="true" type="String"/>
+    <input collection="false" desc="" id="username" required="true" type="String"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.moveTaskId" name="moveTaskId" signature="QInteger;" type="Integer"/>
+    <param autoValue="Input.targetTaskId" name="targetTaskId" signature="QInteger;" type="Integer"/>
+    <param autoValue="Input.direction" name="direction" signature="QString;" type="String"/>
+    <param autoValue="Input.username" name="username" signature="QString;" type="String"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="copyCaseInfo" log="false" className="com.chinacreator.c2.project.testcase.CaseService" method="copyCaseInfo">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>复制用例</name>
+  <desc>复制用例</desc>
+  <inputs>
+    <input collection="false" desc="" id="caseId" required="true" type="String"/>
+    <input collection="false" desc="@return" id="typeId" required="true" type="String"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.project.testcase.Case"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.caseId" name="caseId" signature="QString;" type="String"/>
+    <param autoValue="Input.typeId" name="typeId" signature="QString;" type="String"/>
+  </params>
+  <return signature="QCase;" type="com.chinacreator.c2.project.testcase.Case"/>
+</CustomRule>

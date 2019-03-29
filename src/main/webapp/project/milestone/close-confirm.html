@@ -1,0 +1,12 @@
+<h5 style="padding:0px 0px 0px 0px;margin:0px 0px 0px 0px">里程碑一旦关闭将不能进行任何修改和恢复，确认要关闭么</h5>
+<div class="modal-footer" data-ng-controller="closeMilestoneCtrl" style="padding:0px 25px 15px 0px">
+    <button type="button" class="btn btn-danger btn-icon-text waves-effect" ng-click="onClickClose()"><i class="md md-delete"></i>关闭</button>
+</div>
+<script type="text/javascript">
+angular.module("project").registerCtrl('closeMilestoneCtrl', function($scope, $http, $state, $stateParams, $timeout, Messenger, Modal, ModelFactory) {
+	$scope.onClickClose=function(){
+		Modal.close();
+	};
+});	
+	</script>
+

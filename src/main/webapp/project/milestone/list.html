@@ -1,0 +1,233 @@
+<style>
+.milestone-detail:hover {
+    cursor:pointer
+}
+</style>
+<div class="container m-t-10" ng-controller="milestoneCtrl">
+	<!-- <div class="block-header">
+	</div> -->
+	<div class="card" id="profile-main">
+		<div class="card-header">
+			<h2>
+				里程碑
+			</h2>
+			<button class="btn bgm-blue btn-float waves-effect" ng-click="create()" data-ng-if="milestoneCUD">
+			<i class="md md-add"></i>
+			</button>
+		</div>
+		<div class="card-body clearfix">
+			<div class="listview lv-bordered lv-lg">
+				<div class="lv-header-alt" style="padding-left: 30px;">
+					里程碑总数：{{pagination.totalRow}}
+				</div>
+				<div class="lv-body">
+					<div class="lv-item media milestone-detail" ng-click="openDetail($event,milestone.id)" ng-repeat='milestone in milestoneList' style="transition-duration: 0ms;">
+						<div class="media-body">
+							<div class="row">
+								<div class="col-sm-11">
+									<div class="row">
+										<div class="col-sm-5 lv-title">
+											<a data-ui-sref="project.milestoneDetail({milestoneId:milestone.id})">
+											{{milestone.title}}
+											</a>
+										</div>
+										<div class="col-sm-7">
+											<div class="progress">
+												<div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{getPercent((milestone.milestoneStoryReport.closed+milestone.milestoneTaskReport.done),milestone.milestoneStoryReport.opened+milestone.milestoneTaskReport.undone)}}%">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-5">
+											<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #00BCD4;margin-right: 5px;" ng-if="milestone.status==0" >已保存</span>
+								    		<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #6cc644;margin-right: 5px;" ng-if="milestone.status==1" >已确认</span>
+								    		<span style="width: 50px;display: inline-block;padding: 1px 2px;line-height: 20px;font-size: smaller;color: #fff;text-align: center;border-radius: 3px;background-color: #999;margin-right: 5px;" ng-if="milestone.status==2" >已关闭</span>
+											截止时间：{{milestone.endDate|date:'yyyy-MM-dd'}}
+										</div>
+										<div class="col-sm-7">
+											<span style="font-weight: normal;color: #999;">任务：</span><span style="font-weight: normal;color: green;">{{milestone.milestoneTaskReport.done}}</span>/<span style="font-weight: normal;color:#050505;">{{milestone.milestoneTaskReport.undone+milestone.milestoneTaskReport.done}}</span>											
+											&nbsp;&nbsp;
+											<span style="font-weight: normal;color: #999;">需求：</span><span style="font-weight: normal;color: green;">{{milestone.milestoneStoryReport.closed}}</span>/<span style="font-weight: normal;color:#050505;">{{milestone.milestoneStoryReport.opened+milestone.milestoneStoryReport.closed}}</span>
+&nbsp;&nbsp;
+											<span style="font-weight: normal;color: #999;">BUG：</span><span style="font-weight: normal;color: green;">{{milestone.milestoneBugReport.closed}}</span>/<span style="font-weight: normal;color:#050505;">{{milestone.milestoneBugReport.opened+milestone.milestoneBugReport.closed}}</span>
+											&nbsp;&nbsp;
+											<span style="font-weight: normal;color: #999;">完成率:</span><span style="font-weight: normal;color: #050505;">{{getPercent((milestone.milestoneStoryReport.closed+milestone.milestoneTaskReport.done),milestone.milestoneStoryReport.opened+milestone.milestoneTaskReport.undone)}}%</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-1">
+								</div>
+							</div>
+							<div class="lv-actions actions dropdown" data-ng-if="milestoneCUD&&milestone.status!='2'">
+								<a href="" data-toggle="dropdown" aria-expanded="true"><i class="md md-more-vert"></i>
+								</a>
+								<ul class="dropdown-menu dropdown-menu-right">
+									<li><a ng-if="milestone.status!='2'" data-ui-sref="project.milestoneDetail({milestoneId:milestone.id,edit:1})">编辑</a></li>
+									<li><a ng-if="milestone.status!='1'" data-ng-click="updateStatus(milestone,1)" href="">确认</a></li>
+									<li><a ng-if="milestone.status!='2'" data-ng-click="updateStatus(milestone,2)" href="">关闭</a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<c2-pagination total="pagination.totalRow" page-size="5" on-page-change="loadMilestoneListForPage(pageIndex,5)"></c2-pagination>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+angular.module("project").registerCtrl('milestoneCtrl', function($scope, $http, $state, $stateParams, $timeout, Messenger, Modal, ModelFactory) {
+	$scope.initMilestone = function() {
+		$scope.pagination = {
+			pageIndex: 1,
+			pageSize: 5
+		};
+		$scope.loadMilestoneListForPage(1, $scope.pagination.pageSize);
+	}
+
+
+	$scope.loadMilestoneListForPage = function(pageIndex, pageSize, condition) {
+
+		if (pageIndex <= 0) pageIndex = 1;
+
+		if (!$stateParams.project || $stateParams.project == "") {
+			Messenger.post({
+				'message': "没有产品参数，页面无法加载数据！",
+				'type': 'error',
+			});
+			return;
+		}
+
+		if (undefined == condition || null == condition) {
+			condition = {
+				product: $stateParams.project
+			}
+		} else {
+			condition.product = $stateParams.project
+		}
+
+
+		$http.post("ws/getMilestoneListForPage", {
+			"pageIndex": pageIndex,
+			"pageSize": pageSize,
+			"condition": condition
+		}).success(function(data) {
+
+			$scope.milestoneList = data.result.rows;
+			console.log($scope.milestoneList);
+			$scope.pagination.pageIndex = pageIndex;
+			$scope.pagination.pageSize = pageSize;
+			$scope.pagination.totalRow = data.result.totalCount;
+			$scope.pagination.totalPage = parseInt(($scope.pagination.totalRow + $scope.pagination.pageSize - 1) / $scope.pagination.pageSize)
+
+		});
+	}
+
+
+	$scope.getPercent = function(close, open) {
+		if (undefined == open) {
+			open = 0;
+		}
+
+		if (undefined == close) {
+			close = 0;
+		}
+
+		if ((close + open) == 0) {
+			return 0;
+		}
+		return Math.round((close / (close + open)) * 1000) / 10;
+	}
+
+	$scope.create = function() {
+
+		if (!$stateParams.project || $stateParams.project == "") {
+			Messenger.post({
+				'message': "没有产品参数，页面无法加载数据！",
+				'type': 'error',
+			});
+			return;
+		}
+
+		Modal.open('project/milestone/add.html', {
+			project: $stateParams.project
+		}, {
+			title: '新增里程碑',
+			animation: true,
+			onClose: function() {
+				$scope.loadMilestoneListForPage($scope.pagination.pageIndex, $scope.pagination.pageSize);
+			}
+		});
+	};
+
+	$scope.delMilestone = function(milestone) {
+		$http.post("ws/delMilestone", {
+			"milestone": {
+				"id": milestone.id
+			}
+		}).success(function(data, status, headers, config) {
+			if (data.result == true) {
+				$scope.loadMilestoneListForPage($scope.pagination.pageIndex, $scope.pagination.pageSize);
+				Messenger.post({
+					'message': "删除成功！",
+					'type': 'success',
+				});
+			} else {
+				Messenger.post({
+					'message': "里程碑下有关联的任务或需求，不能删除！",
+					'type': 'error',
+				});
+			}
+
+		});
+	};
+	$scope.updateStatus = function(milestone, status) {
+		var doUpdate=function(){
+			var entityDataSource = ModelFactory.entity("c2_comunity_milestone", "id", {
+				id: milestone.id
+			});
+			entityDataSource.$promise.then(function(entity) {
+				entity.status = status;
+				$http.post("ws/updateMilestone", {
+					milestone: entity
+				}).success(function(data) {
+					$scope.loadMilestoneListForPage($scope.pagination.pageIndex, $scope.pagination.pageSize);
+				});
+			});
+		};
+		if (status == 2 && milestone.milestoneStoryReport.opened > 0) {
+			Messenger.post({
+				'message': "里程碑下有需求未关闭，不能关闭里程碑！",
+				'type': 'error',
+			});
+			return;
+			Modal.open("project/milestone/close-confirm.html",{},{
+				onClose:doUpdate
+			});
+		}else{
+			doUpdate();
+		}
+		
+	};
+	$scope.openDetail = function($event, milestoneId) {
+		if ($($event.target).is('a')) {
+			return;
+		}
+		$state.go("project.milestoneDetail", {
+			milestoneId: milestoneId
+		});
+	}
+
+
+	$scope.initMilestone();
+
+	$http.post("ws/isProjectPermitedByBatch", {
+		projectId: $stateParams.project,
+		permExprs: ["milestone_cud", "advancedSet_menu"]
+	}).success(function(data, status, headers, config) {
+		$scope.milestoneCUD = data.result["milestone_cud"];
+		$scope.advancedSetMenu = data.result["advancedSet_menu"];
+	});
+});
+</script>

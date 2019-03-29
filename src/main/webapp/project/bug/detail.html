@@ -1,0 +1,1080 @@
+<style>
+
+a:hover {
+	cursor:hand;
+}
+
+.dropdown-menu .label-color {
+	width: 13px;
+	height: 13px;
+	display: inline-block;
+	border-radius: 3px;
+	vertical-align: middle;
+	margin: 0 3px 2px 0;
+}
+
+.gh-header-title {
+	margin-top: 0;
+	margin-bottom: 0;
+	line-height: 1em;
+	word-wrap: break-word;
+	color:#555555;
+	font-weight: 600;
+}
+
+.editor-toolbar {
+    margin-top: 0px;
+}
+
+.rotate.md-expand-more.turn {
+    transform: rotate(180deg);
+}
+.rotate.md-expand-more {
+    transform: none;
+    transition: transform 500ms;
+}
+
+.black-color{
+	color: black;
+}
+
+
+.discussion-timeline:before {
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 23px;
+    width: 2px;
+    background-color: #f3f3f3;
+    z-index: 1;
+}
+
+
+.discussion-item+.discussion-item {
+    padding-top: 15px;
+    border-top: 1px solid #f5f5f5;
+}
+
+.discussion-item {
+    position: relative;
+    margin: 15px 0 35px 40px;
+    padding-left: 25px;
+}
+
+.discussion-item-header:last-child {
+    padding-bottom: 0;
+}
+
+.discussion-item-header {
+    min-height: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #767676;
+    line-height: 20px;
+    word-wrap: break-word;
+}
+
+.discussion-item-icon {
+    float: left;
+    width: 32px;
+    height: 32px;
+    margin-top: -7px;
+    margin-left: -57px;
+    line-height: 28px;
+    color: #767676;
+    text-align: center;
+    background-color: #f3f3f3;
+    border: 2px solid #fff;
+    border-radius: 50%;
+}
+
+.octicon, .mega-octicon {
+    font: normal normal normal 16px/1 octicons;
+    display: inline-block;
+    text-decoration: none;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.discussion-item-header .avatar {
+    float: left;
+    margin-top: 2px;
+    margin-right: 5px;
+}
+
+.timeline-comment-wrapper {
+    position: relative;
+    padding-left: 64px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-top: 2px solid #fff;
+}
+.timeline-comment {
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+.timeline-comment-header-text {
+    max-width: 78%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.timeline-comment-header {
+    padding-left: 15px;
+    padding-right: 15px;
+    color: #767676;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #eee;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.timeline-comment-wrapper>.timeline-comment:after, .timeline-comment-wrapper>.timeline-comment:before, .timeline-new-comment .timeline-comment:after, .timeline-new-comment .timeline-comment:before {
+    position: absolute;
+    top: 11px;
+    left: -16px;
+    right: 100%;
+    width: 0;
+    height: 0;
+    display: block;
+    content: " ";
+    border-color: transparent;
+    border-style: solid solid outset;
+    pointer-events: none;
+}
+
+.timeline-comment-wrapper>.timeline-comment:before, .timeline-new-comment .timeline-comment:before {
+    border-right-color: #ddd;
+    border-width: 8px;
+}
+
+.comment-body {
+    width: 100%;
+    padding: 15px;
+    overflow: visible;
+    font-size: 14px;
+}
+
+
+.timeline-comment-wrapper>.timeline-comment:after, .timeline-new-comment .timeline-comment:after {
+    border-width: 7px;
+    border-right-color: #f7f7f7;
+    margin-top: 1px;
+    margin-left: 2px;
+}
+
+.timeline-comment-avatar {
+    float: left;
+    margin-left: -64px;
+    border-radius: 50%;
+}
+.avatar {
+    display: inline-block;
+    overflow: hidden;
+    line-height: 1;
+    vertical-align: middle;
+    border-radius: 3px;
+}
+.c2-chosen-container {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 13px;
+	zoom: 1;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+.c2-chosen-container-multi .c2-chosen-choices {
+	position: relative;
+	overflow: hidden;
+	margin: 0;
+	padding: 0 5px;
+	width: 100%;
+	height: auto !important;
+	height: 1%;
+	border: 1px solid #aaa;
+	background-color: #fff;
+	background-image: -webkit-gradient(linear, 50% 0, 50% 100%, color-stop(1%, #eee),
+		color-stop(15%, #fff) );
+	background-image: -webkit-linear-gradient(#eee 1%, #fff 15%);
+	background-image: -moz-linear-gradient(#eee 1%, #fff 15%);
+	background-image: -o-linear-gradient(#eee 1%, #fff 15%);
+	background-image: linear-gradient(#eee 1%, #fff 15%);
+	cursor: text;
+}
+.c2-chosen-container-multi .c2-chosen-choices {
+	border: 0;
+	/* border-bottom: 1px solid #e0e0e0; */
+	background: none;
+	padding: 0;
+}
+.c2-chosen-container .c2-chosen-choices {
+	border-left: 0;
+	border-top: 0;
+	border-right: 0;
+}
+.c2-chosen-container-multi .c2-chosen-choices li.c2-search-field {
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+}
+.c2-chosen-container-multi .c2-chosen-choices li {
+	float: left;
+	list-style: none;
+}
+.c2-chosen-container .c2-chosen-drop {
+	position: absolute;
+	top: 100%;
+	left: -9999px;
+	z-index: 1010;
+	width: 100%;
+	border: 1px solid #aaa;
+	border-top: 0;
+	background: #fff;
+	box-shadow: 0 4px 5px rgba(0, 0, 0, .15);
+}
+.c2-chosen-container .c2-chosen-drop {
+	border: 0;
+}
+.c2-chosen-container .c2-chosen-drop {
+	margin-top: 1px;
+	display: block;
+	left: 0;
+	width: 100%;
+	-webkit-transition: all;
+	-o-transition: all;
+	transition: all;
+	-webkit-transition-duration: 300ms;
+	transition-duration: 300ms;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transform: scale(0);
+	-ms-transform: scale(0);
+	-o-transform: scale(0);
+	transform: scale(0);
+	opacity: 0;
+	filter: alpha(opacity = 0);
+}
+.c2-chosen-container.c2-chosen-with-drop .c2-chosen-drop {
+	left: 0;
+}
+.c2-chosen-container:not (.c2-chosen-right ) .c2-chosen-drop {
+	-webkit-transform-origin: 0 0;
+	-moz-transform-origin: 0 0;
+	-ms-transform-origin: 0 0;
+	transform-origin: 0 0;
+}
+.c2-chosen-container.c2-chosen-container-active .c2-chosen-drop {
+	-webkit-transform: scale(1);
+	-ms-transform: scale(1);
+	-o-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+	filter: alpha(opacity = 100);
+}
+.c2-chosen-container .c2-chosen-results {
+	padding: 0;
+	margin: 0;
+}
+.c2-chosen-container .c2-chosen-results {
+	color: #444;
+	position: relative;
+	overflow-x: hidden;
+	overflow-y: auto;
+	margin: 0 4px 4px 0;
+	padding: 0 0 0 4px;
+	max-height: 240px;
+	-webkit-overflow-scrolling: touch;
+}
+.c2-chosen-container .c2-chosen-results>li:not (.c2-disabled-result ):not
+	(.c2-result-selected ):not (.c2-group-result ):not (:hover ) {
+	background: #fff !important;
+}
+.c2-chosen-container .c2-chosen-results>li:not (.c2-disabled-result ):not
+	(.c2-result-selected ):not (.c2-group-result ) {
+	color: #262626;
+}
+.c2-chosen-container .c2-chosen-results li.c2-active-result {
+	display: list-item;
+	cursor: pointer;
+}
+.c2-chosen-container .c2-chosen-results>li {
+	padding: 8px 17px;
+	color: #4C4C4C;
+	-webkit-transition: background-color;
+	-o-transition: background-color;
+	transition: background-color;
+}
+.c2-chosen-container .c2-chosen-results li {
+	display: none;
+	margin: 0;
+	padding: 5px 6px;
+	list-style: none;
+	line-height: 15px;
+	word-wrap: break-word;
+	-webkit-touch-callout: none;
+}
+.c2-chosen-container .c2-chosen-results > li:not(.c2-disabled-result):not(.c2-result-selected):not(.c2-group-result):hover {
+    background-color: #e4e4e4;
+    color: #262626;
+}
+.CodeMirror-code {
+    color: #000;
+}
+#bug-comment.container{
+	width: calc(100% - 30px);
+}
+.pmbb-view img{
+	max-width: 100%;
+}
+.status-3-color{
+	color:#009688;
+}
+.status-2-color{
+	color:#4CAF50;
+}
+.status-5-color{
+	color: #FF5722;
+}
+.status-6-color{
+	color: #FF9800;
+}
+.card .card-header .actions{
+	float:right;
+}
+.card-box{
+	margin-bottom: 0px;
+	box-shadow: 0 0px 0px rgba(0, 0, 0, 0.15);
+}
+.l-h-20{
+	line-height:20px;
+}
+.impor-info{
+	border-bottom: 1px solid rgba(0, 0, 0, .05); 
+	padding: 5px; 
+	padding-left: 0px; 
+	border-top: 1px solid rgba(0, 0, 0, .05); 
+	background:#F3F3F3;
+}
+.handle{
+	padding-left: 0px;
+	display: inline-block;
+	padding-right: 10px;
+	margin-top: 5px;
+}
+.timeline-box{ 
+	padding-left: 20px; 
+	padding-top: 0px; 
+	padding-right: 20px;
+	padding-bottom: 5px;
+}
+.tv-box{
+	padding-top: 0px; 
+	padding-left: 0px; 
+	padding-right: 0px; 
+	background-color: #fff
+}
+.d-label{ 
+	text-align: left;
+	display: inline-block;
+	margin-top: 5px;
+}
+.timeline-a{
+	position: relative; 
+	border-top: 1px solid #EEE; 
+	border-bottom: 1px solid #EEE; 
+	padding-top: 20px;
+}
+.t--5{ top:-5px !important;}
+</style>
+<div id="bug-comment" ng-controller="bugCommentCtrl">
+	<div class="card card-box">
+		<div data-ng-if="!edit" class="card-header" style="padding-top:0;">
+		
+			<div ng-show="bug.status == 1 || bug.status == 3 || bug.status == 4">
+	        <button class="btn btn1 simple-shadow btn-xs f-14" ng-click="acceptBug()"><i class="md md-play-arrow"></i> 开始</button> 
+	        <button ng-show="bug.status == 1 || bug.status == 3" class="btn btn2 simple-shadow btn-xs m-l-5 f-14" ng-click="delayBug()"><i class="md md-pause"></i> 推迟</button> 
+	        <button class="btn btn3 simple-shadow btn-xs m-l-5 f-14" ng-click="rejectBug()"><i class="md md-stop"></i> 拒绝</button>
+	        <button class="btn btn4 simple-shadow btn-xs m-l-5 f-14" ng-click="fixedBug()"><i class="md md-panorama-fisheye"></i> 解决</button>
+	        </div>
+	        <div ng-show="bug.status == 0 || bug.status == 6 || bug.status == 5">
+	        <button class="btn btn5 simple-shadow btn-xs m-l-5 f-14" ng-click="reopenBug()"><i class="md md-lock-open"></i> 重新打开</button>
+	        <button ng-show="bug.status != 0" class="btn btn6 simple-shadow btn-xs m-l-5 f-14" ng-click="closeBug()"><i class="md md-not-interested"></i> 关闭</button>
+	        </div>
+	        
+			<h1 class="gh-header-title">
+				<div data-ng-if="!edit" class="ng-scope m-t-10 m-b-20 l-h-20">
+					<span class="js-issue-title ng-binding f-18">{{bug.title}}</span>
+					<!-- <span class="gh-header-number ng-binding">#{{story.id}}</span> -->
+				</div>
+				
+				<ul class="actions t--5">
+					<li class="dropdown action-show"><a href=""
+						data-toggle="dropdown" aria-expanded="false"> <i
+							class="md md-more-vert"></i>
+					</a>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li data-ng-if="!edit"><a ng-click="bugEditFun()">编辑</i></a></li>
+							<li data-ng-if="bug.status==1"><a ng-click="delBugSingle()">删除</i></a></li>
+						</ul>
+					</li>
+				</ul>
+			</h1>
+
+			<div style="margin-top: 9px; margin-bottom: 9px;">
+				 <div class="bug-block bug-{{fomatBugStatus(bug.status)}}" >{{fomatBugStatus(bug.status)}}</div>
+				<span style="color: #337AB7">{{bug.createBy.user_realname}}</span> 
+				<span style="color: #777;padding-right: 10px;">创建时间：{{bug.createTime | date:'yyyy-MM-dd HH:mm:ss' }}</span>
+				<span style="color: #777">版本:{{bug.bugVersion}}</span>
+				<span style="color: #777">所属计划:{{bug.projectPlan.name}}</span>
+			</div>
+
+			<div class="impor-info">
+				<div title="处理人" ng-if="bug.assignedTo" class="handle">
+					<i class="md md-person"></i>
+					{{bug.assignedTo.user_realname}}
+				</div>
+				
+				<div title="优先级" ng-if="bug.pri" class="handle">
+					<i class="md md-sort"></i>
+					<span ng-if="bug.pri==1">高</span><span ng-if="bug.pri==2">中</span><span ng-if="bug.pri==3">低</span>
+				</div>
+
+				<div title="模块" ng-if="bug.module"  class="handle">
+					<i class="md md-view-module"> </i>
+					{{bug.module.name}}
+				</div>
+				
+				<div title="里程碑" ng-if="bug.milestone"  class="handle">
+					<i class="md md-av-timer"></i>
+					{{bug.milestone.title}}
+				</div>
+
+				<div title="标签" ng-if="bug.bugLabel&&bug.bugLabel.length>0" class="d-label" >
+					<i class="md md-bookmark-outline"></i><span
+						ng-if="selectLabels==0">标签 </span><span
+						class="p-l-5 p-r-5 m-l-5 label-show"
+						style="background-color: {{label.color}};color:{{getTextColor(label.color)}}"
+						ng-repeat="label in bug.bugLabel">{{label.name}}</span>
+				</div>
+				
+			</div>
+		</div>
+
+		<div class="card-body">
+
+					<div class="timeline timeline-box">
+						<div class="t-view" style="border: 0px;">
+							<div class="tv-body tv-box">
+								<div data-ng-if="!edit" style="display: block;width: 100%;"
+									class="pmbb-view h-l-2 m-t-10 c2lightbox"
+									ng-bind-html="bug.spec | markdown"></div>
+
+								<div data-ng-show="edit">
+
+									<div class="fg-line"  ng-class="{'has-error':!editBug.title&&formCheck}" style="margin-top: 20px;">
+										<label>标题</label>
+										<input autofocus="" type="text" data-ng-model="editBug.title"
+											class="form-control ng-pristine ng-valid ng-touched">
+									</div>
+
+									<div class="fg-line" ng-class="{'has-error':!editBug.bugVersion&&formCheck}" style="margin-top: 20px;">
+										<label>版本</label>
+										<c2-dropdown title="版本" item-click="chosenItemClick(editBug.bugVersion)"  bind-data="editBug.bugVersion" items="projectVersion"  multiple=false item-name="bug_version" max-height="200" clean-button="true" style="width:100%">
+							<input type="text" id="bugVersion" placeholder="版本" data-ng-model="bugVersion" class="c2-default form-control" autocomplete="off" style="width:100%;color: #000;">
+						</c2-dropdown>
+										<!-- <div id="bugVersion_chosen-container"
+											class="c2-chosen-container c2-chosen-container-multi "
+											style="width: 100%;" title="">
+											<ul class="c2-chosen-choices form-control">
+												<li class="c2-search-field" style="width: 100%;"><input
+													type="text" id="bugVersion" data-ng-focus="versionFocusin();" data-ng-blur="versionFocusout();"
+													data-ng-model="editBug.bugVersion"
+													class="c2-default form-control" autocomplete="off"
+													style="width: 100%; color: #000;"></li>
+											</ul>
+											<div class="c2-chosen-drop">
+												<ul class="c2-chosen-results">
+													<li ng-repeat="v in projectVersion | filter: versionNameFilter"
+														class="c2-active-result"
+														data-ng-click="chosenItemClick(v)"
+														style="padding-left: 10px;">{{v.bug_version}}</li>
+												</ul>
+											</div>
+										</div> -->
+									</div>
+
+									<div style="margin-top: 20px;margin-bottom: 20px;">
+										<!--bug 66: Bug管理中对于非new状态的Bug编辑时无法重新分配处理人  disabled="bug.status!=1&&editSelect.selectAssignTo.user_isvalid==2" -->
+										<c2-dropdown class="animate" title="处理人" disabled="false" bind-data="editSelect.selectAssignTo" 
+											ng-class="{'null-error':!editSelect.selectAssignTo&&formCheck}" items="projectUsers" 
+											item-name="user_realname" multiple="false" max-height="200" filter="true" filter-pinyin="true">
+											<div ng-class="{disabled:bug.status!=1}" class="picker picker-white text-overflow"
+												style="max-width: 160px; padding-left: 0px;">
+												<i class="md md-account-child"></i> <span
+													ng-if="editSelect.selectAssignTo==undefined">选择成员</span> <span
+													ng-if="editSelect.selectAssignTo!=undefined">{{editSelect.selectAssignTo.user_realname}}
+												</span> <span ng-if="bug.status==1" class="caret"></span>
+											</div>
+										</c2-dropdown>
+				
+										<c2-dropdown  title="模块" style="margin-top: 3px;" tree-options="updateTreeOptions" id="updateModTree" tree-nodes="updateZtreeNodes">
+											<div class="picker picker-white">
+												<i class="md md-view-module"> 
+												<span ng-if="!editBug.module">模块</span>
+												</i> {{editBug.module.name}} &nbsp;<span
+													class="caret"></span>
+											</div>
+										</c2-dropdown>
+										
+										<c2-dropdown title="优先级" bind-data="editSelect.selectPrioritys"
+											items="allPriorityList" multiple=false item-name="title"
+											max-height="200">
+										<button
+											class="btn btn-default btn-icon-text picker-shadow text-overflow"
+											style="padding-left: 0px;">
+											<i class="md md-sort"></i> <span
+												ng-if="editSelect.selectPrioritys==undefined">优先级&nbsp;<i
+												class="caret"></i></span> <span ng-if="editSelect.selectPrioritys!=undefined"
+												class="p-r-5 label-show">{{editSelect.selectPrioritys.title}}</span>
+										</button>
+										</c2-dropdown>
+
+										<!-- <c2-dropdown class="animate" title="里程碑" bind-data="editBug.milestone"
+											items="allMilestoneList" multiple=false item-name="title"
+											max-height="200"  filter="true">
+										<button
+											class="btn btn-default btn-icon-text picker-shadow text-overflow" style="padding-left: 0px;">
+											<i class="md md-av-timer"> </i> <span ng-if="editBug.milestone==undefined">里程碑&nbsp;<i
+												class="caret"></i></span> <span ng-if="editBug.milestone!=undefined"
+												class="p-r-5 label-show">{{editBug.milestone.title}}</span>
+										</button>
+										</c2-dropdown> -->
+										
+										<c2-dropdown id="editBugPlan" class="animate" title="计划" tree-options="treePlanOptions" tree-nodes="projectPlans"
+											max-height="200"  filter="true">
+										<button
+											class="btn btn-default btn-icon-text picker-shadow text-overflow" style="padding-left: 0px;">
+											<i class="md md-description"> </i> <span ng-if="editBug.projectPlan==undefined">计划&nbsp;<i
+												class="caret"></i></span> <span ng-if="editBug.projectPlan!=undefined"
+												class="p-r-5 label-show">{{editBug.projectPlan.name}}</span>
+										</button>
+										</c2-dropdown>
+
+										<c2-dropdown class="animate" title="标签" bind-data="editSelect.selectLabels"
+											max-width="200px;" items="allLabelList" multiple=true
+											item-name="name" max-height="200" filter="true" clean-button="true">
+										<div class="picker picker-white text-overflow"
+											style="max-width: 400px;padding-left: 0px;text-align: left;">
+											<i class="md md-bookmark-outline"> </i> <span
+												style="color: #000000;" ng-if="editSelect.selectLabels==0">标签<i
+												class="caret"></i></span><span class="p-l-5 p-r-5 m-l-5 label-show"
+												style="background-color: {{label.color}};color:{{getTextColor(label.color)}}"
+												ng-repeat="label in editSelect.selectLabels">{{label.name}}</span>
+										</div>
+										<dropdown-item-template>
+										<div>
+											<span class="label-color"
+												style="background-color: {{item.color}}">&nbsp;</span> <span
+												class="text">{{item.name}}</span> <span
+												class="md md-check check-mark"></span>
+										</div>
+										</dropdown-item-template> </c2-dropdown>
+
+									</div>
+
+									<textarea id="bugMarkdown" ng-model="editBug.spec" c2-markdown-editor
+										class="form-control" rows="5" rows="5" height="300"
+										placeholder="需求描述"></textarea>
+									<button class="btn btn-primary btn-sm" type="button"
+										data-ng-click="saveBug();">保存</button>
+									<button class="btn btn-link btn-sm" ng-click="cancelEdit()">取消</button>
+									
+									<span id="bugErrorMsg" class="c-red m-r-10 m-t-10">{{bugErrorMsg}}</span>
+								</div>
+							</div>
+						</div>
+
+						<div ng-if="bug.bugCommentList.length>0" class="discussion-timeline timeline-a">
+							<div ng-repeat="item in bug.bugCommentList" timeline-item></div>
+						</div>
+
+						<div data-ng-show="!edit" class="t-view" style="margin-bottom: 5px;">
+							<div class="tv-header media">请填写评论内容</div>
+							<div class="tv-body"
+								style="padding-top: 15px; padding-bottom: 0px; padding-left: 18px; background-color: #fff">
+									<textarea ng-model="replyBug.text" c2-markdown-editor
+										class="form-control" rows="5" rows="5" height="200"
+										placeholder="需求描述"></textarea>
+									<button style="margin-top: -40px;"
+										class="btn btn-primary btn-sm" type="button"
+										data-ng-click="submitCommnet()">提交</button>
+							</div>
+						</div>
+					</div>
+		
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	angular.module("developmentCenter")
+			.registerCtrl(
+					'bugCommentCtrl', 
+					function($scope, $rootScope, $http, $state, $stateParams,
+							$timeout, Messenger, Modal) {
+						//如果从$stateParams不能拿到参数，则直接到全文检索页面拿参数
+						$scope.projectId = angular.isDefined($scope.globalSearchParams)?$scope.globalSearchParams.projectId:$stateParams.project;
+						var bugNo = angular.isDefined($scope.globalSearchParams)?$scope.globalSearchParams.bugNo:$stateParams.bugNo;
+						$scope.editSelect={
+							selectAssignTo:undefined,
+							selectPrioritys:undefined,
+							selectLabels:[],
+							chosenList:[]
+						}
+						
+						$scope.replyComment = "";
+						$scope.bug = {};
+						$scope.editBug={};
+						$scope.allLabelList = [];
+						$scope.allMilestoneList = [];
+
+						$scope.allPriorityList = [ {
+							id : 1,title:'高'
+						}, {
+							id : 2,title:'中'
+						}, {
+							id : 3,title:'低'
+						} ];
+
+						$scope.bug.module = undefined;
+						$scope.editBug.module=undefined;
+						$scope.allModuleList = [];
+						
+						$scope.detailCurrentPage = $scope.$parent.$parent.$parent.currentPage ? $scope.$parent.$parent.$parent.currentPage : 1;
+						
+						var initBugComment = function() {
+							$scope.edit = ($stateParams.edit == 1);
+							loadProjectMember();
+							$scope.loadBugAndComments();
+							loadAllLabelAndMilestone();
+							loadAllModule();
+						}
+						
+						$scope.projectUsers=[];
+						var loadProjectMember = function() {
+							//项目成员
+						}
+						
+						$scope.updateTreeOptions = {
+								view : {
+									selectedMulti : false
+								},
+								data : {
+									simpleData : {
+										idKey : "id",
+										pIdKey : "parent",
+										rootPId : 0,
+										enable : true
+									}
+								},
+								callback : {
+									onClick : function(event, treeId, treeNode, clickFlag) {
+										$scope.$apply(function() {
+											$scope.editBug.module = treeNode;
+										});
+										//收拢下拉框
+										//$scope.moduleDropdownController.toggle();
+										$("#updateModTree").controller("c2-dropdown").toggle();
+									}
+								}
+							};
+						
+						var loadAllModule=function(){
+							$http.post("ws/getModuleListByProject", {
+								projectId :  $scope.projectId
+							}).success(function(data) {
+								$scope.updateZtreeNodes =data.result;
+								$scope.editBug.module=$scope.updateZtreeNodes[0];
+							});
+						}
+						
+
+			$scope.treePlanOptions = {
+				view: {
+					selectedMulti: false
+				},
+				data: {
+					simpleData: {
+						enable: true,
+						pIdKey: "parent"
+					}
+				},
+				callback: {
+					onClick: function (event, treeId, treeNode, clickFlag) {
+						$scope.$apply(function () {
+							$scope.projectPlan = treeNode;
+							$scope.editBug.projectPlan = treeNode;
+						});
+						// $("#newModuleDropdown").controller("c2-dropdown").toggle();
+					}
+				}
+			};
+						//获取项目下历史版本
+						var loadProjectVersion=function(){
+					    	$http.post("ws/bug/getProjectHistoryVersion",{projectId:$scope.projectId}).success(function(data){
+					    		if(data){
+					    			$scope.projectVersion=data.result;
+					    		}
+					    	});
+						}
+						
+						$scope.loadBugAndComments = function() {
+							$http.post("ws/bug/getBugAndComments", {
+								"projectId" : $scope.projectId,
+								"bugNo" : bugNo
+							}).success(function(data) {
+								
+								$scope.bug = data.result;
+								$scope.bug.no = bugNo;
+								
+								$http.post("ws/getProjectBugMembers", {
+									projectId : $scope.projectId,
+									bugId : $scope.bug.id
+								}).success(function(data) {
+									var projectUsers = [];
+									angular.forEach(data.result, function(v, n) {
+										projectUsers.push({
+											user_id : v.userDTO.user_id,
+											user_realname : v.userDTO.user_realname,
+											icon : v.userDTO.remark1,
+											user_name : v.userDTO.user_name,
+											user_isvalid : v.userDTO.user_isvalid
+										});
+									});
+									$scope.projectUsers = projectUsers;
+								});
+								
+								$http.get("ProjectPlan/all/project", {
+									params: {
+										projectId: $scope.projectId
+									}
+								}).success(function (data) {
+									data.forEach(function (i) {
+										if (i.id == $scope.planId) {
+											$scope.bug.projectPlan = i;
+											$scope.projectPlan = i;
+										}
+									})
+									var rootNode = {
+										id: 0,
+										name: $scope.bug.project.name,
+									}
+									data.push(rootNode)
+									$scope.projectPlans = data;
+									$timeout(function(){
+										var ztree = $("#editBugPlan").controller("c2-dropdown").getTree();
+										ztree.expandNode(ztree.getNodes()[0], true, false, true);
+									},400);
+								})
+								
+								$scope.acceptBug=function(){
+									if($scope.bug.project.arcStatus=='0'){
+										Messenger.error("项目【"+$scope.bug.project.name+"】合同编号在ERP不存在或已过时，请更改为最新编号后重试！")
+										return;
+									}
+							        Modal.open('project/task/create-modal.html',{bug:$scope.bug,taskMilestone:$scope.bug.milestone},{
+							        	size:"big",
+							  			title:'创建任务',
+							  			animation:true,
+							  			onClose:function(data){
+							  				$scope.loadBugAndComments();
+							  				$scope.$emit("flushBugList",{pageNum:($scope.detailCurrentPage ? $scope.detailCurrentPage : 1),bug:$scope.bug,type:'open'});
+							            }
+							        });
+								}
+								$scope.delayBug = function(){
+									Modal.openConfirm({
+										title:"BugDelay",
+										message:"点击推迟后将更改BUG为<div class='bug-block bug-FixLater m-5'>FixLater</div>状态<br>" +
+												"你可以随时<div class='bug-block bgm-green m-5'><i class='md md-play-arrow'></i> 开始</div>" +
+												"<div class='bug-block bgm-red m-5'><i class='md md-stop'></i> 拒绝</div>或者" +
+												"<div class='bug-block bgm-orange m-5'><i class='md md-panorama-fisheye'></i> 解决</div>该BUG!",
+										btnText:"推迟",
+										btnClass:"btn-block bgm-lightblue simple-shadow",
+										onClose:function(){
+											$http.post("ws/bug/changeBugStatus",{bugId:$scope.bug.id,status:4}).success(function(){
+												$scope.loadBugAndComments();
+												$scope.$emit("flushBugList",{pageNum:($scope.detailCurrentPage ? $scope.detailCurrentPage : 1),bug:$scope.bug,type:'fixLater'});
+											});
+										}
+									});
+								}
+								$scope.rejectBug = function(){
+									Modal.open("project/task/bugReject.html",{bugId:$scope.bug.id},{
+										title:"BugReject",
+										onClose:function(){
+											$scope.loadBugAndComments();
+											$scope.$emit("flushBugList",{pageNum:($scope.detailCurrentPage ? $scope.detailCurrentPage : 1),bug:$scope.bug,type:'reject'});
+										}
+									});
+								}
+								$scope.fixedBug = function(){
+									Modal.openConfirm({
+										title:"BugFixed",
+										message:"点击解决后将不会生成任何关联的任务，也不会有工时信息！",
+										btnText:"解决",
+										btnClass:"btn-block bgm-lightblue simple-shadow",
+										onClose:function(){
+											$http.post("ws/bug/changeBugStatus",{bugId:$scope.bug.id,status:6}).success(function(){
+												$scope.loadBugAndComments();
+												$scope.$emit("flushBugList",{pageNum:($scope.detailCurrentPage ? $scope.detailCurrentPage : 1),bug:$scope.bug,type:'fixed'});
+											});
+										}
+									});
+								}
+								
+								$scope.reopenBug = function(){
+									Modal.open("project/task/bugReopen.html",{bugId:$scope.bug.id,projectId:$scope.projectId},{
+										title:"BugReopen",
+										onClose:function(){
+											$scope.loadBugAndComments();
+											$scope.$emit("flushBugList",{pageNum:($scope.detailCurrentPage ? $scope.detailCurrentPage : 1),bug:$scope.bug,type:'reopen'});
+										}
+									});
+								}
+								$scope.closeBug = function(){
+									Modal.open("project/task/bugClose.html",{bugId:$scope.bug.id,projectId:$scope.projectId},{
+										title:"BugClose",
+										onClose:function(){
+											$scope.loadBugAndComments();
+											$scope.$emit("flushBugList",{pageNum:($scope.detailCurrentPage ? $scope.detailCurrentPage : 1),bug:$scope.bug,type:'close'});
+										}
+									});
+								}
+								
+								$scope.editSelect.selectAssignTo =data.result.assignedTo;
+								
+								if (data.result.bugLabel)
+									$scope.editSelect.selectLabels = data.result.bugLabel;
+								
+								if(data.result.pri=='1'){
+									$scope.editSelect.selectPrioritys = {id:1,title:'高'};
+								}else if(data.result.pri=='2'){
+									$scope.editSelect.selectPrioritys = {id:2,title:'中'};
+								}else {
+									$scope.editSelect.selectPrioritys = {id:3,title:'低'};
+								}
+								
+								if ($scope.edit) {
+									$scope.bugEditFun();
+								}
+							});
+						}
+
+						var loadAllLabelAndMilestone = function() {
+							$http.post("ws/getAllLabelAndMilestone", {
+										"projectId" : $scope.projectId,
+										"isUnclosed": true
+									})
+									.success(
+											function(data) {
+												if (data.result.allLabelList)
+													$scope.allLabelList = data.result.allLabelList;
+												if (data.result.allMilestoneList)
+													$scope.allMilestoneList = data.result.allMilestoneList;
+											});
+						}
+
+						$scope.getTextColor = function(color) {
+							return getTextColorByBackColor(color);
+						};
+
+						$scope.replyBug={
+							text:""	
+						}						
+					
+						$scope.submitCommnet = function() {
+							
+							if (!$scope.replyBug.text || $scope.replyBug.text == "") {
+								Messenger.post({
+					                'message': "评论内容不能为空！",
+					                'type': 'error',
+					            });
+								return;
+							}
+
+							$http.post("ws/bug/replyBug", {
+								"bugId" : $scope.bug.id,
+								"content" : $scope.replyBug.text
+							}).success(function(data) {
+								$scope.loadBugAndComments();
+								$scope.replyBug.text = "";
+							});
+						}
+
+						$scope.versionFocusin=function(){
+							$timeout(function(){
+								$("#bugVersion_chosen-container").addClass("c2-chosen-with-drop c2-chosen-container-active");
+							},100);
+						}
+						
+						$scope.versionFocusout=function(){
+			        		$timeout(function(){
+			        			$("#bugVersion_chosen-container").removeClass("c2-chosen-with-drop c2-chosen-container-active");
+			        		},100);
+						}
+						
+						$scope.chosenItemClick=function(item){
+							$scope.editBug.bugVersion=item.bug_version;
+							$scope.bugVersion=item.bug_version;
+						}
+						
+						$scope.versionNameFilter = function(version){
+							if(""==$scope.editBug.bugVersion) return true;
+							if(version.bug_version.indexOf($scope.editBug.bugVersion)!=-1){
+								return true;
+							}
+							return false;
+						}
+
+						$scope.bugEditFun = function() {
+							$scope.editBug=angular.copy($scope.bug);
+							$scope.bugVersion=$scope.bug.bugVersion;
+							loadProjectVersion();
+						
+							$scope.edit = true;
+							
+							$("#bugMarkdown").controller("c2MarkdownEditor").refresh();
+						}
+						
+						$scope.delBugSingle = function() {
+							$http.post("ws/bug/deleteBug",{bug:{id:$scope.bug.id}}).success(function() {
+								Messenger.post({
+									'message' : "操作成功"
+								});
+								$scope.$emit("flushBugList", {bug:$scope.bug,type:'delete'}); 
+								$('#detail-panel').removeClass('toggled');
+							});
+						}
+						
+						$scope.cancelEdit = function() {
+							$scope.edit = false;
+						}
+
+						$scope.saveBug = function() {
+							$scope.formCheck=true;
+							$scope.bugErrorMsg="";
+							
+							if(!$scope.editBug.title){
+								$scope.bugErrorMsg="bug标题不能为空！";
+								return;
+							}
+							
+//		 					if(!$scope.bug.module) return;
+                            $scope.editBug.bugVersion=  document.getElementById("bugVersion").value;
+							
+							if(!$scope.editBug.bugVersion){
+								$scope.bugErrorMsg="bug版本不能为空！";
+								return;
+							}
+							
+							$scope.editBug.initAssignedTo=$scope.editSelect.selectAssignTo.user_name;
+							$scope.editBug.pri=$scope.editSelect.selectPrioritys.id;
+							
+							$http.post("ws/bug/updateBug", {
+								bug : $scope.editBug,
+								labels:$scope.editSelect.selectLabels
+							}).success(function() {
+								$scope.bug=angular.copy($scope.editBug);
+								$scope.bug.bugLabel=$scope.editSelect.selectLabels;
+								$scope.bug.assignedTo=$scope.editSelect.selectAssignTo;
+								$scope.edit = false;
+								
+								$scope.$emit("flushBugList",{pageNum:($scope.detailCurrentPage ? $scope.detailCurrentPage : 1),bug:$scope.bug,type:'update'});
+								//之前为 
+								//$scope.$emit("flushBugList",$scope.bug});
+							});
+						}
+						
+						//0关闭、1创建、2打开、3reopen、4延后、 5拒绝、 6完成   10重新分配bug任务
+						$scope.fomatBugType=function(comment){
+							switch(comment.type) 
+							{ 
+								case 0: 
+									return "Closed";
+								case 1: 
+									return "New";
+								case 2: 
+									return "Open";
+// 									return "接受";
+								case 3: 
+									return "Reopen";
+								case 4: 
+									return "FixLater";
+								case 5: 
+									return "Rejected";
+								case 6: 
+									return "Fixed";							
+								case 10: 
+									return "分配给了"+comment.content;							
+								default: 
+									return comment.type;
+							}
+						}
+						
+						$scope.fomatBugStatus=function(status){
+							switch(status) 
+							{ 
+								case 0: 
+									return "Closed";
+								case 1: 
+									return "New";
+								case 2: 
+									return "Open";
+// 									return "接受";
+								case 3: 
+									return "Reopen";
+								case 4: 
+									return "FixLater";
+								case 5: 
+									return "Rejected";
+								case 6: 
+									return "Fixed";													
+								default: 
+									return status;
+							}
+						}
+						
+						$scope.statusIconClass=function(status){
+				
+						      if(status==0){
+						    	  return "md-lock-outline discussion-item-icon"
+						      }else if(status==2){
+						    	  return "md md-lock-open discussion-item-icon status-3-color";
+						      }else if(status==3){
+						    	  return "md md-lock-open discussion-item-icon status-3-color";
+						      }else if(status==5){
+						    	  return "md-arrow-back discussion-item-icon status-5-color";
+						      }else if(status==6){
+						    	  return "md-check discussion-item-icon status-5-color";
+						      }else if(status!=0&&status!=3&&status!=2&&status!=5&&status!=6){
+						    	  return "md md-bookmark-outline discussion-item-icon";
+						      }
+						}
+						
+						initBugComment();
+					});
+
+</script>
+

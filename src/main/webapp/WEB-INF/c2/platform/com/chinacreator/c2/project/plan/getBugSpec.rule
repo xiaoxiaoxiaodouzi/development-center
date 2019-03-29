@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="getBugSpec" log="false" className="com.chinacreator.c2.project.plan.InstanceService" method="getBugSpec">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取bug单描述内容</name>
+  <inputs>
+    <input collection="false" desc="" id="instance" required="true" type="com.chinacreator.c2.project.plan.Instance"/>
+    <input collection="false" desc="" id="step" required="true" type="com.chinacreator.c2.project.plan.InstanceStep"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.Map"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.instance" name="instance" signature="QInstance;" type="com.chinacreator.c2.project.plan.Instance"/>
+    <param autoValue="Input.step" name="step" signature="QInstanceStep;" type="com.chinacreator.c2.project.plan.InstanceStep"/>
+  </params>
+  <return signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+</CustomRule>

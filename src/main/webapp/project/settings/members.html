@@ -1,0 +1,80 @@
+<div  data-ng-controller="membersCtrl">
+	<!-- <div class="block-header">
+  </div> -->
+	<div class="card ng-scope" id="profile-main">
+		<div class="pmb-block ng-scope">
+			<div class="p-header">
+				<ul class="p-menu">				
+					<li perm-res="{{projectId}}##member_new"><a href="" ng-click="newMember()"><i
+							class="md md-person-add hidden-xs">
+					</i> 邀请成员</a></li>
+					<li perm-res="{{projectId}}##member_add"><a href="" ng-click="addMember()"><i class="md md-people hidden-xs"></i>
+							导入成员</a></li>
+					
+				</ul>
+			</div>
+
+			<hr style="margin-top: -20px; color:#E6E6E6">
+
+			<div class="contacts clearfix row">
+
+				<div class="col-md-2 col-sm-6 col-xs-6" ng-if="projectCreator">
+					<div class="c-item c-list-border">
+						<a href="" class="ci-avatar">
+							<img ng-src="{{projectCreator.remark1}}" alt="">
+						</a>
+
+						<div class="c-info">
+							<strong>{{projectCreator.user_realname}}</strong>
+							<small>
+							<i class="md md-location-history role-c bgm-blue" title="项目创建者"></i>								
+							</small>
+						</div>
+
+						<div class="c-footer" ng-if="memberAuthorize || memberRemove">
+							<button class="waves-effect">
+								<i class="md md-location-history"></i> 项目创建者
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-2 col-sm-6 col-xs-6" ng-repeat="member in members | filter:isShowMember">
+					<div class="c-item c-list-border">
+						<a href="" class="ci-avatar">
+							<img ng-src="{{member.userDTO.remark1}}" alt="">
+						</a>
+
+						<div class="c-info">
+							<strong class="m-b-15">{{member.userDTO.user_realname}}</strong>
+							<small ng-repeat="job in member.jobDTOs | filter:isShowJob | orderBy:'jobId'" class="ng-binding ng-scope f-20 role-b {{job.color}}">
+								<i class="md {{job.icon}} m-b-10" title="{{job.jobName}}"></i>
+							</small>
+						</div>
+
+						<div class="c-footer" ng-if="memberAuthorize || memberRemove">
+							<button class="waves-effect" ng-if="member.userDTO.user_isvalid!=2">
+								<i class="md md-https c-red"></i> 已离职
+							</button>							
+							<c2-dropdown class="c-footer clear-top" bind-data="member.jobDTOs" items="member.permDates" item-click="itemClick(item,member.userDTO.user_id)" item-name="jobName" direction="left" multiple=true ng-if="memberAuthorize&&member.userDTO.user_isvalid==2">
+							<button class="waves-effect" >
+								<i class="md md-security"></i> 授权
+							</button>
+							<dropdown-item-template>
+								<i class="md {{item.icon}} m-r-5"></i>
+								<span class="text">{{item.jobName}}</span>								
+								<span class="md md-check check-mark"></span>
+							</dropdown-item-template>
+							</c2-dropdown>
+							<button class="waves-effect" ng-click="removeMembers(member.userDTO.user_id)" ng-if="memberRemove">
+								<i class="md md-remove-circle"></i> 移除
+							</button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>

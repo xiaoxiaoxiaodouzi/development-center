@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="orderStageBug" log="false" className="com.chinacreator.c2.project.stage.BugStageService" method="orderStageBug">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>bug列表排序</name>
+  <desc>bug排序或者状态之间的改变</desc>
+  <inputs>
+    <input collection="false" desc="" id="stage" required="true" type="java.util.Map"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.stage" name="stage" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

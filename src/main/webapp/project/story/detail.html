@@ -1,0 +1,835 @@
+<link href="css/story/story.css" rel="stylesheet">
+
+<div ng-controller="storyCommentCtrl">
+	<div class="card" id="profile-main">
+
+		<div class="card-header">
+			<h3 class="gh-header-title">
+				<div class="ng-scope">
+					<span class="js-issue-title ng-binding">{{story.title}}</span>
+				</div>
+
+				<ul class="actions" data-ng-show="((subject.userName==story.openedby || subject.userName==story.assigTo.userName) && story.status!='0' && !edit) || 
+				((subject.userName==story.proposer.userName || subject.userName==story.openedby) && !edit && story.status !='0' && story.status !='1')">
+					<li class="dropdown action-show">
+						<a href="" data-toggle="dropdown" aria-expanded="false">
+							<i class="md md-more-vert"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-menu-right">
+							<li data-ng-if="story.status!='0' && (subject.userName==story.openedby || subject.userName==story.assigTo.userName)">
+								<a ng-click="storyEditFun()">编辑</i>
+								</a>
+							</li>
+							<li data-ng-if="(story.status=='3' || story.status=='2') && (subject.userName==story.proposer.userName || subject.userName==story.openedby)">
+								<a ng-click="closeStoryFun()">关闭</i>
+								</a>
+							</li>
+							<li data-ng-if="story.status=='1' && subject.userName==story.openedby">
+								<a data-ng-click="delStory()" href="javascript:void(0);">删除</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</h3>
+
+			<div style="margin-top: 9px; margin-bottom: 9px;">
+				<div ng-if="story.status=='1'" class="story_opened">已打开</div>
+				<div ng-if="story.status=='0'" class="story_closed">已关闭</div>
+				<div ng-if="story.status=='2'" class="story_timeout">已逾期</div>
+				<div ng-if="story.status=='3'" class="story_opened">已确认</div>
+
+				<span style="color: #777" class="m-r-10">创建者：{{createUser.user_realname}}</span>
+
+				<span style="color: #777">提出人：{{proposer.user_realname}}</span>
+
+				<div class="pull-right">
+					<a href="" class="black-color" ng-click="showHideTask();" style="padding-left: 6px;">关联任务(
+						<span class="c-green ng-binding" style="font-weight: bold">{{taskDoneNum}}</span>|
+						<span class="ng-binding" style="font-weight: bold; color: black">{{taskTotalNum}}</span>)
+						<i class="md md-expand-more rotate f-14" ng-if="isNotSearchPage" ng-class="{turn:!taskDown}" title="展开关联任务"></i>
+					</a>
+				</div>
+				<!--如果搜索页面，不显示关联任务 -->
+				<div id="taskDiv" ng-if="isNotSearchPage" style="margin: 20px; border: 2px solid #eee; display: none;" ng-include="'project/story/tasks.html'"></div>
+			</div>
+		</div>
+
+		<div class="card-body">
+			<div style="padding-left: 20px; padding-top: 0px; padding-right: 20px;">
+				<div class="t-view" style="border: 0px">
+					<div class="tv-body" style="padding: 0px;">
+
+						<div data-ng-if="!edit">
+							<div class="task-new-handler-warp" style="border: 1px solid #eee;padding:14px 0 12px 15px;;border-radius: 3px;">
+								<div class="row f-14 p-t-3" style="height: 25px;">
+									<div class="col-sm-4">
+										<span>负责人:{{story.assigTo.userRealname}}</span>
+									</div>
+									<div class="col-sm-4">
+										<span>优先级:
+											<span ng-if="story.pri==1">高</span>
+											<span ng-if="story.pri==2">中</span>
+											<span ng-if="story.pri==3">低</span>
+										</span>
+									</div>
+									<div class="col-sm-4">
+										<span>需求类型:
+											<span ng-if="story.type==1">功能</span>
+											<span ng-if="story.type==2">用户体验</span>
+										</span>
+									</div>
+								</div>
+								<div class="row f-14 p-t-3" style="height: 25px;">
+									<div class="col-sm-4">
+										<span>模块:{{story.module.name}}</span>
+									</div>
+									<div class="col-sm-4">
+										<span>里程碑:{{story.milestone.title}}</span>
+									</div>
+									<div class="col-sm-4">
+										<span>
+											完成度:
+											<span ng-if="story.completes==0">0%</span>
+											<span ng-if="story.completes==1">25%</span>
+											<span ng-if="story.completes==2">50%</span>
+											<span ng-if="story.completes==3">75%</span>
+											<span ng-if="story.completes==4">100%</span>
+										</span>
+									</div>
+								</div>
+								<div class="row f-14 p-t-3" style="height: 25px;">
+									<div class="col-sm-4">
+										<span>创建时间：{{story.openeddate | date:'yyyy-MM-dd' }}</span>
+									</div>
+									<div class="col-sm-4">
+										启动时间:
+										<input id="deadline" show-clear="true" name="deadline" type="text" class="form-control" ng-class="{'have-value':story.startDate}"
+										 date-time-picker ng-model="story.startDate" placeholder="选择启动时间" format="YYYY-MM-DD" style="border:0;width: 110px;display: inline;height: 100%;">
+										</input>
+									</div>
+									<div class="col-sm-4">
+										预计完成时间:
+										<input id="deadline" show-clear="true" name="deadline" type="text" class="form-control" ng-class="{'have-value':story.endDate}"
+										 date-time-picker ng-model="story.endDate" placeholder="选择预计完成时间" format="YYYY-MM-DD" style="border:0;width: 110px;display: inline;height: 100%;">
+										</input>
+									</div>
+
+								</div>
+								<div class="row f-14 p-t-3" style="height: 25px;">
+									<div class="col-sm-4">
+										<span class="labels">标签：
+											<span class="p-l-5 p-r-5 m-l-5 label-show" style="background-color: {{label.color}};color:{{getTextColor(label.color)}}"
+											 ng-repeat="label in story.selectLabels">{{label.name}}</span>
+										</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="new-infos-view">
+								<div class="new-infos-note-view on-top on-bottom" style="border-bottom: none!important;border-top: none!important;border-left:none;  border-right:none;background-color: #f7f7f7;">
+									<div class="note-adder-set">
+										<div class="add-note-handler c2lightbox">
+											<div id="markdowntext" ng-bind-html="story.spec | markdown"></div>
+										</div>
+									</div>
+								</div>
+								<!-- <div class="new-infos-note-view on-top on-bottom" ng-show="story.mainStory">
+									<div class="note-adder-set">
+										<div class="add-note-handler c2lightbox">
+											<div id="markdowntext" ng-bind-html="story.mainStory | markdown"></div>
+										</div>
+									</div>
+								</div>
+								<div class="new-infos-note-view on-top on-bottom" ng-show="story.storyEffect">
+									<div class="note-adder-set">
+										<div class="add-note-handler c2lightbox">
+											<div id="markdowntext" ng-bind-html="story.storyEffect | markdown"></div>
+										</div>
+									</div>
+								</div>
+								<div class="new-infos-note-view on-top on-bottom" ng-show="story.storyFunction">
+									<div class="note-adder-set">
+										<div class="add-note-handler c2lightbox">
+											<div id="markdowntext" ng-bind-html="story.storyFunction | markdown"></div>
+										</div>
+									</div>
+								</div> -->
+							</div>
+						</div>
+
+						<div data-ng-if="edit">
+							<div class="new-white-card task-new-handler-warp">
+								<div class="task-new-handler-set">
+									<div class="task-new-handler middle" style="width:33%">
+										<h6 class="task-info-title">提出时间</h6>
+
+										<div class="task-new-line">
+											<span class="md md-event" ng-click="showDeadline()" ng-class="{'have-value':editStory.openeddate}"></span>
+											<input ignore-readonly="true" id="deadline" show-clear="true" name="deadline" type="text" class="form-control"
+											 ng-class="{'have-value':editStory.openeddate}" date-time-picker clear-icon="md md-delete" ng-model="editStory.openeddate"
+											 placeholder="选择提出时间" format="YYYY-MM-DD">
+											</input>
+										</div>
+									</div>
+									<div class="task-new-handler middle" style="width:33%">
+										<h6 class="task-info-title">启动时间</h6>
+
+										<div class="task-new-line">
+											<span class="md md-event" ng-class="{'have-value':editStory.startDate}"></span>
+											<input id="deadline" ng-readonly="editStory.status=='1'" show-clear="true" name="deadline" type="text" class="form-control" ng-class="{'have-value':editStory.startDate}"
+											 date-time-picker clear-icon="md md-delete" ng-model="editStory.startDate" placeholder="选择启动时间" format="YYYY-MM-DD">
+											</input>
+										</div>
+									</div>
+									<div class="task-new-handler middle" style="width:34%">
+										<h6 class="task-info-title">预计完成时间</h6>
+
+										<div class="task-new-line">
+											<span class="md md-event" ng-class="{'have-value':editStory.endDate}"></span>
+											<input id="deadline" ng-readonly="editStory.status=='1'" show-clear="true" name="deadline" type="text" class="form-control" ng-class="{'have-value':editStory.endDate}"
+											 date-time-picker clear-icon="md md-delete" ng-model="editStory.endDate" placeholder="选择完成时间" format="YYYY-MM-DD">
+											</input>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="m-t-20">
+								<c2-dropdown class="animate" bind-data="editStory.assigTo" ng-class="{'null-error':!editStory.assigTo&&formCheck}"
+								 items="projectUsers" item-name="userRealname" multiple=false max-height="200" filter="true" filter-pinyin="true">
+									<div class="picker picker-white text-overflow" style="max-width:160px;padding-left:0px;">
+										<i class="md md-account-child"></i>
+										<span ng-if="editStory.assigTo==undefined">负责人</span>
+										<span ng-if="editStory.assigTo!=undefined">{{editStory.assigTo.userRealname}} </span>
+										<span class="caret"></span>
+									</div>
+								</c2-dropdown>
+
+								<c2-dropdown title="优先级" bind-data="editStory.selectPri" items="allPriorityList" multiple=false item-name="title"
+								 max-height="200">
+									<button class="btn btn-default btn-icon-text picker-shadow text-overflow" style="padding-left: 0px;">
+										<i class="md md-sort"></i>
+										<span ng-if="editStory.selectPri==undefined">优先级&nbsp;
+											<i class="caret"></i>
+										</span>
+										<span ng-if="editStory.selectPri!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{editStory.selectPri.title}}</span>
+									</button>
+									<dropdown-item-template>
+										<div>
+											<span class="text">{{item.title}}</span>
+											<span class="md md-check check-mark"></span>
+										</div>
+									</dropdown-item-template>
+								</c2-dropdown>
+
+								<c2-dropdown class="animate" title="模块" bind-data="editStory.module" items="allModuleList" multiple=false
+								 item-name="name" max-height="200" filter="true">
+									<button class="btn btn-default btn-icon-text picker-shadow text-overflow" style="padding-left: 0px;">
+										<i class="md md-view-module"> </i>
+										<span ng-if="editStory.module==undefined">模块&nbsp;
+											<i class="caret"></i>
+										</span>
+										<span ng-if="editStory.module!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{editStory.module.name}}</span>
+									</button>
+									<dropdown-item-template>
+										<div>
+											<span class="text">{{item.name}}</span>
+											<span class="md md-check check-mark"></span>
+										</div>
+									</dropdown-item-template>
+								</c2-dropdown>
+
+								<c2-dropdown title="里程碑 " bind-data="editStory.milestone" items="allMilestoneList" multiple=false item-name="title"
+								 max-height="200">
+									<button class="btn btn-default btn-icon-text picker-shadow text-overflow" style="padding-left: 0px;">
+										<i class="md md-av-timer"></i>
+										<span ng-if="editStory.milestone==undefined">里程碑 &nbsp;
+											<i class="caret"></i>
+										</span>
+										<span ng-if="editStory.milestone!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{editStory.milestone.title}}</span>
+									</button>
+									<dropdown-item-template>
+										<div>
+											<span class="text">{{item.title}}</span>
+											<span class="md md-check check-mark"></span>
+										</div>
+									</dropdown-item-template>
+								</c2-dropdown>
+
+								<c2-dropdown title="需求类型" bind-data="editStory.selectType" item-click="selectTypeClick(editStory.selectType)"
+								 items="allSelectType" multiple=false item-name="title" max-height="200" clean-button="true">
+									<div class="picker picker-white">
+										<i class="md md-sort"> </i>
+										<span ng-if="editStory.selectType==undefined">需求类型&nbsp;</span>
+										<span ng-if="editStory.selectType!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{editStory.selectType.title}}</span>
+										<span class="caret"></span>
+									</div>
+								</c2-dropdown>
+
+								<c2-dropdown class="animate" title="标签" bind-data="editStory.selectLabels" max-width="200px;" items="allLabelList"
+								 multiple=true item-name="name" max-height="200" filter="true" style="padding-right: 6px;">
+									<div class="picker picker-white text-overflow" style="max-width: 360px; padding-left: 0px; text-align: left;">
+										<i class="md md-bookmark-outline"></i>
+										<span ng-if="editStory.selectLabels==0">标签
+											<i class="caret"></i>
+										</span>
+										<span class="p-l-5 p-r-5 m-l-5 label-show" style="background-color: {{label.color}};color:{{getTextColor(label.color)}}"
+										 ng-repeat="label in editStory.selectLabels">{{label.name}}</span>
+									</div>
+
+									<dropdown-item-template>
+										<div>
+											<span class="label-color" style="background-color: {{item.color}}">&nbsp;</span>
+											<span class="text">{{item.name}}</span>
+											<span class="md md-check check-mark"></span>
+										</div>
+									</dropdown-item-template>
+								</c2-dropdown>
+
+								<c2-dropdown title="完成度" bind-data="editStory.selectCompletes" item-click="selectCompletesClick(editStory.selectCompletes)"
+								 items="allCompletes" multiple=false item-name="title" max-height="200" clean-button="true">
+									<div class="picker picker-white">
+										<i class="md md-sort"> </i>
+										<span ng-if="editStory.selectCompletes==undefined">完成度&nbsp;</span>
+										<span ng-if="editStory.selectCompletes!=undefined" class="p-l-5 p-r-5 m-l-5 label-show">{{editStory.selectCompletes.title}}</span>
+										<span class="caret"></span>
+									</div>
+								</c2-dropdown>
+
+							</div>
+							<div class="task-new-infos-wrap">
+								<div class="new-infos-view m-t-20">
+									<div>
+										<textarea ng-model="editStory.spec" c2-markdown-editor class="form-control has-error" rows="5" rows="5"
+										 height="200" placeholder="需求描述"></textarea>
+										<div style="margin-left:82%;"></div>
+									</div>
+									<!-- <div class="new-infos-note-view on-top">
+											<div class="note-adder-set" title="点击编辑" ng-class="{'note-input-hide':hideMainStory==false}"  ng-mousedown="ueMousedown($event)" ng-mouseup="ueMouseup($event,'mainStory')">
+												<div class="add-note-handler c2lightbox">
+													<div data-ng-if="editStory.mainStory" id="markdowntext" ng-bind-html="editStory.mainStory | markdown"></div>
+													<div data-ng-if="!editStory.mainStory" id="markdowntext">作为</div>
+												</div>
+											</div>
+											<form id="task-desc-editor" data-ng-if="!hideMainStory">
+												<textarea c2-markdown-editor height="150" id="task-description" ng-model="$params.mainStory"></textarea>
+							        		</form>
+										</div>
+										<div class="new-infos-note-view">
+											<div class="note-adder-set" title="点击编辑" ng-class="{'note-input-hide':hideStoryEffect==false}"  ng-mousedown="ueMousedown($event)" ng-mouseup="ueMouseup($event,'storyEffect')">
+												<div class="add-note-handler c2lightbox">
+													<div data-ng-if="editStory.storyEffect" id="markdowntext" ng-bind-html="editStory.storyEffect | markdown"></div>
+													<div data-ng-if="!editStory.storyEffect" id="markdowntext">我想要</div>
+												</div>
+											</div>
+											<form id="task-desc-editor" data-ng-if="!hideStoryEffect">
+												<textarea c2-markdown-editor height="150" id="task-description" ng-model="$params.storyEffect"></textarea>
+							        		</form>
+										</div>
+										<div class="new-infos-note-view on-bottom">
+											<div class="note-adder-set" title="点击编辑" ng-class="{'note-input-hide':hideStoryFunction==false}"  ng-mousedown="ueMousedown($event)" ng-mouseup="ueMouseup($event,'storyFunction')">
+												<div class="add-note-handler c2lightbox">
+													<div data-ng-if="editStory.storyFunction" id="markdowntext" ng-bind-html="editStory.storyFunction | markdown"></div>
+													<div data-ng-if="!editStory.storyFunction" id="markdowntext">以便于</div>
+												</div>
+											</div>
+											<form id="task-desc-editor" data-ng-if="!hideStoryFunction">
+												<textarea c2-markdown-editor height="150" id="task-description" ng-model="$params.storyFunction"></textarea>
+							        		</form>
+										</div> -->
+								</div>
+							</div>
+
+							<div ng-if="isChange" class="fg-line" ng-class="{'has-error':!editStory.reasonText&&formCheck}" style="margin-top: 20px;margin-bottom: 20px;">
+								<input placeholder="请输入变更理由..." type="text" data-ng-model="editStory.reasonText" class="form-control ng-pristine ng-valid ng-touched">
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+				<div data-ng-if="!edit">
+					<div ng-if="actionList.length>0" class="discussion-timeline" style="position: relative;">
+						<div ng-repeat="item in actionList" timeline-item></div>
+					</div>
+
+					<div class="t-view">
+						<div class="tv-header media">添加评论</div>
+						<div class="tv-body" style="padding-top: 15px; padding-bottom: 0px; padding-left: 18px;">
+							<div>
+								<textarea ng-model="replyStory.text" c2-markdown-editor class="form-control" rows="5" rows="5" height="200"
+								 placeholder="需求描述"></textarea>
+
+								<button style="margin-top: -40px;" class="btn btn-primary btn-sm" type="button" data-ng-click="submitCommnet()">提交</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div style="height:100px">
+			<span id="storyUpdateErrorMsg" class="c-red m-r-10 m-l-10 m-t-10">{{storyUpdateErrorMsg}}</span>
+			<div style="margin:-10px 20px; float:right;" data-ng-if="edit">
+				<button class="btn btn-link btn-sm" ng-click="cancelEdit()">取消</button>
+				<button class="btn btn-primary btn-sm" type="button" data-ng-click="saveStory();">保存</button>
+			</div>
+			<div style="margin:-10px 20px; float:right;" data-ng-if="!edit && story.status==1 && subject.userName==story.assignedTo">
+				<button class="btn btn-primary btn-sm" type="button" data-ng-click="confirmStory();">确认</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	angular.module("developmentCenter")
+		.registerCtrl(
+			'storyCommentCtrl',
+			function ($scope, $rootScope, $http, $state, $stateParams,
+				$timeout, Messenger, Modal) {
+				//如果从$stateParams不能拿到参数，则直接到全文检索页面拿参数
+				$scope.isNotSearchPage = angular.isUndefined($scope.globalSearchParams);
+				$scope.isDetailPage = $state.current.name == 'project.story.storyComment';
+				var projectId = angular.isDefined($scope.globalSearchParams) ? $scope.globalSearchParams.projectId : (angular.isDefined($scope.params) ? $scope.params.projectId : $stateParams.project);
+				var storyId = angular.isDefined($scope.globalSearchParams) ? $scope.globalSearchParams.storyId : (angular.isDefined($scope.params) ? $scope.params.storyId : $stateParams.storyid);
+				$scope.subject = $rootScope.subject;
+				$params = $scope.$params = {};
+				$scope.isFocus = true;
+				$scope.taskDown = true;
+				$scope.replyComment = "";
+				$scope.story = {};
+				$scope.editStory = {};
+				$scope.story.selectLabels = [];
+				$scope.editStory.selectLabels = [];
+				$scope.allLabelList = [];
+				$scope.projectUsers = [];
+				$scope.editStory.selectCompletes = [];
+
+				$scope.story.selectMilestones = undefined;
+				$scope.allMilestoneList = [];
+
+				$scope.isChange = false;
+
+				$scope.allPriorityList = [{ id: 1, title: '高' }, { id: 2, title: '中' }, { id: 3, title: '低' }];
+				$scope.allSelectType = [{ id: 1, title: '功能' }, { id: 2, title: '用户体验' }];
+				$scope.allCompletes = [{ id: 0, title: '0%' }, { id: 1, title: '25%' }, { id: 2, title: '50%' }, { id: 3, title: '75%' }, { id: 4, title: '100%' }];
+
+				$scope.story.module = undefined;
+				$scope.allModuleList = [];
+
+				$scope.replyStory = {};
+
+				$scope.hideMainStory = $scope.hideStoryEffect = $scope.hideStoryFunction = true;
+
+				var initStoryComment = function () {
+
+					$scope.edit = ($stateParams.edit == 1);
+
+					loadStoryAndComments();
+
+					loadAllLabelAndMilestone();
+
+					loadAllModule();
+
+					$scope.loadstatisticsTaskInfo();
+
+				}
+
+				//点击需求类型选择
+				$scope.selectTypeClick = function (selectType) {
+					$scope.editStory.selectType = selectType;
+					$scope.editStory.type = $scope.editStory.selectType.id;
+				}
+
+				$scope.showUEditor = function (type) {
+					if (type == 'mainStory') {
+						$scope.hideMainStory = true;
+					} else if (type == 'storyFunction') {
+						$scope.hideStoryFunction = true;
+					} else if (type == 'storyEffect') {
+						$scope.hideStoryEffect = true;
+					}
+				}
+
+				function startEditing($event, type) {
+					if ($($event.target).is('a') || $($event.target).is('img')) {
+						return;
+					}
+					if (type == 'mainStory') {
+						$scope.hideMainStory = false;
+					} else if (type == 'storyFunction') {
+						$scope.hideStoryFunction = false;
+					} else if (type == 'storyEffect') {
+						$scope.hideStoryEffect = false;
+					}
+				}
+
+				var mousedownPostion = undefined;
+
+				$scope.ueMousedown = function ($event) {
+					mousedownPostion = { x: $event.clientX, y: $event.clientY };
+				}
+
+				$scope.ueMouseup = function ($event, type) {
+					if (mousedownPostion) {
+						var moved = Math.abs($event.clientX - mousedownPostion.x) + Math.abs($event.clientY - mousedownPostion.y);
+						if (moved < 10) {
+							startEditing($event, type);
+						}
+						mousedownPostion = undefined;
+					}
+				}
+
+				$scope.ueditorBlur = function (type) {
+					if (type == 'mainStory') {
+						$scope.hideMainStory = true;
+						$scope.editStory.mainStory = $scope.$params.mainStory;
+					} else if (type == 'storyFunction') {
+						$scope.hideStoryFunction = true;
+						$scope.editStory.storyFunction = $scope.$params.storyFunction;
+					} else if (type == 'storyEffect') {
+						$scope.hideStoryEffect = true;
+						$scope.editStory.storyEffect = $scope.$params.storyEffect;
+					}
+				}
+
+				//项目成员
+				$http.post("ws/getMembers", { projectId: projectId }).success(function (data) {
+					angular.forEach(data.result, function (v, n) {
+						$scope.projectUsers.push({ userId: v.userDTO.user_id, userRealname: v.userDTO.user_realname, icon: v.userDTO.remark1, userName: v.userDTO.user_name });
+					});
+				});
+
+				$scope.loadstatisticsTaskInfo = function () {
+					$http.post("ws/statisticsTaskInfo", {
+						projectId: projectId,
+						storyId: storyId
+					}).success(function (data) {
+						$scope.taskTotalNum = data.result.totalNum;
+						$scope.taskDoneNum = data.result.doneNum;
+					});
+				}
+
+				$scope.$on("taskUpdateBo", function (event, msg) {
+					$scope.loadstatisticsTaskInfo();
+					$scope.$broadcast("taskUpdateSubBo");
+				});
+
+				$scope.$on("taskUpdateAddBo", function (event, msg) {
+					$scope.loadstatisticsTaskInfo();
+					$scope.$broadcast("taskUpdateAddSubBo");
+				});
+
+				$scope.$on("taskDeleteBo", function (event, msg) {
+					$scope.loadstatisticsTaskInfo();
+					$scope.$broadcast("taskDeleteSubBo");
+				});
+
+				var loadAllModule = function () {
+					$http.post("ws/getModuleListByProject", {
+						projectId: projectId
+					}).success(function (data) {
+						$scope.allModuleList = data.result;
+					});
+				}
+
+				var loadStoryAndComments = function () {
+					$http.post("ws/getStoryAndComments", {
+						"storyId": storyId
+					}).success(function (data) {
+						$scope.createUser = data.result.createUser;
+						$scope.proposer = data.result.proposer;
+						$scope.story = data.result.story;
+						$params.mainStory = $scope.story.mainStory;
+						$params.storyFunction = $scope.story.storyFunction;
+						$params.storyEffect = $scope.story.storyEffect;
+						$scope.story.assigTo = { userId: data.result.manageUser.user_id, userRealname: data.result.manageUser.user_realname, icon: data.result.manageUser.remark1, userName: data.result.manageUser.user_name };
+						$scope.story.proposer = { userId: data.result.proposer.user_id, userRealname: data.result.proposer.user_realname, userIcon: data.result.proposer.remark1, userName: data.result.proposer.user_name };
+						$scope.actionList = data.result.actionList;
+						if (data.result.storyLabel)
+							$scope.story.selectLabels = data.result.storyLabel;
+						if (data.result.story.milestone)
+							$scope.story.selectMilestones = data.result.story.milestone;
+
+						if ($scope.edit) {
+							$scope.storyEditFun();
+						}
+
+					});
+				};
+
+				var loadAllLabelAndMilestone = function () {
+					$http
+						.post("ws/getAllLabelAndMilestone", {
+							"projectId": projectId,
+							"isUnclosed": true
+						})
+						.success(
+							function (data) {
+								if (data.result.allLabelList)
+									$scope.allLabelList = data.result.allLabelList;
+								if (data.result.allMilestoneList)
+									$scope.allMilestoneList = data.result.allMilestoneList;
+							});
+				}
+
+				$rootScope.getTextColor = function (color) {
+					return getTextColorByBackColor(color);
+				};
+
+				$scope.showHideTask = function () {
+					$scope.taskDown = !$scope.taskDown;
+					$("#taskDiv").slideToggle(400);
+				}
+
+				initStoryComment();
+
+				$scope.submitCommnet = function () {
+					if (!$scope.replyStory.text
+						|| $scope.replyStory.text == "") {
+						return;
+					}
+
+					$http.post("ws/replyStory", {
+						"projectId": projectId,
+						"storyId": storyId,
+						"content": $scope.replyStory.text
+					}).success(function (data) {
+						loadStoryAndComments();
+						$scope.replyStory.text = "";
+					});
+				}
+
+				$scope.storyEditFun = function () {
+					$scope.editStory = angular.copy($scope.story);
+					if ($scope.editStory.status == 1) {
+						$scope.editStory.startDate = undefined;
+						$scope.editStory.endDate = undefined;
+					}
+					if ($scope.story.pri == '1') {
+						$scope.editStory.selectPri = { id: 1, title: '高' };
+					} else if ($scope.story.pri == '2') {
+						$scope.editStory.selectPri = { id: 2, title: '中' };
+					} else {
+						$scope.editStory.selectPri = { id: 3, title: '低' };
+					}
+
+					if ($scope.story.type == '1') {
+						$scope.editStory.selectType = { id: 1, title: '功能' };
+					} else if ($scope.story.type == '2') {
+						$scope.editStory.selectType = { id: 2, title: '用户体验' };
+					}
+					//需求完成度
+					if ($scope.story.completes == '0') {
+						$scope.editStory.selectCompletes = { id: 0, title: '0%' }
+					} else if ($scope.story.completes == '1') {
+						$scope.editStory.selectCompletes = { id: 1, title: '25%' }
+					} else if ($scope.story.completes == '2') {
+						$scope.editStory.selectCompletes = { id: 2, title: '50%' }
+					} else if ($scope.story.completes == '3') {
+						$scope.editStory.selectCompletes = { id: 3, title: '75%' }
+					} else if ($scope.story.completes = '4') {
+						$scope.editStory.selectCompletes = { id: 4, title: '100%' }
+					}
+
+					$scope.edit = true;
+
+					//判断是否需要填写变更理由
+					if ($scope.story.milestone && $scope.story.milestone.status == 1) {
+
+						$scope.$watch("editStory", function (newv) {
+							var flag = false;
+							if ($scope.story.milestone && $scope.editStory && $scope.editStory.milestone.id != $scope.story.milestone.id) {
+								flag = true;
+							}
+
+							if ($scope.editStory.title != $scope.story.title) {
+								flag = true;
+							}
+
+							if ($scope.editStory.spec != $scope.story.spec) {
+								flag = true
+							}
+
+							if (flag) {
+								$scope.isChange = true;
+							} else {
+								$scope.isChange = false;
+							}
+
+						}, true);
+					}
+				}
+
+				//关闭需求
+				$scope.closeStoryFun = function () {
+					$http.post("ws/updateStoryStatus", {
+						"storyId": $scope.story.id,
+						"status": 0
+					}).success(function () {
+						$scope.story.status = 0;
+						Modal.close({ story: $scope.story, type: 'close' });
+						$scope.$emit("storyUpdateBo", { story: $scope.story, type: 'close' });
+						$scope.$emit("updateStorys", { story: $scope.story, type: 'close' });
+						loadStoryAndComments();
+					});
+				}
+
+				/* $scope.openStoryFun = function() {
+					$http.post("ws/updateStoryStatus", {
+						"storyId" : $scope.story.id,
+						"status" : 1
+					}).success(function() {
+						$scope.story.status = 1;
+						Modal.close({story:$scope.story,type:'open'});
+						loadStoryAndComments();
+					});
+				} */
+
+				//取消编辑
+				$scope.cancelEdit = function () {
+					$scope.edit = false;
+				}
+
+				//确认需求
+				$scope.confirmStory = function () {
+					if (!$scope.story.startDate) {
+						$scope.storyUpdateErrorMsg = "启动时间不能为空！"
+						return;
+					}
+					if (!$scope.story.endDate) {
+						$scope.storyUpdateErrorMsg = "预计完成时间不能为空！"
+						return;
+					}
+					$http.post("ws/updateStoryStatus", {
+						"storyId": $scope.story.id,
+						"status": 3,
+						"story": $scope.story
+					}).success(function () {
+						if ($scope.story.endDate < moment(moment().format('YYYY-MM-DD')).toDate().getTime()) {
+							$scope.story.status = 2;
+						} else {
+							$scope.story.status = 3;
+						}
+						Modal.close({ story: $scope.story, type: 'confirm' });
+						$scope.$emit("storyUpdateBo", { story: $scope.story, type: 'confirm' });
+						loadStoryAndComments();
+					});
+				}
+
+				$scope.commentUpdateShow = function (item) {
+					if (item.update) {
+						item.update = false;
+					} else {
+						item.update = true;
+						item.updateContent = item.content;
+					}
+				}
+
+				$scope.submitCommnetUpdate = function (item) {
+					if (item.update) {
+						if (!item.updateContent) {
+							Messenger.error('评论内容不能为空！');
+							return;
+						}
+
+						$http.post("ws/updateCommentContent", {
+							"commentId": item.id,
+							"content": item.updateContent
+						}).success(function () {
+							item.content = item.updateContent;
+							item.update = false;
+						});
+					}
+				}
+
+				$scope.saveStory = function () {
+
+					$scope.formCheck = true;
+					$scope.storyUpdateErrorMsg = "";
+
+					$scope.editStory.mainStory = $params.mainStory;
+					$scope.editStory.storyEffect = $params.storyEffect;
+					$scope.editStory.storyFunction = $params.storyFunction;
+					if (!$scope.editStory.title) {
+						$scope.storyUpdateErrorMsg = "需求标题不能为空！"
+						return;
+					}
+
+					if (!$scope.editStory.assigTo) {
+						$scope.storyUpdateErrorMsg = "需求责任人不能为空！"
+						return;
+					}
+
+					if (angular.isUndefined($scope.editStory.spec) || $scope.editStory.spec == '') {
+						$scope.storyUpdateErrorMsg = "需求描述不能为空！"
+						return;
+					}
+
+					if ($scope.isChange && $scope.story.milestone.status == 1 && !$scope.editStory.reasonText) {
+						$scope.storyUpdateErrorMsg = "此需求关联的里程碑已被确认，请填写变更理由！"
+						return;
+					}
+
+					$scope.editStory.pri = $scope.editStory.selectPri.id;
+					$scope.editStory.assignedTo = $scope.editStory.assigTo.userName;
+					$scope.editStory.completes = $scope.editStory.selectCompletes.id;
+					$http.post("ws/updateStoryBasicInfo", {
+						"story": $scope.editStory,
+						"labelList": $scope.editStory.selectLabels,
+						"changeReason": $scope.editStory.reasonText
+					}).success(function (data) {
+						Modal.close({ story: $scope.editStory, type: 'update' });
+						$scope.$emit("updateStorys", { story: $scope.editStory });
+						$scope.$emit("storyUpdateBo", { story: $scope.editStory, type: 'update' });
+						loadStoryAndComments();
+						$scope.edit = false;
+						$scope.formCheck = true;
+						$scope.isChange = false;
+					});
+				}
+
+				//删除需求
+				$scope.delStory = function () {
+
+					$http.post("ws/delStoryById", {
+						storyid: $scope.story.id
+					}).success(function (data) {
+						Messenger.post({
+							'message': "操作成功"
+						});
+						Modal.close({ story: $scope.story, type: 'del' });
+						$scope.$emit("storyUpdateBo", { story: $scope.story, type: 'del' });
+						$scope.$emit("updateStorys", { story: $scope.story, type: 'del' });
+						$('#detail-panel').controller('stateAsideContainer').close();//收起侧滑框
+						/* if ($scope.isDetailPage) {
+							$state.go("project.story.storyList", { moduleId: $scope.story.module ? $scope.story.module.id : 0 });
+						} */
+					});
+
+					/* var title="";
+					if($scope.story.title&&$scope.story.title.length>25){
+						title=$scope.story.title.substr(0,24)+"...";
+					}else{
+						title=$scope.story.title;
+					}
+					
+					Modal.openConfirm({
+						title:"删除确认",
+						message:"是否删除需求【"+title+"】？",
+						btnText:"删除",
+						btnClass:"btn-block bgm-lightblue simple-shadow",
+						onClose:function(){
+							$http.post("ws/delStoryById", {
+								storyid : $scope.story.id
+							}).success(function(data) {
+								Messenger.post({
+									'message' : "操作成功"
+								});
+								Modal.close();
+							});
+						}
+					}); */
+				};
+			});
+</script>

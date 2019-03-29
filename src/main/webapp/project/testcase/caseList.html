@@ -1,0 +1,205 @@
+<style>
+.dropdown-menu .label-color {
+	width: 13px;
+	height: 13px;
+	display: inline-block;
+	border-radius: 3px;
+	vertical-align: middle;
+	margin: 0 3px 2px 0;
+}
+.form-search {
+   height: 30px;
+    background: #eeeeee;
+    border: none;
+    margin-left: -10px;
+    border-radius: 3px;
+    width: 175px;
+    padding-left: 25px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+</style>
+<div class="container m-t-10 w-100 p-0">
+	<div class="listview">
+		<div class="card-header m-l-20">
+			<h3>用例信息列表</h3>
+		</div>
+		   	 <a ng-show="typeId!=0" class="exportBtn" href="" title="导入" ng-click="importCase()"><i class="md md-import-export f-20 pull-right" 
+		   	 style="margin-right: 15px;margin-top: -30px;position: relative;"></i></a>
+			<a ng-show="typeId!=0" href="" title="新增用例" ng-click="addCase()"><i class="md md-add c-teal f-20 pull-right" 
+			style="margin-right: 40px;margin-top: -30px;position: relative;"></i></a>
+			<div id="searchBarPosition" >
+            <div class="lv-header-alt" id="searchBar" style="padding-left: 30px;">
+            	测试用例总数：{{page.total}}
+            	<i class="md md-search" style="font-size: 18px;color: #A9A9A9;position: relative;top: -4px;left: 18px;"></i>
+	            <input type="text" ng-model="name" class="form-search" placeholder="用例名">
+                
+				<c2-dropdown class="animate" bind-data="level" items="levels" item-name="title" max-height="200" filter="true" clean-button="true">
+					<div class="picker picker-white text-overflow" style="max-width:160px;">
+						<span ng-if="!level">用例等级</span>{{level.title}}&nbsp;<span class="caret"></span>
+					</div>
+				</c2-dropdown>
+				<c2-dropdown bind-data="module" style="margin-top: 3px;" tree-options="treeOptions" id="listModTree"
+						tree-nodes="zTreeNodes">
+					<div class="picker picker-white">
+						{{module.name}} &nbsp;<span class="caret"></span>
+					</div>
+				</c2-dropdown>
+            </div>
+          </div>
+		<div class="card-body clearfix">
+				<div class="media-body">
+					<table class="table table-hover m-b-0">
+					<thead>
+						<tr>
+							<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">用例名称</th>
+							<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">用例编号</th>
+							<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">用例等级</th>
+							<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">所属分类</th>
+							<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">需求名称</th>
+							<th style="width: 60px; text-align: center;border-bottom: 1px solid #f0f0f0;">创建时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="case in caseList">
+							<td class="column" style="text-align: center;">
+								<a data-ui-sref="project.case.detail({caseId:{{case.id}}})">{{case.name}}</a>
+							</td>
+							<td class="column" style="text-align: center;">{{case.no}}</td>
+							<td class="column" style="text-align: center;">{{case.level}}</td>
+							<td class="column" style="text-align: center;">{{case.type}}</td>
+							<td class="column" style="text-align: center;">{{case.story.title}}</td>
+							<td class="column" style="text-align: center;">{{case.ctime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+
+			<c2-pagination id="pageEle" total="page.total" page-size="10"
+				on-page-change="refreshList(pageIndex)"></c2-pagination>
+		</div>
+	</div>
+</div>
+
+<script>
+$('.board-group').animate({scrollTop:0});
+angular.module("project").registerCtrl('caseListController',
+		function($scope, $http, $state, $stateParams, $timeout,Messenger, $rootScope, Modal,debounce) {
+			$scope.page = {pageSize:10};	
+			$scope.typeId = $stateParams.typeId;
+			$scope.levels = [{title:'L0'},{title:'L1'},{title:'L2'},{title:'L3'},{title:'L4'}];
+			//测试计划列表
+			$scope.refreshList = function(pageIndex) {
+				$scope.caseList = [];
+				$scope.page.total = 0;
+				$timeout(function(){
+					var condition = {typeId : $scope.typeId,
+							projectId : $stateParams.project,
+							name:$scope.name,
+							level:$scope.level?$scope.level.title:"",
+							};
+					$http.post("ws/getCaseListByTypeId", {
+						condition : condition,
+						pageable : {pageIndex : pageIndex}
+					}).success(
+						function(data) {
+							if(data.result.total==0){
+								Messenger.post("未找到符合条件的用例");
+							}else{
+								$scope.caseList = data.result.contents;
+								$scope.page.total = data.result.total;
+							}
+					});
+				},200)
+			}
+
+			$scope.refreshList(1);
+			
+			$scope.treeOptions = {
+					view : {
+						selectedMulti : false
+					},
+					data : {
+						simpleData : {
+							idKey : "tid",
+							pIdKey : "tpid",
+							rootPId : "0",
+							enable : true
+						}
+					},
+					callback : {
+						onClick : function(event, treeId, treeNode, clickFlag) {
+							$scope.$apply(function() {
+								$scope.module = treeNode;
+								$scope.typeId = treeNode.id;
+							});
+							$("#listModTree").controller("c2-dropdown").toggle();
+							$scope.refreshList(1);
+						}
+					}
+		};
+		
+			$http.post("ws/getTypeListByProject",{projectId : $stateParams.project}).success(function(data){
+				var modList=[{id:"0",tid:"t_0",pid:undefined,name:"所有分类",type:"type"}];
+				$scope.zTreeNodes = modList.concat(data.result);
+				$timeout(function(){
+					/* var ztree = $.fn.zTree.getZTreeObj("listModTreeTree");
+					var allNodes = ztree.transformToArray(ztree.getNodes());
+					ztree.hideNodes(allNodes);
+					var nodes = ztree.getNodesByParam("type", "case", null);
+					var shouldShowNodes = [];
+			    	angular.forEach(nodes,function(node,n){
+			    		nodeParents(shouldShowNodes,node);
+			    	});
+			    	ztree.showNodes(shouldShowNodes);  */
+					if($stateParams.typeId!='0'){
+						for(var i=0;i<$scope.zTreeNodes.length;i++){
+							if($stateParams.typeId==$scope.zTreeNodes[i].id){
+								$scope.module=$scope.zTreeNodes[i];
+							}
+						}
+					}else{
+						$scope.module={id:"0",tid:"t_0",pid:undefined,name:"所有分类",type:"type"};
+					}
+				},100);
+	    		
+	    		
+			});
+			
+			//节点的所有父节点
+		    function nodeParents(nodeArray,node){
+		    	var parentNode = node.getParentNode();
+		    	if(parentNode!=null){
+		    		nodeArray.push(parentNode);
+		    		nodeParents(nodeArray,parentNode);
+		    	}
+		    }
+			
+			//树搜索字段
+			$scope.$watch("name", function(v) {
+				if(angular.isUndefined(v)) return;
+				treeSearch();
+			});
+			
+			$scope.$watch("level", function(v) {
+				if(angular.isUndefined(v)) return;
+				treeSearch();
+			});
+			
+			//搜索用例信息
+			var treeSearch = debounce(function(){
+				$scope.refreshList(1);
+			},500);
+	
+			//新增用例按钮
+			$scope.addCase = function(){
+				$state.go("project.case.addCase");
+			}
+			//导入公共用例
+			$scope.importCase = function(){
+				Modal.open("project/testcase/selectCommonCase.html",{projectId:$stateParams.project,typeId:$scope.typeId},{title : '导入公共用例',animation : true,size : "middle"});
+			}
+			
+
+});
+</script>

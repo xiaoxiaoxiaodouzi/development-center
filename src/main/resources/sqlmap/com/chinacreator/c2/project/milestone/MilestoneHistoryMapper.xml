@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.project.milestone.MilestoneHistoryMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_comunity_milestone_history.id ,
+		  c2_comunity_milestone_history.milestone_id ,
+		  c2_comunity_milestone_history.target_id ,
+		  c2_comunity_milestone_history.target_name ,
+		  c2_comunity_milestone_history.type ,
+		  c2_comunity_milestone_history.attr_val ,
+		  c2_comunity_milestone_history.content ,
+		  c2_comunity_milestone_history.user_id ,
+		  c2_comunity_milestone_history.create_time 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="id != null">and c2_comunity_milestone_history.id = #{id}</if>
+	    <if test="milestoneId != null">and c2_comunity_milestone_history.milestone_id = #{milestoneId}</if>
+	    <if test="targetId != null">and c2_comunity_milestone_history.target_id = #{targetId}</if>
+	    <if test="targetName != null">and c2_comunity_milestone_history.target_name = #{targetName}</if>
+	    <if test="type != null">and c2_comunity_milestone_history.type = #{type}</if>
+	    <if test="userId != null">and c2_comunity_milestone_history.user_id = #{userId}</if>
+	    <if test="createTime != null">and c2_comunity_milestone_history.create_time = #{createTime}</if>
+</sql>
+
+
+<!-- ElementID:MilestoneHistoryResult,Generated=true -->
+<resultMap id="MilestoneHistoryResult" type="com.chinacreator.c2.project.milestone.MilestoneHistory">
+	<id property="id" column="id"/>
+	<result property="milestoneId" column="milestone_id"/>
+	<result property="targetId" column="target_id"/>
+	<result property="targetName" column="target_name"/>
+	<result property="type" column="type"/>
+	<result property="attrVal" column="attr_val"/>
+	<result property="content" column="content"/>
+	<result property="userId" column="user_id"/>
+	<result property="createTime" column="create_time"/>
+</resultMap>
+
+<resultMap id="MilestoneHistoryDTOResult" type="com.chinacreator.c2.project.milestone.MilestoneHistoryDTO" extends="MilestoneHistoryResult">  
+    <result property="userName" column="user_realname"/>  
+    <result property="userIcon" column="user_icon"/>  
+</resultMap>  
+
+
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.project.milestone.MilestoneHistory" resultType="int">
+	select count(*) from c2_comunity_milestone_history 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.project.milestone.MilestoneHistory">
+	update c2_comunity_milestone_history
+<set>
+	<if test="milestoneId != null">milestone_id=#{milestoneId,jdbcType=NUMERIC},</if>
+	<if test="targetId != null">target_id=#{targetId,jdbcType=NUMERIC},</if>
+	<if test="targetName != null">target_name=#{targetName,jdbcType=VARCHAR},</if>
+	<if test="type != null">type=#{type,jdbcType=VARCHAR},</if>
+	<if test="attrVal != null">attr_val=#{attrVal,jdbcType=CLOB},</if>
+	<if test="content != null">content=#{content,jdbcType=CLOB},</if>
+	<if test="userId != null">user_id=#{userId,jdbcType=VARCHAR},</if>
+	<if test="createTime != null">create_time=#{createTime,jdbcType=TIMESTAMP}</if>
+</set>
+<where>
+	<choose>
+        <when test="id != null">and id = #{id}</when>
+        <otherwise>and id = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_comunity_milestone_history
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="milestoneId==null">milestone_id = null,</if>
+		    <if test="targetId==null">target_id = null,</if>
+		    <if test="targetName==null">target_name = null,</if>
+		    <if test="type==null">type = null,</if>
+		    <if test="attrVal==null">attr_val = null,</if>
+		    <if test="content==null">content = null,</if>
+		    <if test="userId==null">user_id = null,</if>
+		    <if test="createTime==null">create_time = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="id != null">and id = #{id}</when>
+			<otherwise>and id = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.project.milestone.MilestoneHistory">
+    delete from c2_comunity_milestone_history where 1=1 and id = #{id}
+</delete>
+
+<!-- ElementID:select,Generated=false -->
+<select id="select" parameterType="com.chinacreator.c2.project.milestone.MilestoneHistory" resultMap="MilestoneHistoryDTOResult">
+	select 
+		<include refid="column_sql"/>,td_sm_user.user_realname,td_sm_user.remark1 user_icon
+	    from c2_comunity_milestone_history,td_sm_user 
+		 <where>
+		 td_sm_user.user_name=c2_comunity_milestone_history.user_id
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_comunity_milestone_history where id in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.id}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="MilestoneHistoryResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_milestone_history 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.Integer" resultMap="MilestoneHistoryResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_milestone_history 
+		 where c2_comunity_milestone_history.id = #{id,jdbcType=NUMERIC}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.project.milestone.MilestoneHistory" resultMap="MilestoneHistoryResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_comunity_milestone_history 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="MilestoneHistoryResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_comunity_milestone_history 
+	where c2_comunity_milestone_history.id in (
+		select distinct id from c2_comunity_milestone_history inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct id
+			from c2_comunity_milestone_history 
+			<where>
+	        <if test="entity.id != null">and c2_comunity_milestone_history.id = #{entity.id}</if>
+	        <if test="entity.milestoneId != null">and c2_comunity_milestone_history.milestone_id = #{entity.milestoneId}</if>
+	        <if test="entity.targetId != null">and c2_comunity_milestone_history.target_id = #{entity.targetId}</if>
+	        <if test="entity.targetName != null">and c2_comunity_milestone_history.target_name = #{entity.targetName}</if>
+	        <if test="entity.type != null">and c2_comunity_milestone_history.type = #{entity.type}</if>
+	        <if test="entity.userId != null">and c2_comunity_milestone_history.user_id = #{entity.userId}</if>
+	        <if test="entity.createTime != null">and c2_comunity_milestone_history.create_time = #{entity.createTime}</if>
+			</where>
+		) ${entity.tableAlias} using (id)
+</foreach>
+)
+</select>
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.project.milestone.MilestoneHistory" useGeneratedKeys="true">
+	<selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+        select LAST_INSERT_ID()
+    </selectKey>
+insert into c2_comunity_milestone_history(
+		<trim prefixOverrides=",">
+		    <if test="milestoneId != null">milestone_id</if>
+		    <if test="targetId != null">,target_id</if>
+		    <if test="targetName != null">,target_name</if>
+		    <if test="type != null">,type</if>
+		    <if test="attrVal != null">,attr_val</if>
+		    <if test="content != null">,content</if>
+		    <if test="userId != null">,user_id</if>
+		    <if test="createTime != null">,create_time</if>
+		</trim>
+	 )
+	 values (
+		<trim prefixOverrides=",">
+		    <if test="milestoneId != null">#{milestoneId,jdbcType=NUMERIC}</if>
+		    <if test="targetId != null">,#{targetId,jdbcType=NUMERIC}</if>
+		    <if test="targetName != null">,#{targetName,jdbcType=VARCHAR}</if>
+		    <if test="type != null">,#{type,jdbcType=VARCHAR}</if>
+		    <if test="attrVal != null">,#{attrVal,jdbcType=CLOB}</if>
+		    <if test="content != null">,#{content,jdbcType=CLOB}</if>
+		    <if test="userId != null">,#{userId,jdbcType=VARCHAR}</if>
+		    <if test="createTime != null">,#{createTime,jdbcType=TIMESTAMP}</if>
+        </trim>
+	 )
+</insert>
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list" useGeneratedKeys="true">
+	insert into c2_comunity_milestone_history (milestone_id,target_id,target_name,type,attr_val,content,user_id,create_time)
+			values 
+			<foreach collection="list" item="entity" index="index" separator=",">
+				(
+		         #{entity.milestoneId,jdbcType = NUMERIC},
+		         #{entity.targetId,jdbcType = NUMERIC},
+		         #{entity.targetName,jdbcType = VARCHAR},
+		         #{entity.type,jdbcType = VARCHAR},
+		         #{entity.attrVal,jdbcType = CLOB},
+		         #{entity.content,jdbcType = CLOB},
+		         #{entity.userId,jdbcType = VARCHAR},
+		         #{entity.createTime,jdbcType = TIMESTAMP}
+				)
+</foreach>
+</insert>
+</mapper>

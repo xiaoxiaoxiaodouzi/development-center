@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="hasLogAdminJob" log="false" className="com.chinacreator.c2.workbench.TeamGroupService" method="logAdminJob">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>判断是否日志管理员角色</name>
+  <inputs/>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="boolean"/>
+  </outputs>
+  <params/>
+  <return signature="Z" type="boolean"/>
+</CustomRule>

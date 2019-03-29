@@ -1,0 +1,353 @@
+<style>
+.affix{
+	top:80px;
+}
+.bs-docs-sidebar .nav>li>a,.bs-docs-sidebar .nav>li>a:FOCUS {
+  display: block;
+  padding: 4px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #767676;
+  background-color: transparent;
+}
+.bs-docs-sidebar .nav>li>a:hover {
+  padding-left: 19px;
+  color: #563d7c;
+  text-decoration: none;
+  background-color: transparent;
+  border-left: 1px solid #563d7c;
+}
+.bs-docs-sidebar .nav>.active:hover>a, .bs-docs-sidebar .nav>.active>a {
+  padding-left: 18px;
+  font-weight: 700;
+  color: #563d7c;
+  background-color: transparent;
+  border-left: 2px solid #563d7c;
+}
+.bs-docs-sidebar .nav .nav {
+  display: none;
+  padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav>.active>ul {
+  display: block;
+}
+.bs-docs-sidebar .nav .nav>li>a {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 30px;
+  font-size: 12px;
+  font-weight: 400;
+}
+.bs-docs-sidebar .nav .nav>.active:hover>a, .bs-docs-sidebar .nav .nav>.active>a {
+  padding-left: 28px;
+  font-weight: 500;
+}
+.doc-file-ul{
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+}
+.doc-file-ul ul{
+  margin-top: 10px;
+  list-style: none;
+  padding: 0px;
+}
+.doc-file-ul li{
+	padding: 5px 10px 0 0 ;
+	float: left;
+	cursor: pointer;
+}
+.doc-file-ul li a{
+	color: black;
+}
+.doc-file-ul li a:HOVER{
+	color: #2196f3;
+}
+.doc-author{
+	 margin: 15px 0;
+	 line-height: 2em;
+}
+.doc-author img{
+	 vertical-align: middle;
+     border-radius: 50%;
+     height: 35px;
+}
+.doc-author span {
+  height: 35px;
+  line-height: 30px;
+  vertical-align: middle;
+  margin-left: 15px;
+  color: rgb(78, 78, 78);
+}
+.doc-files{
+  /*padding: 5px 0 0 0;*/
+}
+.doc-files ul{
+  list-style: none;
+  padding: 0px;
+  display: inline-block;
+  margin-bottom: 0px;
+}
+.doc-files li{
+	padding: 5px 10px 0 0 ;
+	float: left;
+	cursor: context-menu;
+}
+.doc-files li .md-close{
+	cursor:pointer;
+	opacity: 0;
+	transition-duration: 300ms;
+}
+.doc-files li:HOVER .md-close{
+	opacity: 1;
+}
+.doc-files.download li a{
+	color: black;
+}
+.doc-files.download li a:HOVER{
+	cursor: pointer;
+	color: #2196f3;
+}
+.editor-toolbar {
+    margin-top: 5px;
+}
+@media (min-width: 992px){
+.col-md-offset-1 {
+    margin-left: 0px;
+}
+@media (min-width: 992px){
+.col-md-10 {
+    width: 100%;
+}
+@media screen and (min-width: 768px){
+.card .card-header:not(.ch-alt) {
+    padding: 23px 26px 5px 26px;
+}
+.l-h-zw{
+	line-height: 1.8em;
+}
+
+</style>
+<div class="container">
+<div class="card m-t-20">
+    <div class="card-header" ng-show="!docEditState">
+        <h1>{{doc.name}} </h1>
+        <div class="c-gray text-left doc-author">
+        	<img class="lv-img-sm" ng-src="{{doc.userIcon}}">
+        	<span>{{doc.userName}}&nbsp;&nbsp;-&nbsp;&nbsp; {{doc.createtime | date:"yyyy-MM-dd"}} </span>
+        	<div class="doc-file-ul">
+        	  <ul>
+        		<li ng-repeat="file in docFiles"><i class="md md-attach-file c-blue"></i><a ng-href="{{file.path}}" target="_blank" class="c-blue">{{file.name}}</a></li>
+              </ul>
+            <div class="clearfix"></div>
+         </div>
+        </div>
+        <ul class="actions">
+            <li class="dropdown action-show">
+                <a href="" data-toggle="dropdown">
+                    <i class="md md-more-vert"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                    <li>
+                        <a ng-click="editDocView(doc)">编辑</a>
+                    </li>
+                    <li data-ng-if="docDel">
+                        <a href="" ng-click="delDoc(doc)">删除</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-body card-padding p-t-0" ng-show="!docEditState">
+    <div class="row">
+		<div ng-class="{'col-md-9':menuShow,'col-md-offset-1':!menuShow,'col-md-10':!menuShow}" class="l-h-zw f-14">
+			<div ng-bind-html="doc.content | markdown" class="pmbb-view"></div>
+		</div>
+		<div class="col-md-3" id="docMenus" ng-if="menuShow">
+			<nav id="docNav" class="bs-docs-sidebar">
+			<ul class="nav">
+		        <li ng-repeat="menu in docMenus" repeat-done="spy()">
+					<a href="javascript:void(0)" ng-click="scrollTo(menu)" data-target="#{{menu.id}}">{{menu.t}}</a>
+					<ul class="nav" ng-if="menu.c">
+						 <li ng-repeat="child in menu.c">
+							<a href="javascript:void(0)" ng-click="scrollTo(child)" data-target="#{{child.id}}">{{child.t}}</a>
+						 </li>
+					</ul>
+				</li>
+		 	</ul>
+          </nav>
+		</div>
+	</div>
+    
+    </div>
+    
+    <div class="card-header" ng-show="docEditState">
+    	<div class="fg-line" ng-class="{'has-error':!editDoc.name}"><input type="text" class="form-control" ng-model="editDoc.name"></div>
+        <div class="doc-files c-blue">
+        	<ul>
+        		<li ng-repeat="file in editDoc.files"><i class="md md-attach-file c-blue"></i> {{file.name}} <i class="md md-close c-red" ng-click="delFile(editDoc.files,file)"></i></li>
+        		<li class="c-blue" style="cursor: pointer;" ngf-select="true" ngf-max-size="524288000" ngf-change="fileSelected($files, $file, $event, $rejectedFiles,editDoc,editDoc.files)"><i class="md-file-upload"></i>上传附件</li>
+        	</ul>
+        	<div class="clearfix"></div>
+		</div>
+    	<textarea id="docMarkdown" height="400" ng-model="editDoc.content" c2-markdown-editor></textarea>
+        <div class="add-tl-actions text-right">
+            <button class="btn btn-primary btn-sm" type="button" data-ng-click="submit(editDoc,editDoc.files)"> 保 存 </button>
+			<button type="button" class="btn btn-link btn-sm" data-ng-click="docEditState = false;refreshList()"> 取 消 </button>
+        </div>
+    </div>
+</div>
+</div>
+<script type="text/javascript">
+	angular.module("developmentCenter")
+			.registerCtrl("DocViewController",['$scope','$timeout','$ocLazyLoad','$http','$stateParams','ModelFactory','Messenger','Upload',function($scope,$timeout,$ocLazyLoad,$http,$stateParams,ModelFactory,Messenger,Upload){
+		    	/*获取文档*/
+		    	function getDoc(){
+		    		$scope.menuShow = true;
+		    		$http.post("ws/simpleSelectOne",{statement:"selectDocView",parameter:{docId:$stateParams.docId}}).success(function(data){
+		        		$scope.doc = data.result;
+		        		if(!$scope.doc.content) return ;
+		        		/*解析文档菜单*/
+		        		var tokens = marked.lexer($scope.doc.content);
+		        		tokens=$.grep(tokens,function(o,i){
+		        			return o.type=='heading';
+		        		});
+		        		var firstDepth,secondDepth,lastCharpter,docMenus = new Array(),x=0,y=0;
+		        		angular.forEach(tokens,function(v,i){
+		        			if(i==0){
+		        				firstDepth = v.depth;
+		        				secondDepth = v.depth+1;
+		        			}
+		        			if(v.depth==firstDepth){
+		        				++x;
+		        				lastCharpter = {t:v.text,id:x+"_"+y};
+		        				docMenus.push(lastCharpter);
+		        			}
+		        			if(v.depth==secondDepth){
+		        				++y;
+		        				if(angular.isUndefined(lastCharpter.c))lastCharpter.c = new Array();
+		        				lastCharpter.c.push({t:v.text,id:x+"_"+y});
+		        			}
+		        		});
+		        		if(docMenus.length>0){
+		        			$scope.docMenus = docMenus;
+		    				/*固定菜单*/
+		                	$("#docNav").affix({
+		            		    offset: {
+		            		        top: function(){
+		            		        	return $(".card-header").outerHeight(true);
+		            		        }
+		            		      }
+		            		    });
+		                	/*滚动关联菜单*/
+		                	$scope.spy = function(){
+		                		$timeout(function(){
+		            				$('body').scrollspy({"target":"#docMenus","offset":80});
+		            			},0);
+		                	}
+		                	$ocLazyLoad.load(['assets/js/jquery.scrollTo.min.js']).then(function(){
+		                		$scope.scrollTo = function(menu){
+		                    		$(window).scrollTo($("#"+menu.id),300, {offset:-80});
+		                    	}
+		                	});
+		        		}else{
+		        			$scope.menuShow = false;
+		        		}
+		        	});
+		    	}
+		    	/*获取文档附件*/
+		    	function getDocFiles(){
+		    		$http.post("e/docFile/op/search",{docId:$stateParams.docId}).success(function(data){
+		        		$scope.docFiles = data.result;
+		        	});
+		    	}
+		    	getDoc();
+		    	getDocFiles();
+		    	
+		    	/*文档编辑*/
+		    	var projectId = $stateParams.project;
+		    	$scope.entity = {
+						project : projectId,
+						docFiles:[]
+					};
+		    	$scope.editDocView = function(doc){
+		    		$scope.docEditState = true;
+		    		$scope.editDoc = angular.copy(doc);
+		    		$("#docMarkdown").controller("c2MarkdownEditor").refresh();
+		    	}
+		    	$scope.delDoc=function(doc){
+		    		var entityDataSource=ModelFactory.entity("doc","id",{id:doc.id});
+					entityDataSource.$promise.then(function(){
+						entityDataSource.$delete().then(function(){
+							location.href="#/project/"+projectId+"/docs";
+						});
+					});
+		    	};
+				$scope.delFile=function(docFiles,file){
+					if(file.id){
+						var entityDataSource=ModelFactory.entity("docFile","id",{id:file.id,path:file.path});
+						entityDataSource.$promise.then(function(){
+							entityDataSource.$delete({path:file.path}).then(function(){
+								docFiles.splice(docFiles.indexOf(file),1);
+							});
+						});
+					}else{
+						var wSource=ModelFactory.ws("delFile",{path :file.path});
+						wSource.$load().then(function(data){
+							docFiles.splice(docFiles.indexOf(file),1);
+						});
+					}
+				}
+				$scope.fileSelected = function($files, $file, $event, $rejectedFiles,doc, docFiles) {
+					if (!$file && $rejectedFiles.length > 0) {
+						Messenger.error('不允许上传大于500M的文件');
+						return;
+					}
+					if (!$file)
+						return;
+
+					var notify = Messenger.post('文件上传开始!');
+					Upload.upload({
+						url : 'file',
+						file : $file,
+						fileName : $file.name,
+						fileFormDataName : 'file',
+						sendFieldAs : 'form'
+					}).progress(function(evt) {
+						notify.update('message', '上传中：' + parseInt(100.0 * evt.loaded / evt.total) + '% ');
+					}).success(function(data, status, headers, config) {
+						var newDocFile=ModelFactory.entity('docFile');
+						newDocFile.name=data.name;
+						newDocFile.path=data.url;
+						newDocFile.docId=doc.docId;
+						docFiles.unshift(newDocFile);
+						notify.update('message', '上传成功!');
+					}).error(function(data, status, headers, config) {
+						notify.update('type', 'danger');
+						notify.update('message', '上传失败，错误信息：' + data.message);
+					});
+				};
+				$scope.submit = function(entity,docFiles) {
+					if(!entity.name){
+						if(!entity.id){
+							Messenger.error("文档标题不能为空！");
+						}else{
+							Messenger.error("文档标题不能为空！");
+						}
+						return ;
+					}
+					
+					$http.post("ws/saveDoc",{doc:entity,fileList:docFiles}
+					).success(function(data){
+						getDoc();
+						getDocFiles();
+						$scope.docEditState = false;
+					});
+				};
+				
+				$http.post("ws/isProjectPermitedByBatch",{projectId:$stateParams.project,permExprs:["doc_del"]})
+				.success(function(data,status,headers,config){
+					$scope.docDel = data.result["doc_del"];
+				});
+		    }]);
+</script>

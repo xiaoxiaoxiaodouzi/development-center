@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="addLabel" log="false" className="com.chinacreator.c2.project.label.LabelService" method="addLabel">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>添加标签</name>
+  <desc>添加</desc>
+  <inputs>
+    <input collection="false" desc="" id="label" required="true" type="com.chinacreator.c2.project.label.Label"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="com.chinacreator.c2.project.label.Label"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.label" name="label" signature="QLabel;" type="com.chinacreator.c2.project.label.Label"/>
+  </params>
+  <return signature="QLabel;" type="com.chinacreator.c2.project.label.Label"/>
+</CustomRule>

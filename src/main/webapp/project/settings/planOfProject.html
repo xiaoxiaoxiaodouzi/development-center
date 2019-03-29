@@ -1,0 +1,567 @@
+<link href="assets/fonts/iconfont.css" rel="stylesheet">
+<style>
+	/* < !-- .dd {
+		max-width: inherit;
+	}
+
+	--> */
+
+	/* 表格上下边框线 */
+
+	.tui-grid-cell {
+		border-top-width: 1px;
+		border-bottom-width: 1px;
+	}
+	.form-search {
+   height: 30px;
+    background: #eeeeee;
+    border: none;
+    margin-left: -10px;
+    border-radius: 3px;
+    width: 250px;
+    padding-left: 25px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.dropdown-menu{
+	z-index: 25 !important;
+}
+</style>
+<!-- <div class="block-header">
+</div> -->
+<div class="container m-t-10">
+	<div class="card" ng-controller="planEditCtrl">
+		<div class="card-header">
+			<h2>
+				项目计划
+				<small>项目计划维护</small>
+			</h2>
+			<div title="折叠全部">
+				<button style="border: none;
+					margin-top: 11px;" data-ng-click="collapseAll()">
+					<i class="md md-remove">折叠全部</i>
+				</button>
+
+				<button style="border: none;
+					margin-top: 11px;margin-left: 5px;" data-ng-click="expandAll()">
+					<i class="md md-add">展开全部</i>
+				</button>
+
+				<button style="border: none;
+				margin-top: 11px;margin-left: 5px;" data-ng-click="addRootMod()">
+					<i class="md md-apps">新增根计划</i>
+				</button>
+			</div>
+		</div>
+
+		<div class="card-body clearfix">
+			<div class="listview lv-bordered lv-lg">
+				<div class="lv-header-alt ng-binding" style="padding-left: 30px;">
+					任务总数：{{taskTotal}}
+					<i class="md md-search" style="font-size: 18px;color: #A9A9A9;position: relative;top: -4px;left: 18px;"></i>
+					<input type="text" ng-model="debounce.name" class="form-search" placeholder="标题名称">
+
+					<!-- 	<c2-dropdown class="animate" bind-data="search.milestone" items="milestones" item-name="title" max-height="200"
+					 filter="true" clean-button="true">
+						<div class="picker picker-white text-overflow">
+							<span ng-if="!search.milestone"><i class="md md-av-timer" title="里程碑"></i>选择里程碑</span>
+							<span ng-if="search.milestone"><i class="md md-av-timer" title="里程碑"></i>{{search.milestone.title}}</span><span
+							 class="caret"></span>
+						</div>
+					</c2-dropdown> -->
+
+					<c2-dropdown class="animate" bind-data="search.planStatus" items="AllPlanStatus" item-name="title" max-height="200"
+					 clean-button="true">
+						<div class="picker picker-white text-overflow">
+							<span ng-if="!search.planStatus"><i class="md md-av-timer" title="完成度"></i>选择完成度</span>
+							<span ng-if="search.planStatus"><i class="md md-av-timer" title="完成度"></i>{{search.planStatus.title}}</span><span
+							 class="caret"></span>
+						</div>
+					</c2-dropdown>
+
+					<c2-dropdown class="animate" bind-data="debounce.assignedToList" items="projectUsers" item-name="userRealname"
+					 multiple=true max-height="200" filter="true" filter-pinyin="true" clean-button="true">
+						<div class="picker picker-white text-overflow" style="    line-height: normal;">
+							<i class="md md-account-child m-r-5"></i>
+							<span ng-if="debounce.assignedToList.length==0">负责人</span>
+							<span class="p-r-5" ng-repeat="user in debounce.assignedToList">{{user.userRealname}} </span>
+							<span class="ico-drop pull-right">
+								<i class="md md-expand-more f-18"></i>
+							</span>
+						</div>
+					</c2-dropdown>
+
+					<c2-date-range-dropdown class="animate" max-height="200" date-range="dateRange" date-buttons="dateButtons"
+					 buttom-message="过滤计划开始时间、结束时间在选择的区间段">
+						<div class="picker picker-white text-overflow" style="    line-height: normal;">
+							<i class="md md-today m-r-5" title="日期选择"></i> {{dateRange.show}}
+							<span class="pull-right">
+								<i class="md md-expand-more f-18"></i>
+							</span>
+						</div>
+					</c2-date-range-dropdown>
+					
+					<c2-dropdown item-click='gantt()' class="animate" style="margin-top: 3px;margin-left:10px;" bind-data="tab"
+					 item-name="title">
+						<div class="picker picker-white text-overflow" style="max-width:140px;">
+							<!-- <i class="md md-av-timer"></i> -->
+							<i class="md md-bug-report"></i>
+							<span ng-click="gantt()">甘特图
+							</span>
+						</div>
+					</c2-dropdown>
+				</div>
+				<div class="lv-body">
+					<div id="grid"></div>
+				</div>
+			</div>
+		</div>
+		<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;top:117px;width:745px;z-index: 99;">
+			<ui-view onload="stateOnload()"></ui-view>
+		</aside>
+	</div>
+</div>
+
+
+<script>
+	developmentCenter
+		.registerCtrl(
+			'planEditCtrl',
+			function ($scope, $element, $state, $stateParams, $timeout, Modal, Messenger, debounce,
+				$http) {
+				//这里是为了解决刷新页面侧滑框统计数据没有的情况，让用户必须通过点击才能看到，刷新直接收起侧滑框
+				var url = window.location.href.split('/');
+				url.forEach(function (i) {
+					if (i == 'plan') {
+						window.location.replace('#/project/' + $stateParams.project + '/planOfProject')
+					}
+				})
+
+				$scope.search = {
+					week: { st: null, et: null },
+					assignedToList: []
+				}
+
+				$scope.AllPlanStatus = [{ title: '小于25%', value: 0 }, { title: '25%-50%之间', value: 1 }, { title: '50%-75%之间', value: 2 }, { title: '大于75%', value: 3 }];
+
+				$scope.dateButtons = ['thisWeek', 'nextWeek', 'preWeek', 'thisMonth', 'preMonth', 'thisYear'];
+
+				$scope.dateRange = { show: "时间段", start: null, end: null };
+
+				var completes = {
+					'0': 0,
+					'1': 25,
+					'2': 50,
+					'3': 75,
+					'4': 100
+				}
+
+				var projectId = parseInt($stateParams.project);
+				$http.post("ws/getMembers", { projectId: projectId }).success(function (data) {
+					var ary = [];
+					angular.forEach(data.result, function (v, n) {
+	    			/*if(v.userDTO.user_id==$rootScope.subject.userId) {
+	    				$scope.assignTo = {userId:v.userDTO.user_id,userRealname:v.userDTO.user_realname,icon:v.userDTO.remark1,userName:v.userDTO.user_name};
+					}*/
+						ary.push({ userId: v.userDTO.user_id, userRealname: v.userDTO.user_realname, icon: v.userDTO.remark1, userName: v.userDTO.user_name });
+					});
+					$scope.projectUsers = ary;
+				});
+
+				$scope.$watch("dateRange", debounce(function (v) {
+					if (angular.isUndefined(v)) return;
+					$scope.search.week = {
+						st: v.start, et: v.end
+					};
+				}, 200), true);
+
+				$scope.$watch("debounce", function (v) {
+					debounceSearchFn(v);
+				}, true);
+
+				$scope.$watch("search", function (v, ov) {
+					initData(null, $scope.search);
+				}, true);
+
+				var debounceSearchFn = debounce(function (ds) {
+					angular.extend($scope.search, angular.copy(ds));
+				}, 600);
+
+				//初始化数据
+				var initData = function (parent, search) {
+					$http.get("ProjectPlan/project",
+						{ params: { projectId: projectId, parent: parent, search } },
+					).success(function (data) {
+						var allitems = data;
+						var fun = function (items) {
+							$(items).each(function (i, o) {
+								var subItems = $.grep(allitems, function (v, i) {
+									return v.parent == o.id;
+								});
+								fun(subItems);
+								o.showModInput = false;
+								o._children = subItems ? subItems : new Array();
+								$(o.taskList).each(function (index, item) {
+									o._children.push(item);
+								})
+							});
+						};
+						var rootItems = $.grep(allitems, function (v) {
+							return v.parent == 0;
+						});
+						fun(rootItems);
+						// getInitTime(rootItems);
+						$scope.modList = rootItems;
+						$scope.grid.setData($scope.modList);
+						var taskTotal = 0;
+						_.each($scope.modList, function (item) {
+							taskTotal += item.taskNum.total;
+							$scope.grid.expand(item.rowKey)
+						})
+						$scope.taskTotal = taskTotal
+					})
+				}
+
+				$scope.grid = new tui.Grid({
+					el: $('#grid'),
+					data: $scope.modList,
+					// rowHeaders: ['rowNum', 'checkbox'],
+					bodyHeight: 500,
+					rowHeight: 40,
+					//columns配置了editOptions则根据下面点击事件来触发
+					//editingEvent:'click',
+					treeColumnOptions: {
+						name: 'name',
+						useCascadingCheckbox: false
+					},
+					//设置参数  http://nhnent.github.io/tui.grid/latest/Grid#getRow
+					columns: [
+						{
+							title: 'ID',
+							name: 'id',
+							hidden: true
+						},
+						{
+							title: '名称',
+							name: 'name',
+							width: 250,
+							ellipsis: true,
+							formatter: function (value, rowData) {
+								return '<div title="' + rowData.name + '">' + '<a class="detail" name="' + rowData.rowKey + '"href="javascript:void(0)" ' + '>' + rowData.name + '</a></div>';
+							}
+						},
+						{
+							title: '完成度',
+							name: 'completes',
+							minWidth: 200,
+							formatter: function (value, rowData) {
+								value = value ? value : 0;
+								if (!rowData.projectPlan) {
+									if (parseInt(value) != 100) {
+										return '<div style="display: flex;justify-content: center;align-items: center;"><div style="height:8px; border-radius:20px;margin-bottom:0px;width: -webkit-fill-available;" class="progress" title="完成度' + value + '%"><div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="background-color:rgb(0,169,255);width:' + value + '%"></div> </div><span style="    font-size: 12px;margin-left: 6px;margin-top: 2px;color: #8d8d8d;">' + value + '%</span></div> '
+									} else {
+										return '<div style="display: flex;justify-content: center;align-items: center;"><div style="height:8px; border-radius:20px;margin-bottom:0px;width: -webkit-fill-available;" class="progress" title="完成度' + 100 + '%"><div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="background-color:rgb(0,169,255);width:' + 100 + '%"></div> </div><i  class="ace-icon fa-wancheng1" style="font-size: 12px;margin-left: 6px;margin-top: 2px;color: rgb(0,169,255);"></i></div> '
+									}
+								} else {
+									if (rowData.isDone) {
+										return '<div style="display: flex;justify-content: center;align-items: center;"><div style="height:8px; border-radius:20px;margin-bottom:0px;width: -webkit-fill-available;" class="progress" title="完成度' + 100 + '%"><div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="background-color:#4ec315;width:' + 100 + '%"></div> </div><i  class="ace-icon fa-wancheng1" style="font-size: 12px;margin-left: 6px;margin-top: 2px;color: #4ec315;"></i></div> '
+									} else {
+										return '<div style="display: flex;justify-content: center;align-items: center;"><div style="height:8px; border-radius:20px;margin-bottom:0px;width: -webkit-fill-available;" class="progress" title="完成度' + 0 + '%"><div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="background-color:#4ec315;width:' + 0 + '%"></div> </div><span style="    font-size: 12px;margin-left: 6px;margin-top: 2px;color: #8d8d8d;">' + 0 + '%</span></div> '
+									}
+								}
+							}
+						},
+						/* {
+							title: '类型',
+							name: 'type',
+							align: 'center',
+							formatter: function (value, rowData) {
+								if (rowData.projectPlan) return '<span style="color:#4ec315">任务</span>';
+								else return '<span style="color:rgb(0,169,255)">计划</span>';
+							}
+						}, */
+						{
+							title: '预计开始时间',
+							align: 'center',
+							name: 'startDate',
+							formatter: function (value, rowData) {
+								if (value) {
+									return moment(value).format('YYYY-MM-DD')
+								} else {
+									return moment(rowData.createDate).format('YYYY-MM-DD')
+								}
+							}
+						},
+						{
+							title: '预计完成时间',
+							align: 'center',
+							name: 'endDate',
+							formatter: function (value, rowData) {
+								if (value) {
+									return moment(value).format('YYYY-MM-DD')
+								} else {
+									return moment(rowData.deadline).format('YYYY-MM-DD')
+								}
+
+							}
+						},
+						{
+							title: '负责人',
+							align: 'center',
+							name: 'assignedTo',
+							formatter: function (value, rowData) {
+								return rowData.assigned ? (rowData.assigned.userRealname ? rowData.assigned.userRealname : '无') : '无';
+							}
+						},
+						/* {
+							title: '提出人',
+							align: 'center',
+							name: 'created',
+							formatter: function (value, rowData) {
+								if (rowData.created) return rowData.created.userRealname;
+								else return '无'
+							}
+						}, */
+						{
+							title: '操作',
+							align: 'center',
+							formatter: function (value, rowData) {
+								//判断是任务还是计划
+								if (rowData.projectPlan) return '<div title="详情">'
+									+ '<a class="task"><i  name="' + rowData.rowKey + '" ng-mousedown="$event.stopPropagation()" class="ace-icon fa-xiangqing1 right_handle" style="float:none;margin-left:0"></i></a>'
+									+ '</div>';
+								else return '<div title="新增">'
+									+ '<a class="add"><i name="' + rowData.rowKey + '" ng-mousedown="$event.stopPropagation()" class="ace-icon fa-pinleizengjia right_add" style="float:none;margin-left:0"></i></a>'
+									+ '</div>';
+							},
+						}
+					]
+				});
+
+				//循环查出所有的计划下面的任务
+				function getAllchildStorys(data, ary) {
+					if (!Array.isArray(ary)) ary = new Array();
+					if (data._children && data._children.length > 0) {
+						data._children.forEach(function (i) {
+							//任务
+							if (i.projectPlan) ary.push(i);
+							else {
+								getAllchildStorys(i, ary);
+							}
+						})
+					}
+					return ary;
+				}
+
+				//表格点击事件
+				/* $scope.grid.on('click', function (e) {
+					if (!angular.isUndefined(e.rowKey) && e.columnName != "name") {
+						$scope.rowkey = e.rowKey;
+						var rowData = $scope.grid.getRowAt(e.rowKey);
+						$scope.rowData = rowData;
+						//判断是否是刚刚新增的数据，刚刚新增的数据存在data里面
+						if (rowData.projectPlan) {
+							$state.go('.taskDetail', { taskId: rowData.id })
+						} else {
+							$state.go('.planDetail', { projectPlan: rowData, planId: rowData.id })
+						}
+					}
+				}); */
+
+				//设置树表主题 有 default, striped (zebra pattern), and clean
+				tui.Grid.applyTheme("clean");
+
+				//给新增dom添加点击事件
+				$('#grid').on('click', '.add', function (e) {
+					e.stopPropagation();
+					var rowKey = getRowKey(e);
+					var row = $scope.grid.getRow(rowKey);
+					Modal.open("project/settings/addtaskPlans.html", { planId: row.id }, {
+						title: '新增计划',
+						animation: true,
+						size: "middle",
+						onClose: function (data) {
+							var rows = [];
+							//找到新增内容挂在哪个计划下面,先判断是新增的计划还是任务
+							if (data.parent) {
+								rows = $scope.grid.findRows({
+									id: data.parent
+								});
+								if (rows.length > 0) {
+									//第一个参数为新增数据，第二个参数为父rowkey
+									$scope.grid.appendRow(data, { parentRowKey: rows[0].rowKey })
+									editDataCompletes(getAllParentKey(rows[0], rows));
+								} else {
+									Messenger.post('当前计划未找到！')
+								}
+							} else {
+								rows = $scope.grid.findRows({
+									id: data.projectPlan.id
+								})
+								if (rows.length > 0) {
+									//第一个参数为新增数据，第二个参数为父rowkey
+									editDataCompletes(getAllParentKey(rows[0], rows));
+								} else {
+									Messenger.post('当前计划未找到！')
+								}
+							}
+						}
+					});
+				})
+
+				$('#grid').on('click', '.detail', function (e) {
+					e.stopPropagation();
+					var rowKey = getRowKey(e);
+					var rowData = $scope.grid.getRow(rowKey);
+					$scope.rowkey = rowKey;
+					$scope.rowData = rowData;
+					if (rowData.projectPlan) {
+						$state.go('.taskDetail', { taskId: rowData.id })
+					} else {
+						$state.go('.planDetail', { projectPlan: rowData, planId: rowData.id })
+					}
+				})
+
+				$scope.$on("planStatusChange", function () {
+					initData(null, $scope.search);
+				})
+
+				$('#grid').on('click', '.edit', function (e) {
+					e.stopPropagation();
+					var rowkey = parseInt(getRowKey(e));
+					var rowData = $scope.grid.getRow(rowkey)
+					Modal.open('project/settings/editModule.html', { projectPlan: rowData }, {
+						size: 'middle',
+						onClose: function (data) {
+							if (data) {
+								Messenger.post("保存成功！")
+								rowData = data;
+								$scope.grid.setValue(rowkey, "name", data.result.name);
+								$scope.grid.setValue(rowkey, "assignedTo", data.result.assigned);
+								$scope.grid.setValue(rowkey, "startDate", data.result.startDate);
+								$scope.grid.setValue(rowkey, "endDate", data.result.endDate);
+							} else {
+								$scope.grid.removeRow(rowKey);
+							}
+						}
+					})
+				})
+
+				$scope.$on("projectPlantaskUpdate", function (event, msg) {
+					event.stopPropagation;
+					// initData(null,$scope.search);
+					$scope.grid.setValue($scope.rowkey, "name", msg.task.name);
+					if ($scope.rowData.isDone != msg.task.isDone) {
+						$scope.grid.setValue($scope.rowkey, "isDone", msg.task.isDone);
+						editDataCompletes(getAllParentKey($scope.rowkey))
+					}
+					$scope.gird.setValue($scope.rowkey, "completes", msg.task.isDone)
+					$scope.grid.setValue($scope.rowkey, "assigned", msg.task.assigned);
+					$scope.grid.setValue($scope.rowkey, "assignedTo", msg.task.assignedTo);
+					$scope.grid.setValue($scope.rowkey, "endDate", msg.task.deadline);
+					$scope.grid.setValue($scope.rowkey, "closed", msg.task.closed);
+					$scope.grid.setValue($scope.rowkey, "consumed", msg.task.consumed);
+					$scope.grid.setValue($scope.rowkey, "description", msg.task.description);
+					$scope.grid.setValue($scope.rowkey, "estimate", msg.task.estimate);
+					$scope.grid.setValue($scope.rowkey, "finishedDate", msg.task.finishedDate);
+					$scope.grid.setValue($scope.rowkey, "left", msg.task.left);
+					$scope.grid.setValue($scope.rowkey, "stageId", msg.task.stageId);
+					$scope.grid.setValue($scope.rowkey, "taskType", msg.task.taskType);
+					$scope.grid.setValue($scope.rowkey, "pri", msg.task.pri);
+				})
+				//第一个参数为需要查询的key，第二个参数为所有父key
+				function getAllParentKey(key, keys) {
+					if (!Array.isArray(keys)) keys = [];
+					if ($scope.grid.getParent(key)) {
+						let rowkey = $scope.grid.getParent(key).attributes.rowKey;
+						keys.push(rowkey);
+						getAllParentKey(rowkey, keys);
+					}
+					return keys;
+				}
+
+				//批量修改数据的完成度
+				function editDataCompletes(rowkeys) {
+					rowkeys.forEach(function (item) {
+						let childs = $scope.grid.getChildren(item);
+						let done = 0;
+						let count = 0;
+						childs.forEach(function (i) {
+							//找到所有子元素的任务
+							if (i.attributes.projectPlan) {
+								if (i.attributes.isDone) done++;
+								count++;
+							} else {
+								if (i.attributes.taskNum) {
+									done += i.attributes.taskNum.done;
+									count += i.attributes.taskNum.total;
+								}
+							}
+						})
+						if (count == 0) $scope.grid.setValue(item, "complets", 0);
+						else $scope.grid.setValue(item, "completes", (done * 100 / count).toFixed(0))
+					})
+				}
+
+				$scope.$on("updateprojectPlan", function (event, msg) {
+					$scope.grid.setValue($scope.rowkey, "name", msg.projectPlan.name);
+					$scope.grid.setValue($scope.rowkey, "assigned", msg.projectPlan.assigned);
+					$scope.grid.setValue($scope.rowkey, "assignedTo", msg.projectPlan.assignedTo);
+					$scope.grid.setValue($scope.rowkey, "startDate", msg.projectPlan.startDate);
+					$scope.grid.setValue($scope.rowkey, "endDate", msg.projectPlan.endDate);
+
+					
+					$scope.grid.setValue($scope.rowkey, "description", msg.projectPlan.description);
+					var data = $scope.grid.getRow($scope.rowkey);
+					data = msg.projectPlan;
+					Messenger.post('修改计划' + data.name + '成功！')
+				})
+				$scope.$on("deleteprojectPlan", function (event, msg) {
+					$scope.grid.removeRow(parseInt($scope.rowkey))
+					$state.go('^');
+					$('aside#detail-panel').removeClass('toggled');
+					Messenger.post('计划删除成功！')
+				})
+
+				//根据传过来得点击事件获取当前事件的name属性获取到rowKey
+				function getRowKey(e) {
+					var ary = e.target.attributes;
+					if (ary.length > 0) {
+						for (var i = 0; i < ary.length; i++) {
+							if (ary[i].name == "name") {
+								return ary[i].value
+							}
+						}
+					}
+				}
+
+				$scope.addRootMod = function (data) {
+					Modal.open("project/settings/addPlans.html", { addRootMod: true, addType: 'plan' }, {
+						size: 'middle',
+						onClose: function (data) {
+							$scope.grid.appendRow(data, { parentRowKey: null })
+						}
+					})
+				}
+				//收起全部
+				$scope.collapseAll = function () {
+					_.each($scope.modList, function (item) {
+						$scope.grid.collapse(item.rowKey, true);
+					})
+					//  $scope.grid.getColl();
+				}
+
+				$scope.expandAll = function () {
+					_.each($scope.modList, function (item) {
+						$scope.grid.expand(item.rowKey, true);
+					})
+				}
+
+				$scope.gantt = function () {
+					// Modal.open('project/settings/gantt.html',{},{size:'big'})
+					$state.go('project.gantt')
+				}
+			});
+
+</script>

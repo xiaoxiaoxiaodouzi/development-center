@@ -1,0 +1,14 @@
+<h5>项目一旦删除就无法恢复了，如果确认要删除项目的话，请在下方文本框中输入当前项目的完整编号：</h5>
+<h3>{{project.code}}</h3>
+
+<div class="input-group">
+        <span class="input-group-addon"><i class="md md-wifi-tethering"></i></span>
+            <div class="fg-line">
+                <input type="text" class="form-control" ng-model="deleteProjectCode" placeholder="确认项目编号">
+            </div>
+        <span class="input-group-addon last"><i class="md md-wifi-tethering"></i></span>
+</div>
+
+<div class="modal-footer" data-ng-controller="deleteProjectCtrl">
+    <button type="button" class="btn btn-danger btn-icon-text waves-effect" ng-disabled="deleteProjectCode!=project.code" ng-click="onDelete()"><i class="md md-delete"></i>删除</button>
+</div>

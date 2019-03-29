@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.app.VersionMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_app_version.version ,
+		  c2_app_version.ios_build ,
+		  c2_app_version.ios_script_version ,
+		  c2_app_version.ios_url ,
+		  c2_app_version.android_build ,
+		  c2_app_version.android_script_version ,
+		  c2_app_version.android_url 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="version != null">and c2_app_version.version = #{version}</if>
+	    <if test="iosBuild != null">and c2_app_version.ios_build = #{iosBuild}</if>
+	    <if test="iosScriptVersion != null">and c2_app_version.ios_script_version = #{iosScriptVersion}</if>
+	    <if test="iosUrl != null">and c2_app_version.ios_url = #{iosUrl}</if>
+	    <if test="androidBuild != null">and c2_app_version.android_build = #{androidBuild}</if>
+	    <if test="androidScriptVersion != null">and c2_app_version.android_script_version = #{androidScriptVersion}</if>
+	    <if test="androidUrl != null">and c2_app_version.android_url = #{androidUrl}</if>
+</sql>
+
+
+<!-- ElementID:VersionResult,Generated=true -->
+<resultMap id="VersionResult" type="com.chinacreator.c2.app.Version">
+	<id property="version" column="version"/>
+	<result property="iosBuild" column="ios_build"/>
+	<result property="iosScriptVersion" column="ios_script_version"/>
+	<result property="iosUrl" column="ios_url"/>
+	<result property="androidBuild" column="android_build"/>
+	<result property="androidScriptVersion" column="android_script_version"/>
+	<result property="androidUrl" column="android_url"/>
+</resultMap>
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.app.Version">
+	insert into c2_app_version(
+	         <if test="version != null">version</if>
+	         <if test="iosBuild != null">,ios_build</if>
+	         <if test="iosScriptVersion != null">,ios_script_version</if>
+	         <if test="iosUrl != null">,ios_url</if>
+	         <if test="androidBuild != null">,android_build</if>
+	         <if test="androidScriptVersion != null">,android_script_version</if>
+	         <if test="androidUrl != null">,android_url</if>
+	 	 	 )
+	 values (
+	         <if test="version != null">#{version,jdbcType=VARCHAR}</if>
+	         <if test="iosBuild != null">,#{iosBuild,jdbcType=NUMERIC}</if>
+	         <if test="iosScriptVersion != null">,#{iosScriptVersion,jdbcType=NUMERIC}</if>
+	         <if test="iosUrl != null">,#{iosUrl,jdbcType=VARCHAR}</if>
+	         <if test="androidBuild != null">,#{androidBuild,jdbcType=NUMERIC}</if>
+	         <if test="androidScriptVersion != null">,#{androidScriptVersion,jdbcType=NUMERIC}</if>
+	         <if test="androidUrl != null">,#{androidUrl,jdbcType=VARCHAR}</if>
+	 	 	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.app.Version" resultType="int">
+	select count(*) from c2_app_version 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.app.Version">
+	update c2_app_version
+<set>
+	<if test="iosBuild != null">ios_build=#{iosBuild,jdbcType=NUMERIC},</if>
+	<if test="iosScriptVersion != null">ios_script_version=#{iosScriptVersion,jdbcType=NUMERIC},</if>
+	<if test="iosUrl != null">ios_url=#{iosUrl,jdbcType=VARCHAR},</if>
+	<if test="androidBuild != null">android_build=#{androidBuild,jdbcType=NUMERIC},</if>
+	<if test="androidScriptVersion != null">android_script_version=#{androidScriptVersion,jdbcType=NUMERIC},</if>
+	<if test="androidUrl != null">android_url=#{androidUrl,jdbcType=VARCHAR}</if>
+</set>
+<where>
+	<choose>
+        <when test="version != null">and version = #{version}</when>
+        <otherwise>and version = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_app_version
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="iosBuild==null">ios_build = null,</if>
+		    <if test="iosScriptVersion==null">ios_script_version = null,</if>
+		    <if test="iosUrl==null">ios_url = null,</if>
+		    <if test="androidBuild==null">android_build = null,</if>
+		    <if test="androidScriptVersion==null">android_script_version = null,</if>
+		    <if test="androidUrl==null">android_url = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="version != null">and version = #{version}</when>
+			<otherwise>and version = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.app.Version">
+    delete from c2_app_version where 1=1 and version = #{version}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.app.Version" resultMap="VersionResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_app_version 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list">
+	insert into c2_app_version (version,ios_build,ios_script_version,ios_url,android_build,android_script_version,android_url) 
+<foreach collection="list" item="entity" index="index" separator="union all">
+		select 
+		#{entity.version,jdbcType = VARCHAR},
+				#{entity.iosBuild,jdbcType = NUMERIC},
+				#{entity.iosScriptVersion,jdbcType = NUMERIC},
+				#{entity.iosUrl,jdbcType = VARCHAR},
+				#{entity.androidBuild,jdbcType = NUMERIC},
+				#{entity.androidScriptVersion,jdbcType = NUMERIC},
+				#{entity.androidUrl,jdbcType = VARCHAR}
+		from dual
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_app_version where version in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.version}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="VersionResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_app_version 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.String" resultMap="VersionResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_app_version 
+		 where c2_app_version.version = #{version,jdbcType=VARCHAR}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.app.Version" resultMap="VersionResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_app_version 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="VersionResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_app_version 
+	where c2_app_version.version in (
+		select distinct version from c2_app_version inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct version
+			from c2_app_version 
+			<where>
+	        <if test="entity.version != null">and c2_app_version.version = #{entity.version}</if>
+	        <if test="entity.iosBuild != null">and c2_app_version.ios_build = #{entity.iosBuild}</if>
+	        <if test="entity.iosScriptVersion != null">and c2_app_version.ios_script_version = #{entity.iosScriptVersion}</if>
+	        <if test="entity.iosUrl != null">and c2_app_version.ios_url = #{entity.iosUrl}</if>
+	        <if test="entity.androidBuild != null">and c2_app_version.android_build = #{entity.androidBuild}</if>
+	        <if test="entity.androidScriptVersion != null">and c2_app_version.android_script_version = #{entity.androidScriptVersion}</if>
+	        <if test="entity.androidUrl != null">and c2_app_version.android_url = #{entity.androidUrl}</if>
+			</where>
+		) ${entity.tableAlias} using (version)
+</foreach>
+)
+</select>
+</mapper>

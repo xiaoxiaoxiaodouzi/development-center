@@ -1,0 +1,51 @@
+<style>
+.action-bar{
+	position: absolute;
+    top: -50px;
+    right: 20px;
+    line-height: 50px;
+}
+.action-bar .action{
+    display: inline-block;
+}
+.action-bar .action .input-wrap {
+    position: relative;
+}
+.action-bar .input-wrap .icon-search {
+    position: absolute;
+    left: 9px;
+    top: 9px;
+    line-height: 1;
+    font-size: 12px;
+    color: #a6a6a6;
+}
+.action-bar .input-wrap .filter-input {
+    height: 30px;
+    padding: 3px 12px;
+    padding-left: 26px;
+    background: transparent;
+    line-height: 26px;
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
+}
+.action-bar .input-wrap .md-search {
+    position: absolute;
+    left: 6px;
+    top: 1px;
+    font-size: 17px;
+    color: #a6a6a6;
+}
+</style>
+<div style="position:relative;">
+	<div class="action-bar">
+		<div class="action">
+				<c2-dropdown class="animate" bind-data="selectedTeamMembers" items="teamMembers" item-name="name" multiple=true class="m-l-10 m-r-20" max-height="50" filter="true" filter-pinyin="true" clean-button="true">
+					<div class="picker picker-white text-overflow" style="max-width:160px;line-height:15px">
+						<span ng-if="selectedTeamMembers.length==0">选择成员</span>
+						<span ng-repeat="member in selectedTeamMembers">{{member.name}} </span> 
+						<span class="caret" style="margin-bottom: 3px;"></span>
+					</div>
+				</c2-dropdown>
+		</div>
+	</div>
+</div>

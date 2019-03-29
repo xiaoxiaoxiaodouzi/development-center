@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="workbench/getMoreBugStageList" log="false" className="com.chinacreator.c2.workbench.MyBugBoardService" method="getMoreBugStageList">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>获取工作台更多bug分页看板数据</name>
+  <desc>获取工作台更多bug分页看板数据</desc>
+  <inputs>
+    <input collection="false" desc="" id="status" required="true" type="int"/>
+    <input collection="false" desc="" id="search" required="true" type="java.util.Map"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.util.List"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.status" name="status" signature="I" type="int"/>
+    <param autoValue="Input.search" name="search" signature="QMap&lt;QString;QObject;>;" type="java.util.Map"/>
+  </params>
+  <return signature="QList&lt;QMap&lt;QString;QObject;>;>;" type="java.util.List"/>
+</CustomRule>

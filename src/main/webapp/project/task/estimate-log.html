@@ -1,0 +1,36 @@
+
+<div class="est-manual"  ng-if="showTips">
+	<i class="md md-thumb-up c-red"></i> 点击日期 , 录入工时
+	<div style="text-align: right;">
+  		<input type="checkbox" value="" ng-click="removeTips()"><i class="input-helper"></i>
+                    	不再提示
+    </div>
+</div>
+
+<div class="est-list"  ng-class="{'est-list-remove-tips':!showTips}">
+	<h4>
+		工时记录123
+		<div style="font-size: 10px; margin-top: 5px;">({{$params.estStartDateStr}}-{{$params.deadlineStr}})</div>
+	</h4>
+	<div id="est-list-sll" style="max-height: 180px;width:208px;overflow:auto">
+		<div ng-repeat="event in estimateList" >
+			<div class="est-record" title="{{event.description}}">
+				<div class="est-record-info" ng-click="showEstimateEvent(event)">{{event.start}}({{event.title}}h)</div>
+			</div>
+			<a href="javascript:void(0)" ng-click="removeEstimateEvent(event)">
+				<i class="md md-highlight-remove"
+				style="color: red; font-size: 18px; float: right; padding-top: 2px"></i>
+			</a>
+		</div>
+	</div>
+	<div class="est-list-foot">
+		执行人:{{assignedToRealname}}<br>
+		工时:{{task.estimate}}
+			消耗:{{task.consumed}} 剩余:{{task.left}}
+	</div>
+</div>
+<div class="est-manual">
+	<label style="color: #1B87E4;">深蓝色</label> : 当前任务工时记录 <br> <label
+		style="color: #8CB5D8;">浅蓝色</label> : 其他任务工时记录 <br> <label
+		style="color: #FF9800;">橘黄色</label> : 补录任务工时记录任务
+</div>

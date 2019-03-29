@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="delShareFile" log="false" className="com.chinacreator.c2.share.ShareDocFileService" method="delFile">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>删除共享文件</name>
+  <inputs>
+    <input collection="false" desc="" id="path" required="true" type="String"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.path" name="path" signature="QString;" type="String"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="addBatchStage" log="false" className="com.chinacreator.c2.project.stage.TaskStageService" method="addBatchStage">
+  <instanceCreator>
+    <params/>
+  </instanceCreator>
+  <name>按模板增加阶段</name>
+  <desc>按模板增加任务阶段</desc>
+  <inputs>
+    <input collection="false" desc="" id="name" required="true" type="String"/>
+    <input collection="false" desc="" id="projectId" required="true" type="int"/>
+  </inputs>
+  <outputs/>
+  <params>
+    <param autoValue="Input.name" name="name" signature="QString;" type="String"/>
+    <param autoValue="Input.projectId" name="projectId" signature="I" type="int"/>
+  </params>
+  <return signature="V" type="void"/>
+</CustomRule>

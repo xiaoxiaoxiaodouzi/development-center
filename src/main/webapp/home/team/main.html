@@ -1,0 +1,279 @@
+<style>
+.wr-view {
+	padding: 0px 23px 0px 20px;
+}
+
+.wr-view .table .column {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: center;
+}
+
+.wr-view .table>thead>tr>th,.wr-view .table>tbody>tr>td {
+	padding: 10px 4px;
+	border-bottom: 1px solid #f0f0f0;
+}
+
+.wr-view .table>tbody>tr>td>a:hover {
+	color: #2196F3;
+}
+
+.wr-view .table>tbody>tr>td>a,.wr-view .table>thead>tr>th>label{
+	color: #000000;
+}
+
+.wr-view .table>thead>tr>th>label:hover{
+	color: #2196f3;
+}
+
+.wr-view .require {
+	border-color: red;
+}
+
+.red {
+	color:red ;
+}
+
+.p-members {
+    float: left;
+    margin: 15px 0 11px;
+    width: 100%;
+    padding: 1px 0 10px;
+    border-bottom: 1px solid #EFEFEF;
+    border-top: 1px solid #eeeeee;
+    background-color: #FFFFFF;
+}
+.p-members li:not(.hide-list){
+    float: left;
+    width: 70px;
+    text-align: center;
+    margin-right: 24px;
+    margin-top: 20px;
+    list-style: none;
+    padding: 8px 0;
+    border-radius: 5px;
+}
+.p-members li a{
+	color: #2F2F2F;
+}
+.p-members li a:hover{
+	color: #ffffff;
+}
+.p-members span {
+    background-color: #E2E2E2;
+    width: 100%;
+    display: block;
+    line-height: 3em;
+    vertical-align: middle;
+}
+
+.w-width{
+	width: 60px;
+}
+.w-title {
+    clear: both;
+    border-bottom: 1px solid #F0F0F0;
+    padding: 8px 10px 8px 10px;
+    background-color: #F7F7F7;
+}
+.w-title span{
+	letter-spacing: 1px;
+	vertical-align: middle;
+}
+.ts{
+	border: 1px solid #00BCD4 !important;
+}
+.zc{
+	border: 1px solid #4CAF50 !important;
+}
+.yq{
+	border: 1px solid #ff9800 !important;
+}
+
+.zc.selected{
+	background-color: #4CAF50;	
+}
+.yq.selected{
+	background-color: #ff9800;	
+}
+.ts.selected{
+	background-color: #00BCD4;
+}
+.zc.selected>a{
+	color: white !important;
+}
+.yq.selected>a{
+    color: white !important;
+}
+.ts.selected>a{
+    color: white !important;
+}
+.zc:hover {
+    background-color: #4CAF50;
+}
+.yq:hover {
+    background-color: #ff9800;
+}
+.ts:hover {
+    background-color: #00BCD4;
+}
+
+.pp1 {
+    clear: both;
+    float: left;
+    padding-left: 0 !important;
+    margin-left: 10px;
+}
+.cross-week-task{
+	background-color: #00BCD4;
+}
+
+.normal-task{
+	background-color: #4CAF50; 
+}
+
+.delay-task{
+	background-color:#ff9800;
+}
+
+.p-members .dropdown-menu {
+	min-width:90px ;
+}
+
+.p-members .dropdown-menu .item{
+	margin: 0px 10px 5px 10px;
+    border-radius: 5px;
+    padding:0;
+}
+
+.p-members .dropdown-menu .item a{
+	text-align: center;
+}
+
+.rf-summary {
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.rf-content .table .column {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	text-align: center;
+}
+
+.rf-summary p{
+	margin-bottom:0;
+    font-size: 14px;
+}
+.wr-open.ng-enter{
+  transition:500ms 500ms linear all;
+  opacity:0;
+}
+.wr-open.ng-enter.ng-enter-active{
+  opacity:1;
+} 
+.wr-open.ng-leave{
+  transition:500ms linear all;
+  opacity:1;
+}
+.wr-open.ng-leave.ng-leave-active{
+  opacity:0;
+}
+.p-b-40{
+	padding-bottom:40px !important ;
+}
+
+.timeSearchButtonBar{
+	border-bottom: 1px solid #eee;
+}
+.timeSearchButtonBar > button{
+	margin-right: 6px;
+	box-shadow:0 !important;
+}
+.bootstrap-datetimepicker-widget table td.day{
+	font-weight: normal;
+}
+#timeSearch .buttom-message{
+	border-top: 1px solid #eee;
+    padding: 10px 15px 10px;
+    font-size: 12px;
+    background-color: #1C8CE4;
+    margin: 5px -5px -5px;
+}
+</style>
+<div class="container">
+    <div class="card wr-open">
+    	<div class="card-header">
+			<h2>
+				  团队
+			</h2>
+		</div>
+		<div class="card-body p-b-40">
+			<div class="wr-view">
+			<div class="wkr-tasklist clearfix" >
+				<table class="table table-hover m-b-0">
+					<thead>
+						<tr style="border-bottom: 2px solid #f0f0f0;">
+							<th style="width: 420px;">
+								<div id="timeSearch" ng-class="{open:timeSearchOpen}" class="dropdown" style="display: inline-block;position: relative;">
+									<div class="picker picker-white" ng-click="dateChoose()">
+										<i class="md md-bookmark-outline"></i> {{chooseTimeName}}
+									</div>
+					                <div class="dropdown-menu p-5" style="width:460px;">
+					                <div class="timeSearchButtonBar p-5">
+					                <button ng-repeat="db in dateChooseButtons" ng-click="buttonDate(db)" ng-class="{'btn-primary':db.active}" class="btn btn-default picker-shadow">{{db.name}}</button>
+					                </div>
+					                <div class="row">
+					                	<div class="col-sm-6"><div id="datetimepickerFrom"></div></div>
+					                	<div class="col-sm-6"><div id="datetimepickerTo"></div></div>
+					                </div>
+					                <div class="buttom-message c-white"><i class="md md-error m-r-5"></i>未完成的任务按计划结束时间过滤，已完成的按完成时间过滤。</div>
+					                </div>
+				                </div>
+				                
+				                <label class="checkbox checkbox-inline m-l-20 m-t-10" title="显示未完成的任务">
+					                <input type="checkbox" ng-model="search.NotDone"/>
+					                <i class="input-helper"></i> 未完成
+					            </label>
+					            <label class="checkbox checkbox-inline m-l-10 m-t-10" title="显示已完成未关闭的任务">
+					                <input type="checkbox" ng-model="search.Done"/>
+					                <i class="input-helper"></i> 已完成
+					            </label>
+					            <label class="checkbox checkbox-inline m-l-10 m-t-10" title="显示已完成关闭了的任务">
+					                <input type="checkbox" ng-model="search.Closed"/>
+					                <i class="input-helper"></i> 已关闭
+					            </label>
+							</th>
+							<th style="width: 80px; text-align: center; vertical-align: top;">所属项目</th>
+							<th style="width: 72px; text-align: center; vertical-align: top;">截止/完成日期</th>
+							<th style="width: 60px; text-align: center; vertical-align: top;">状态</th>
+							<th style="width: 60px; text-align: center; vertical-align: top;">周工时</th>
+						</tr>
+					</thead>
+					<tbody ng-repeat="userGroup in search.users">
+						<tr><td colspan="6" class="w-title p-l-10"><strong class="f-14 m-r-15 pull-left w-width">{{userGroup.name}}</strong></td></tr>
+						<tr ng-repeat="task in teamTaskList | filter:{assignedTo:userGroup.userName}">
+							<td class="column p-l-20" 
+								style="width: 420px; max-width: 420px; text-align: left;">
+								<a style="cursor:pointer" ng-click="taskDetailSideBarToggle(task.taskId)" title="{{task.name}}">
+									{{task.name}}
+								</a>
+							</td>
+							<td class="column" style="width: 80px;">{{task.projectName}}</td>
+							<td class="column" style="width: 72px; max-width: 72px;" ><span ng-if="isDone">{{task.finishedDate | date:"yyyy-MM-dd"}}</span><span ng-if="!isDone">{{task.deadline | date:"yyyy-MM-dd"}}</span></td>
+							<td class="column" style="width: 60px; max-width: 60px;">{{isDone?"已完成":"未完成"}}</td>
+							<td class="column" style="width: 60px; max-width: 60px;"><span>{{task.consumed}}/{{task.estimate}}</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="text-center p-20" ng-if="$params.taskList.length==0">没有查到下周任务...</div>
+		</div>
+	</div>
+    
+	</div>
+</div>

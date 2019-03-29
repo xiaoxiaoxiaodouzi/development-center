@@ -1,0 +1,415 @@
+<link href="css/assess/assessDetail.css" rel="stylesheet">
+<div ng-controller="assessDetailCtrl " class="container ng-scope " style="min-width: 1158px;background-color: white">
+	<div class="name-data" style="width:1152px;z-index:9">
+		<span style="font-weight: 600;font-size: 16px;">考核期：
+			<span style="font-weight: 600;">
+				<c2-dropdown class="animate" item-click="yearSelect(item)" clean-button="true" items="yearMonth" item-name="name"
+				 item-id="userId" max-height="200" filter="true">
+					<div class="picker" style="font-size: 18px;font-weight: 600;">{{assess.year}}-{{assess.month}}
+						<span class="caret"></span>
+					</div>
+			</span>
+		</span>
+		<div class="pp-members">
+			<ul class="pp2">
+				<li ng-repeat="member in deptUsers" ng-click="userSelect(member,true)" ng-if="$index<=18" ng-class="{'yq':member.status=='待考核','zc':member.status=='待复核','ts':member.status=='已完成','selected':member.selected}">
+					<a href="javascript:void(0)">{{member.formatName}}</a>
+				</li>
+				<li class="dropdown" ng-if="deptUsers.length>19" ng-class="{'yq':selectedHideMember.status=='待考核' || !selectedHideMember,'zc':selectedHideMember.status=='待复核','ts':selectedHideMember.status=='已完成','selected':selectedHideMember.selected}">
+					<a href="javascript:void(0)" data-toggle="dropdown" ng-class="{'selected':selectedHideMember.selected}">
+						{{selectedHideMember?selectedHideMember.formatName:''}}
+						<i class="md md-keyboard-control" ng-if="!selectedHideMember" style="width: 50px;"></i>
+						<i class="caret m-b-5" ng-if="selectedHideMember"></i>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li ng-repeat="member in deptUsers" class="item" ng-if="$index>18" ng-click="userSelect(member,true)" ng-class="{'yq':member.status=='待考核','zc':member.status=='待复核','ts':member.status=='已完成','selected':member.selected}">
+							<a href="javascript:void(0)">{{member.formatName}}</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+
+	</div>
+	<div class="textMain">
+		<div class="text-content">
+			<div class="text-content-head">
+				<p>考核内容</p>
+			</div>
+			<div class="text-content-item" ng-show="temple.name!='复核人调整分'" ng-repeat="temple in templeList" ng-class="{'error-style':personResult[temple.type].hasError}">
+				<div class="text-radio">
+					<div class="text-name">{{temple.name}}：</div>
+					<div class="radio-beauty-container">
+						<label ng-class="{'radio-disabled':!isAssessor || assess.status=='待复核'}" ng-repeat="(k,v) in temple.value"
+						 ng-show="temple.name!='复核人调整分'">
+							<input ng-disabled="!isAssessor || assess.status=='待复核'" name="{{temple.name}}" type="radio" ng-value="v.value"
+							 id="{{temple.name}}{{v.value}}" hidden ng-click="radioChange($event,personResult[temple.type],v.value)"
+							 ng-checked="personResult[temple.type].value==v.value" />
+							<label for="{{temple.name}}{{v.value}}" class="radio-beauty" style="pointer-events: none;"></label>
+							<span class="radio-name">{{v.key}}({{v.value}})</span>
+						</label>
+					</div>
+				</div>
+
+				<div class="text-radio" ng-show="temple.reason.length>0">
+					<div class="text-name" style="font-weight: 500">依据：</div>
+					<div class="radio-beauty-container">
+						<label ng-class="{'radio-disabled':!isAssessor || assess.status=='待复核'}" ng-repeat="r in temple.reason">
+							<input ng-disabled="!isAssessor || assess.status=='待复核'" name="{{temple.type}}" type="checkbox" ng-checked="isChecked(temple.type,r.value)"
+							 ng-value="{{r.value}}" id="{{temple.type}}{{r.value}}" hidden />
+							<label for="{{temple.type}}{{r.value}}" class="checkbox-beauty"></label>
+							<span class="radio-name">{{r.key}}</span>
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="text-content-item">
+				<div class="text-radio">
+					<div class="text-name">备注：</div>
+					<textarea ng-disabled="!isAssessor || assess.status=='待复核'" id="" cols="30" rows="3" ng-model="personResult.remark.value"
+					 style="box-sizing: border-box;display: inline-block;border: 1px solid rgb(221, 221, 221);vertical-align: middle;margin: 15px 15px 0px 3px;">
+						{{personResult.remark}}
+					</textarea>
+				</div>
+			</div>
+
+			<div class="text-content-item">
+				<div class="text-radio">
+					<div class="text-name">复核人调整分：</div>
+					<div class="m-t-15">
+						<input name="xxxxx" ng-disabled="!(isReviewer && assess.status=='待复核')" style="width: 235px; height: 30px;
+    					 box-sizing: border-box;display: inline-block;border: 1px solid #ddd;vertical-align: middle;margin: 0px 15px 0 3px;"
+						 ng-model="personResult.adjustScore.value" type="number" ng-keyup="scoreUp(this)"
+						 oninput="if(value>3)value=3;if(value<-3)value=-3" />
+						<span>
+							(正负3分之间)
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<button class="btn btn-primary btn-smt" ng-if="isAssessor && assess.status=='待考核'" ng-click="saveResult()" style="margin: 20px;float: right;">
+				考核确认
+			</button>
+
+			<butto class="btn btn-primary btn-smt" ng-if="isReviewer && assess.status=='待复核'" ng-click="saveResult()" style="margin: 20px;float: right;">
+				复核确认
+				</button>
+				<!-- <button ng-click="saveResult()">
+				保存
+			</button> -->
+		</div>
+
+		<div style="position: fixed;top:250px;margin-left:850px">
+		
+			<div class="text-score">
+	
+				<div class="text-score-head">
+					<p></p>
+					<div class="text-score-div-1">
+						<div class="text-score-div-3">总计：<span style="margin-left: 50px;">评级：</span></div>
+						<div class="text-score-div-2">
+							<h5>{{totalPoints}}</h5>
+							<h5>{{assessLevel}}</h5>
+						</div>
+					</div>
+					<div class="chakan" style="background-color: #0000002b;color: white;text-align: center;">
+						<a href="" ng-click="taskList(assess.userId)"> 查看日志></a>
+						<span>|</span>
+						<a href="" data-ui-sref="home.assesdetail.bugList()"> 查看BUG></a>
+					</div>
+				</div>
+				<div class="text-score-div" style="max-height: 40vh;overflow: auto;">
+					<div ng-show="i.name!='复核人调整分' && i.name!='备注'" ng-repeat="i in personResult">
+						{{i.name}}：
+						<span class="text-score-div-span" style="float: right;">{{i.value?i.value:0}}</span>
+					</div>
+	
+					<div>复核人调整分：
+						<span class="text-score-div-span" style="float: right;">{{personResult.adjustScore.value?personResult.adjustScore.value:0}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<aside id="detail-panel" state-aside-container class="cOverflow" style="background-color: #fafafa;width:680px;z-index:99">
+			<ui-view onload="stateOnload()"></ui-view>
+		</aside>
+	</div>
+
+	<script>
+		angular.module("developmentCenter")
+			.registerCtrl(
+				'assessDetailCtrl',
+				function ($scope, $rootScope, $http, $state, $stateParams,debounce,
+					$timeout, Messenger, Modal) {
+					$scope.isManagedOrg = $stateParams.isManagedOrg == 'false' ? false : true;
+					$scope.assessLevel = '未知';
+					$scope.assess = {};
+					$scope.search = {};
+					$scope.memberList = [];			//人员列表
+					$scope.isAssessor = $stateParams.isAssessor == 'false' ? false : true;
+					$scope.isReviewer = $stateParams.isReviewer == 'false' ? false : true;
+					$scope.deptUsers = [];
+					$scope.isAssess = { data: [], name: '待考核', };//考核者
+					$scope.isReview = { data: [], name: '待复核', };//待复核
+					$scope.isDone = { data: [], name: '已完成', };//已完成
+
+					function getDeptUsers(startMonth, startYear) {
+						$http.get("projects/v1/appraisalusers?orgId=" + $stateParams.orgId + "&startYear=" + startYear +
+							"&startMonth=" + startMonth + "&endYear=" + startYear + "&isManagedOrg=" + $stateParams.isManagedOrg +
+							"&endMonth=" + startMonth).success(function (data) {
+								var obj = {};
+								/* 	var isAssess = [];
+									var isReview = [];
+									var isDone = []; */
+								data.forEach(function (i, k) {
+									i.formatName = i.userRealname + '(' + (i.score ? i.score : '--') + ')'
+									if (i.userId == $scope.assess.userId) {
+										i.selected = true;
+										//判断是否是隐藏列里面的人
+										if (k > 19) $scope.selectedHideMember = i;
+									}
+									/* 								if (i.status == '待考核') {
+																		isAssess.push(i);
+																	} else if (i.status == '待复核') {
+																		if (i.userId == $scope.assess.userId) {
+																			i.selected = true;
+																			//判断是否是隐藏列里面的人
+																			if (k > 9) $scope.isReview.selectedHideMember = i;
+																		}
+																		isReview.push(i)
+																	} else if (i.status == '已完成') {
+																		if (i.userId == $scope.assess.userId) {
+																			i.selected = true;
+																			//判断是否是隐藏列里面的人
+																			if (k > 9) $scope.isDone.selectedHideMember = i;
+																		}
+																		isDone.push(i);;
+																	} */
+								})
+								$scope.deptUsers = data;
+								/* 	$scope.isAssess.data = isAssess;
+									$scope.isReview.data = isReview;
+									$scope.isDone.data = isDone;
+									$scope.deptUsers.push($scope.isAssess);
+									$scope.deptUsers.push($scope.isReview);
+									$scope.deptUsers.push($scope.isDone); */
+							});
+					}
+					
+					 $scope.scoreUp = debounce(function(t){
+						 var num = t.personResult.adjustScore.value;
+						 console.log(num);  
+						 if(num){
+							 t.personResult.adjustScore.value = num;
+						 }else{
+							 t.personResult.adjustScore.value=0;
+						 }
+					 },300)
+					
+					//根据考核详情表查询数据
+					$http.get('projects/v1/appraisals/' + $stateParams.assessId).success(function (data) {
+						//获取用户的考核者记录
+						if (!$scope.isManagedOrg) {
+							getUserAssessor(data.userId);
+						}
+						//获取当前能考核用户的年月
+						getAppraisaluserdate(data.userId);
+						//获取当前用户能够考核、复核的人
+						getDeptUsers(data.month, data.year);
+						$scope.assess = $rootScope.assess = data
+						$scope.personResult = {};
+						if (data.detail) {
+							$scope.personResult = JSON.parse(data.detail);
+						} else {
+							$scope.personResult = {
+								rule: { value: '', reason: [], name: "遵章守纪" },
+								cooperation: { value: '', reason: [], name: "团队及合作共事" },
+								contribute: { value: '', reason: [], name: "贡献" },
+								positive: { value: '', reason: [], name: "责任感、积极性" },
+								ability: { value: '', reason: [], name: "个人能力提升" },
+								workload: { value: '', reason: [], name: "工作量" },
+								complexity: { value: '', reason: [], name: "工作复杂程度" },
+								efficiency: { value: '', reason: [], name: "工作效率" },
+								workmanship: { value: '', reason: [], name: "工作质量" },
+								normative: { value: '', reason: [], name: "工作规范性" },
+								redEvents: { value: '', reason: [], name: "红色事件" },
+								blackEvents: { value: '', reason: [], name: "黑色事件" },
+								adjustScore: { value: '', reason: [], name: "复核人调整分" },
+								remark: { value: '', reason: [], name: "备注" },
+							}
+						}
+						var flag = $scope.isReviewer || $scope.isUser;
+						$scope.totalPoints = data.score;
+						var f = $scope.isAssessor || $scope.isUser;
+					})
+
+					function getAppraisaluserdate(userId) {
+						$http.get('projects/v1/appraisaluserdate/' + userId).success(function (data) {
+							data.forEach(function (i) {
+								i.name = '(' + (i.score ? i.score : '--') + ')' + '  ' + i.year + '-' + i.month
+							})
+							$scope.yearMonth = data;
+						})
+					}
+					function getUserAssessor(userId) {
+						$http.get('project/v1/assessors/user/' + userId).success(function (data) {
+							if (data.length > 0) {
+								data.forEach(da=>{
+									if(da.assessorName == $rootScope.subject.userName){
+										$scope.isAssessor = true;
+									}
+									if(da.reviewerName == $rootScope.subject.userName){
+										$scope.isReviewer = true;
+									}
+								})
+							} else {
+								$scope.isAssessor = false;
+								$scope.isReviewer = false;
+							}
+						})
+					}
+
+					$scope.$watch('personResult', function (v) {
+						$scope.totalPoints = 0
+						for (var i in $scope.personResult) {
+							if (i != 'remark') $scope.totalPoints += parseInt($scope.personResult[i].value ? $scope.personResult[i].value : 0);
+						}
+					}, true)
+					$scope.$watch('totalPoints', function (v) {
+						if (v > 90 || v == 90) $scope.assessLevel = 'A';
+						else if (v < 90 && (v > 85 || v == 85)) $scope.assessLevel = 'B+';
+						else if (v < 85 && (v > 80 || v == 80)) $scope.assessLevel = 'B-';
+						else if (v < 80 && (v > 70 || v == 70)) $scope.assessLevel = 'C';
+						else if (v < 70 && (v > 60 || v == 60)) $scope.assessLevel = 'D';
+						else if (v < 60) $scope.assessLevel = 'E';
+					})
+
+					$http.get('../assets/json/monthExam.json').success(function (data) {
+						$scope.templeList = data.data
+					})
+					$scope.isChecked = function (key, value) {
+						var ary = $scope.personResult[key].reason;
+						if (ary && ary.length > 0) {
+							if (ary.indexOf(value) != -1) {
+								return true
+							} else {
+								return false;
+							}
+						}
+					}
+					//保存数据
+					$scope.saveResult = function () {
+						//遍历所有
+						for (var i in $scope.personResult) {
+							if ($scope.personResult[i].name != '备注' && $scope.personResult[i].name != '黑色事件' && $scope.personResult[i].name != '红色事件' && $scope.personResult[i].name != '复核人调整分') {
+								if ($scope.personResult[i].value == "") {
+									$scope.personResult[i].hasError = true;
+									/* 	//获取当前元素的offset,
+										var offtop = $(`:input[name=${$scope.personResult[i].name}]`).parents()[5].scrollHeight
+										$("body,html").animate({
+											scrollTop: offtop //让body的scrollTop等于pos的top，就实现了滚动
+										}) */
+									Messenger.post('【' + $scope.personResult[i].name + '】' + "未选值,请选完再保存！");
+									return;
+								} else {
+									$scope.personResult[i].hasError = false;
+								}
+							}
+							if (!$scope.personResult[i].value) var nameAry = document.getElementsByName($scope.personResult[i].name);
+							var ary = document.getElementsByName(i);
+							if (ary.length > 0) {
+								var reason = [];
+								ary.forEach(function (item) {
+									if (item.checked) {
+										reason.push(item.value)
+									}
+								})
+								$scope.personResult[i].reason = reason;
+							}
+						}
+						if ($scope.assess.status == '待考核') {
+							$scope.assess.assessorId = $rootScope.subject.userId;
+							$scope.assess.assessorName = $rootScope.subject.userName;
+							$scope.assess.assessorRealname = $rootScope.subject.userRealname;
+							$scope.assess.status = '待复核';
+						}
+						//如果是复核人点击保存则改为完成
+						else if ($scope.assess.status == '待复核') {
+							$scope.assess.reviewerId = $rootScope.subject.userId;
+							$scope.assess.reviewerName = $rootScope.subject.userName;
+							$scope.assess.reviewerRealname = $rootScope.subject.userRealname;
+							$scope.assess.status = '已完成';
+						}
+						$scope.assess.score = $scope.totalPoints;
+						$scope.assess.level = $scope.assessLevel;
+						$scope.assess.version = $scope.templeList.version;
+						$scope.assess.detail = $scope.personResult;
+						$http.post('projects/v1/appraisals/' + $scope.assess.id, $scope.assess).success(function (data) {
+							getAppraisaluserdate(data.userId);
+							getDeptUsers(data.month, data.year);
+							Messenger.post('保存成功！')
+						})
+						/* if (flag) {
+							//如果是审核人点击保存则改为待复核
+						} else {
+							Modal.openConfirm({
+								title: "确认考核？",
+								message: "直接保存数据会保存但是状态还是待考核！",
+								btnText: "确定",
+								btnClass: "btn-block bgm-lightblue simple-shadow",
+								onClose: function () {
+									save();
+								}
+							});
+						} */
+					}
+
+					//查看日志列表
+					$scope.taskList = function (id) {
+						$state.go('home.assesdetail.taskList')
+					}
+
+					$scope.userSelect = function (option, flag) {
+						Modal.openConfirm({
+							title: "确认切换？",
+							message: "请确保前面的数据已经保存！",
+							btnText: "确定",
+							btnClass: "btn-block bgm-lightblue simple-shadow",
+							onClose: function () {
+								// save();
+								if (option) {
+									option.selected = true;
+									if (flag) {
+										$scope.selectedHideMember = undefined;
+										/* $scope.isAssess.selectedHideMember = undefined;
+										$scope.isReview.selectedHideMember = undefined;
+										$scope.isDone.selectedHideMember = undefined; */
+									} else {
+										$scope.selectedHideMember = option;
+										/* if (option.status == '待考核') $scope.isAssess.selectedHideMember = option;
+										if (option.status == '待复核') $scope.isReview.selectedHideMember = option;
+										if (option.status == '已完成') $scope.isDone.selectedHideMember = option; */
+									}
+									$state.go('home.assesdetail', { assessId: option.id, orgId: $stateParams.orgId, isManagedOrg: $stateParams.isManagedOrg })
+								} else {
+									return;
+								}
+							}
+						});
+					}
+
+					$scope.yearSelect=function(option) {
+						$state.go('home.assesdetail', { assessId: option.id, orgId: $stateParams.orgId, isManagedOrg: $stateParams.isManagedOrg },{reload:true})
+					}
+
+					//这样是为了实现再次点击radio可以取消选中状态
+					$scope.radioChange = function (e, option, value) {
+						if (option.value == value) option.value = "";
+						else option.value = value;
+					}
+				}
+			)
+	</script>

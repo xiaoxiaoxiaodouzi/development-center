@@ -1,0 +1,270 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.chinacreator.c2</groupId>
+	<artifactId>development-center</artifactId>
+	<packaging>war</packaging>
+	<version>1.3.0</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.chinacreator.c2</groupId>
+			<artifactId>c2-runtime</artifactId>
+			<version>5.0.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.chinacreator.c2</groupId>
+			<artifactId>c2-module-echart</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.chinacreator.c2</groupId>
+			<artifactId>c2-ui-components</artifactId>
+			<version>5.0.3.12</version>
+		</dependency>
+		<dependency>
+			<groupId>com.chinacreator.c2</groupId>
+			<artifactId>c2-cloud-message-client</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.chinacreator.c2</groupId>
+			<artifactId>c2-module-fs-dir</artifactId>
+			<version>1.0.3-for-dc</version>
+		</dependency>
+		<dependency>
+			<groupId>com.chinacreator.c2</groupId>
+			<artifactId>c2-sso-client</artifactId>
+			<version>3.4.3.3-BETA4</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jackson-core</artifactId>
+					<groupId>com.fasterxml.jackson.core</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.chinacreator.c2</groupId>
+			<artifactId>c2-sso-api-proxy</artifactId>
+			<version>3.0.5</version>
+		</dependency>
+		<!-- <dependency> <groupId>com.chinacreator.c2</groupId> <artifactId>c2-module-memcached</artifactId> 
+			<version>1.0.0</version> <exclusions> <exclusion> <artifactId>c2-core</artifactId> 
+			<groupId>com.chinacreator.c2</groupId> </exclusion> </exclusions> </dependency> -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>2.3.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.chinacreator.c2</groupId>
+			<artifactId>unify-user-organization-model</artifactId>
+			<version>5.0.0-SNAPSHOT</version>
+		</dependency>
+		<!-- <dependency> <groupId>com.chinacreator.c2</groupId> <artifactId>c2-desb-base</artifactId> 
+			<version>1.0.4</version> </dependency> <dependency> <groupId>com.chinacreator.c2</groupId> 
+			<artifactId>sso-server-api</artifactId> <version>1.0.0</version> </dependency> -->
+		<dependency>
+			<groupId>com.belerweb</groupId>
+			<artifactId>pinyin4j</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+		<!-- <dependency> <groupId>com.chinacreator.c2</groupId> <artifactId>c2-ui-material-design</artifactId> 
+			<version>4.0.0-SNAPSHOT</version> </dependency> -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3</version>
+		</dependency>
+		<dependency>
+		  <groupId>com.chinacreator.c2</groupId>
+		  <artifactId>uop-sync-receiver</artifactId>
+		  <version>1.0.5</version>
+		</dependency>
+	</dependencies>
+	<build>
+    <plugins>
+	    <plugin>
+	        <artifactId>maven-compiler-plugin</artifactId>
+	        <version>3.1</version>
+	        <configuration>
+	          <source>1.8</source>
+	          <target>1.8</target>
+	        </configuration>
+	      </plugin>
+			<plugin>
+				<groupId>org.cloudfoundry</groupId>
+				<artifactId>cf-maven-plugin</artifactId>
+				<version>1.0.4</version>
+				<configuration>
+					<target>http://api.172.16.71.17.xip.io</target>
+					<org>jcptrjb</org>
+					<space>Development</space>
+					<appname>dev-test</appname>
+					<url>dev-test.c2.chinacreator.com</url>
+					<memory>1024</memory>
+					<instances>1</instances>
+					<username>yilin.yan</username>
+					<password>laopo1025</password>
+				</configuration>
+			</plugin>
+			<!-- <plugin> -->
+			<!-- <groupId>com.kelveden</groupId> -->
+			<!-- <artifactId>maven-karma-plugin</artifactId> -->
+			<!-- <version>1.6</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <goals> -->
+			<!-- <goal>start</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- <configuration> -->
+			<!-- <karmaExecutable>C:/Users/jim/angular-seed/node_modules/karma</karmaExecutable> -->
+			<!-- <configFile>src/test/karma.config.js</configFile> -->
+			<!-- <reportsDirectory>${project.build.directory}/karma-reports</reportsDirectory> -->
+			<!-- <browsers>PhantomJS</browsers> -->
+			<!-- <autoWatch>false</autoWatch> -->
+			<!-- <singleRun>true</singleRun> -->
+			<!-- <colors>true</colors> -->
+			<!-- <skipKarma>false</skipKarma> -->
+			<!-- <skipTests>false</skipTests> -->
+			<!-- <karmaFailureIgnore>false</karmaFailureIgnore> -->
+			<!-- <reporters>dots,junit</reporters> -->
+			<!-- </configuration> -->
+			<!-- </plugin> -->
+			<!-- <plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>yuicompressor-maven-plugin</artifactId>
+				<version>1.5.1</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>compress</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<jswarn>false</jswarn>
+					<nosuffix>true</nosuffix>
+					<excludeWarSourceDirectory>true</excludeWarSourceDirectory>
+					<aggregations>
+						<aggregation>
+							<removeIncluded>false</removeIncluded>
+							<insertNewLine>true</insertNewLine>
+							<output>${project.build.directory}/${project.build.finalName}/assets/js/libs.js</output>
+							<includes>
+								<include>${basedir}/src/main/webapp/assets/js/jquery.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/bootstrap.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/angular/angular.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/angular/angular-route.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/angular/angular-resource.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/angular/angular-sanitize.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/angular/angular-animate.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/angular/ext/angular-ui-router.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/angular/ext/loading-bar.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/angular/ext/ocLazyLoad.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/angular/ext/ng-file-upload.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/angular/ext/angular-vissense.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/angular/ext/sortable.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/jquery.nicescroll.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/jquery-Base.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/jquery.fn.gantt.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/prettify.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/underscore.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/backbone.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/tui.code-snippet.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/tui-grid.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/bootstrap-notify.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/moment.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/bootstrap-datetimepicker.min.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/bootstrap-datetimepicker.zh-CN.js</include>
+								<include>${basedir}/src/main/webapp/assets/js/lrz/lrz.bundle.js</include>
+								
+								<include>${basedir}/src/main/webapp/js/markdown/marked.min.js</include>
+								<include>${basedir}/src/main/webapp/js/markdown/highlight.min.js</include>				
+							</includes>
+						</aggregation>	
+        
+						<aggregation>
+							<removeIncluded>false</removeIncluded>
+							<insertNewLine>true</insertNewLine>
+							<output>${project.build.directory}/${project.build.finalName}/assets/js/app.js</output>
+							<includes>
+								<include>${basedir}/src/main/webapp/js/common.js</include>
+								<include>${basedir}/src/main/webapp/js/services.js</include>
+								<include>${basedir}/src/main/webapp/js/interceptor/oauth2Interceptor.js</include>
+								<include>${basedir}/src/main/webapp/js/directive.js</include>
+								<include>${basedir}/src/main/webapp/js/app.js</include>
+								<include>${basedir}/src/main/webapp/js/route.js</include>
+								<include>${basedir}/src/main/webapp/js/controllers.js</include>
+								<include>${basedir}/src/main/webapp/js/animate.js</include>
+								<include>${basedir}/src/main/webapp/js/controllers/person.js</include>
+								<include>${basedir}/src/main/webapp/js/controllers/task.js</include>
+								<include>${basedir}/src/main/webapp/js/controllers/weekly-report.js</include>
+								<include>${basedir}/src/main/webapp/js/controllers/worklog.js</include>
+								<include>${basedir}/src/main/webapp/js/controllers/report.js</include>
+								<include>${basedir}/src/main/webapp/js/controllers/workbench.js</include>
+								<include>${basedir}/src/main/webapp/js/controllers/teamGroup.js</include>
+								<include>${basedir}/src/main/webapp/js/controllers/milestone.js</include>
+								<include>${basedir}/src/main/webapp/js/controllers/settings.js</include>
+							</includes>
+						</aggregation>	
+							
+						<aggregation>
+							<removeIncluded>false</removeIncluded>
+							<insertNewLine>true</insertNewLine>
+							<output>${project.build.directory}/${project.build.finalName}/assets/css/app.css</output>
+							<includes>
+								<include>${basedir}/src/main/webapp/assets/css/animate.min.css</include>
+								<include>${basedir}/src/main/webapp/assets/css/material-design-iconic-font.min.css</include>
+								<include>${basedir}/src/main/webapp/assets/css/loading-bar.css</include>
+								<include>${basedir}/src/main/webapp/assets/css/navigation.css</include>
+								<include>${basedir}/src/main/webapp/css/globalSearch.css</include>
+								<include>${basedir}/src/main/webapp/css/custom.css</include>
+								<include>${basedir}/src/main/webapp/assets/css/bootstrap-datetimepicker.css</include>
+								<include>${basedir}/src/main/webapp/assets/css/tui-grid.min.css</include>
+								<include>${basedir}/src/main/webapp/assets/css/jquery-tabs.css</include>
+							</includes>
+						</aggregation>
+					</aggregations>
+				</configuration>
+			</plugin> -->
+		</plugins>
+	</build>
+
+
+	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+			<id>central</id>
+			<name>Central Repository</name>
+			<url>http://repo.maven.apache.org/maven2</url>
+		</repository>
+	</repositories>
+</project>

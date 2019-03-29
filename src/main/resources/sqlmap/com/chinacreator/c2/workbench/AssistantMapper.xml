@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="com.chinacreator.c2.workbench.AssistantMapper">	
+
+<!-- ElementID:column_sql,Generated=true -->
+<sql id="column_sql">
+		  c2_assistant.user_name ,
+		  c2_assistant.user_realname ,
+		  c2_assistant.org_id ,
+		  c2_assistant.org_name 
+</sql>
+
+<!-- ElementID:whereClause_sql,Generated=true -->
+<sql id="whereClause_sql">
+	    <if test="userName != null">and c2_assistant.user_name = #{userName}</if>
+	    <if test="userRealname != null">and c2_assistant.user_realname = #{userRealname}</if>
+	    <if test="orgId != null">and c2_assistant.org_id = #{orgId}</if>
+	    <if test="orgName != null">and c2_assistant.org_name = #{orgName}</if>
+</sql>
+
+
+<!-- ElementID:AssistantResult,Generated=true -->
+<resultMap id="AssistantResult" type="com.chinacreator.c2.workbench.Assistant">
+	<id property="userName" column="user_name"/>
+	<result property="userRealname" column="user_realname"/>
+	<result property="orgId" column="org_id"/>
+	<result property="orgName" column="org_name"/>
+</resultMap>
+
+
+<!-- ElementID:insert,Generated=true -->
+<insert id="insert" parameterType="com.chinacreator.c2.workbench.Assistant">
+	insert into c2_assistant(
+	         <if test="userName != null">user_name</if>
+	         <if test="userRealname != null">,user_realname</if>
+	         <if test="orgId != null">,org_id</if>
+	         <if test="orgName != null">,org_name</if>
+	 	 	 )
+	 values (
+	         <if test="userName != null">#{userName,jdbcType=CHAR}</if>
+	         <if test="userRealname != null">,#{userRealname,jdbcType=VARCHAR}</if>
+	         <if test="orgId != null">,#{orgId,jdbcType=VARCHAR}</if>
+	         <if test="orgName != null">,#{orgName,jdbcType=VARCHAR}</if>
+	 	 	 )
+</insert>
+
+<!-- ElementID:count,Generated=true -->
+<select id="count" parameterType="com.chinacreator.c2.workbench.Assistant" resultType="int">
+	select count(*) from c2_assistant 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+<!-- ElementID:update,Generated=true -->
+<update id="update" parameterType="com.chinacreator.c2.workbench.Assistant">
+	update c2_assistant
+<set>
+	<if test="userRealname != null">user_realname=#{userRealname,jdbcType=VARCHAR},</if>
+	<if test="orgId != null">org_id=#{orgId,jdbcType=VARCHAR},</if>
+	<if test="orgName != null">org_name=#{orgName,jdbcType=VARCHAR}</if>
+</set>
+<where>
+	<choose>
+        <when test="userName != null">and user_name = #{userName}</when>
+        <otherwise>and user_name = </otherwise>
+    </choose>
+</where>
+</update>
+
+<!-- ElementID:updateNull,Generated=true -->
+<update id="updateNull" parameterType="map">
+	update c2_assistant
+	<set>
+		<trim suffixOverrides=",">
+		    <if test="userRealname==null">user_realname = null,</if>
+		    <if test="orgId==null">org_id = null,</if>
+		    <if test="orgName==null">org_name = null,</if>
+		</trim>
+	</set>
+	<where>
+		<choose>
+			<when test="userName != null">and user_name = #{userName}</when>
+			<otherwise>and user_name = </otherwise>
+		</choose>
+	</where>
+</update>
+
+<!-- ElementID:delete,Generated=true -->
+<delete id="delete" parameterType="com.chinacreator.c2.workbench.Assistant">
+    delete from c2_assistant where 1=1 and user_name = #{userName}
+</delete>
+
+<!-- ElementID:select,Generated=true -->
+<select id="select" parameterType="com.chinacreator.c2.workbench.Assistant" resultMap="AssistantResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_assistant 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:insertBatch,Generated=true -->
+<insert id="insertBatch" parameterType="list">
+	insert into c2_assistant (user_name,user_realname,org_id,org_name) 
+<foreach collection="list" item="entity" index="index" separator="union all">
+		select 
+		#{entity.userName,jdbcType = CHAR},
+				#{entity.userRealname,jdbcType = VARCHAR},
+				#{entity.orgId,jdbcType = VARCHAR},
+				#{entity.orgName,jdbcType = VARCHAR}
+		from dual
+</foreach>
+</insert>
+
+<!-- ElementID:deleteBatch,Generated=true -->
+<delete id="deleteBatch" parameterType="List">
+	delete from c2_assistant where user_name in
+<trim prefix="(" suffix=")" suffixOverrides=",">
+<foreach collection="list" item="entity" separator=",">
+	#{entity.userName}
+</foreach>
+</trim>
+</delete>
+
+<!-- ElementID:selectAll,Generated=true -->
+<select id="selectAll" resultMap="AssistantResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_assistant 
+</select>
+
+<!-- ElementID:selectByID,Generated=true -->
+<select id="selectByID" parameterType="java.lang.String" resultMap="AssistantResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_assistant 
+		 where c2_assistant.user_name = #{userName,jdbcType=CHAR}
+</select>
+
+<!-- ElementID:selectByPage,Generated=true -->
+<select id="selectByPage" parameterType="com.chinacreator.c2.workbench.Assistant" resultMap="AssistantResult">
+	select 
+		<include refid="column_sql"/>
+	    from c2_assistant 
+		 <where>
+			<include refid="whereClause_sql"/>
+		</where>
+</select>
+
+
+<!-- ElementID:selectMany,Generated=true -->
+<select id="selectMany" parameterType="list" resultMap="AssistantResult">
+select 
+	<include refid="column_sql"/> 
+	from c2_assistant 
+	where c2_assistant.user_name in (
+		select distinct user_name from c2_assistant inner join
+<foreach collection="list" item="entity" separator="inner join">
+		(select 
+			distinct user_name
+			from c2_assistant 
+			<where>
+	        <if test="entity.userName != null">and c2_assistant.user_name = #{entity.userName}</if>
+	        <if test="entity.userRealname != null">and c2_assistant.user_realname = #{entity.userRealname}</if>
+	        <if test="entity.orgId != null">and c2_assistant.org_id = #{entity.orgId}</if>
+	        <if test="entity.orgName != null">and c2_assistant.org_name = #{entity.orgName}</if>
+			</where>
+		) ${entity.tableAlias} using (user_name)
+</foreach>
+)
+</select>
+</mapper>

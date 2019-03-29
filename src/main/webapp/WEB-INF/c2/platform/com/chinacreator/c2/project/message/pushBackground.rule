@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomRule xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://www.chinacreator.com/platform/mvc/rule" sn="pushBackground" log="false" className="com.chinacreator.c2.project.message.MessageService" method="pushBackground">
+  <name>发系统后台通知</name>
+  <desc>推送系统消息</desc>
+  <inputs>
+    <input collection="false" desc="接收者" id="msgTo" required="true"/>
+    <input collection="false" desc="内容" id="msgContent" required="true"/>
+    <input collection="false" desc="打开链接" id="link" required="false"/>
+    <input collection="false" desc="是否持久化" id="isPersistent" required="false" type="java.lang.Boolean"/>
+    <input collection="false" desc="过期秒数" id="expireSecond" required="false" type="java.lang.Integer"/>
+  </inputs>
+  <outputs>
+    <output autoValue="Result" desc="" id="result" name="方法返回值" type="java.lang.Object"/>
+  </outputs>
+  <params>
+    <param autoValue="Input.msgTo" name="msgTo" signature="QString;" type="java.lang.String"/>
+    <param autoValue="Input.msgContent" name="msgContent" signature="QString;" type="java.lang.String"/>
+    <param autoValue="Input.link" name="link" signature="QString;" type="java.lang.String"/>
+    <param autoValue="Input.isPersistent" name="isPersistent" signature="QBoolean;" type="java.lang.Boolean"/>
+    <param autoValue="Input.expireSecond" name="expireSecond" signature="QInteger;" type="java.lang.Integer"/>
+  </params>
+  <return signature="QObject;" type="java.lang.Object"/>
+</CustomRule>
